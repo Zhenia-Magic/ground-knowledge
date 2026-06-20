@@ -35,7 +35,8 @@ class Conflict(Exception):
 def _connect():
     if _IS_PG:
         import psycopg  # production only
-        return psycopg.connect(DATABASE_URL, autocommit=False)
+        from psycopg.rows import dict_row  # rows keyed by column name, like sqlite3.Row
+        return psycopg.connect(DATABASE_URL, autocommit=False, row_factory=dict_row)
     import sqlite3
     os.makedirs(os.path.dirname(_SQLITE_PATH) or ".", exist_ok=True)
     conn = sqlite3.connect(_SQLITE_PATH)
@@ -98,6 +99,10 @@ def init_db():
 # ---- helpers -------------------------------------------------------------------------------
 
 def _dump(obj):
+    # Postgres JSONB columns want an adapted JSON value; sqlite TEXT columns want a string.
+    if _IS_PG:
+        from psycopg.types.json import Jsonb
+        return Jsonb(obj)
     return json.dumps(obj, ensure_ascii=False)
 
 
