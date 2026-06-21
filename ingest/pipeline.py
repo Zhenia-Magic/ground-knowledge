@@ -66,6 +66,7 @@ _RULES = """Rules (apply to each source):
 
 _SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...","position":"pos_id or NEW:Full label",\n'
            '"positionShort":"≤18-char complete phrase for the chart bar, e.g. \'Increases risk\' or \'No clear link\'",\n'
+           '"authors":["Surname, F.","..."]  (copy from the Authors: line if present),\n'
            '"evidence":"...","funding":"independent|industry","population":"...","confidence":"moderate",\n'
            '"restsOn":["ds_id","NEW:Label"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
            '"restsOn":{"quote":"...","extractionConfidence":0.8}}},\n'
@@ -244,6 +245,8 @@ def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=4000):
                 delta["source"]["url"] = doc["url"]
             if doc.get("title") and not delta["source"].get("title"):
                 delta["source"]["title"] = doc["title"]
+            if doc.get("authors") and not delta["source"].get("authors"):
+                delta["source"]["authors"] = doc["authors"]
             deltas.append(delta)
     return None if dry_run else deltas
 
@@ -277,6 +280,8 @@ def ingest_source(target, kb, dry_run=False):
         delta["source"]["url"] = doc["url"]
     if doc.get("title") and not delta["source"].get("title"):
         delta["source"]["title"] = doc["title"]
+    if doc.get("authors") and not delta["source"].get("authors"):
+        delta["source"]["authors"] = doc["authors"]
     return delta
 
 
@@ -384,5 +389,7 @@ def deltas_from_docs(kb, docs, batch=5, max_text=4000):
                 delta["source"]["url"] = doc["url"]
             if doc.get("title") and not delta["source"].get("title"):
                 delta["source"]["title"] = doc["title"]
+            if doc.get("authors") and not delta["source"].get("authors"):
+                delta["source"]["authors"] = doc["authors"]
             deltas.append(delta)
     return deltas

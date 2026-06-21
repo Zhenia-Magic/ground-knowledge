@@ -18,6 +18,7 @@ data changes, never the code.
   "factors":   [ { "id", "label", "weights": {posId: high|med|low|n/a},
                    "rationale", "provenance": [{source, pos, quote}] } ],
   "sources":   [ { "id", "title", "year", "url",
+                   "authors": [ "name", ... ],               // citation metadata (Zotero import/export)
                    "position": posId,
                    "evidence",                                // controlled (see vocab.evidence)
                    "funding",   // Government/public | Nonprofit/charity | Academic/institutional

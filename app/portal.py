@@ -106,6 +106,15 @@ class Handler(BaseHTTPRequestHandler):
     def _get_q(self, qid):
         return store.get_question(qid, with_kb=True)
 
+    def _send_file(self, text, mime, filename):
+        body = (text or "").encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", mime + "; charset=utf-8")
+        self.send_header("Content-Disposition", 'attachment; filename="{}"'.format(filename))
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
     def _parts(self):
         path = self.path.split("?", 1)[0].rstrip("/")
         return [p for p in path.split("/") if p]
@@ -144,6 +153,14 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, data) if data else self._send(404, {"error": "no such question"})
         if len(p) == 4 and p[:2] == ["api", "questions"] and p[3] == "log":
             return self._send(200, {"log": store.contributions(p[2])})
+        if len(p) == 4 and p[:2] == ["api", "questions"] and p[3] == "export":
+            q = self._get_q(p[2])
+            if not q:
+                return self._send(404, {"error": "no such question"})
+            from ingest import citations
+            fmt = self._query().get("format", "bibtex")
+            text, mime, ext = citations.export(q["kb"], fmt)
+            return self._send_file(text, mime, "{}.{}".format(q["kb"]["meta"].get("id", "sources"), ext))
         self._send(404, {"error": "not found"})
 
     def do_POST(self):
@@ -176,6 +193,13 @@ class Handler(BaseHTTPRequestHandler):
                 bundle = build_batch_extract_prompt(q["kb"], docs, max_text=8000) if docs else ""
                 return self._send(200, {"bundle": bundle, "fetched": len(docs),
                                         "skipped": skipped})
+            if action == "import-citations":
+                from ingest import citations
+                try:
+                    cands = citations.parse(body.get("text", ""), filename=body.get("filename", ""))
+                except Exception as e:
+                    return self._send(400, {"error": "could not parse citations: {}".format(e)})
+                return self._send(200, {"candidates": cands})
             if action == "delta":
                 return self._send(200, _apply_delta(qid, q, body.get("delta"),
                                                     body.get("contributor")))

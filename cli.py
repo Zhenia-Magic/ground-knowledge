@@ -422,6 +422,53 @@ def cmd_ingest_batch(args):
         print(json.dumps(deltas, indent=2, ensure_ascii=False))
 
 
+def cmd_import_citations(args):
+    """Import a Zotero/Mendeley/EndNote export (.ris / .bib / .csl-json) as sources. Each entry's
+    DOI/URL is fetched and labelled through the normal pipeline. --dry-run --bundle writes one
+    labelling file; --apply auto-labels with a key; default prints the deltas."""
+    from ingest import citations
+    from ingest.pipeline import ingest_batch, fetch_docs, build_batch_extract_prompt
+    with open(args.file, encoding="utf-8", errors="ignore") as f:
+        cands = citations.parse(f.read(), filename=args.file)
+    urls = [c["url"] for c in cands if c.get("url")]
+    print("Parsed {} citation(s); {} have a DOI/URL to fetch.".format(len(cands), len(urls)))
+    if not urls:
+        raise SystemExit("No DOIs/URLs in that file — nothing to fetch.")
+    if args.dry_run:
+        docs, skipped = fetch_docs(urls)
+        for s in skipped:
+            print("  skipped (couldn't fetch): {}".format(s["target"]))
+        if not docs:
+            raise SystemExit("Nothing fetched.")
+        mt = args.max_text if args.max_text != 4000 else 8000
+        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=mt)
+        _write_prompt_files([bundle], "label-sources", tail=False)
+        print("\nUpload that ONE file to your chatbot; paste the JSON array; then:  "
+              "python cli.py add {} <delta.json> --build".format(args.kb))
+        return
+    deltas = ingest_batch(urls, read_json(args.kb), batch=args.batch, max_text=args.max_text)
+    if args.apply:
+        added = _merge_deltas(args.kb, deltas)
+        print("Imported {} of {} into {}.".format(added, len(deltas), args.kb))
+        if args.build:
+            _build_viewer([args.kb])
+    else:
+        print(json.dumps(deltas, indent=2, ensure_ascii=False))
+
+
+def cmd_export(args):
+    """Export a question's sources as a citation file (BibTeX / RIS / CSL-JSON) for Zotero etc."""
+    from ingest import citations
+    kb = read_json(args.kb)
+    text, _mime, ext = citations.export(kb, args.format)
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write(text)
+        print("Wrote {} source(s) → {} ({})".format(len(kb.get("sources", [])), args.out, ext))
+    else:
+        print(text)
+
+
 def cmd_harvest(args):
     """Cold start in one command: discover candidate sources, then ingest+merge each.
     Needs an API key (it makes LLM calls). Without one, use the manual path:
@@ -521,6 +568,16 @@ def main():
     s.set_defaults(fn=cmd_push)
     s = sub.add_parser("questions"); s.add_argument("--search"); s.add_argument("--portal")
     s.set_defaults(fn=cmd_questions)
+
+    # citation interchange (Zotero / Mendeley / EndNote: .ris / .bib / .csl-json)
+    s = sub.add_parser("import-citations"); s.add_argument("kb"); s.add_argument("file")
+    s.add_argument("--batch", type=int, default=5)
+    s.add_argument("--max-text", dest="max_text", type=int, default=4000)
+    s.add_argument("--dry-run", action="store_true"); s.add_argument("--apply", action="store_true")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_import_citations)
+    s = sub.add_parser("export"); s.add_argument("kb")
+    s.add_argument("--format", choices=["bibtex", "ris", "csl"], default="bibtex")
+    s.add_argument("--out"); s.set_defaults(fn=cmd_export)
 
     args = ap.parse_args()
     args.fn(args)

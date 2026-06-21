@@ -162,13 +162,18 @@ def viewer_html(qid, get_question):
     # inject a thin top bar linking back home and to the contribute flow.
     # Use a <style> (not inline colors) so :hover works — inline styles can't carry :hover.
     # Built by concatenation (NOT .format) because the CSS braces would clash with placeholders.
+    qe = _esc(qid)
     bar = ("<style>.pbar{max-width:980px;margin:0 auto;padding:14px 24px 0;"
            "font-family:ui-monospace,monospace;font-size:12px;}"
            ".pbar a{color:#2f6296;text-decoration:none;cursor:pointer;}"
            ".pbar a:hover{text-decoration:underline;}"
-           ".pbar .sep{color:#8A9098;margin:0 8px;}</style>"
+           ".pbar .sep{color:#8A9098;margin:0 8px;} .pbar .lbl{color:#8A9098;}</style>"
            "<div class='pbar'><a href='/'>← all questions</a>"
-           "<span class='sep'>·</span><a href='/q/" + _esc(qid) + "/add'>+ add sources</a></div>")
+           "<span class='sep'>·</span><a href='/q/" + qe + "/add'>+ add sources</a>"
+           "<span class='sep'>·</span><span class='lbl'>export:</span> "
+           "<a href='/api/questions/" + qe + "/export?format=bibtex'>BibTeX</a> "
+           "<a href='/api/questions/" + qe + "/export?format=ris'>RIS</a> "
+           "<a href='/api/questions/" + qe + "/export?format=csl'>CSL-JSON</a></div>")
     return html.replace("<body>", "<body>" + bar, 1)
 
 
@@ -194,6 +199,9 @@ def contribute_html(qid, get_question):
       <p class="desc" style="margin:16px 0 6px">— or add <b>one source by URL</b>, no search —</p>
       <div class="bar"><input id="oneUrl" placeholder="https://doi.org/… , a PubMed/arXiv link, or any article URL" style="flex:1">
         <button class="btn ghost" onclick="fetchUrl()">Fetch this URL ↓</button></div>
+      <p class="desc" style="margin:16px 0 6px">— or import from <b>Zotero / a reference manager</b> (.ris, .bib, .json) —</p>
+      <input type="file" accept=".ris,.bib,.bibtex,.json" onchange="importCit(this)"
+        style="font-size:13px;color:var(--muted)">
     </div>
     <div class="panel">
       <div class="step">Step 2 · Fetch &amp; get one file</div><h2>Fetch text &amp; get one labelling file</h2>
@@ -214,13 +222,11 @@ def contribute_html(qid, get_question):
     const QID="{id}";
     const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
     let CANDS=[];
-    async function find(){
-      const k=document.getElementById('k').value||10;
-      const r=await fetch(`/api/questions/${QID}/discover`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k:+k})});
-      const j=await r.json(); CANDS=j.candidates||[];
+    function renderFinds(note){
       const nFull = CANDS.filter(c=>c.relevance!=='partial').length;
+      const head = note || `${CANDS.length} found · ${nFull} strong match${nFull===1?'':'es'} pre-selected. Review and tick/untick before fetching.`;
       document.getElementById('finds').innerHTML = CANDS.length? (
-        `<p class="why" style="margin:6px 0 2px">${CANDS.length} found · ${nFull} strong match${nFull===1?'':'es'} pre-selected. Review and tick/untick before fetching.</p>`+
+        `<p class="why" style="margin:6px 0 2px">${E(head)}</p>`+
         CANDS.map((c,i)=>{
         const partial = c.relevance==='partial';
         return `<div class="cand"><input type="checkbox" class="ck" data-i="${i}" onchange="upd()" ${partial?'':'checked'}>
@@ -229,6 +235,23 @@ def contribute_html(qid, get_question):
          <span class="why">${E(c.url)}</span></label></div>`;}).join(''))
         : '<div class="empty">No candidates found.</div>';
       upd();
+    }
+    async function find(){
+      const k=document.getElementById('k').value||10;
+      const r=await fetch(`/api/questions/${QID}/discover`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({k:+k})});
+      const j=await r.json(); CANDS=j.candidates||[]; renderFinds();
+    }
+    function importCit(input){
+      const f=input.files&&input.files[0]; if(!f)return;
+      const rd=new FileReader();
+      rd.onload=async()=>{
+        const r=await fetch(`/api/questions/${QID}/import-citations`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:rd.result,filename:f.name})});
+        const j=await r.json();
+        if(j.error){document.getElementById('finds').innerHTML='<div class="empty">'+E(j.error)+'</div>';return;}
+        CANDS=(j.candidates||[]).map(c=>({...c,relevance:'full'}));   // imported = all pre-selected
+        renderFinds(`Imported ${CANDS.length} citation(s) from ${E(f.name)}. Review, then fetch & label.`);
+      };
+      rd.readAsText(f);
     }
     function selected(){return [...document.querySelectorAll('.ck:checked')].map(c=>CANDS[+c.dataset.i].url);}
     function upd(){document.getElementById('fetchBtn').disabled = selected().length===0;}

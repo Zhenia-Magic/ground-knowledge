@@ -91,12 +91,14 @@ def _europepmc(target):
     if len(abstract.strip()) < 120:  # no usable abstract on file
         return None
     body = title + "\n\n" + _strip_html(abstract)
-    if r.get("authorString"):
-        body += "\n\nAuthors: " + r["authorString"]
+    authors = [a.strip() for a in re.split(r"[;,]", r.get("authorString") or "") if a.strip()]
+    if authors:
+        body += "\n\nAuthors: " + ", ".join(authors[:8])
     jnl = (r.get("journalInfo") or {}).get("journal", {}).get("title")
     if jnl:
         body += "\nJournal: {} ({})".format(jnl, r.get("pubYear", ""))
-    return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip(), "url": target}
+    return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip(),
+            "url": target, "authors": authors}
 
 
 # ---- structured academic APIs: get paper metadata by identifier, no scraping ----------
@@ -167,12 +169,13 @@ def _semantic_scholar(target):
     if len(abstract) < 120:  # no usable abstract on file
         return None
     body = title + "\n\n" + abstract
-    auth = ", ".join(a.get("name", "") for a in (r.get("authors") or [])[:8] if a.get("name"))
-    if auth:
-        body += "\n\nAuthors: " + auth
+    authors = [a.get("name", "").strip() for a in (r.get("authors") or []) if a.get("name")]
+    if authors:
+        body += "\n\nAuthors: " + ", ".join(authors[:8])
     if r.get("venue"):
         body += "\nVenue: {} ({})".format(r["venue"], r.get("year", ""))
-    return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip() or target,
+    return {"text": body[:MAX_CHARS], "authors": authors,
+            "title": re.sub(r"\s+", " ", title).strip() or target,
             "url": target}
 
 
@@ -272,6 +275,11 @@ def _openalex(target):
     parts = [title]
     if abstract:
         parts.append(abstract)
+    authors = [(a.get("author") or {}).get("display_name", "").strip()
+               for a in (r.get("authorships") or [])]
+    authors = [a for a in authors if a]
+    if authors:
+        parts.append("Authors: " + ", ".join(authors[:8]))
     funding = _funding_block(full) if full else ""
     if not funding:
         grants = [g.get("funder_display_name") for g in (r.get("grants") or [])
@@ -287,7 +295,7 @@ def _openalex(target):
         parts.append("--- full text ---\n" + full)
     body = "\n\n".join(parts)
     return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip() or target,
-            "url": target}
+            "url": target, "authors": authors}
 
 
 def _arxiv(target):
@@ -313,10 +321,11 @@ def _arxiv(target):
     if len(abstract) < 120:
         return None
     body = title + "\n\n" + abstract
-    authors = re.findall(r"<author>\s*<name>(.*?)</name>", blob, re.S)
+    authors = [a.strip() for a in re.findall(r"<author>\s*<name>(.*?)</name>", blob, re.S)]
     if authors:
-        body += "\n\nAuthors: " + ", ".join(a.strip() for a in authors[:8])
-    return {"text": body[:MAX_CHARS], "title": title or ("arXiv:" + ax), "url": target}
+        body += "\n\nAuthors: " + ", ".join(authors[:8])
+    return {"text": body[:MAX_CHARS], "title": title or ("arXiv:" + ax), "url": target,
+            "authors": authors}
 
 
 _API_LABELS = {"_semantic_scholar": "Semantic Scholar", "_openalex": "OpenAlex",
