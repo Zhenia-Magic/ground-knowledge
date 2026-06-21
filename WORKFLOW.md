@@ -69,7 +69,7 @@ baked snapshot of it. Cold-start and "add one source later" are the *same* actio
 
 ```bash
 python cli.py show  cases/eggs.kb.json                      # metrics in the terminal
-python cli.py build cases/eggs.kb.json cases/covid.kb.json  # bake the viewer
+python cli.py build cases/eggs.kb.json  # bake the viewer
 open viewer/index.html                                      # or double-click it
 ```
 
@@ -175,4 +175,4 @@ Prefer the terminal? `python cli.py show <kb>` prints the same summary;
 - **Resume an interrupted harvest:** just run `harvest` again — done sources are skipped.
 - **Curate by hand:** `cases/<id>.kb.json` is plain JSON. Edit it, then `build`. (Keep `restsOn`
   pointing at real dataset ids; see `SCHEMA.md`.)
-- **One viewer, several disputes:** `build cases/eggs.kb.json cases/covid.kb.json` → switcher.
+- **One viewer, several disputes:** `build cases/eggs.kb.json cases/<another>.kb.json` → switcher.

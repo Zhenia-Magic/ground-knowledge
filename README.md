@@ -63,7 +63,7 @@ pure stdlib — no `pip install`.** Full-text PDF labelling needs `pypdf` and Po
 python cli.py show cases/eggs.kb.json
 
 # Bake the viewer and open it:
-python cli.py build cases/eggs.kb.json cases/covid.kb.json
+python cli.py build cases/eggs.kb.json
 open viewer/index.html            # or just double-click it
 ```
 
@@ -88,7 +88,7 @@ of the data, not the curation:
 ```bash
 cp cases/eggs.kb.json /tmp/eggs.json
 python cli.py add   /tmp/eggs.json cases/eggs.delta-zhuang2021.json   # a real, independent cohort
-python cli.py build /tmp/eggs.json cases/covid.kb.json                # rebuild; see the Changes tab
+python cli.py build /tmp/eggs.json                                    # rebuild; see the Changes tab
 ```
 
 The added source is real — Zhuang 2021 (PLOS Medicine, NIH-AARP, 521,120 people, egg/cholesterol
@@ -142,7 +142,8 @@ LLM path; `EPISTEMIC_CONTACT_EMAIL`/`SEMANTIC_SCHOLAR_API_KEY` raise rate limits
 
 ## How it generalises across case shapes
 
-Same engine, only the KB JSON differs (`python cli.py show cases/covid.kb.json`):
+Same engine, only the KB JSON differs (eggs ships in this repo; COVID and black holes are
+illustrative seeds you can browse on the [live portal](https://portal-production-0176.up.railway.app)):
 
 - **Eggs (real data, malformed question):** funding skew and a modest real NHS/feeding-trial
   concentration (above); and the lone non-crux factor — subgroups, weighted `med` by *all* camps
@@ -187,8 +188,9 @@ that holds up under motivated reading and gets better as more people add to it.
 ## Honest limitations
 
 - `cases/eggs.kb.json` is real and sourced (every entry has a citable url + funding disclosure +
-  underlying dataset). `cases/covid.kb.json` is still an illustrative seed with empty provenance
-  and says so. Positions and factor *weights* are a curator's faithful summary of each camp — the
+  underlying dataset). The COVID and black-hole cases (on the live portal) are still illustrative
+  seeds with empty provenance and say so. Positions and factor *weights* are a curator's faithful
+  summary of each camp — the
   reproducible, mechanical parts (which datasets, funding, source counts) are what the metrics run on.
 - Entity resolution is normalized-string + alias matching — robust to casing/aliases, not to
   paraphrase ("Wuhan market dataset" vs "Huanan seafood market"). Embedding-match + human

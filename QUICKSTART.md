@@ -127,7 +127,7 @@ Four tabs: **Coverage** (who holds what + funding skew), **Divergence** (the cru
 **Tip — show several disputes in one viewer with a case switcher:**
 
 ```bash
-python cli.py build cases/salt.kb.json cases/eggs.kb.json cases/covid.kb.json
+python cli.py build cases/salt.kb.json cases/eggs.kb.json
 ```
 
 ✔ **Done** when `viewer/index.html` opens and your question's tabs are populated.
