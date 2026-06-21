@@ -184,6 +184,15 @@ function renderCoverage(c){
     return `<button class="seg-bar ${dim}" data-pos="${d.id}" style="flex:${d.count||0.0001};background:${d.hue}"
       title="${esc(d.label)} — ${d.count} sources">${d.pct>=10?esc(barLabel)+" · "+d.pct+"%":d.pct+"%"}</button>`;
   }).join("");
+  // Weighted bar — the anti-false-balance view: each position sized by effective INDEPENDENT
+  // evidence (nEff), not raw count, so positions propped up by re-used data shrink.
+  const wd=a.weightedDistribution||[];
+  const wbar=wd.map(d=>{
+    const dim=active&&active!==d.id?"dim":"";
+    const barLabel=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
+    return `<button class="seg-bar ${dim}" data-pos="${d.id}" style="flex:${d.weight||0.0001};background:${d.hue}"
+      title="${esc(d.label)} — ${d.raw} sources ≈ ${(d.weight||0).toFixed(1)} independent looks">${d.pct>=10?esc(barLabel)+" · "+d.pct+"%":d.pct+"%"}</button>`;
+  }).join("");
   const legend=a.distribution.map(d=>
     `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span></span>`).join("");
   let skewHtml="";
@@ -219,8 +228,11 @@ function renderCoverage(c){
   }).join("");
   return `
     <div class="panel"><h3>How the evidence base splits</h3>
-      <p class="hint">distribution() — share of sources by position · click to filter</p>
-      <div class="distrib">${bar}</div><div class="legend">${legend}</div>${skewHtml}</div>
+      <p class="hint">by source count — the naive aggregator's view · click to filter</p>
+      <div class="distrib">${bar}</div>
+      ${wbar?`<p class="hint" style="margin-top:16px">weighted by <b>independent evidence</b> (effective datasets, nEff) — correlated sources collapse, so a position propped up by re-used data shrinks. <i>This is the view that matters.</i></p>
+      <div class="distrib">${wbar}</div>`:""}
+      <div class="legend">${legend}</div>${skewHtml}</div>
     <div class="panel"><h3>Sources${active?` — ${esc(pos[active].label)}`:""}</h3>
       <p class="hint">each source tagged with evidence type, funding, population, and the datasets it rests on (↳)</p>
       <div class="cards">${cards}</div></div>

@@ -30,6 +30,35 @@ def distribution(kb):
             for p in kb["positions"]]
 
 
+def weighted_distribution(kb):
+    """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
+    sized not by raw source count but by its effective number of independent evidence units: the
+    Herfindahl numbers-equivalent over the datasets its sources rest on, so sources sharing a
+    dataset collapse toward one 'look'. An ungrounded source (no restsOn) counts as its own unit —
+    we can't claim it's correlated. A position propped up by re-used data shrinks vs. its raw bar."""
+    out, weights = [], []
+    for p in kb["positions"]:
+        mine = [s for s in kb["sources"] if s["position"] == p["id"]]
+        counts = {}
+        for s in mine:
+            rests = s.get("restsOn") or []
+            if rests:
+                for d in rests:
+                    counts[d] = counts.get(d, 0) + 1
+            else:
+                counts["src:" + s["id"]] = 1          # ungrounded -> its own independent unit
+        total = sum(counts.values())
+        hhi = sum((c / total) ** 2 for c in counts.values()) if total else 0
+        n_eff = (1 / hhi) if hhi else 0
+        weights.append(n_eff)
+        out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
+                    "raw": len(mine), "weight": round(n_eff, 2)})
+    tot = sum(weights) or 1
+    for o, w in zip(out, weights):
+        o["pct"] = round(100 * w / tot)
+    return out
+
+
 def _low(s):
     return str(s or "").strip().lower()
 
@@ -172,6 +201,7 @@ def assess(kb):
     return {
         "version": kb.get("meta", {}).get("version"),
         "distribution": distribution(kb),
+        "weightedDistribution": weighted_distribution(kb),
         "fundingSkew": funding_skew(kb),
         "blindspots": blindspots(kb),
         "cruxes": cruxes(kb),

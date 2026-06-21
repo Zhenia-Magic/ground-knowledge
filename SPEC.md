@@ -103,8 +103,13 @@ of which model — or no model — produced the inputs.
 Every metric is a pure function over the KB (`engine/assess.py`). Four of them, each chosen to
 serve the thesis:
 
-**Distribution + funding skew.** The naive aggregator's view (share of sources per position),
-shown *and then immediately complicated*: which position does *interested* money (Industry or
+**Distribution — naive *and* independence-weighted.** Two bars of the same split, shown together.
+The first is the naive aggregator's view (share of *sources* per position). The second re-sizes
+each position by its **effective independent evidence** — the Herfindahl numbers-equivalent over
+the datasets its sources rest on (`weighted_distribution`), so sources sharing a dataset collapse
+toward one "look" and a position propped up by re-used data **shrinks**. Seeing the correlated
+position contract between the two bars *is* the thesis, rendered. **Funding skew** then complicates
+it further: which position does *interested* money (Industry or
 Advocacy) most favour? On the real eggs case the two industry-funded studies (DIABEGG → Australian
 Egg Corporation; Blesso → Egg Nutrition Center) both back "context-dependent / safe" — a flag to
 weigh before counting heads, not a verdict. Funding is a **closed vocabulary** (Government/public,
