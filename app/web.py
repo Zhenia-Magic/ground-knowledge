@@ -54,6 +54,20 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 textarea{width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:10px;min-height:120px;font-family:var(--mono);font-size:12px;}
 .toast{margin-top:10px;font-size:13px;color:var(--muted);} .toast.ok{color:#2E8B6F;} .toast.warn{color:var(--ochre);}
 .log{background:#0d0f13;color:#cfe;border-radius:8px;padding:10px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;margin-top:10px;display:none;}
+.overlay{position:fixed;inset:0;background:rgba(21,23,27,.45);backdrop-filter:blur(2px);
+  display:none;align-items:flex-start;justify-content:center;padding:14vh 20px 20px;z-index:50;}
+.overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;
+  width:100%;max-width:520px;padding:22px 22px 18px;box-shadow:0 18px 50px rgba(0,0,0,.22);
+  animation:pop .14s ease-out;}
+@keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.98);}to{opacity:1;transform:none;}}
+.modal h2{margin:0 0 4px;font-size:19px;}
+.modal .desc{color:var(--muted);font-size:13.5px;margin:0 0 14px;}
+.modal textarea{width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:11px 12px;
+  font:inherit;font-size:15px;min-height:70px;resize:vertical;}
+.modal textarea:focus{outline:none;border-color:var(--flag);box-shadow:0 0 0 3px rgba(47,98,150,.12);}
+.modal .actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px;}
+.modal .hintline{color:var(--faint);font-size:12px;margin-top:9px;}
 """
 
 
@@ -80,6 +94,20 @@ def home_html():
       <button class="btn ghost" onclick="newQ()">+ New question</button>
     </div>
     <div id="list" class="grid"></div>
+
+    <div class="overlay" id="nqOverlay">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="nqTitle">
+        <h2 id="nqTitle">New question</h2>
+        <p class="desc">State it as a yes/no research dispute — the way the two sides would frame it.</p>
+        <textarea id="nqInput" placeholder="e.g. Do eggs increase cardiovascular disease risk?"></textarea>
+        <div class="hintline">Press ⌘/Ctrl + Enter to create · Esc to cancel</div>
+        <div class="actions">
+          <button class="btn ghost" onclick="closeNQ()">Cancel</button>
+          <button class="btn" id="nqCreate" onclick="createNQ()">Create question</button>
+        </div>
+      </div>
+    </div>
+
     <script>
     const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
     async function load(){
@@ -96,14 +124,26 @@ def home_html():
           <span>${c.positions||0} positions</span><span>${c.datasets||0} datasets</span></div></a>`;
       }).join('');
     }
-    async function newQ(){
-      const question=prompt('What research question? (e.g. "Do eggs increase cardiovascular disease risk?")');
-      if(!question)return;
-      const r=await fetch('/api/questions',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({question})});
-      const j=await r.json();
-      if(j.id)location.href='/q/'+j.id;
+    const ov=document.getElementById('nqOverlay'), nqIn=document.getElementById('nqInput');
+    function newQ(){ov.classList.add('show');nqIn.value='';setTimeout(()=>nqIn.focus(),30);}
+    function closeNQ(){ov.classList.remove('show');}
+    async function createNQ(){
+      const question=nqIn.value.trim();
+      if(!question){nqIn.focus();return;}
+      const btn=document.getElementById('nqCreate');btn.disabled=true;btn.textContent='Creating…';
+      try{
+        const r=await fetch('/api/questions',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({question})});
+        const j=await r.json();
+        if(j.id){location.href='/q/'+j.id;return;}
+        btn.disabled=false;btn.textContent='Create question';
+      }catch(e){btn.disabled=false;btn.textContent='Create question';}
     }
+    ov.addEventListener('click',e=>{if(e.target===ov)closeNQ();});       // click outside to close
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape')closeNQ();
+      if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&ov.classList.contains('show'))createNQ();
+    });
     let t;document.getElementById('q').addEventListener('input',()=>{clearTimeout(t);t=setTimeout(load,200);});
     load();
     </script>"""
