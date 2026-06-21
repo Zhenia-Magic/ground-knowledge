@@ -157,10 +157,14 @@ class Handler(BaseHTTPRequestHandler):
             q = self._get_q(p[2])
             if not q:
                 return self._send(404, {"error": "no such question"})
-            from ingest import citations
             fmt = self._query().get("format", "bibtex")
+            name = q["kb"]["meta"].get("id", "question")
+            if fmt in ("kb", "json", "knowledge"):    # the full knowledge base — the portable artifact
+                return self._send_file(json.dumps(q["kb"], indent=2, ensure_ascii=False),
+                                       "application/json", name + ".kb.json")
+            from ingest import citations
             text, mime, ext = citations.export(q["kb"], fmt)
-            return self._send_file(text, mime, "{}.{}".format(q["kb"]["meta"].get("id", "sources"), ext))
+            return self._send_file(text, mime, "{}.{}".format(name, ext))
         self._send(404, {"error": "not found"})
 
     def do_POST(self):

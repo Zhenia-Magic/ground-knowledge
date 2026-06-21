@@ -170,7 +170,9 @@ def viewer_html(qid, get_question):
            ".pbar .sep{color:#8A9098;margin:0 8px;} .pbar .lbl{color:#8A9098;}</style>"
            "<div class='pbar'><a href='/'>← all questions</a>"
            "<span class='sep'>·</span><a href='/q/" + qe + "/add'>+ add sources</a>"
-           "<span class='sep'>·</span><span class='lbl'>export:</span> "
+           "<span class='sep'>·</span><span class='lbl'>export</span> "
+           "<a href='/api/questions/" + qe + "/export?format=kb'>knowledge base (JSON)</a>"
+           "<span class='lbl'> · citations:</span> "
            "<a href='/api/questions/" + qe + "/export?format=bibtex'>BibTeX</a> "
            "<a href='/api/questions/" + qe + "/export?format=ris'>RIS</a> "
            "<a href='/api/questions/" + qe + "/export?format=csl'>CSL-JSON</a></div>")
