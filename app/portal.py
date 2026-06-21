@@ -43,8 +43,10 @@ def _norm_delta(it):
 
 
 def _apply_delta(qid, q, delta, contributor):
-    """Merge one or many deltas into the question's KB (deterministic, no key), version-checked."""
+    """Merge one or many deltas into the question's KB (deterministic, no key), version-checked.
+    Records the recompute diff on each source's log entry so the Changes tab shows what moved."""
     from engine.merge import merge_delta
+    from engine.assess import assess, diff_assessments
     kb, base = q["kb"], q["version"]
     items = delta if isinstance(delta, list) else [delta]
     added = dups = 0
@@ -52,11 +54,14 @@ def _apply_delta(qid, q, delta, contributor):
         d = _norm_delta(it)
         if not d:
             continue
+        before = assess(kb)
         rep = merge_delta(kb, d)
         if rep.get("duplicate"):
             dups += 1
         elif rep.get("addedSource"):
             added += 1
+            if kb.get("log"):                       # persist the diff for the Changes tab
+                kb["log"][-1]["diff"] = diff_assessments(before, assess(kb))
     try:
         version = store.save_kb(qid, kb, base)
     except store.Conflict:
