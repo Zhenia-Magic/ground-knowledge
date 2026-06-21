@@ -35,16 +35,22 @@ pure stdlib — no `pip install`.** Full-text PDF labelling needs `pypdf` and Po
 `psycopg` (`requirements.txt`); both degrade gracefully without. Tested on Python 3.9–3.10.
 
 > ### Reviewers — start here
-> Everything runs locally with **no API key** (discovery + fetch are keyless; only *labelling*
-> needs a model — paste into your own chatbot, or set a key for auto mode).
+> **Try the live instance — no setup, no API key:**
+> **https://portal-production-0176.up.railway.app** — browse the eggs / COVID / black-hole cases,
+> open a report (Coverage · Divergence · Independence · Changes), or add a source to one.
+>
+> Or run it locally (core is pure stdlib — no `pip install`; find + fetch are keyless, only
+> *labelling* needs a model):
 > ```bash
-> python cli.py show  cases/eggs.kb.json                 # every metric, recomputed from the KB
-> python cli.py build cases/*.kb.json && open viewer/index.html   # the baked viewer (4 tabs)
-> python -m app.seed && python -m app.portal             # the multi-user portal → localhost:8800
+> python -m app.portal                                   # your own portal → localhost:8800
 > python cli.py ui                                       # the local workstation console
+> # create a question and harvest it (keyless find+fetch; label in your chatbot or with a key):
+> python cli.py init salt "Does dietary salt raise cardiovascular risk?" --out cases/salt.kb.json
+> python cli.py harvest cases/salt.kb.json --source api
+> python cli.py build cases/salt.kb.json && open viewer/index.html
 > ```
-> Then exercise it on a question you care about: in the portal, **+ New question → Find →
-> Fetch → label in your chatbot → Import**; or in the CLI, `harvest`/`ingest` then `push`.
+> Then exercise it on a question you care about: in the portal, **+ New question → Find (or paste
+> a URL) → Fetch → label in your chatbot → Import**; or in the CLI, `harvest`/`ingest` then `push`.
 >
 > **Reading for the method?** [`SPEC.md`](SPEC.md) is the ≤10-page written submission — thesis,
 > architecture, metrics, the five hard problems, generalization, and failure modes.
