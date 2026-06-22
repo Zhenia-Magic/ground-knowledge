@@ -104,6 +104,9 @@ def _apply_delta(kb_path, delta):
     kb = read_json(kb_path)
     before = assess(kb)
     report = merge_delta(kb, delta)
+    if report.get("offTopic"):
+        print("Off-topic — not added: {}".format(report.get("reason", "doesn't bear on the question")))
+        return False
     if report["duplicate"]:
         print("Duplicate source — already in KB, not added. (anti-flooding)")
         return False

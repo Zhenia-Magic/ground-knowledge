@@ -75,14 +75,16 @@ def _apply_delta(qid, q, delta, contributor):
     from engine.assess import assess, diff_assessments
     kb, base = q["kb"], q["version"]
     items = delta if isinstance(delta, list) else [delta]
-    added = dups = 0
+    added = dups = off = 0
     for it in items:
         d = _norm_delta(it)
         if not d:
             continue
         before = assess(kb)
         rep = merge_delta(kb, d)
-        if rep.get("duplicate"):
+        if rep.get("offTopic"):
+            off += 1
+        elif rep.get("duplicate"):
             dups += 1
         elif rep.get("addedSource"):
             added += 1
@@ -93,8 +95,8 @@ def _apply_delta(qid, q, delta, contributor):
     except store.Conflict:
         return {"error": "someone else updated this question — reload and re-import"}
     store.log_contribution(qid, contributor or "anonymous", "add-sources",
-                           "{} added, {} duplicate".format(added, dups))
-    return {"added": added, "duplicates": dups, "version": version}
+                           "{} added, {} duplicate, {} off-topic".format(added, dups, off))
+    return {"added": added, "duplicates": dups, "offTopic": off, "version": version}
 
 
 class Handler(BaseHTTPRequestHandler):

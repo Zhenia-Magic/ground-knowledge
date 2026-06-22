@@ -364,7 +364,8 @@ def contribute_html(qid, get_question):
       const r=await fetch(`/api/questions/${QID}/delta`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delta:data})});
       const j=await r.json();
       if(j.error)return toast(j.error,'warn');
-      toast(`Imported. ${j.added} added, ${j.duplicates||0} duplicate(s). Now v${j.version}. `,'ok');
+      const off=j.offTopic?`, ${j.offTopic} skipped as off-topic`:'';
+      toast(`Imported. ${j.added} added, ${j.duplicates||0} duplicate(s)${off}. Now v${j.version}. `,'ok');
     }
     function toast(m,c){const e=document.getElementById('imp');e.textContent=m;e.className='toast '+(c||'');
       if(c==='ok')e.innerHTML+=`<a href="/q/${QID}"> View the report →</a>`;}

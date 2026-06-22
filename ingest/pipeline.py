@@ -34,6 +34,11 @@ _POP_HINT = ('POPULATIONS in use — the studied human GROUP (region / menopausa
              'population-specific:')
 
 _RULES = """Rules (apply to each source):
+- relevance FIRST: does this source actually bear on THE QUESTION? If it is about a different
+  topic (it neither studies the question's subject nor argues a stance on it), set
+  "relevant": false and give a one-line "offTopicReason" — and do NOT invent a position, datasets,
+  or factors for it. Only label sources that genuinely speak to the question. When in doubt and
+  the source is clearly on-topic, set "relevant": true.
 - position: the single stance the source takes ON THE QUESTION ASKED. REUSE an existing position
   whenever the source makes a stance already listed — even if worded differently or framed
   mechanistically. "NEW:<label>" only for a genuinely distinct claim. A mechanism (e.g. "IGF-1
@@ -64,7 +69,9 @@ _RULES = """Rules (apply to each source):
   one-line rationale.
 - Do NOT fabricate. If the text doesn't support a field, omit it or mark low confidence."""
 
-_SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...","position":"pos_id or NEW:Full label",\n'
+_SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...",\n'
+           '"relevant":true,"offTopicReason":"(only if relevant=false)",\n'
+           '"position":"pos_id or NEW:Full label",\n'
            '"positionShort":"≤18-char complete phrase for the chart bar, e.g. \'Increases risk\' or \'No clear link\'",\n'
            '"authors":["Surname, F.","..."]  (copy from the Authors: line if present),\n'
            '"evidence":"...","funding":"independent|industry","population":"...","confidence":"moderate",\n'

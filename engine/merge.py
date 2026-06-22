@@ -182,9 +182,16 @@ def _resolve_factor(kb, f_label):
 def merge_delta(kb, delta):
     """Fold one ingestion delta into the KB in place. Returns a change report.
     delta = {"source": {...}, "factorWeights": [...]} as produced by prompts/ingest.md."""
-    report = {"addedSource": None, "duplicate": False, "newDatasets": [],
+    report = {"addedSource": None, "duplicate": False, "offTopic": False, "newDatasets": [],
               "newPositions": [], "newFactors": [], "updatedFactors": []}
     src = delta["source"]
+
+    # The labeller (which saw the real fetched text) can flag a source that doesn't bear on the
+    # question; refuse it here, like a duplicate — so off-topic sources never pollute the metrics.
+    if src.get("relevant") is False:
+        report["offTopic"] = True
+        report["reason"] = src.get("offTopicReason") or "not relevant to the question"
+        return report
 
     if any(source_key(s) == source_key(src) for s in kb["sources"]):
         report["duplicate"] = True

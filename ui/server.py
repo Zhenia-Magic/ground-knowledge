@@ -130,6 +130,10 @@ def _merge_list(cid, deltas):
             kb = _read(path)
             before = assess(kb)
             rep = merge_delta(kb, d)
+            if rep.get("offTopic"):
+                results.append({"status": "off-topic", "title": title,
+                                "error": rep.get("reason", "doesn't bear on the question")})
+                continue
             if rep["duplicate"]:
                 results.append({"status": "duplicate", "title": title})
                 continue
