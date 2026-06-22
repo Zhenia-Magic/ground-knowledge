@@ -175,8 +175,80 @@ def viewer_html(qid, get_question):
            "<span class='lbl'> · citations:</span> "
            "<a href='/api/questions/" + qe + "/export?format=bibtex'>BibTeX</a> "
            "<a href='/api/questions/" + qe + "/export?format=ris'>RIS</a> "
-           "<a href='/api/questions/" + qe + "/export?format=csl'>CSL-JSON</a></div>")
+           "<a href='/api/questions/" + qe + "/export?format=csl'>CSL-JSON</a>"
+           "<span class='sep'>·</span><a href='/q/" + qe + "/manage'>manage</a></div>")
     return html.replace("<body>", "<body>" + bar, 1)
+
+
+def manage_html(qid, get_question):
+    """Admin-only moderation page: remove sources or delete the whole question. Gated by an
+    admin token (set ADMIN_TOKEN on the server, paste it here once — stored on this device)."""
+    q = get_question(qid)
+    if not q:
+        return None
+    head = """
+    <div class="back"><a href="/q/{id}">← back to the report</a></div>
+    <div class="kicker">Admin · moderation</div>
+    <h1>{question}</h1>
+    <div id="gate"></div>
+    <div id="panel" style="display:none">
+      <div class="panel"><h2>Sources</h2>
+        <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
+        <div id="srcs"></div></div>
+      <div class="panel"><h2 style="color:#B4502E">Danger zone</h2>
+        <p class="desc">Delete the entire question and every source in it. This cannot be undone.</p>
+        <button class="btn" style="background:#B4502E;border-color:#B4502E" onclick="delQuestion()">Delete this question</button>
+        <button class="btn ghost" style="margin-left:8px" onclick="signOut()">Sign out admin</button></div>
+    </div>
+    """.format(id=_esc(qid), question=_esc(q["question"]))
+    script = """
+    <script>
+    const QID="{id}";
+    const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const tok=()=>localStorage.getItem('gk_admin')||'';
+    const H=()=>({'Content-Type':'application/json','X-Admin-Token':tok()});
+    async function isAdmin(){ if(!tok())return false;
+      try{const r=await fetch('/api/admin-check',{method:'POST',headers:H()});return (await r.json()).admin;}catch(e){return false;} }
+    async function render(){
+      if(!await isAdmin()){
+        document.getElementById('panel').style.display='none';
+        document.getElementById('gate').innerHTML=`<div class="panel"><h2>Enter admin token</h2>
+          <p class="desc">Paste the admin token to manage this question. Stored on this device only.</p>
+          <div class="bar"><input id="tk" type="password" placeholder="admin token" style="flex:1">
+          <button class="btn" onclick="saveTok()">Unlock</button></div>
+          <div id="gerr" class="toast warn"></div></div>`;
+        return;
+      }
+      document.getElementById('gate').innerHTML='';
+      document.getElementById('panel').style.display='';
+      const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
+      const srcs=kb.sources||[];
+      document.getElementById('srcs').innerHTML = srcs.length? srcs.map(s=>`
+        <div class="cand"><div style="flex:1"><b>${E(s.title)}</b> <span class="why">${s.year||''}</span><br>
+        <span class="why">${E((s.authors||[]).slice(0,3).join(', '))}${(s.authors||[]).length>3?' et al.':''}</span></div>
+        <button class="btn ghost" onclick="delSource('${s.id}',this)">✕ remove</button></div>`).join('')
+        : '<div class="empty">No sources yet.</div>';
+    }
+    async function saveTok(){
+      const t=document.getElementById('tk').value.trim(); if(!t)return;
+      localStorage.setItem('gk_admin',t);
+      if(!await isAdmin()){localStorage.removeItem('gk_admin');document.getElementById('gerr').textContent='That token is not valid.';return;}
+      render();
+    }
+    async function delSource(sid,btn){
+      if(!confirm('Remove this source? The metrics will recompute.'))return; btn.disabled=true;
+      const r=await fetch('/api/admin/delete-source',{method:'POST',headers:H(),body:JSON.stringify({id:QID,sourceId:sid})});
+      const j=await r.json(); if(j.error){alert(j.error);btn.disabled=false;return;} render();
+    }
+    async function delQuestion(){
+      if(!confirm('Delete the ENTIRE question and all its sources? This cannot be undone.'))return;
+      const r=await fetch('/api/admin/delete-question',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
+      const j=await r.json(); if(j.ok)location.href='/'; else alert(j.error||'failed');
+    }
+    function signOut(){localStorage.removeItem('gk_admin');render();}
+    render();
+    </script>""".replace("{id}", _esc(qid))
+    return _page("Manage · " + q["question"], head + script)
 
 
 def contribute_html(qid, get_question):

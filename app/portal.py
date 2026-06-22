@@ -17,11 +17,37 @@ Endpoints (JSON):
 Run locally:  python -m app.portal --port 8800     (sqlite store, no key, no deps)
 Production:   gunicorn-style not needed; ThreadingHTTPServer behind Railway is fine for this load.
 """
+import hmac
 import json
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from app import store, web
+
+
+def _admin_delete_source(qid, sid):
+    """Remove one source from a question's KB (admin moderation), prune its factor provenance,
+    bump the version, and log it. Metrics recompute from the KB on the next render."""
+    from engine.merge import now_iso
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    before = len(kb.get("sources", []))
+    kb["sources"] = [s for s in kb.get("sources", []) if s.get("id") != sid]
+    if len(kb["sources"]) == before:
+        return {"error": "source not found"}
+    for f in kb.get("factors", []):
+        f["provenance"] = [pv for pv in f.get("provenance", []) if pv.get("source") != sid]
+    kb["meta"]["version"] = kb["meta"].get("version", 0) + 1
+    kb.setdefault("log", []).append({"version": kb["meta"]["version"],
+                                     "action": "admin-remove-source", "source": sid,
+                                     "ts": now_iso()})
+    try:
+        v = store.save_kb(qid, kb, q["version"])
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v}
 
 
 def _read_question(qid):
@@ -106,6 +132,12 @@ class Handler(BaseHTTPRequestHandler):
     def _get_q(self, qid):
         return store.get_question(qid, with_kb=True)
 
+    def _is_admin(self):
+        """True only if ADMIN_TOKEN is configured AND the request carries the matching token."""
+        tok = os.environ.get("ADMIN_TOKEN")
+        sent = self.headers.get("X-Admin-Token", "")
+        return bool(tok) and hmac.compare_digest(sent, tok)
+
     def _send_file(self, text, mime, filename):
         body = (text or "").encode("utf-8")
         self.send_response(200)
@@ -143,6 +175,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send_html(200, web.viewer_html(p[1], self._get_q) or "")
         if len(p) == 3 and p[0] == "q" and p[2] == "add":
             return self._send_html(200, web.contribute_html(p[1], self._get_q) or "")
+        if len(p) == 3 and p[0] == "q" and p[2] == "manage":
+            return self._send_html(200, web.manage_html(p[1], self._get_q) or "")
         # --- JSON API ---
         if p == ["api", "questions"]:
             q = self._query()
@@ -169,6 +203,19 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         p = self._parts()
+        # --- admin moderation (gated by ADMIN_TOKEN) ---
+        if len(p) == 2 and p[0] == "api" and p[1] == "admin-check":
+            return self._send(200, {"admin": self._is_admin()})
+        if len(p) == 3 and p[:2] == ["api", "admin"]:
+            if not self._is_admin():
+                return self._send(403, {"error": "admin token required or incorrect"})
+            body = self._body()
+            if p[2] == "delete-question":
+                store.delete_question(body.get("id"))
+                return self._send(200, {"ok": True})
+            if p[2] == "delete-source":
+                return self._send(200, _admin_delete_source(body.get("id"), body.get("sourceId")))
+            return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._body()
             question = (body.get("question") or "").strip()
