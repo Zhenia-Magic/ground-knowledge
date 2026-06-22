@@ -82,8 +82,10 @@
   table.mtx th,table.mtx td{padding:9px 10px;text-align:center;border:1px solid var(--line);}
   table.mtx th.factor,table.mtx td.factor{text-align:left;font-weight:500;width:34%;}
   table.mtx thead th{font-family:var(--mono);font-size:11.5px;font-weight:500;color:#fff;overflow-wrap:anywhere;vertical-align:top;}
-  table.mtx td.cell{font-family:var(--mono);font-size:11px;color:var(--ink);}
+  table.mtx td.cell{font-family:var(--mono);font-size:11px;color:var(--ink);font-weight:600;}
   table.mtx tr.crux td.factor{font-weight:600;}
+  .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:12px 0 0;}
+  .wkey .ws{font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:5px;border:1px solid var(--line);}
   .cruxbadge{font-family:var(--mono);font-size:10px;color:#fff;background:var(--chrome);border-radius:5px;padding:2px 6px;margin-left:8px;vertical-align:1px;}
   .onetag{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:8px;}
   table.mtx tr.onesided td{opacity:.5;}
@@ -289,6 +291,7 @@ function renderDivergence(c){
   const cruxBy={}; a.cruxes.forEach(x=>cruxBy[x.id]=x);
   const info=f=>cruxBy[f.id]||{spread:0,isCrux:false,engaged:0};
   const WLABEL={high:"high",med:"med",low:"low","n/a":"n/a"}, WV={high:3,med:2,low:1,"n/a":0};
+  const WCELL={3:"#2f6296",2:"#7fa8ce",1:"#dce6f0",0:"transparent"};   // weight heat-scale
   // cruxes first, then factors >=2 camps engage, then one-sided (only one camp weighs them)
   const rank=z=>z.isCrux?0:(z.engaged>=2?1:2);
   const ordered=[...kb.factors].sort((x,y)=>{const ix=info(x),iy=info(y);
@@ -298,8 +301,10 @@ function renderDivergence(c){
     const cx=info(f), one=cx.engaged<2;
     const cells=kb.positions.map(p=>{
       const w=f.weights[p.id]||"—"; const v=WV[w]||0;
-      const bg=v?rgba(p.hue,.12+.26*v):"transparent";
-      return `<td class="cell" style="background:${bg}">${WLABEL[w]||"—"}</td>`;
+      // colour by the WEIGHT (low/med/high) on one scale, so the rank reads at a glance —
+      // the position is already told by the coloured column header.
+      const bg=WCELL[v], txt=v===3?"#fff":(v?"var(--ink)":"var(--faint)");
+      return `<td class="cell" style="background:${bg};color:${txt}">${WLABEL[w]||"—"}</td>`;
     }).join("");
     const tag=cx.isCrux?'<span class="cruxbadge">CRUX</span>':(one?'<span class="onetag">one side only</span>':'');
     return `<tr class="factor-row ${cx.isCrux?'crux':''} ${one?'onesided':''}" data-factor="${f.id}">
@@ -311,8 +316,9 @@ function renderDivergence(c){
   const nOne=a.cruxes.filter(x=>x.engaged<2).length;
   const nShared=a.cruxes.length-nCrux-nOne;
   return `<div class="panel"><h3>Where the disagreement actually lives</h3>
-      <p class="hint">a crux = a factor whose weighting spreads ≥ 2 levels across positions · click a row for the rationale</p>
-      <table class="mtx"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>
+      <p class="subnote">Each cell shows <b>how heavily that camp weighs that factor</b> — the colour is the weight. A <b>crux</b> (bold row) is a factor the camps weigh very differently; that's where the disagreement actually is. Click a row for the rationale.</p>
+      <div class="wkey">weight: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">med</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
+      <table class="mtx" style="margin-top:12px"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>
       <p style="font-size:13px;color:var(--muted);margin:14px 0 0">
         <b>${nCrux} crux${nCrux===1?'':'es'}</b> · ${nShared} shared · ${nOne} raised by one side.
         Resolving the cruxes would move the conclusion; the dimmed rows are dimensions only one camp engages — not points of disagreement.</p></div>`;
