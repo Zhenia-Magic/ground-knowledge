@@ -74,6 +74,7 @@ _SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...",\n'
            '"position":"pos_id or NEW:Full label",\n'
            '"positionShort":"≤18-char complete phrase for the chart bar, e.g. \'Increases risk\' or \'No clear link\'",\n'
            '"authors":["Surname, F.","..."]  (copy from the Authors: line if present),\n'
+           '"venue":"journal/source name if shown","retracted":false  (true only if the text flags a retraction),\n'
            '"evidence":"...","funding":"independent|industry","population":"...","confidence":"moderate",\n'
            '"restsOn":["ds_id","NEW:Label"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
            '"restsOn":{"quote":"...","extractionConfidence":0.8}}},\n'
@@ -247,13 +248,7 @@ def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=4000):
         if isinstance(arr, dict):
             arr = [arr]
         for delta, doc in zip(arr, group):
-            delta.setdefault("source", {})
-            if doc.get("url") and not delta["source"].get("url"):
-                delta["source"]["url"] = doc["url"]
-            if doc.get("title") and not delta["source"].get("title"):
-                delta["source"]["title"] = doc["title"]
-            if doc.get("authors") and not delta["source"].get("authors"):
-                delta["source"]["authors"] = doc["authors"]
+            _carry_meta(delta, doc)
             deltas.append(delta)
     return None if dry_run else deltas
 
@@ -274,6 +269,20 @@ def _parse_json(raw):
     return value
 
 
+def _carry_meta(delta, doc):
+    """Copy fetch-derived metadata onto the delta's source when the labeller didn't supply it —
+    so url/title/authors/venue/citations/retraction are captured deterministically from the API,
+    not left to the model."""
+    src = delta.setdefault("source", {})
+    for k in ("url", "title", "authors", "venue"):
+        if doc.get(k) and not src.get(k):
+            src[k] = doc[k]
+    if doc.get("citations") is not None and src.get("citations") is None:
+        src["citations"] = doc["citations"]
+    if "retracted" in doc and "retracted" not in src:
+        src["retracted"] = doc["retracted"]
+
+
 def ingest_source(target, kb, dry_run=False):
     """Extract one link/document into a delta. In dry_run, RETURNS the prompt string (the
     caller writes it to a file) instead of a delta."""
@@ -282,13 +291,7 @@ def ingest_source(target, kb, dry_run=False):
     if dry_run:
         return prompt
     delta = _parse_json(llm.complete(prompt))
-    delta.setdefault("source", {})
-    if doc.get("url") and not delta["source"].get("url"):
-        delta["source"]["url"] = doc["url"]
-    if doc.get("title") and not delta["source"].get("title"):
-        delta["source"]["title"] = doc["title"]
-    if doc.get("authors") and not delta["source"].get("authors"):
-        delta["source"]["authors"] = doc["authors"]
+    _carry_meta(delta, doc)
     return delta
 
 
@@ -391,12 +394,6 @@ def deltas_from_docs(kb, docs, batch=5, max_text=4000):
         if isinstance(arr, dict):
             arr = [arr]
         for delta, doc in zip(arr, group):
-            delta.setdefault("source", {})
-            if doc.get("url") and not delta["source"].get("url"):
-                delta["source"]["url"] = doc["url"]
-            if doc.get("title") and not delta["source"].get("title"):
-                delta["source"]["title"] = doc["title"]
-            if doc.get("authors") and not delta["source"].get("authors"):
-                delta["source"]["authors"] = doc["authors"]
+            _carry_meta(delta, doc)
             deltas.append(delta)
     return deltas

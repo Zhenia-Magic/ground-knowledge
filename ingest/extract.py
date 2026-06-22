@@ -98,7 +98,7 @@ def _europepmc(target):
     if jnl:
         body += "\nJournal: {} ({})".format(jnl, r.get("pubYear", ""))
     return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip(),
-            "url": target, "authors": authors}
+            "url": target, "authors": authors, "venue": jnl or ""}
 
 
 # ---- structured academic APIs: get paper metadata by identifier, no scraping ----------
@@ -174,7 +174,7 @@ def _semantic_scholar(target):
         body += "\n\nAuthors: " + ", ".join(authors[:8])
     if r.get("venue"):
         body += "\nVenue: {} ({})".format(r["venue"], r.get("year", ""))
-    return {"text": body[:MAX_CHARS], "authors": authors,
+    return {"text": body[:MAX_CHARS], "authors": authors, "venue": r.get("venue") or "",
             "title": re.sub(r"\s+", " ", title).strip() or target,
             "url": target}
 
@@ -288,14 +288,21 @@ def _openalex(target):
             funding = "; ".join(dict.fromkeys(grants))
     if funding:
         parts.append("Funding / disclosures: " + funding)
-    venue = ((r.get("primary_location") or {}).get("source") or {}).get("display_name")
+    venue = ((r.get("primary_location") or {}).get("source") or {}).get("display_name") or ""
+    citations = r.get("cited_by_count")
+    retracted = bool(r.get("is_retracted"))
     if venue:
-        parts.append("Venue: {} ({})".format(venue, r.get("publication_year", "")))
+        parts.append("Venue: {} ({}){}".format(
+            venue, r.get("publication_year", ""),
+            " · {} citations".format(citations) if citations is not None else ""))
+    if retracted:
+        parts.insert(1, "⚠ RETRACTED: this work is flagged as retracted in OpenAlex.")
     if full:
         parts.append("--- full text ---\n" + full)
     body = "\n\n".join(parts)
     return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip() or target,
-            "url": target, "authors": authors}
+            "url": target, "authors": authors, "venue": venue,
+            "citations": citations, "retracted": retracted}
 
 
 def _arxiv(target):

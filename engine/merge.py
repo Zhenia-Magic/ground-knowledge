@@ -215,6 +215,9 @@ def merge_delta(kb, delta):
         "id": sid, "title": src["title"], "year": src.get("year"),
         "url": clean_url(src.get("url")) or None,
         "authors": [a for a in (src.get("authors") or []) if a],  # citation metadata
+        "venue": src.get("venue") or "",
+        "citations": src.get("citations"),
+        "retracted": bool(src.get("retracted")),
         "position": pos_id,
         "evidence": _resolve_vocab(kb, "evidence", src.get("evidence", "Unspecified")),
         "funding": _resolve_funding(kb, src.get("funding")),

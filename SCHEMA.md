@@ -19,6 +19,7 @@ data changes, never the code.
                    "rationale", "provenance": [{source, pos, quote}] } ],
   "sources":   [ { "id", "title", "year", "url",
                    "authors": [ "name", ... ],               // citation metadata (Zotero import/export)
+                   "venue", "citations", "retracted",        // evidence-quality signals (from the fetch)
                    "position": posId,
                    "evidence",                                // controlled (see vocab.evidence)
                    "funding",   // Government/public | Nonprofit/charity | Academic/institutional
