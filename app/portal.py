@@ -109,7 +109,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Access-Control-Allow-Origin", "*")  # browser clients
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Admin-Token")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -173,6 +173,8 @@ class Handler(BaseHTTPRequestHandler):
         # --- browser pages ---
         if p == []:
             return self._send_html(200, web.home_html())
+        if p == ["docs"]:
+            return self._send_html(200, web.docs_html())
         if len(p) == 2 and p[0] == "q":
             return self._send_html(200, web.viewer_html(p[1], self._get_q) or "")
         if len(p) == 3 and p[0] == "q" and p[2] == "add":
@@ -262,6 +264,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_PUT(self):
         p = self._parts()
         if len(p) == 3 and p[:2] == ["api", "questions"]:
+            if not self._is_admin():
+                return self._send(403, {"error": "admin token required or incorrect"})
             body = self._body()
             kb = body.get("kb")
             if not isinstance(kb, dict):

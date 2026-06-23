@@ -10,10 +10,10 @@ Three pages, all served by app/portal.py:
 The contribute flow keeps the manual / chatbot path available in the browser (no key ever leaves
 the user's own chatbot), mirroring the local CLI's --dry-run path.
 """
-import json
 import os
 
 from engine.assess import assess
+from engine.render import json_for_script
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -68,6 +68,22 @@ textarea{width:100%;border:1px solid var(--line-strong);border-radius:9px;paddin
 .modal textarea:focus{outline:none;border-color:var(--flag);box-shadow:0 0 0 3px rgba(47,98,150,.12);}
 .modal .actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px;}
 .modal .hintline{color:var(--faint);font-size:12px;margin-top:9px;}
+pre{background:#0d0f13;color:#e6edf3;border-radius:9px;padding:13px 15px;overflow-x:auto;
+  font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:10px 0;}
+pre .c{color:#7d8590;}
+.doc code{font-family:var(--mono);font-size:.88em;background:#eef0f2;padding:1px 5px;border-radius:5px;color:#0d0f13;}
+.doc h2{font-size:20px;margin:34px 0 6px;letter-spacing:-.01em;}
+.doc h3{font-size:15px;margin:22px 0 4px;}
+.doc p,.doc li{color:var(--muted);line-height:1.65;}
+.doc ul,.doc ol{margin:8px 0;padding-left:22px;} .doc li{margin:3px 0;}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 8px;}
+.toc a{font-size:13px;padding:5px 12px;border:1px solid var(--line-strong);border-radius:20px;color:var(--muted);}
+.toc a:hover{border-color:var(--chrome);color:var(--ink);text-decoration:none;}
+.cmdtbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px;}
+.cmdtbl td{border-top:1px solid var(--line);padding:8px 8px;vertical-align:top;color:var(--muted);}
+.cmdtbl td:first-child{white-space:nowrap;width:1%;}
+.note{background:#eef4fb;border-left:3px solid var(--flag);border-radius:0 8px 8px 0;
+  padding:11px 14px;margin:14px 0;font-size:13.5px;color:var(--ink);line-height:1.6;}
 """
 
 
@@ -92,6 +108,7 @@ def home_html():
     <div class="bar">
       <input id="q" placeholder="Search questions…" autocomplete="off">
       <button class="btn ghost" onclick="newQ()">+ New question</button>
+      <a class="btn ghost" href="/docs" style="display:inline-flex;align-items:center;text-decoration:none">⌨ CLI &amp; local app</a>
     </div>
     <div id="list" class="grid"></div>
 
@@ -109,7 +126,7 @@ def home_html():
     </div>
 
     <script>
-    const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const E=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     async function load(){
       const s=document.getElementById('q').value.trim();
       const r=await fetch('/api/questions'+(s?'?search='+encodeURIComponent(s):''));
@@ -150,6 +167,146 @@ def home_html():
     return _page("Ground Knowledge", body)
 
 
+def docs_html(repo="https://github.com/Zhenia-Magic/epistemic-coverage"):
+    """Static documentation page for the power-user tools: the CLI and the local web console.
+    Explains why they exist, how to install and configure them, and the command reference."""
+    body = """
+    <div class="back"><a href="/">← all questions</a></div>
+    <div class="kicker">Ground Knowledge</div>
+    <h1>Power tools: the CLI &amp; local app</h1>
+    <p class="sub">This website is the easy, keyless way to read and contribute. The
+    <b>command-line tool</b> and the <b>local web console</b> are for power users who want to
+    cold-start a whole question, label sources automatically with their own AI key, batch-import
+    citations, or curate the knowledge base — then push the result back here.</p>
+
+    <div class="doc">
+    <div class="toc">
+      <a href="#why">Why these exist</a>
+      <a href="#install">Install</a>
+      <a href="#configure">Configure</a>
+      <a href="#localui">Local app</a>
+      <a href="#cli">CLI commands</a>
+      <a href="#workflow">A typical workflow</a>
+      <a href="#sync">Push &amp; pull</a>
+    </div>
+
+    <h2 id="why">Why these exist</h2>
+    <p>The portal does <b>no AI work and holds no API key</b> — contributing here means you fetch a
+    source, copy a labelling prompt into your own chatbot, and paste the JSON back. That keeps the
+    server safe and free to run. The local tools remove the copy-paste: with your own AI key they
+    label automatically, and they can do things the website can't:</p>
+    <ul>
+      <li><b>Cold-start</b> a brand-new question from scratch (discover + label dozens of sources).</li>
+      <li><b>Automatic labelling</b> of fetched text using your Anthropic or OpenAI key.</li>
+      <li><b>Import a whole library</b> from Zotero / Mendeley / EndNote (.ris, .bib, .csl-json).</li>
+      <li><b>Curate</b>: merge duplicate datasets, rename, tidy messy labels.</li>
+      <li><b>Push / pull</b> a knowledge base between your machine and this portal.</li>
+    </ul>
+    <div class="note">Everything except <i>automatic</i> labelling works with <b>no API key</b> —
+    finding, fetching, the local store, the viewer, push/pull and the manual (chatbot) path all run
+    keyless, exactly like this website.</div>
+
+    <h2 id="install">Install</h2>
+    <p>You need <b>Python 3.9+</b> and <code>git</code>. The core engine, viewer, fetching, the
+    manual path and the local store need <b>no third-party packages</b>.</p>
+    <pre><span class="c"># 1. Get the code</span>
+git clone %REPO%.git
+cd epistemic-coverage
+
+<span class="c"># 2. (optional) extras — only for full-text PDF, .docx, or running the portal yourself</span>
+pip install -r requirements.txt</pre>
+    <p>That's it — <code>python cli.py --help</code> should now list every command.</p>
+
+    <h2 id="configure">Configure (.env)</h2>
+    <p>Copy the template and fill in what you need. A key is <b>only</b> required for automatic
+    labelling; leave it blank to use the manual / chatbot path.</p>
+    <pre><span class="c"># copy the template, then edit .env</span>
+cp .env.example .env</pre>
+    <table class="cmdtbl">
+      <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Your AI key for automatic labelling (or <code>OPENAI_API_KEY</code>). Web search / deep research need Anthropic.</td></tr>
+      <tr><td><code>EPISTEMIC_PORTAL</code></td><td>This portal's URL for push/pull — e.g. <code>https://groundknowledge.org</code>.</td></tr>
+      <tr><td><code>EPISTEMIC_CONTACT_EMAIL</code></td><td>Your email → OpenAlex/Crossref "polite pool" (faster, higher limits).</td></tr>
+      <tr><td><code>EPISTEMIC_ADMIN_TOKEN</code></td><td>Only if you run a portal and want to push whole-KB replacements.</td></tr>
+    </table>
+
+    <h2 id="localui">The local app (browser console)</h2>
+    <p>Prefer clicking to typing? Launch a local web console that drives the same
+    find → fetch → label → merge flow in your browser — including a panel to paste your API key and
+    to push/pull cases to this portal.</p>
+    <pre>python cli.py ui            <span class="c"># opens http://localhost:8765</span>
+python cli.py ui --port 9000 --no-open</pre>
+
+    <h2 id="cli">CLI command reference</h2>
+    <p>Every command is <code>python cli.py &lt;command&gt;</code>. Add <code>--build</code> to most
+    mutating commands to regenerate the static viewer afterwards.</p>
+
+    <h3>Create &amp; inspect</h3>
+    <table class="cmdtbl">
+      <tr><td><code>init &lt;id&gt; "question"</code></td><td>Start a new, empty knowledge base.</td></tr>
+      <tr><td><code>show &lt;kb&gt;</code></td><td>Print a summary of the KB.</td></tr>
+      <tr><td><code>assess &lt;kb&gt;</code></td><td>Print the metrics (distribution, independence, cruxes, blindspots).</td></tr>
+      <tr><td><code>build &lt;kb…&gt;</code></td><td>Render the standalone HTML viewer for one or more cases.</td></tr>
+    </table>
+
+    <h3>Add sources</h3>
+    <table class="cmdtbl">
+      <tr><td><code>research &lt;kb&gt;</code></td><td><b>One-shot cold start.</b> Emits a single prompt for a browsing chatbot that discovers <i>and</i> labels sources. <code>--apply</code> to auto-merge with a key.</td></tr>
+      <tr><td><code>discover &lt;kb&gt;</code></td><td>Find candidate sources (<code>--source api</code> = OpenAlex, no key; <code>web</code> / <code>both</code> use AI search).</td></tr>
+      <tr><td><code>ingest &lt;kb&gt; &lt;url&gt;</code></td><td>Fetch one source and label it. <code>--dry-run</code> writes a prompt to paste into a chatbot; <code>--apply</code> labels with your key.</td></tr>
+      <tr><td><code>ingest-batch &lt;kb&gt; …</code></td><td>Fetch + label many at once. <code>--bundle</code> (with <code>--dry-run</code>) packs them into ONE file to upload to a chatbot.</td></tr>
+      <tr><td><code>harvest &lt;kb&gt;</code></td><td>Discover + ingest in one step.</td></tr>
+      <tr><td><code>add &lt;kb&gt; &lt;delta&gt;</code></td><td>Merge a hand-written / chatbot-returned delta JSON into the KB.</td></tr>
+    </table>
+
+    <h3>Curate</h3>
+    <table class="cmdtbl">
+      <tr><td><code>dups &lt;kb&gt;</code></td><td>List likely-duplicate entities worth merging.</td></tr>
+      <tr><td><code>merge &lt;kb&gt; &lt;type&gt; &lt;src&gt; &lt;dst&gt;</code></td><td>Fold one entity (position/dataset/factor/…) into another.</td></tr>
+      <tr><td><code>rename &lt;kb&gt; &lt;type&gt; &lt;ref&gt; "label"</code></td><td>Rename an entity.</td></tr>
+      <tr><td><code>tidy &lt;kb&gt;</code></td><td>Prettify id-style / slug labels for display.</td></tr>
+    </table>
+
+    <h3>Citations &amp; sync</h3>
+    <table class="cmdtbl">
+      <tr><td><code>import-citations &lt;kb&gt; &lt;file&gt;</code></td><td>Import a Zotero/Mendeley/EndNote export (.ris, .bib, .csl-json) and label each entry.</td></tr>
+      <tr><td><code>export &lt;kb&gt; --format bibtex|ris|csl</code></td><td>Export the KB's sources as a citation file.</td></tr>
+      <tr><td><code>questions</code></td><td>List the questions on the portal.</td></tr>
+      <tr><td><code>pull &lt;id&gt;</code></td><td>Download a question's KB from the portal to your machine.</td></tr>
+      <tr><td><code>push &lt;kb&gt;</code></td><td>Send your local sources up to the portal.</td></tr>
+    </table>
+
+    <h2 id="workflow">A typical workflow</h2>
+    <p>Cold-start a new question locally, then publish it here:</p>
+    <pre><span class="c"># 1. create it</span>
+python cli.py init eggs "Do eggs increase cardiovascular disease risk?"
+
+<span class="c"># 2. find + label sources automatically (needs an AI key in .env)</span>
+python cli.py harvest cases/eggs.kb.json --k 12 --build
+
+<span class="c"># 3. no key? do it the manual way — get one file, label it in your chatbot, merge it back</span>
+python cli.py ingest-batch cases/eggs.kb.json --from finds.json --dry-run --bundle
+python cli.py add cases/eggs.kb.json delta.json --build
+
+<span class="c"># 4. look at it</span>
+python cli.py assess cases/eggs.kb.json
+
+<span class="c"># 5. publish to the portal</span>
+python cli.py push cases/eggs.kb.json --as "Your name"</pre>
+
+    <h2 id="sync">Push &amp; pull (sync with this portal)</h2>
+    <p>Set <code>EPISTEMIC_PORTAL</code> in <code>.env</code> (or pass <code>--portal</code>), then:</p>
+    <pre>python cli.py questions                 <span class="c"># browse what's here</span>
+python cli.py pull &lt;question-id&gt;        <span class="c"># grab it locally</span>
+python cli.py push cases/your.kb.json   <span class="c"># send your sources up</span></pre>
+    <div class="note">Source-by-source contributions are <b>keyless</b> — anyone can push new
+    sources. Replacing a whole knowledge base is gated by the portal's admin token.</div>
+
+    <p style="margin-top:30px"><a href="%REPO%">Full source &amp; README on GitHub →</a></p>
+    </div>"""
+    body = body.replace("%REPO%", repo)
+    return _page("CLI & local app — Ground Knowledge", body)
+
+
 def viewer_html(qid, get_question):
     """The read view: reuse viewer/template.html, populated live with this one question."""
     q = get_question(qid)
@@ -158,7 +315,7 @@ def viewer_html(qid, get_question):
     bundle = {"order": [q["id"]], "cases": {q["id"]: {"kb": q["kb"], "assessment": assess(q["kb"])}}}
     with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as f:
         tpl = f.read()
-    html = tpl.replace("/*__DATA__*/null", json.dumps(bundle, ensure_ascii=False))
+    html = tpl.replace("/*__DATA__*/null", json_for_script(bundle))
     # inject a thin top bar linking back home and to the contribute flow.
     # Use a <style> (not inline colors) so :hover works — inline styles can't carry :hover.
     # Built by concatenation (NOT .format) because the CSS braces would clash with placeholders.
@@ -204,7 +361,7 @@ def manage_html(qid, get_question):
     script = """
     <script>
     const QID="{id}";
-    const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const E=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const tok=()=>localStorage.getItem('gk_admin')||'';
     const H=()=>({'Content-Type':'application/json','X-Admin-Token':tok()});
     async function isAdmin(){ if(!tok())return false;
@@ -224,7 +381,7 @@ def manage_html(qid, get_question):
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
       const srcs=kb.sources||[];
       document.getElementById('srcs').innerHTML = srcs.length? srcs.map(s=>`
-        <div class="cand"><div style="flex:1"><b>${E(s.title)}</b> <span class="why">${s.year||''}</span><br>
+        <div class="cand"><div style="flex:1"><b>${E(s.title)}</b> <span class="why">${E(s.year||'')}</span><br>
         <span class="why">${E((s.authors||[]).slice(0,3).join(', '))}${(s.authors||[]).length>3?' et al.':''}</span></div>
         <button class="btn ghost" onclick="delSource('${s.id}',this)">✕ remove</button></div>`).join('')
         : '<div class="empty">No sources yet.</div>';
@@ -294,7 +451,7 @@ def contribute_html(qid, get_question):
     </div>
     <script>
     const QID="{id}";
-    const E=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const E=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     let CANDS=[];
     function renderFinds(note){
       const nFull = CANDS.filter(c=>c.relevance!=='partial').length;
