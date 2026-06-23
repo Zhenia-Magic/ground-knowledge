@@ -84,6 +84,21 @@ pre .c{color:#7d8590;}
 .cmdtbl td:first-child{white-space:nowrap;width:1%;}
 .note{background:#eef4fb;border-left:3px solid var(--flag);border-radius:0 8px 8px 0;
   padding:11px 14px;margin:14px 0;font-size:13.5px;color:var(--ink);line-height:1.6;}
+.thesis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 26px;}
+.tcol{border:1px solid var(--line);border-radius:12px;padding:15px 16px;background:var(--surface);}
+.tnum{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--flag);margin-bottom:6px;}
+.tcol p{margin:0;font-size:13.5px;line-height:1.55;color:var(--muted);}
+@media (max-width:720px){
+  .wrap{padding:22px 16px 64px;}
+  h1{font-size:24px;}
+  .thesis{grid-template-columns:1fr;gap:10px;margin-bottom:20px;}
+  .bar{gap:8px;} .bar input{flex:1 1 100%;min-width:0;}
+  .bar .btn{flex:1;text-align:center;justify-content:center;}
+  .grid{grid-template-columns:1fr;}
+  .toc{gap:6px;} .cmdtbl td:first-child{white-space:normal;}
+  pre{font-size:11.5px;}
+}
 """
 
 
@@ -102,9 +117,27 @@ def home_html():
     body = """
     <div class="kicker">Ground Knowledge</div>
     <h1>Research disputes, mapped by the evidence</h1>
-    <p class="sub">Browse questions, see how the evidence splits, and whether an apparent
-    consensus is real — or the same few sources counted many times. Add a question or contribute
-    sources to one.</p>
+    <p class="sub">See how the evidence on a contested question splits — and whether an apparent
+    consensus is real, or just the same few sources counted many times.</p>
+
+    <div class="thesis">
+      <div class="tcol">
+        <div class="tnum">1 · The problem</div>
+        <p>Count the sources and whoever publishes most appears to win — even when it's the same
+        lab, funder, or dataset showing up again and again. That's how <b>false balance</b> creeps in.</p>
+      </div>
+      <div class="tcol">
+        <div class="tnum">2 · The fix</div>
+        <p>We weight each side by <b>independent</b> evidence, not headcount. Ten papers resting on
+        one dataset count as roughly <b>one</b> look — not ten.</p>
+      </div>
+      <div class="tcol">
+        <div class="tnum">3 · How</div>
+        <p>Each source is fetched, labelled with a quote-backed position, and merged into a living
+        map — positions, shared datasets, the real cruxes, and each side's blind spots.</p>
+      </div>
+    </div>
+
     <div class="bar">
       <input id="q" placeholder="Search questions…" autocomplete="off">
       <button class="btn ghost" onclick="newQ()">+ New question</button>
