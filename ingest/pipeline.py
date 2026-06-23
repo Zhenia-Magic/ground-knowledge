@@ -63,7 +63,12 @@ _RULES = """Rules (apply to each source):
   design (that is "evidence"). Reuse an existing term; prefer broad buckets over hyper-specific
   ones; "—" if not population-specific.
 - confidence: the source's OWN stated strength (high/moderate/low/unstated).
-- provenance: quote the justifying span for position and restsOn + extractionConfidence [0,1].
+- provenance: for position and restsOn, quote ONE COMPLETE verbatim sentence from the text that
+  states the actual finding/stance (the direction of the association or the conclusion) +
+  extractionConfidence [0,1]. The quote MUST be a whole sentence, not cut off mid-clause (never
+  end on "associated with", "compared to", etc.). NEVER use the paper's title, a heading, or the
+  search snippet as the quote. If only the title/abstract is available and no sentence states the
+  finding, quote the closest complete statement and set extractionConfidence ≤ 0.4 — never the title.
 - factorWeights: reuse a factor label VERBATIM (new only for a genuinely new dimension); for each
   factor the source bears on, how strongly its POSITION weights it (high/med/low) + quote +
   one-line rationale.

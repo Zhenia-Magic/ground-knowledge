@@ -62,7 +62,12 @@ multiplying via paraphrase as a case grows):
 - population: the studied human GROUP (region / menopausal status / age) — NOT the study design
   (that is `evidence`). Reuse a term; prefer broad buckets; "—" if not population-specific.
 - confidence: the source's OWN stated strength (high/moderate/low/unstated), not yours.
-- provenance: for position and restsOn, quote the justifying span + extractionConfidence [0,1].
+- provenance: for position and restsOn, quote ONE COMPLETE verbatim sentence that states the
+  actual finding/stance (direction of the association or the conclusion) + extractionConfidence
+  [0,1]. The quote MUST be a whole sentence, not cut off mid-clause (never end on "associated
+  with", "compared to", …). NEVER use the paper's title, a heading, or the search snippet. If only
+  the title/abstract is available and no sentence states the finding, quote the closest complete
+  statement and set extractionConfidence ≤ 0.4 — never the title.
 - factorWeights: reuse a factor label VERBATIM (new only for a new dimension); for each factor
   the source bears on, how strongly its POSITION weights it (high/med/low) + quote + rationale.
 - Do NOT fabricate. If the text doesn't support a field, omit it or mark low confidence.

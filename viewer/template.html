@@ -263,6 +263,9 @@ function renderCoverage(c){
     if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
     const venueLine=venueBits.length?`<div class="srcmeta">${venueBits.join(" · ")}</div>`:"";
     const pq=((s.provenance||{}).position)||{};
+    const qn=q=>String(q||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+    // Drop a "quote" that's just the paper's title echoed back — it justifies nothing.
+    if(pq.quote && qn(pq.quote)===qn(s.title)) pq.quote="";
     const conf=pq.extractionConfidence;
     const confHtml=conf!=null?`<span class="conf${conf<0.5?" low":""}" title="How sure the labeller was that this quote justifies placing the source under “${esc(p.label)}”. Lower = more of a judgement call, worth checking against the source.">${conf<0.5?"⚠ ":""}Labelling confidence: ${Math.round(conf*100)}%${conf<0.5?" — judgement call":""}</span>`:"";
     const why=pq.quote?`<div class="why"><span class="wl">Filed under “${esc(p.label)}” because</span><q>${esc(pq.quote)}</q>${confHtml}</div>`:"";
