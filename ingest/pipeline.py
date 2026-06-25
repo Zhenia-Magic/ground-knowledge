@@ -32,6 +32,9 @@ _EV_HINT = 'EVIDENCE TYPES in use (choose the closest; "NEW:<label>" only if non
 _POP_HINT = ('POPULATIONS in use — the studied human GROUP (region / menopausal status / age), '
              'NOT the study design. Reuse a term, prefer broad buckets, or "—" if not '
              'population-specific:')
+_SRC_HINT = ('SOURCES ALREADY IN THE KB — if THIS source\'s evidence IS one of these (a commentary '
+             'on it, or it cites it as its main support), put "SRC:<id>" in restsOn instead of '
+             'inventing a dataset. That is how echo and circular citation get caught:')
 
 _RULES = """Rules (apply to each source):
 - relevance FIRST: does this source actually bear on THE QUESTION? If it is about a different
@@ -55,6 +58,10 @@ _RULES = """Rules (apply to each source):
   paper. Use a short proper NAME (e.g. "Finnish Mobile Clinic cohort"), not an id-style slug or
   a name with sample sizes baked in. The same cohort across sources MUST use the SAME label. If
   the cohorts aren't named, list the few largest you can identify, else leave restsOn empty.
+  restsOn may ALSO point at ANOTHER SOURCE when this source's case IS that source — a commentary
+  whose evidence is one paper, or two pieces citing each other. Write "SRC:<existing source id>"
+  (see SOURCES ALREADY IN THE KB) or "NEW-SRC:<exact title>". This is how echo and circular
+  citation are detected, so name the real source rather than inventing a vague dataset for it.
 - funding: classify the funder from the funding/COI statement into ONE of: Industry, Advocacy,
   Government/public, Nonprofit/charity, Academic/institutional. Use "Undisclosed" if the text
   states no funding/COI — do NOT assume independence when it is silent.
@@ -81,7 +88,7 @@ _SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...",\n'
            '"authors":["Surname, F.","..."]  (copy from the Authors: line if present),\n'
            '"venue":"journal/source name if shown","retracted":false  (true only if the text flags a retraction),\n'
            '"evidence":"...","funding":"independent|industry","population":"...","confidence":"moderate",\n'
-           '"restsOn":["ds_id","NEW:Label"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
+           '"restsOn":["ds_id","NEW:Label","SRC:existing_source_id"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
            '"restsOn":{"quote":"...","extractionConfidence":0.8}}},\n'
            '"factorWeights":[{"factor":"exact factor label","weight":"high|med|low","quote":"...","rationale":"..."}]}')
 
@@ -94,6 +101,7 @@ EXTRACT_TEMPLATE = (
     + _FAC_HINT + "\n%FACTORS%\n\n"
     + _EV_HINT + "\n%EVIDENCE_VOCAB%\n\n"
     + _POP_HINT + "\n%POPULATION_VOCAB%\n\n"
+    + _SRC_HINT + "\n%SOURCES_IN_KB%\n\n"
     "SOURCE TO INGEST\ntitle: %TITLE%\nurl: %URL%\ntext:\n%TEXT%\n\n"
     + _RULES + "\n\nJSON schema:\n" + _SCHEMA + "\n")
 
@@ -107,6 +115,7 @@ BATCH_EXTRACT_TEMPLATE = (
     + _FAC_HINT + "\n%FACTORS%\n\n"
     + _EV_HINT + "\n%EVIDENCE_VOCAB%\n\n"
     + _POP_HINT + "\n%POPULATION_VOCAB%\n\n"
+    + _SRC_HINT + "\n%SOURCES_IN_KB%\n\n"
     "SOURCES (%N% — produce exactly one delta per source, in order):\n%SOURCES%\n\n"
     + _RULES + "\n\nReturn a JSON ARRAY of objects, each matching:\n" + _SCHEMA + "\n")
 
@@ -180,9 +189,21 @@ def build_extract_prompt(kb, doc):
             .replace("%POSITIONS%", pos).replace("%DATASETS%", ds).replace("%FACTORS%", fac)
             .replace("%EVIDENCE_VOCAB%", _vocab_options(kb, "evidence"))
             .replace("%POPULATION_VOCAB%", _vocab_options(kb, "population"))
+            .replace("%SOURCES_IN_KB%", _sources_for_ref(kb))
             .replace("%TITLE%", doc.get("title") or "")
             .replace("%URL%", doc.get("url") or "(local document)")
             .replace("%TEXT%", doc["text"]))
+
+
+def _sources_for_ref(kb, limit=50):
+    """List existing sources as 'id — title (year)' so the labeller can cite one via SRC:<id> in
+    restsOn (the source->source derivation edge that powers circular-corroboration detection).
+    Capped to the most recent `limit` to keep the prompt bounded on large cases."""
+    srcs = kb.get("sources", [])[-limit:]
+    rows = ["  {} — {}{}".format(s["id"], (s.get("title") or "")[:72],
+                                 " ({})".format(s["year"]) if s.get("year") else "")
+            for s in srcs]
+    return "\n".join(rows) or "  (none yet)"
 
 
 def _existing_sources(kb):
@@ -221,6 +242,7 @@ def build_batch_extract_prompt(kb, docs, max_text=4000):
             .replace("%POSITIONS%", pos).replace("%DATASETS%", ds).replace("%FACTORS%", fac)
             .replace("%EVIDENCE_VOCAB%", _vocab_options(kb, "evidence"))
             .replace("%POPULATION_VOCAB%", _vocab_options(kb, "population"))
+            .replace("%SOURCES_IN_KB%", _sources_for_ref(kb))
             .replace("%N%", str(len(docs)))
             .replace("%SOURCES%", "\n\n".join(blocks)))
 

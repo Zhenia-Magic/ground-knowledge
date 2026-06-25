@@ -7,6 +7,8 @@ implementation of every number the tool reports; the viewer renders these output
 not recompute them, so there is no drift between pipeline and UI.
 """
 
+from engine import roots as _roots
+
 # factor weighting vocabulary -> ordinal, for crux spread
 WV = {"high": 3, "med": 2, "low": 1, "n/a": 0}
 
@@ -16,6 +18,54 @@ def _ds_label(kb, did):
         if d["id"] == did:
             return d["label"]
     return did
+
+
+def _root_incidence(kb, res):
+    """Per position, the weighted incidence of each resolved evidentiary ROOT (see MECHANISM.md):
+    sources collapse onto shared datasets, secondary echo collapses to one voice, citation cycles
+    collapse to one loop-root. Returns {posId: {rootKey: weight}}, the basis for nEff and the bar."""
+    src_by_pos = {}
+    for s in kb["sources"]:
+        src_by_pos.setdefault(s["position"], []).append(s)
+    secondary_only = res["secondary_only"]
+    per_pos = {}
+    for p in kb["positions"]:
+        weights = {}
+        for s in src_by_pos.get(p["id"], []):
+            for r in res["source_roots"].get(s["id"], ()):
+                if r.startswith("secpool:") or r.startswith("cycle:"):
+                    weights[r] = 1            # a COLLAPSED voice counts once, no matter how many
+                else:                          #   sources fell into it (robust to echo-flooding both
+                    weights[r] = weights.get(r, 0) + _roots.root_strength(r, secondary_only)
+        per_pos[p["id"]] = weights             #   ways); the source count is surfaced separately
+    return per_pos
+
+
+def _n_eff(weights):
+    total = sum(weights.values())
+    hhi = sum((w / total) ** 2 for w in weights.values()) if total else 0
+    return (1 / hhi) if hhi else 0
+
+
+def weighted_distribution(kb):
+    """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
+    sized not by raw source count but by its effective number of independent evidence ROOTS: the
+    Herfindahl numbers-equivalent over resolved roots (MECHANISM.md). Sources sharing a dataset,
+    echoing as secondary reviews, or citing each other in a loop all collapse toward one 'look'. A
+    position propped up by re-used, derivative, or circular evidence shrinks vs. its raw bar."""
+    res = _roots.resolve(kb)
+    inc = _root_incidence(kb, res)
+    out, weights = [], []
+    for p in kb["positions"]:
+        mine = [s for s in kb["sources"] if s["position"] == p["id"]]
+        n_eff = _n_eff(inc[p["id"]])
+        weights.append(n_eff)
+        out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
+                    "raw": len(mine), "weight": round(n_eff, 2)})
+    tot = sum(weights) or 1
+    for o, w in zip(out, weights):
+        o["pct"] = round(100 * w / tot)
+    return out
 
 
 def distribution(kb):
@@ -30,33 +80,6 @@ def distribution(kb):
             for p in kb["positions"]]
 
 
-def weighted_distribution(kb):
-    """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
-    sized not by raw source count but by its effective number of independent evidence units: the
-    Herfindahl numbers-equivalent over the datasets its sources rest on, so sources sharing a
-    dataset collapse toward one 'look'. An ungrounded source (no restsOn) counts as its own unit —
-    we can't claim it's correlated. A position propped up by re-used data shrinks vs. its raw bar."""
-    out, weights = [], []
-    for p in kb["positions"]:
-        mine = [s for s in kb["sources"] if s["position"] == p["id"]]
-        counts = {}
-        for s in mine:
-            rests = s.get("restsOn") or []
-            if rests:
-                for d in rests:
-                    counts[d] = counts.get(d, 0) + 1
-            else:
-                counts["src:" + s["id"]] = 1          # ungrounded -> its own independent unit
-        total = sum(counts.values())
-        hhi = sum((c / total) ** 2 for c in counts.values()) if total else 0
-        n_eff = (1 / hhi) if hhi else 0
-        weights.append(n_eff)
-        out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
-                    "raw": len(mine), "weight": round(n_eff, 2)})
-    tot = sum(weights) or 1
-    for o, w in zip(out, weights):
-        o["pct"] = round(100 * w / tot)
-    return out
 
 
 def _low(s):
@@ -134,42 +157,74 @@ def cruxes(kb):
     return out
 
 
+def _root_label(kb, rk, weight, secondary_only):
+    """Human-readable description of a resolved root for the 'show your work' breakdown."""
+    if rk.startswith("ds:"):
+        lbl = _ds_label(kb, rk[3:])
+        return lbl + (" — cited only via a review" if rk in secondary_only else "")
+    if rk.startswith("prim:"):
+        sid = rk[5:]
+        t = next((s.get("title") for s in kb["sources"] if s["id"] == sid), sid)
+        return (t or sid)[:60] + " — its own primary observation"
+    if rk.startswith("secpool:"):
+        return "secondary literature (reviews/commentary counted as one voice)"
+    if rk.startswith("cycle:"):
+        return "circular citation loop (no primary grounding)"
+    return rk
+
+
 def independence(kb):
-    """The anti-false-balance core. Per position, how concentrated are its sources on a
-    single underlying dataset?
-        raw        = source count
-        distinct   = distinct datasets they rest on
-        topDataset = the single most-reused dataset + how many sources lean on it
-        conc       = topCount / raw  (share resting on the one most-reused dataset)
-        nEff       = Herfindahl numbers-equivalent over dataset incidence shares --
-                     effective independent datasets, discounted for concentration.
-    Adding correlated evidence (same dataset) pushes conc UP: flooding the zone makes a
-    position look LESS independent, not more. That is the design intent.
-    """
+    """The anti-false-balance core. Per position, how many INDEPENDENT evidentiary roots actually
+    support it — after collapsing shared datasets, secondary echo, and circular citation (see
+    MECHANISM.md and engine/roots.py).
+        raw          = source count
+        distinct     = number of distinct resolved roots
+        nEff         = Herfindahl numbers-equivalent over root incidence -> effective independent bases
+        concentration= share resting on the single most-relied-on root
+        bases        = the full 'show your work' breakdown (label, kind, weighted count)
+        collapsedSecondary = how many secondary sources folded into the one 'secondary voice'
+        circular     = circular-corroboration loops touching this position
+    Adding correlated, derivative, or circular evidence pushes concentration UP: flooding the zone
+    makes a position look LESS independent, not more. That is the design intent."""
+    res = _roots.resolve(kb)
+    inc = _root_incidence(kb, res)
+    sec_only = res["secondary_only"]
+    circ_by_pos = {}
+    for c in res["circular"]:
+        for pid in c["positions"]:
+            circ_by_pos.setdefault(pid, []).append(c["sources"])
     out = []
     for p in kb["positions"]:
         mine = [s for s in kb["sources"] if s["position"] == p["id"]]
-        counts = {}
-        for s in mine:
-            for d in s.get("restsOn", []):
-                counts[d] = counts.get(d, 0) + 1
-        ids = list(counts.keys())
+        weights = inc[p["id"]]
         raw = len(mine)
-        top = {"id": None, "count": 0}
-        for d in ids:
-            if counts[d] > top["count"]:
-                top = {"id": d, "count": counts[d]}
-        total_inc = sum(counts[d] for d in ids)
-        hhi = sum((counts[d] / total_inc) ** 2 for d in ids) if total_inc else 0
-        n_eff = 1 / hhi if hhi else 0
-        conc = top["count"] / raw if raw else 0
+        n_eff = _n_eff(weights)
+        total_w = sum(weights.values())
+        top_key, top_w = None, 0.0
+        for rk, w in weights.items():
+            if w > top_w:
+                top_key, top_w = rk, w
+        conc = (top_w / total_w) if total_w else 0
+        bases = sorted(
+            ({"key": rk, "label": _root_label(kb, rk, w, sec_only), "kind": res["kind"][rk],
+              "weight": round(w, 2), "secondaryOnly": rk in sec_only}
+             for rk, w in weights.items()), key=lambda b: -b["weight"])
+        collapsed_secondary = sum(1 for s in mine
+                                  if ("secpool:" + p["id"]) in res["source_roots"].get(s["id"], ()))
+        # back-compat 'topDataset' only when the dominant root is an actual dataset
+        top_ds = None
+        if top_key and top_key.startswith("ds:"):
+            top_ds = {"label": _ds_label(kb, top_key[3:]), "id": top_key[3:],
+                      "count": round(top_w, 2)}
         out.append({
             "id": p["id"], "label": p["label"], "hue": p["hue"],
-            "raw": raw, "distinct": len(ids), "nEff": n_eff, "concentration": conc,
-            "topDataset": ({"label": _ds_label(kb, top["id"]), "id": top["id"],
-                            "count": top["count"]} if top["id"] else None),
-            "datasets": [_ds_label(kb, d) for d in ids],
-            "concentrated": top["count"] >= 2 and conc >= 0.5,
+            "raw": raw, "distinct": len(weights), "nEff": n_eff, "concentration": conc,
+            "topDataset": top_ds,
+            "datasets": [b["label"] for b in bases],
+            "bases": bases,
+            "collapsedSecondary": collapsed_secondary,
+            "circular": circ_by_pos.get(p["id"], []),
+            "concentrated": top_w >= 2 and conc >= 0.5,
         })
     return out
 
@@ -194,7 +249,7 @@ def assess(kb):
     ind = independence(kb)
     # worst offender = among CONCENTRATED positions, the one with the most sources resting
     # on a single dataset (then by concentration, then raw). None if nothing is concentrated.
-    cand = [x for x in ind if x["concentrated"]]
+    cand = [x for x in ind if x["concentrated"] and x["topDataset"]]
     cand.sort(key=lambda x: (x["topDataset"]["count"], x["concentration"], x["raw"]),
               reverse=True)
     worst = cand[0] if cand else None

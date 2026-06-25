@@ -55,6 +55,10 @@ multiplying via paraphrase as a case grows):
   meta-analysis restsOn the cohorts it POOLS, NOT "the literature" / "studies through <year>" /
   a label describing the paper itself. Same cohort across sources => SAME label. If the cohorts
   aren't named, list the few largest you can identify, else leave restsOn empty.
+  restsOn may also reference ANOTHER SOURCE when this source's case IS that source (a commentary on
+  one paper; two pieces citing each other). Write "SRC:<existing source id>" or "NEW-SRC:<title>".
+  This is how the independence audit detects echo and circular corroboration — name the source
+  rather than fabricating a dataset for it.
 - funding: inspect funding statement, affiliations, and COI disclosures. "industry" if any
   funder/affiliation has a commercial stake (trade groups, food/pharma; for reviews weigh
   author COI); else "independent".

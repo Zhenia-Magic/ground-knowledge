@@ -112,6 +112,22 @@
   .ind-readout{text-align:right;min-width:78px;}
   .ind-readout .pctn{font-family:var(--mono);font-size:21px;font-weight:600;line-height:1.1;}
   .ind-readout .plab{font-family:var(--mono);font-size:10px;color:var(--faint);}
+  .ind2{padding:15px 0;border-bottom:1px solid var(--line);} .ind2:last-child{border-bottom:0;}
+  .ind2 .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .ind2 .hd .dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .ind2 .hd b{font-size:14.5px;}
+  .ind2 .eff{font-family:var(--mono);font-size:12px;color:var(--ink);margin-left:auto;}
+  .ind2 .eff .m{color:var(--faint);}
+  .bases{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0;}
+  .base{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;
+        padding:5px 9px;background:#fff;max-width:100%;}
+  .base .bk{width:8px;height:8px;border-radius:2px;flex:0 0 auto;}
+  .base .bl{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px;}
+  .base .bw{font-family:var(--mono);font-size:10px;color:var(--faint);white-space:nowrap;}
+  .ind-note{font-size:12px;color:var(--muted);margin:8px 0 0;}
+  .ind-note.warn{color:var(--ochre);font-weight:500;}
+  .indkey{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:2px 0 14px;}
+  .indkey span{display:flex;align-items:center;gap:6px;} .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
   .domline{font-family:var(--mono);font-size:12px;color:var(--flag);background:var(--flag-bg);border-radius:8px;
     padding:9px 12px;margin:0 0 16px;display:flex;gap:8px;align-items:flex-start;}
   .flagbox{font-size:13px;color:var(--flag);background:var(--flag-bg);border-radius:8px;padding:11px 14px;margin-top:6px;
@@ -362,31 +378,34 @@ function renderDivergence(c){
 
 function renderIndependence(c){
   const a=c.assessment;
+  const KIND={dataset:{lab:"primary dataset",col:"#2f6296"},
+              primary:{lab:"own observation",col:"#2E8B6F"},
+              secondary:{lab:"secondary voice",col:"#8a6510"},
+              cycle:{lab:"circular loop",col:"#B4502E"}};
   const rows=a.independence.map(p=>{
-    const pn=Math.round(p.concentration*100), conc=p.concentrated, top=p.topDataset;
-    return `<div class="ind-row">
-      <div>
-        <div class="ind-name"><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${p.hue};margin-right:7px"></span>${esc(p.label)}</div>
-        <div class="ind-sub">${p.raw} source${p.raw===1?"":"s"} · ${p.distinct} distinct dataset${p.distinct===1?"":"s"} · effective ≈ ${p.nEff.toFixed(1)} <span style="color:var(--faint)">(Herfindahl)</span></div>
-        <div class="cmeter" title="${top?esc(top.label)+" backs "+top.count+" of "+p.raw:"—"}">
-          <div class="cmeter-fill" style="width:${pn}%;background:${p.hue}"></div>
-          <div class="cmeter-lab">${top?esc(top.label)+" · "+top.count+" of "+p.raw+" sources":"—"}</div>
-        </div>
-        <div class="ind-sub2">rests on: ${p.datasets.map(esc).join(" · ")||"—"}</div>
-      </div>
-      <div class="ind-readout"><div class="pctn" style="color:${conc?p.hue:'var(--muted)'}">${pn}%</div>
-        <div class="plab">on 1 dataset</div>
-        <div class="plab" style="margin-top:4px;color:${conc?'var(--ochre)':'var(--faint)'}">${conc?'concentrated':'diverse'}</div></div>
+    const eff=p.nEff.toFixed(1);
+    const bases=(p.bases||[]).map(b=>{
+      const k=KIND[b.kind]||KIND.dataset;
+      const tag=k.lab+(b.secondaryOnly?" · via review only":"")+(b.weight>1?" ×"+b.weight:"");
+      return `<div class="base" title="${esc(b.label)} — ${tag}">
+        <span class="bk" style="background:${k.col}"></span>
+        <span class="bl">${esc(b.label)}</span><span class="bw">${tag}</span></div>`;
+    }).join("")||`<span class="muted">—</span>`;
+    const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
+    const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence.</div>`:"";
+    return `<div class="ind2">
+      <div class="hd"><span class="dot" style="background:${p.hue}"></span><b>${esc(p.label)}</b>
+        <span class="eff">${eff} independent base${eff==="1.0"?"":"s"} <span class="m">from ${p.raw} source${p.raw===1?"":"s"}</span></span></div>
+      <div class="bases">${bases}</div>${sec}${circ}
     </div>`;
   }).join("");
-  const dd=a.dominantDataset;
-  const domLine=dd?`<div class="domline"><span>»</span><span>Most reused evidence base: <b>${dd.labels.map(esc).join(" / ")}</b> — ${dd.labels.length>1?'each ':''}under ${dd.count} of ${dd.total} sources (${pct(dd.share)}) case-wide.</span></div>`:"";
   const w=a.worstConcentration;
-  const flag=w?`<div class="flagbox"><span>⚠</span><span><b>Apparent consensus is correlated.</b> The "${esc(w.label)}" position lists ${w.raw} sources, but ${w.topDataset.count} of them (${pct(w.concentration)}) rest on one dataset — <b>${esc(w.topDataset.label)}</b>. That's closer to ${w.nEff.toFixed(1)} independent looks than ${w.raw}. Counting sources here overstates the weight of evidence.</span></div>`
-    :`<div class="flagbox"><span>No single dataset dominates a position here — source counts roughly track independent evidence.</span></div>`;
-  return `<div class="panel"><h3>Is the consensus real, or the same data counted twice?</h3>
-      <p class="hint">independence() — concentration of each position's sources on its single most-reused dataset; effective independence via Herfindahl numbers-equivalent</p>
-      ${domLine}${rows}${flag}</div>`;
+  const flag=w?`<div class="flagbox"><span>⚠</span><span><b>Apparent consensus is correlated.</b> The "${esc(w.label)}" position lists ${w.raw} sources, but ${w.topDataset.count} rest on one dataset — <b>${esc(w.topDataset.label)}</b>. That's closer to ${w.nEff.toFixed(1)} independent bases than ${w.raw}. Counting sources here overstates the weight of evidence.</span></div>`
+    :`<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
+  return `<div class="panel"><h3>Is the consensus real, or the same evidence counted twice?</h3>
+      <p class="subnote">Each position is reduced to its <b>independent evidence bases</b>: sources sharing a dataset, echoing as reviews, or citing each other in a loop collapse into one. The number after each position is its effective count of distinct bases — the honest size of its support.</p>
+      <div class="indkey"><span><i style="background:#2f6296"></i>primary dataset</span><span><i style="background:#2E8B6F"></i>own observation</span><span><i style="background:#8a6510"></i>secondary voice (collapsed)</span><span><i style="background:#B4502E"></i>circular loop</span></div>
+      ${rows}${flag}</div>`;
 }
 
 function renderChanges(c){

@@ -109,6 +109,22 @@ def source_key(s):
     return "t:" + norm(s.get("title")) + ":" + str(s.get("year") or "")
 
 
+def _resolve_source_ref(kb, ref):
+    """Resolve a labeller's reference to another source (by exact id, else normalized title) to its
+    id, or None if that source isn't in the KB yet. Used for source->source derivation edges."""
+    ref = (ref or "").strip()
+    for s in kb["sources"]:
+        if s["id"] == ref:
+            return s["id"]
+    probe = norm(ref)
+    if not probe:
+        return None
+    for s in kb["sources"]:
+        if norm(s.get("title")) == probe:
+            return s["id"]
+    return None
+
+
 def _resolve_dataset(kb, proposed):
     is_new = proposed.startswith("NEW:")
     label = proposed[4:].strip() if is_new else None
@@ -226,6 +242,19 @@ def merge_delta(kb, delta):
 
     rests_on = []
     for d in src.get("restsOn", []):
+        d = str(d).strip()
+        # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
+        # independence audit catch circular corroboration (see MECHANISM.md). The labeller writes
+        # SRC:<existing id> or NEW-SRC:<title>; we resolve to an existing source and store "src:<id>".
+        low = d.lower()
+        if low.startswith("src:") or low.startswith("new-src:"):
+            ref = d.split(":", 1)[1].strip()
+            tid = _resolve_source_ref(kb, ref)
+            if tid:
+                rests_on.append("src:" + tid)
+            else:
+                report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB
+            continue
         did, created = _resolve_dataset(kb, d)
         if created:
             report["newDatasets"].append(did)

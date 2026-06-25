@@ -25,7 +25,9 @@ data changes, never the code.
                    "funding",   // Government/public | Nonprofit/charity | Academic/institutional
                                 //   | Industry | Advocacy | Undisclosed  (default Undisclosed)
                    "population", "confidence",
-                   "restsOn": [datasetId, ...],              // powers independence
+                   "restsOn": [datasetId | "src:sourceId", ...],  // evidentiary roots: datasets
+                                //   AND/OR other sources (derivation edges) -> independence +
+                                //   circular-corroboration detection (see MECHANISM.md)
                    "provenance": { field: {quote, extractionConfidence} },
                    "addedIn": version } ],                    // powers the diff
   "log":       [ { "version", "action", "source", "ts", ... } ]  // audit trail

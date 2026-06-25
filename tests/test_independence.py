@@ -1,0 +1,131 @@
+"""Tests for the evidence-independence mechanism (engine/roots.py + engine/assess.py).
+
+Mirrors the worked examples and adversarial cases in MECHANISM.md, so the spec and the code
+can't drift apart silently.
+"""
+import unittest
+
+from engine.assess import independence, weighted_distribution
+from engine.roots import resolve, tier_of
+
+
+def _kb(sources, positions=("X", "Y"), vocab_evidence=None):
+    hues = ["#111", "#222", "#333"]
+    return {"positions": [{"id": p, "label": p, "hue": hues[i % 3]} for i, p in enumerate(positions)],
+            "datasets": [], "factors": [], "sources": sources,
+            "vocab": {"evidence": vocab_evidence or []}}
+
+
+def _s(sid, pos, evidence, rests):
+    return {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests}
+
+
+def _roots(res, sid):
+    return sorted(res["source_roots"][sid])
+
+
+class TierTests(unittest.TestCase):
+    def test_punctuated_types_classify(self):
+        kb = _kb([])
+        self.assertEqual(tier_of(kb, {"evidence": "Narrative/Commentary"}), "secondary")
+        self.assertEqual(tier_of(kb, {"evidence": "Experimental (RCT)"}), "primary")
+        self.assertEqual(tier_of(kb, {"evidence": "Observational"}), "primary")
+
+    def test_unknown_type_defaults_primary(self):
+        self.assertEqual(tier_of(_kb([]), {"evidence": "Cliodynamic field survey"}), "primary")
+
+    def test_vocab_tier_override_wins(self):
+        kb = _kb([], vocab_evidence=[{"label": "Observational", "aliases": [], "tier": "secondary"}])
+        self.assertEqual(tier_of(kb, {"evidence": "Observational"}), "secondary")
+
+
+class ResolutionTests(unittest.TestCase):
+    def test_echo_collapses_to_one_voice(self):
+        kb = _kb([_s("a", "X", "Observational", ["D"]),
+                  _s("b", "X", "Narrative/Commentary", []),
+                  _s("c", "X", "Evidence-synthesis", []),
+                  _s("d", "X", "Expert advisory", [])])
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "a"), ["ds:D"])
+        for sid in ("b", "c", "d"):
+            self.assertEqual(_roots(res, sid), ["secpool:X"])
+
+    def test_well_tagged_review_collapses_into_the_dataset(self):
+        # E2: a review that restsOn the study it summarises needs no tier rule
+        kb = _kb([_s("study", "X", "Observational", ["D"]),
+                  _s("review", "X", "Evidence-synthesis", ["src:study"])])
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "review"), ["ds:D"])
+
+    def test_chain_resolves_to_terminal_dataset(self):
+        kb = _kb([_s("a", "X", "Narrative/Commentary", ["src:b"]),
+                  _s("b", "X", "Narrative/Commentary", ["src:c"]),
+                  _s("c", "X", "Evidence-synthesis", ["D"])])
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "a"), ["ds:D"])
+
+    def test_pure_circular_corroboration_is_flagged(self):
+        kb = _kb([_s("a", "X", "Narrative/Commentary", ["src:b"]),
+                  _s("b", "X", "Narrative/Commentary", ["src:a"])])
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "a"), _roots(res, "b"))   # collapse to one loop root
+        self.assertEqual(len(res["circular"]), 1)
+        self.assertEqual(res["circular"][0]["sources"], ["a", "b"])
+
+    def test_circular_but_grounded_is_not_flagged(self):
+        kb = _kb([_s("a", "X", "Observational", ["src:b", "D"]),
+                  _s("b", "X", "Narrative/Commentary", ["src:a"])])
+        res = resolve(kb)
+        self.assertEqual(res["circular"], [])
+        self.assertEqual(_roots(res, "a"), ["ds:D"])
+        self.assertEqual(_roots(res, "b"), ["ds:D"])
+
+    def test_dataset_via_secondary_only_is_marked(self):
+        kb = _kb([_s("rev", "X", "Evidence-synthesis", ["D"])])
+        res = resolve(kb)
+        self.assertIn("ds:D", res["secondary_only"])
+
+    def test_dataset_with_a_primary_source_is_not_secondary_only(self):
+        kb = _kb([_s("study", "X", "Observational", ["D"]),
+                  _s("rev", "X", "Evidence-synthesis", ["D"])])
+        res = resolve(kb)
+        self.assertNotIn("ds:D", res["secondary_only"])
+
+    def test_self_loop_is_ignored(self):
+        kb = _kb([_s("a", "X", "Observational", ["src:a"])])
+        res = resolve(kb)          # rests only on itself -> ungrounded primary -> own root
+        self.assertEqual(_roots(res, "a"), ["prim:a"])
+
+
+class MetricTests(unittest.TestCase):
+    def test_review_flood_cannot_inflate_independence(self):
+        # one real study + a flood of ungrounded reviews -> ~2 effective bases, not many
+        srcs = [_s("study", "X", "Observational", ["D"])]
+        srcs += [_s("r%d" % i, "X", "Narrative/Commentary", []) for i in range(50)]
+        ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertLessEqual(ind["nEff"], 2.01)
+        self.assertEqual(ind["collapsedSecondary"], 50)
+
+    def test_review_flood_cannot_tank_a_rivals_independence(self):
+        # flooding a position that has 3 distinct primary datasets with reviews must not crash it
+        srcs = [_s("p1", "X", "Observational", ["D1"]),
+                _s("p2", "X", "Observational", ["D2"]),
+                _s("p3", "X", "Observational", ["D3"])]
+        base = {p["id"]: p for p in independence(_kb(srcs))}["X"]["nEff"]
+        srcs += [_s("r%d" % i, "X", "Evidence-synthesis", []) for i in range(40)]
+        flooded = {p["id"]: p for p in independence(_kb(srcs))}["X"]["nEff"]
+        self.assertGreaterEqual(flooded, base)         # adding echo never lowers independence
+
+    def test_cohort_reuse_still_concentrates(self):
+        srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]
+        ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(ind["nEff"], 1.0, places=6)   # 8 papers, one dataset = one look
+
+    def test_weighted_distribution_sums_to_about_100(self):
+        kb = _kb([_s("a", "X", "Observational", ["D1"]),
+                  _s("b", "Y", "Narrative/Commentary", [])])
+        self.assertEqual(sum(d["pct"] for d in weighted_distribution(kb)), 100)
+
+
+if __name__ == "__main__":
+    unittest.main()
