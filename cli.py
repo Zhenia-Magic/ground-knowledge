@@ -24,6 +24,7 @@ import sys
 
 from engine.assess import assess, diff_assessments
 from engine.merge import merge_delta
+from engine.render import json_for_script
 from engine.schema import empty_kb
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -97,6 +98,25 @@ def cmd_show(args):
 # ---------------------------------------------------------------- assess
 def cmd_assess(args):
     print(json.dumps(assess(read_json(args.kb)), indent=2, ensure_ascii=False))
+
+
+def cmd_gaps(args):
+    """Show where this KB's evidence is thin — the steering wheel for gap-driven deep search."""
+    from engine.gaps import find_gaps, gap_queries
+    kb = read_json(args.kb)
+    queries = gap_queries(kb, find_gaps(kb))
+    if args.json:
+        print(json.dumps(queries, indent=2, ensure_ascii=False))
+        return
+    if not queries:
+        print("No gaps found — every position rests on independent primary evidence.")
+        return
+    print("{} gap(s) — aim the next search here:\n".format(len(queries)))
+    icon = {3: "!!", 2: "! ", 1: "  "}
+    for q in queries:
+        g = q["gap"]
+        print("  [{}] {:18} {}".format(icon.get(g["severity"], "  "), g["kind"], g["why"]))
+        print("       search: {}".format(q["query"]))
 
 
 # ---------------------------------------------------------------- add
@@ -217,7 +237,7 @@ def _build_viewer(kb_paths, out=None):
     bundle = {"order": order, "cases": cases}
     with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as f:
         tpl = f.read()
-    html = tpl.replace("/*__DATA__*/null", json.dumps(bundle, ensure_ascii=False))
+    html = tpl.replace("/*__DATA__*/null", json_for_script(bundle))
     out = out or os.path.join(ROOT, "viewer", "index.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
@@ -251,6 +271,7 @@ def cmd_push(args):
     otherwise updates it (optimistic version check on the baseVersion we pulled)."""
     from app import client
     base = client.portal_url(args.portal)
+    token = client.admin_token(args.token)
     kb = read_json(args.kb)
     who = args.as_ or "anonymous"
     portal_meta = (kb.get("meta") or {}).get("portal") or {}
@@ -259,7 +280,7 @@ def cmd_push(args):
         created = client.create_question(base, kb["meta"]["question"], who)
         qid, expected = created["id"], 0
         print("Created question {} on the portal.".format(qid))
-    res = client.put_kb(base, qid, kb, expected, who)
+    res = client.put_kb(base, qid, kb, expected, who, token=token)
     kb["meta"]["portal"] = {"id": qid, "baseVersion": res["version"], "url": base}
     write_json(args.kb, kb)                       # restamp lineage so the next push is clean
     print("Pushed '{}' -> {} (now v{}).".format(kb["meta"]["question"], qid, res["version"]))
@@ -506,6 +527,64 @@ def cmd_harvest(args):
         _build_viewer([args.kb])
 
 
+def cmd_deepen(args):
+    """Gap-driven deep search. Each round: find where evidence is THIN (engine/gaps.py), search
+    those gaps, ingest what's new, then re-check. Stops when a round adds nothing or the round
+    budget is hit — and ALWAYS reports the gaps still open. A plateau is a diagnostic, never a
+    claim that the evidence is exhausted (more may be findable with new search angles)."""
+    from engine.gaps import find_gaps, gap_queries
+    from ingest.pipeline import discover, ingest_batch
+    from engine.merge import source_key
+
+    tried, total_added = set(), 0
+    for rnd in range(1, args.rounds + 1):
+        gaps = gap_queries(read_json(args.kb), find_gaps(read_json(args.kb)))
+        if not gaps:
+            print("No gaps left — every position rests on independent primary evidence.")
+            break
+        batch_q = []
+        for q in gaps:                       # take the worst untried gaps this round
+            if q["query"].lower() in tried:
+                continue
+            tried.add(q["query"].lower()); batch_q.append(q)
+            if len(batch_q) >= args.width:
+                break
+        if not batch_q:
+            print("Round {}: every current gap-query already tried; {} gap(s) remain but need "
+                  "fresh search angles (try --source both).".format(rnd, len(gaps)))
+            break
+        print("\n=== Round {} — targeting {} thin spot(s) ===".format(rnd, len(batch_q)))
+        existing = {source_key(s) for s in read_json(args.kb)["sources"]}
+        urls = []
+        for q in batch_q:
+            print("  search [{}]: {}".format(q["gap"]["kind"], q["query"][:68]))
+            for it in discover(q["query"], k=args.per, source=args.source, deep=False) or []:
+                u = it.get("url")
+                if u and source_key({"url": u}) not in existing:
+                    existing.add(source_key({"url": u})); urls.append(u)
+        if not urls:
+            print("  no NEW candidates this round — {} gap(s) still open.".format(len(gaps)))
+            break
+        print("  ingesting {} new candidate(s)…".format(len(urls)))
+        added = _merge_deltas(args.kb, ingest_batch(urls, read_json(args.kb),
+                                                    batch=args.batch, max_text=args.max_text))
+        total_added += added
+        remaining = find_gaps(read_json(args.kb))
+        print("  round {}: +{} source(s); {} gap(s) remaining.".format(rnd, added, len(remaining)))
+        if added == 0:
+            print("  nothing merged — stopping (diminishing returns).")
+            break
+
+    final = gap_queries(read_json(args.kb), find_gaps(read_json(args.kb)))
+    print("\nDeep search done: +{} source(s) total. {} gap(s) still open.".format(total_added, len(final)))
+    if final:
+        print("Still thin (more may be findable — NOT a completeness claim):")
+        for q in final[:6]:
+            print("  - {}: {}".format(q["gap"]["kind"], q["gap"].get("why", "")))
+    if args.build:
+        _build_viewer([args.kb])
+
+
 def main():
     from app.env import load_dotenv
     load_dotenv()  # pick up keys/config from .env before any command (and before llm import)
@@ -516,6 +595,16 @@ def main():
     s.add_argument("--out"); s.set_defaults(fn=cmd_init)
     s = sub.add_parser("show"); s.add_argument("kb"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("assess"); s.add_argument("kb"); s.set_defaults(fn=cmd_assess)
+    s = sub.add_parser("gaps", help="show where evidence is thin (steers gap-driven deep search)")
+    s.add_argument("kb"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_gaps)
+    s = sub.add_parser("deepen", help="gap-driven deep search: find thin spots, search them, repeat")
+    s.add_argument("kb"); s.add_argument("--rounds", type=int, default=3)
+    s.add_argument("--width", type=int, default=4, help="thin spots targeted per round")
+    s.add_argument("--per", type=int, default=6, help="candidates fetched per gap search")
+    s.add_argument("--source", choices=["api", "web", "both"], default="api")
+    s.add_argument("--batch", type=int, default=5)
+    s.add_argument("--max-text", dest="max_text", type=int, default=4000)
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_deepen)
     s = sub.add_parser("add"); s.add_argument("kb"); s.add_argument("delta")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_add)
     s = sub.add_parser("build"); s.add_argument("kb", nargs="+"); s.add_argument("--out")
@@ -568,6 +657,7 @@ def main():
     s.add_argument("--portal"); s.set_defaults(fn=cmd_pull)
     s = sub.add_parser("push"); s.add_argument("kb")
     s.add_argument("--portal"); s.add_argument("--as", dest="as_", help="contributor name")
+    s.add_argument("--token", help="portal admin token (or set EPISTEMIC_ADMIN_TOKEN)")
     s.set_defaults(fn=cmd_push)
     s = sub.add_parser("questions"); s.add_argument("--search"); s.add_argument("--portal")
     s.set_defaults(fn=cmd_questions)

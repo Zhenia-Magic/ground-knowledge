@@ -17,7 +17,8 @@ def _kb(sources, positions=("X", "Y"), vocab_evidence=None):
 
 
 def _s(sid, pos, evidence, rests):
-    return {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests}
+    return {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
+            "funding": "Undisclosed", "population": "—", "confidence": "unstated"}
 
 
 def _roots(res, sid):
@@ -125,6 +126,32 @@ class MetricTests(unittest.TestCase):
         kb = _kb([_s("a", "X", "Observational", ["D1"]),
                   _s("b", "Y", "Narrative/Commentary", [])])
         self.assertEqual(sum(d["pct"] for d in weighted_distribution(kb)), 100)
+
+
+class GapTests(unittest.TestCase):
+    def test_thin_position_with_no_primary_is_flagged_severe(self):
+        from engine.gaps import find_gaps
+        kb = _kb([_s("a", "X", "Narrative/Commentary", []),
+                  _s("b", "X", "Expert advisory", []),
+                  _s("c", "Y", "Observational", ["D1"]),
+                  _s("d", "Y", "Observational", ["D2"])])
+        gaps = find_gaps(kb)
+        thin = [g for g in gaps if g["kind"] == "thin-position"]
+        self.assertTrue(any(g["positionId"] == "X" and g["severity"] == 3 for g in thin))
+        self.assertFalse(any(g["positionId"] == "Y" for g in thin))   # Y has 2 primary bases
+
+    def test_secondary_only_dataset_becomes_a_gap(self):
+        from engine.gaps import find_gaps
+        kb = _kb([_s("rev", "X", "Evidence-synthesis", ["D"])])
+        self.assertTrue(any(g["kind"] == "unsourced-dataset" and g["datasetId"] == "D"
+                            for g in find_gaps(kb)))
+
+    def test_gap_queries_are_nonempty_strings(self):
+        from engine.gaps import find_gaps, gap_queries
+        kb = _kb([_s("a", "X", "Narrative/Commentary", [])])
+        kb["meta"] = {"question": "Does X cause Y?"}
+        for q in gap_queries(kb, find_gaps(kb)):
+            self.assertTrue(q["query"].strip())
 
 
 if __name__ == "__main__":
