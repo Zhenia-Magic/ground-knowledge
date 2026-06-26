@@ -322,8 +322,13 @@ def ingest_source(target, kb, dry_run=False):
     return delta
 
 
-def build_discover_prompt(question, k=8, deep=False):
+def build_discover_prompt(question, k=8, deep=False, exclude=None):
     prompt = DISCOVER_TEMPLATE.replace("%K%", str(k)).replace("%QUESTION%", question)
+    if exclude:
+        have = "\n".join("  - " + t for t in exclude[:250] if t)
+        if have:
+            prompt += ("\n\nALREADY IN THE KNOWLEDGE BASE — do NOT return any of these; find "
+                       "DIFFERENT, genuinely new sources:\n" + have + "\n")
     return prompt + (_DEEP_DISCOVER if deep else "")
 
 
@@ -331,7 +336,7 @@ def _dedupe_title(s):
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
 
-def discover(question, k=8, dry_run=False, source="api", deep=False):
+def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=None):
     """Discover candidate sources for a question. `source` chooses the engine(s):
 
       "api"  — OpenAlex scholarly search only (no key, structured, fast).
@@ -347,6 +352,7 @@ def discover(question, k=8, dry_run=False, source="api", deep=False):
     want_web = source in ("web", "both")
 
     out, seen = [], set()
+    seen |= {_dedupe_title(t) for t in (exclude or []) if t}   # never re-surface what we already have
 
     def _merge(cands):
         for c in cands or []:
@@ -372,7 +378,7 @@ def discover(question, k=8, dry_run=False, source="api", deep=False):
             print("OpenAlex returned nothing; falling back to LLM web search.", file=sys.stderr)
 
     if want_web:
-        prompt = build_discover_prompt(question, k, deep=deep)
+        prompt = build_discover_prompt(question, k, deep=deep, exclude=exclude)
         if dry_run:
             print(prompt)
             print("\n# ---- paste the model's JSON array of sources here; ingest each with:")

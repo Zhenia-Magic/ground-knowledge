@@ -201,25 +201,36 @@ def search_openalex(question, k=20, from_year=None, min_citations=0, topic_filte
     if min_citations:
         base_filters.append("cited_by_count:>{}".format(int(min_citations) - 1))
 
-    def _query(use_focused, per_page):
+    def _query(use_focused, want):
+        # Cursor-paginate so a WIDE sweep (want >> 50) genuinely pulls hundreds, not one page.
         filters = list(base_filters)
-        params = {"per-page": min(max(per_page, 1), 50), "sort": "relevance_score:desc",
-                  "mailto": mail}
+        params = {"sort": "relevance_score:desc", "mailto": mail}
         if use_focused:
             filters.append("title_and_abstract.search:" + kw)
         else:
             params["search"] = kw
         params["filter"] = ",".join(filters)
-        try:
-            return _get(_BASE + "?" + urllib.parse.urlencode(params)).get("results", [])
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError):
-            return []
+        want = min(max(want, 1), 1000)            # safety ceiling on a single sweep
+        got, cursor = [], "*"
+        while len(got) < want:
+            page = dict(params, **{"per-page": min(want - len(got), 200), "cursor": cursor})
+            try:
+                data = _get(_BASE + "?" + urllib.parse.urlencode(page))
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError):
+                break
+            results = data.get("results", [])
+            got.extend(results)
+            cursor = (data.get("meta") or {}).get("next_cursor")
+            if not cursor or not results:
+                break
+        return got
 
     topic_filter = topic_filter and not os.environ.get("EPISTEMIC_LOOSE_SEARCH")  # escape hatch
     # Over-fetch a generous pool (independent of k) so the topic signal is robust and enough
-    # candidates survive filtering; we still return only the top k.
-    focused = _query(use_focused=True, per_page=max(k, 15))   # precise: ordered first
-    broad = _query(use_focused=False, per_page=50)            # broad: recall + topic signal
+    # candidates survive filtering; we still return only the top k. With a large k the cursor
+    # paging above makes this a real wide net rather than a single 50-result page.
+    focused = _query(use_focused=True, want=max(k, 15))   # precise: ordered first
+    broad = _query(use_focused=False, want=max(k, 50))    # broad: recall + topic signal
     on_topic = _on_topic_set(focused, broad) if topic_filter else set()
     exposure = _exposure_terms(kw) if topic_filter else []
 

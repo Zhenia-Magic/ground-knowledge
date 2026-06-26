@@ -457,9 +457,14 @@ def contribute_html(qid, get_question):
     a key on our side; the merge is deterministic.</p>
     """.format(id=_esc(qid), question=_esc(q["question"]))
     body = head + """
+    <div class="note">⚡ <b>Best results come from AI retrieval.</b> The scholarly search here is a
+      free, keyless fallback. To let an AI find, read, and label sources for you — the recommended
+      way — use the <a href="/docs">CLI or local app</a> with your own API key (Anthropic, OpenAI,
+      DeepSeek, and more).</p>
     <div class="panel">
       <div class="step">Step 1 · Find or paste a URL</div><h2>Find candidate papers</h2>
-      <p class="desc">Free scholarly search (OpenAlex) across the positions — no key.</p>
+      <p class="desc">Free scholarly search (OpenAlex) across the positions — no key. (For AI-powered
+      discovery, use the <a href="/docs">CLI or local app</a>.)</p>
       <div class="bar"><input id="k" type="number" value="10" style="flex:0 0 90px">
         <button class="btn" onclick="find()">Find sources</button></div>
       <div id="finds"></div>

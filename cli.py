@@ -499,10 +499,12 @@ def cmd_harvest(args):
     `discover --dry-run` then `ingest <link> --dry-run` per source. Resumable — re-running
     skips sources already in the KB (dedupe)."""
     from ingest.pipeline import discover, ingest_source, ingest_batch
-    question = read_json(args.kb)["meta"]["question"]
+    kb0 = read_json(args.kb)
+    question = kb0["meta"]["question"]
+    have = [s.get("title") for s in kb0["sources"] if s.get("title")]
     print("Discovering sources for: " + question)
     found = discover(question, k=args.k, dry_run=False,
-                     source=args.source, deep=args.deep) or []
+                     source=args.source, deep=args.deep, exclude=have) or []
     urls = [it.get("url") for it in found if it.get("url")]
     print("Found {} candidate source(s).\n".format(len(urls)))
     if args.batch > 1:
@@ -527,6 +529,32 @@ def cmd_harvest(args):
         _build_viewer([args.kb])
 
 
+def _choose_gaps(queries, tried, width, interactive):
+    """Pick which thin spots to pursue this round. Non-interactive: the worst `width` untried.
+    Interactive: list them and let the user choose (all / a subset / quit). Returns the chosen
+    list, [] if none left, or None if the user asked to stop."""
+    avail = [q for q in queries if q["query"].lower() not in tried]
+    if not avail:
+        return []
+    if not interactive:
+        return avail[:width]
+    sev = {3: "!!", 2: "! ", 1: "  "}
+    print("\nThin spots found:")
+    for i, q in enumerate(avail, 1):
+        g = q["gap"]
+        print("  {:>2}. [{}] {:18} {}".format(i, sev.get(g["severity"], "  "), g["kind"], g["why"]))
+    raw = input("\nWhich to explore? [Enter=all · e.g. 1,3,5 · q=quit]: ").strip().lower()
+    if raw in ("q", "quit"):
+        return None
+    if raw in ("", "all", "a"):
+        return avail
+    picks = []
+    for tok in raw.replace(",", " ").split():
+        if tok.isdigit() and 1 <= int(tok) <= len(avail):
+            picks.append(avail[int(tok) - 1])
+    return picks or avail
+
+
 def cmd_deepen(args):
     """Gap-driven deep search. Each round: find where evidence is THIN (engine/gaps.py), search
     those gaps, ingest what's new, then re-check. Stops when a round adds nothing or the round
@@ -542,23 +570,26 @@ def cmd_deepen(args):
         if not gaps:
             print("No gaps left — every position rests on independent primary evidence.")
             break
-        batch_q = []
-        for q in gaps:                       # take the worst untried gaps this round
-            if q["query"].lower() in tried:
-                continue
-            tried.add(q["query"].lower()); batch_q.append(q)
-            if len(batch_q) >= args.width:
-                break
+        interactive = sys.stdin.isatty() and not args.all
+        batch_q = _choose_gaps(gaps, tried, args.width, interactive)
+        if batch_q is None:                  # user chose to quit
+            print("Stopped at your request.")
+            break
         if not batch_q:
             print("Round {}: every current gap-query already tried; {} gap(s) remain but need "
                   "fresh search angles (try --source both).".format(rnd, len(gaps)))
             break
+        for q in batch_q:
+            tried.add(q["query"].lower())
         print("\n=== Round {} — targeting {} thin spot(s) ===".format(rnd, len(batch_q)))
-        existing = {source_key(s) for s in read_json(args.kb)["sources"]}
+        kb_now = read_json(args.kb)
+        existing = {source_key(s) for s in kb_now["sources"]}
+        have = [s.get("title") for s in kb_now["sources"] if s.get("title")]
         urls = []
         for q in batch_q:
             print("  search [{}]: {}".format(q["gap"]["kind"], q["query"][:68]))
-            for it in discover(q["query"], k=args.per, source=args.source, deep=False) or []:
+            for it in discover(q["query"], k=args.per, source=args.source, deep=False,
+                               exclude=have) or []:
                 u = it.get("url")
                 if u and source_key({"url": u}) not in existing:
                     existing.add(source_key({"url": u})); urls.append(u)
@@ -601,7 +632,8 @@ def main():
     s.add_argument("kb"); s.add_argument("--rounds", type=int, default=3)
     s.add_argument("--width", type=int, default=4, help="thin spots targeted per round")
     s.add_argument("--per", type=int, default=6, help="candidates fetched per gap search")
-    s.add_argument("--source", choices=["api", "web", "both"], default="api")
+    s.add_argument("--source", choices=["api", "web", "both"], default="web")
+    s.add_argument("--all", action="store_true", help="pursue all thin spots without prompting")
     s.add_argument("--batch", type=int, default=5)
     s.add_argument("--max-text", dest="max_text", type=int, default=4000)
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_deepen)
@@ -613,7 +645,7 @@ def main():
     s.add_argument("--dry-run", action="store_true"); s.add_argument("--apply", action="store_true")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_ingest)
     s = sub.add_parser("discover"); s.add_argument("kb"); s.add_argument("--k", type=int, default=8)
-    s.add_argument("--source", choices=["api", "web", "both"], default="api",
+    s.add_argument("--source", choices=["api", "web", "both"], default="web",
                    help="api=OpenAlex (no key), web=LLM web search, both=merge")
     s.add_argument("--deep", action="store_true", help="thorough multi-search web pass (with --source web/both)")
     s.add_argument("--dry-run", action="store_true"); s.set_defaults(fn=cmd_discover)
@@ -647,7 +679,7 @@ def main():
     s = sub.add_parser("harvest"); s.add_argument("kb"); s.add_argument("--k", type=int, default=8)
     s.add_argument("--batch", type=int, default=1, help="sources per LLM call; >1 = fewer calls")
     s.add_argument("--max-text", dest="max_text", type=int, default=4000)
-    s.add_argument("--source", choices=["api", "web", "both"], default="api",
+    s.add_argument("--source", choices=["api", "web", "both"], default="web",
                    help="api=OpenAlex (no key), web=LLM web search, both=merge")
     s.add_argument("--deep", action="store_true", help="thorough multi-search web pass (with --source web/both)")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_harvest)
