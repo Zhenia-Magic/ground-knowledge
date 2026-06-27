@@ -149,7 +149,7 @@
     <h2>Do it all</h2>
     <p class="desc">Find sources, fetch their real text, label, and import — automatically. <span id="ocMode" class="muted"></span></p>
     <div class="row">
-      <div class="narrow"><label for="ock"># sources</label><input id="ock" type="number" value="12" min="1"></div>
+      <div class="narrow"><label for="ock"># sources</label><input id="ock" type="number" value="12" min="0" title="0 = no limit"></div>
       <div class="src"><label for="ocSource">Where to look</label><select id="ocSource">
         <option value="web">AI web search (recommended)</option>
         <option value="both">AI + Papers (merge)</option>
@@ -157,7 +157,7 @@
       <button id="runAllBtn">Do it all ▸</button>
     </div>
     <label class="chk"><input type="checkbox" id="ocDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider. Set <b># sources to 0</b> for no limit (find as many as possible).</p>
     <div class="toast" id="ocToast"></div>
     <div class="results" id="ocResults"></div>
   </div>
@@ -170,7 +170,7 @@
     <h2>Find candidate sources</h2>
     <p class="desc">Search across the different positions. <span id="findMode"></span></p>
     <div class="row">
-      <div class="narrow"><label for="k"># sources</label><input id="k" type="number" value="12" min="1"></div>
+      <div class="narrow"><label for="k"># sources</label><input id="k" type="number" value="12" min="0" title="0 = no limit"></div>
       <div class="src"><label for="findSource">Where to look</label><select id="findSource">
         <option value="web">AI web search (recommended)</option>
         <option value="both">AI + Papers (merge)</option>
@@ -178,7 +178,7 @@
       <button id="findBtn">Find sources</button>
     </div>
     <label class="chk"><input type="checkbox" id="findDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider. Set <b># sources to 0</b> for no limit (find as many as possible).</p>
     <div class="toast ok" id="findToast"></div>
     <div id="findManual" style="display:none">
       <label for="candIn" style="margin-top:12px">Paste the chatbot's list of sources (JSON array)</label>

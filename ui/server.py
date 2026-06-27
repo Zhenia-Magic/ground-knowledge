@@ -184,7 +184,7 @@ def discover_op(cid, k, apply, source="api", deep=False):
     manual mode too); 'web' = LLM web search (needs a key — or paste prompt in manual mode);
     'both' = merge the two, deduped. deep=True runs an exhaustive multi-search web pass."""
     q = _read(_case_path(cid))["meta"]["question"]
-    k = int(k or 8)
+    k = 8 if k in (None, "") else int(k)        # 0 = no limit (as many as the AI / API returns)
     source = (source or "api").lower()
     want_api = source in ("api", "both") and not os.environ.get("EPISTEMIC_NO_API")
     want_web = source in ("web", "both")
@@ -204,7 +204,7 @@ def discover_op(cid, k, apply, source="api", deep=False):
     if want_api:
         try:
             from ingest.search import search_openalex
-            api_cands = search_openalex(q, k)
+            api_cands = search_openalex(q, k if k > 0 else 200)   # k<=0 -> wide pool
         except Exception:
             api_cands = []
         if api_cands:

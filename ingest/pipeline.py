@@ -138,7 +138,7 @@ RESEARCH_TEMPLATE = (
     "ALREADY IN THE KB — do NOT re-add these; find DIFFERENT sources:\n%EXISTING_SOURCES%\n\n"
     + _RULES + "\n\nReturn a JSON ARRAY, one object per source, each matching:\n" + _SCHEMA + "\n")
 
-DISCOVER_TEMPLATE = """Find up to %K% real, citable sources that bear on this research dispute,
+DISCOVER_TEMPLATE = """Find %COUNT% that bear on this research dispute,
 spanning the DIFFERENT positions people hold (not just one side). Prefer primary sources:
 papers, datasets, judge decisions, debate transcripts, well-known critical analyses.
 
@@ -323,7 +323,13 @@ def ingest_source(target, kb, dry_run=False):
 
 
 def build_discover_prompt(question, k=8, deep=False, exclude=None):
-    prompt = DISCOVER_TEMPLATE.replace("%K%", str(k)).replace("%QUESTION%", question)
+    try:
+        k = int(k)
+    except (TypeError, ValueError):
+        k = 0
+    count = ("as many real, citable sources as you can find" if k <= 0
+             else "up to {} real, citable sources".format(k))   # k<=0 -> no limit
+    prompt = DISCOVER_TEMPLATE.replace("%COUNT%", count).replace("%QUESTION%", question)
     if exclude:
         have = "\n".join("  - " + t for t in exclude[:250] if t)
         if have:
@@ -367,7 +373,7 @@ def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=Non
     if want_api:
         try:
             from ingest.search import search_openalex
-            api_cands = search_openalex(question, k)
+            api_cands = search_openalex(question, k if (k and k > 0) else 200)  # k<=0 -> wide pool
         except Exception:
             api_cands = []
         if api_cands:
