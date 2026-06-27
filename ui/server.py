@@ -442,6 +442,40 @@ def portal_pull_op(url, qid):
     return {"id": data["id"], "question": data["question"], "version": data["version"]}
 
 
+def gaps_op(cid):
+    """Where is this case's evidence thin? The steering wheel for gap-driven deep search."""
+    from engine.gaps import find_gaps, gap_queries
+    kb = _read(_case_path(cid))
+    return {"gaps": gap_queries(kb, find_gaps(kb))}
+
+
+def gaps_search_op(cid, queries, source="web", deep=False, k=6):
+    """Run discovery aimed at the chosen gap queries and return candidates for review (reusing the
+    normal find->fetch->label flow). Tells the model what we already have so it returns NEW sources."""
+    from ingest.pipeline import discover
+    from engine.merge import source_key
+    kb = _read(_case_path(cid))
+    have = [s.get("title") for s in kb["sources"] if s.get("title")]
+    existing = {source_key(s) for s in kb["sources"]}
+    k = 6 if k in (None, "") else int(k)
+    out, seen = [], set()
+    for q in (queries or []):
+        if not q:
+            continue
+        log("gap search: {}".format(str(q)[:70]))
+        for c in discover(q, k=k, source=source, deep=deep, exclude=have) or []:
+            u = c.get("url")
+            if not u:
+                continue
+            key = source_key({"url": u})
+            if key in existing or key in seen:
+                continue
+            seen.add(key)
+            out.append(c)
+    log("{} new candidate(s) across the gaps.".format(len(out)))
+    return {"candidates": out}
+
+
 def portal_push_op(url, cid):
     """Push a local case to the portal — create if it has no lineage, else version-checked update."""
     from app import client
@@ -527,6 +561,12 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/run-all":
                 return self._send(200, run_all_op(body.get("id"), body.get("k"),
                                                   body.get("source", "api"), body.get("deep", False)))
+            if self.path == "/api/gaps":
+                return self._send(200, gaps_op(body.get("id")))
+            if self.path == "/api/gaps/search":
+                return self._send(200, gaps_search_op(body.get("id"), body.get("queries"),
+                                                      body.get("source", "web"), body.get("deep", False),
+                                                      body.get("k", 6)))
             if self.path == "/api/add":
                 return self._send(200, add_payload(body.get("id"), body.get("text") or ""))
             if self.path == "/api/entities":
