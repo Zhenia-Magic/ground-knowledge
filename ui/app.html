@@ -149,15 +149,16 @@
     <h2>Do it all</h2>
     <p class="desc">Find sources, fetch their real text, label, and import — automatically. <span id="ocMode" class="muted"></span></p>
     <div class="row">
-      <div class="narrow"><label for="ock"># sources</label><input id="ock" type="number" value="12" min="0" title="0 = no limit"></div>
+      <div class="narrow"><label for="ock"># sources</label><input id="ock" type="number" value="12" min="1"></div>
       <div class="src"><label for="ocSource">Where to look</label><select id="ocSource">
         <option value="web">AI web search (recommended)</option>
         <option value="both">AI + Papers (merge)</option>
         <option value="api">Papers · OpenAlex only</option></select></div>
       <button id="runAllBtn">Do it all ▸</button>
     </div>
+    <label class="chk"><input type="checkbox" id="ocAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="ocDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider. Set <b># sources to 0</b> for no limit (find as many as possible).</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
     <div class="toast" id="ocToast"></div>
     <div class="results" id="ocResults"></div>
   </div>
@@ -170,15 +171,16 @@
     <h2>Find candidate sources</h2>
     <p class="desc">Search across the different positions. <span id="findMode"></span></p>
     <div class="row">
-      <div class="narrow"><label for="k"># sources</label><input id="k" type="number" value="12" min="0" title="0 = no limit"></div>
+      <div class="narrow"><label for="k"># sources</label><input id="k" type="number" value="12" min="1"></div>
       <div class="src"><label for="findSource">Where to look</label><select id="findSource">
         <option value="web">AI web search (recommended)</option>
         <option value="both">AI + Papers (merge)</option>
         <option value="api">Papers · OpenAlex only</option></select></div>
       <button id="findBtn">Find sources</button>
     </div>
+    <label class="chk"><input type="checkbox" id="findAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="findDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider. Set <b># sources to 0</b> for no limit (find as many as possible).</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
     <div class="toast ok" id="findToast"></div>
     <div id="findManual" style="display:none">
       <label for="candIn" style="margin-top:12px">Paste the chatbot's list of sources (JSON array)</label>
@@ -374,10 +376,14 @@ $("#newToggle").addEventListener("click",()=>{const b=$("#newBox");b.style.displ
 $("#createBtn").addEventListener("click",async()=>{try{const r=await api("/api/init",{id:$("#newId").value,question:$("#newQ").value});
   $("#newBox").style.display="none";$("#newId").value="";$("#newQ").value="";await loadCases(r.id);}catch(e){alert(e.message);}});
 
+// grey out the "# sources" field while "find all" is ticked
+$("#ocAll").addEventListener("change",e=>{$("#ock").disabled=e.target.checked;});
+$("#findAll").addEventListener("change",e=>{$("#k").disabled=e.target.checked;});
+
 // ---- Do it all
 $("#runAllBtn").addEventListener("click",()=>{if(!need())return;busy($("#runAllBtn"),async()=>{
   toast($("#ocToast"),"Searching, fetching & labelling… this can take a minute.","warn");
-  const r=await api("/api/run-all",{id:caseId(),k:$("#ock").value,source:$("#ocSource").value,deep:$("#ocDeep").checked});
+  const r=await api("/api/run-all",{id:caseId(),k:$("#ocAll").checked?0:$("#ock").value,source:$("#ocSource").value,deep:$("#ocDeep").checked});
   renderResults(r.results||[],$("#ocResults"));
   await loadCases(caseId());await api("/api/build",{});
   const skip=r.skipped&&r.skipped.length?` · ${r.skipped.length} skipped (couldn't fetch)`:"";
@@ -400,7 +406,7 @@ async function busy(btn,fn,label,withLog){const old=btn.textContent;btn.disabled
   btn.disabled=false;btn.textContent=old;}
 $("#findBtn").addEventListener("click",()=>{if(!need())return;const src=$("#findSource").value,deep=$("#findDeep").checked;
   busy($("#findBtn"),async()=>{
-  const r=await api("/api/discover",{id:caseId(),k:$("#k").value,apply:isAuto(),source:src,deep:deep});
+  const r=await api("/api/discover",{id:caseId(),k:$("#findAll").checked?0:$("#k").value,apply:isAuto(),source:src,deep:deep});
   if(r.candidates&&r.candidates.length)renderCandidates(r.candidates);
   if(r.mode==="manual"){await copy(r.prompt);$("#findManual").style.display="block";
     const got=r.candidates&&r.candidates.length?`${r.candidates.length} found via OpenAlex. Web prompt copied — paste into your chatbot for more, then add its list below.`:"Prompt copied — paste into your chatbot, then paste its list below.";
