@@ -177,7 +177,8 @@ def home_html():
       }).join('');
     }
     const ov=document.getElementById('nqOverlay'), nqIn=document.getElementById('nqInput');
-    function newQ(){ov.classList.add('show');nqIn.value='';setTimeout(()=>nqIn.focus(),30);}
+    function newQ(){ov.classList.add('show');nqIn.value=document.getElementById('q').value.trim();
+      setTimeout(()=>{nqIn.focus();nqIn.select();},30);}
     function closeNQ(){ov.classList.remove('show');}
     async function createNQ(){
       const question=nqIn.value.trim();

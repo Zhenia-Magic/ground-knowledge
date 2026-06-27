@@ -133,7 +133,13 @@
       <button class="ghost" id="portalPushBtn">Push current case →</button>
     </div>
     <div class="toast" id="portalToast"></div>
+    <input id="portalSearch" placeholder="Filter remote questions…" style="display:none;margin-top:10px">
     <div id="portalList" class="results"></div>
+    <div id="portalPager" class="row" style="display:none;justify-content:space-between;align-items:center;margin-top:8px">
+      <button class="ghost sm" id="portalPrev">← Prev</button>
+      <span class="hint" id="portalPageInfo"></span>
+      <button class="ghost sm" id="portalNext">Next →</button>
+    </div>
   </div>
 
   <!-- One click -->
@@ -322,17 +328,36 @@ $("#keyBtn").addEventListener("click",()=>busy($("#keyBtn"),async()=>{
 
 // ---- portal sync (pull / push)
 const portalUrl=()=>{const u=$("#portalUrl").value.trim();if(u)localStorage.setItem("portalUrl",u);return u;};
-$("#portalListBtn").addEventListener("click",()=>busy($("#portalListBtn"),async()=>{
-  const r=await api("/api/portal/list",{url:portalUrl()});
-  const qs=r.questions||[];
-  $("#portalList").innerHTML = qs.length? qs.map(q=>{
+let REMOTE_QS=[], rPage=0; const R_PAGE=10;
+function renderPortalList(){
+  const term=($("#portalSearch").value||"").trim().toLowerCase();
+  const filtered = term
+    ? REMOTE_QS.filter(q=>((q.question||"")+" "+(q.id||"")).toLowerCase().includes(term))
+    : REMOTE_QS;
+  const pages=Math.max(1,Math.ceil(filtered.length/R_PAGE));
+  if(rPage>=pages) rPage=pages-1;
+  if(rPage<0) rPage=0;
+  const slice=filtered.slice(rPage*R_PAGE,(rPage+1)*R_PAGE);
+  $("#portalList").innerHTML = filtered.length ? slice.map(q=>{
     const c=q.counts||{};
     return `<div class="cand"><div style="flex:1"><b>${esc(q.question)}</b>
       <span class="hint">v${c.version||0} · ${c.sources||0} sources · ${esc(q.id)}</span></div>
       <button class="ghost sm" data-pull="${esc(q.id)}">Pull ↓</button></div>`;
-  }).join('') : '<div class="hint">No questions on the portal yet.</div>';
+  }).join('') : `<div class="hint">${REMOTE_QS.length?'No matches.':'No questions on the portal yet.'}</div>`;
   $("#portalList").querySelectorAll("[data-pull]").forEach(b=>b.addEventListener("click",()=>pullQ(b.dataset.pull)));
-  toast($("#portalToast"),`Found ${qs.length} remote question(s).`,"ok");
+  $("#portalSearch").style.display = REMOTE_QS.length ? "block" : "none";
+  $("#portalPager").style.display = filtered.length>R_PAGE ? "flex" : "none";
+  $("#portalPageInfo").textContent = `${filtered.length} question${filtered.length===1?'':'s'} · page ${rPage+1}/${pages}`;
+  $("#portalPrev").disabled = rPage<=0;
+  $("#portalNext").disabled = rPage>=pages-1;
+}
+$("#portalSearch").addEventListener("input",()=>{rPage=0;renderPortalList();});
+$("#portalPrev").addEventListener("click",()=>{rPage--;renderPortalList();});
+$("#portalNext").addEventListener("click",()=>{rPage++;renderPortalList();});
+$("#portalListBtn").addEventListener("click",()=>busy($("#portalListBtn"),async()=>{
+  const r=await api("/api/portal/list",{url:portalUrl()});
+  REMOTE_QS=r.questions||[]; rPage=0; renderPortalList();
+  toast($("#portalToast"),`Found ${REMOTE_QS.length} remote question(s).`,"ok");
 },"Listing…"));
 async function pullQ(id){try{
   const r=await api("/api/portal/pull",{url:portalUrl(),id});
