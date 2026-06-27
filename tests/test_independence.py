@@ -35,6 +35,10 @@ class TierTests(unittest.TestCase):
     def test_unknown_type_defaults_primary(self):
         self.assertEqual(tier_of(_kb([]), {"evidence": "Cliodynamic field survey"}), "primary")
 
+    def test_meta_analysis_is_secondary(self):
+        # an untagged meta-analysis is echo, not an independent primary look
+        self.assertEqual(tier_of(_kb([]), {"evidence": "Meta-analysis"}), "secondary")
+
     def test_vocab_tier_override_wins(self):
         kb = _kb([], vocab_evidence=[{"label": "Observational", "aliases": [], "tier": "secondary"}])
         self.assertEqual(tier_of(kb, {"evidence": "Observational"}), "secondary")

@@ -23,8 +23,12 @@ def _norm(s):
 # punctuation like "Experimental (RCT)" or "Narrative/Commentary" still matches.
 _TIER = {_norm(k): v for k, v in {
     "observational": "primary", "experimental (rct)": "primary", "experimental": "primary",
-    "mechanistic": "primary", "meta-analysis": "primary", "theoretical analysis": "primary",
+    "mechanistic": "primary", "theoretical analysis": "primary",
     "theoretical critique": "primary", "modelling": "primary", "simulation": "primary",
+    # A meta-analysis / systematic review is a SYNTHESIS of others' studies, not new primary data.
+    # It only counts as independent if it TAGS the trials it pools (then it resolves through them);
+    # an untagged one is echo and collapses into the position's one secondary voice (MECHANISM.md §3).
+    "meta-analysis": "secondary", "systematic review": "secondary",
     "evidence-synthesis": "secondary", "expert advisory": "secondary", "expert review": "secondary",
     "narrative/commentary": "secondary", "narrative": "secondary", "commentary": "secondary",
     "institutional statement": "secondary", "editorial": "secondary", "perspective": "secondary",

@@ -55,10 +55,13 @@ For every source, the labeller (human or LLM) records:
 
 1. **Position** — the single stance it argues. (Already in the schema.)
 2. **Evidence type** — from the case's controlled vocabulary. This determines the **tier**:
-   - **Primary** tiers *make* evidence: `Observational`, `Experimental (RCT)`, `Mechanistic`,
-     and any meta-analysis **that produces its own pooled dataset**.
-   - **Secondary** tiers *talk about* evidence: `Narrative/Commentary`, `Evidence-synthesis`
-     (narrative review), `Expert advisory`, `Institutional statement`, `Editorial/Perspective`.
+   - **Primary** tiers *make* evidence: `Observational`, `Experimental (RCT)`, `Mechanistic`.
+   - **Secondary** tiers *talk about* evidence: `Meta-analysis` / `Systematic review`,
+     `Narrative/Commentary`, `Evidence-synthesis`, `Expert advisory`, `Institutional statement`,
+     `Editorial/Perspective`. A meta-analysis is a *synthesis* — it only counts as independent if it
+     **tags the trials it pools** (then it resolves through them, tier aside); an untagged one is
+     echo and collapses into the position's one secondary voice. (This is the common real failure:
+     ten meta-analyses of the same overlapping RCTs are one look, not ten.)
    - Tier is a property attached to each vocabulary term, not guessed per source — so it is
      deterministic and auditable, and a case can override it.
 3. **`restsOn`** — the heart of the mechanism. A list of what this source draws support from.
