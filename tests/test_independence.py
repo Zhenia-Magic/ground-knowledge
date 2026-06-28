@@ -186,3 +186,25 @@ class NonHumanTests(unittest.TestCase):
         self.assertFalse(_is_nonhuman({"population": "moderate-risk adults"}))   # 'rat' in 'moderate'
         self.assertTrue(_is_nonhuman({"population": "Rats"}))
         self.assertTrue(_is_nonhuman({"population": "In vitro / cell"}))
+
+
+class BudgetAndFundingTests(unittest.TestCase):
+    def test_funding_blindspot_gap_fires_when_all_undisclosed(self):
+        from engine.gaps import find_gaps
+        srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(5)]
+        for s in srcs:
+            s["funding"] = "Undisclosed"
+        self.assertTrue(any(g["kind"] == "funding-blindspot" for g in find_gaps(_kb(srcs))))
+
+    def test_funding_blindspot_silent_when_interested_funding_present(self):
+        from engine.gaps import find_gaps
+        srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(5)]
+        srcs[0]["funding"] = "Industry"
+        self.assertFalse(any(g["kind"] == "funding-blindspot" for g in find_gaps(_kb(srcs))))
+
+    def test_usage_accumulates_and_prices(self):
+        from ingest import llm
+        llm.reset_usage()
+        llm._record_usage("claude-sonnet-4-6", {"usage": {"input_tokens": 1_000_000, "output_tokens": 0}})
+        self.assertAlmostEqual(llm.usage()["usd"], 3.0, places=4)   # $3 / 1M input on sonnet
+        self.assertEqual(llm.usage()["calls"], 1)

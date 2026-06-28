@@ -68,6 +68,17 @@ def find_gaps(kb, a=None):
                          "why": "only one side weighs this factor — the rebuttal is missing",
                          "severity": 1})
 
+    # 5. Funding blind spot: no interested (industry/advocacy) funding identified and a big chunk
+    # undisclosed — the conflict-of-interest angle this tool exists to surface is unexplored.
+    fs = a.get("fundingSkew") or {}
+    total = len(kb["sources"])
+    if total and fs.get("n", 0) == 0 and fs.get("undisclosed", 0) >= max(3, round(0.3 * total)):
+        gaps.append({"kind": "funding-blindspot",
+                     "why": "no industry/advocacy funding identified, {} of {} sources undisclosed — "
+                            "the funding / conflict-of-interest angle is unexplored".format(
+                                fs.get("undisclosed"), total),
+                     "severity": 2})
+
     gaps.sort(key=lambda g: -g["severity"])
     return gaps
 
@@ -89,6 +100,8 @@ def gap_queries(kb, gaps):
             q = g["label"]                              # the dataset / cohort name itself
         elif k == "one-sided-factor":
             q = "{} {}".format(subj, g["label"])
+        elif k == "funding-blindspot":
+            q = "{} industry funding conflict of interest bias".format(subj)
         else:
             continue
         out.append({"gap": g, "query": " ".join(q.split())})

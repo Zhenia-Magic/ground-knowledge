@@ -577,14 +577,23 @@ def cmd_deepen(args):
     from engine.gaps import find_gaps, gap_queries
     from ingest.pipeline import discover, ingest_batch
     from engine.merge import source_key
+    from ingest import llm
 
+    budget = getattr(args, "budget", None)            # estimated USD cap; runs to cap or saturation
+    if budget:
+        llm.reset_usage()
+        print("Thorough search — spending up to ${:.2f} (estimated), then stopping.".format(budget))
+    max_rounds = 100 if budget else args.rounds       # budget mode: bounded by money, not rounds
     tried, total_added = set(), 0
-    for rnd in range(1, args.rounds + 1):
+    for rnd in range(1, max_rounds + 1):
+        if budget and llm.usage()["usd"] >= budget:
+            print("\nBudget reached (~${:.2f}). Stopping.".format(llm.usage()["usd"]))
+            break
         gaps = gap_queries(read_json(args.kb), find_gaps(read_json(args.kb)))
         if not gaps:
             print("No gaps left — every position rests on independent primary evidence.")
             break
-        interactive = sys.stdin.isatty() and not args.all
+        interactive = sys.stdin.isatty() and not args.all and not budget
         batch_q = _choose_gaps(gaps, tried, args.width, interactive)
         if batch_q is None:                  # user chose to quit
             print("Stopped at your request.")
@@ -615,13 +624,18 @@ def cmd_deepen(args):
                                                     batch=args.batch, max_text=args.max_text))
         total_added += added
         remaining = find_gaps(read_json(args.kb))
-        print("  round {}: +{} source(s); {} gap(s) remaining.".format(rnd, added, len(remaining)))
+        spent = "  ~${:.2f} spent".format(llm.usage()["usd"]) if budget else ""
+        print("  round {}: +{} source(s); {} gap(s) remaining.{}".format(
+            rnd, added, len(remaining), spent))
         if added == 0:
             print("  nothing merged — stopping (diminishing returns).")
             break
 
     final = gap_queries(read_json(args.kb), find_gaps(read_json(args.kb)))
-    print("\nDeep search done: +{} source(s) total. {} gap(s) still open.".format(total_added, len(final)))
+    spend = "  Estimated spend: ${:.2f} over {} LLM call(s).".format(
+        llm.usage()["usd"], llm.usage()["calls"]) if budget else ""
+    print("\nDeep search done: +{} source(s) total. {} gap(s) still open.{}".format(
+        total_added, len(final), spend))
     if final:
         print("Still thin (more may be findable — NOT a completeness claim):")
         for q in final[:6]:
@@ -647,6 +661,8 @@ def main():
     s.add_argument("--width", type=int, default=4, help="thin spots targeted per round")
     s.add_argument("--per", type=int, default=6, help="candidates fetched per gap search")
     s.add_argument("--source", choices=["api", "web", "both"], default="web")
+    s.add_argument("--budget", type=float,
+                   help="THOROUGH mode: keep going until ~$N (estimated) is spent or gaps run dry")
     s.add_argument("--all", action="store_true", help="pursue all thin spots without prompting")
     s.add_argument("--batch", type=int, default=5)
     s.add_argument("--max-text", dest="max_text", type=int, default=4000)

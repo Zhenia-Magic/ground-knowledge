@@ -169,6 +169,7 @@ Prefer the terminal? `python cli.py show <kb>` prints the same summary;
 | `harvest <kb> [--k N] [--source web\|api\|both] [--deep] [--build]` | **cold start in one go** (key for labelling): search → fetch all → label → build |
 | `discover <kb> [--k N] [--source web\|api\|both] [--deep] [--dry-run]` | find candidates: **AI web search (default)**, keyless OpenAlex, or both; `--k 0` = no limit; `--deep` = exhaustive pass |
 | `deepen <kb> [--rounds N] [--source …] [--all]` | **gap-driven deep search**: find thin spots → search them → ingest → repeat (you pick which gaps) |
+| `deepen <kb> --budget 3` | **thorough mode**: keep going until ~$3 (estimated) is spent or the gaps run dry; reports the spend |
 | `gaps <kb> [--json]` | show where evidence is thin (steers `deepen`) |
 | `ingest <kb> <link-or-file> [--apply] [--build] [--dry-run]` | fetch one source → label → delta (→ merge → build) |
 | `add <kb> <delta.json> [--build]` | merge a delta you already have; prints WHAT CHANGED |

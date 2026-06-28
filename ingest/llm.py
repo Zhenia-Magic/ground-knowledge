@@ -34,6 +34,47 @@ _OPENAI_COMPAT = [
 ]
 
 
+# Rough USD per 1M tokens (input, output), matched by model-name substring. Prices drift, so this
+# is an ESTIMATE for budgeting only; override a row or _PRICE_DEFAULT if yours differs.
+_PRICE = {
+    "claude-opus": (15.0, 75.0), "claude-sonnet": (3.0, 15.0), "claude-haiku": (0.80, 4.0),
+    "claude-fable": (3.0, 15.0),
+    "gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.0), "gpt-4": (10.0, 30.0),
+    "deepseek": (0.27, 1.10), "mistral": (2.0, 6.0), "llama": (0.59, 0.79),
+    "gemini-2.0-flash": (0.10, 0.40), "gemini": (1.25, 5.0),
+}
+_PRICE_DEFAULT = (3.0, 15.0)
+_USAGE = {"calls": 0, "input": 0, "output": 0, "usd": 0.0}   # running spend this process
+
+
+def reset_usage():
+    _USAGE.update(calls=0, input=0, output=0, usd=0.0)
+
+
+def usage():
+    return dict(_USAGE)
+
+
+def _price_for(model):
+    m = (model or "").lower()
+    for key, val in _PRICE.items():
+        if key in m:
+            return val
+    return _PRICE_DEFAULT
+
+
+def _record_usage(model, resp):
+    """Accumulate token usage + estimated USD from an API response (Anthropic or OpenAI shape)."""
+    u = (resp or {}).get("usage") or {}
+    inp = u.get("input_tokens", u.get("prompt_tokens", 0)) or 0
+    out = u.get("output_tokens", u.get("completion_tokens", 0)) or 0
+    pi, po = _price_for(model)
+    _USAGE["calls"] += 1
+    _USAGE["input"] += inp
+    _USAGE["output"] += out
+    _USAGE["usd"] += (inp * pi + out * po) / 1_000_000.0
+
+
 def _active_compat():
     """The first OpenAI-compatible provider whose key is set, or None."""
     for row in _OPENAI_COMPAT:
@@ -111,6 +152,7 @@ def _anthropic(prompt, system, web, deep=False):
     headers = {"x-api-key": os.environ["ANTHROPIC_API_KEY"],
                "anthropic-version": "2023-06-01", "content-type": "application/json"}
     resp = _post("https://api.anthropic.com/v1/messages", headers, body)
+    _record_usage(model, resp)
     return "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
 
 
@@ -126,6 +168,7 @@ def _openai_compat(prompt, system, env, base, default_model):
     headers = {"Authorization": "Bearer " + os.environ[env], "content-type": "application/json"}
     resp = _post(base.rstrip("/") + "/chat/completions", headers,
                  {"model": model, "messages": msgs})
+    _record_usage(model, resp)
     return resp["choices"][0]["message"]["content"]
 
 
