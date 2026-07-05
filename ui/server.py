@@ -32,7 +32,8 @@ from engine.schema import empty_kb
 from ingest import llm
 from ingest.extract import extract_text, clean_url
 from ingest.pipeline import (build_research_prompt, build_discover_prompt, build_extract_prompt,
-                             build_batch_extract_prompt, extract_prompts, _parse_json)
+                             build_batch_extract_prompt, extract_prompts, _parse_json,
+                             _carry_meta, _prompt_text)
 
 
 def has_key():
@@ -228,14 +229,16 @@ def discover_op(cid, k, apply, source="api", deep=False):
     return {"mode": "auto", "candidates": cands}
 
 
-def extract_op(cid, urls, apply, batch=5, max_text=4000):
-    """The grounded step: WE fetch each URL's real text, then build the extraction prompt
-    (MANUAL) or run it through the model (AUTO). Two reliability features:
+def extract_op(cid, urls, apply, batch=5, max_text=None):
+    """The grounded step: WE fetch each URL's best available text, then build the extraction
+    prompt (MANUAL) or run it through the model (AUTO). Two reliability features:
       * skip URLs already in the KB BEFORE fetching/labelling — so re-running after a failure
         never re-spends credits on sources already added.
       * AUTO merges batch-by-batch, persisting after each, so a mid-run error keeps finished work.
-    Unfetchable pages are skipped and reported, never guessed."""
-    batch, max_text = int(batch or 5), int(max_text or 4000)
+    Unfetchable pages are skipped and reported, never guessed. Sends each source's full fetched
+    text by default (max_text=None); pass a char cap to trim it for very large batches."""
+    batch = int(batch or 5)
+    max_text = int(max_text) if max_text else None
     urls = [clean_url(u) for u in (urls or []) if u]
     if not urls:
         raise ValueError("No source URLs to fetch.")
@@ -283,11 +286,7 @@ def extract_op(cid, urls, apply, batch=5, max_text=4000):
         if isinstance(arr, dict):
             arr = [arr]
         for delta, doc in zip(arr, group):
-            delta.setdefault("source", {})
-            if doc.get("url") and not delta["source"].get("url"):
-                delta["source"]["url"] = doc["url"]
-            if doc.get("title") and not delta["source"].get("title"):
-                delta["source"]["title"] = doc["title"]
+            _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
         res = _merge_list(cid, arr)  # persists to disk immediately → resume-safe
         added = sum(1 for r in res if r.get("status") == "added")
         log("  batch {}/{}: +{} added".format(n, nbatches, added))
@@ -628,7 +627,7 @@ class Handler(BaseHTTPRequestHandler):
                                                    body.get("source", "api"), body.get("deep", False)))
             if self.path == "/api/extract":
                 return self._send(200, extract_op(body.get("id"), body.get("urls"), body.get("apply"),
-                                                  body.get("batch", 5), body.get("maxText", 4000)))
+                                                  body.get("batch", 5), body.get("maxText")))
             if self.path == "/api/add-file":
                 return self._send(200, add_file_op(body.get("id"), body.get("filename"),
                                                    body.get("b64"), body.get("apply")))

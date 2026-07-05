@@ -60,14 +60,34 @@ def _read_question(qid):
     return {"id": q["id"], "question": q["question"], "version": q["version"], "kb": q["kb"]}
 
 
+def _strip_unverifiable_trust_fields(delta):
+    """textDepth and provenance[field].verifiedQuote/factorWeights[].verifiedQuote are only
+    honest when engine.verify computed them against text the server itself fetched
+    (ingest/pipeline.py's _carry_meta, the CLI/automated paths). This keyless paste-back
+    endpoint never fetches anything server-side, so a client could otherwise self-declare
+    "textDepth": "full", "verifiedQuote": "exact" on a fabricated quote with nothing to check
+    it against. Strip rather than trust."""
+    src = delta.get("source")
+    if isinstance(src, dict):
+        src.pop("textDepth", None)
+        for prov in (src.get("provenance") or {}).values():
+            if isinstance(prov, dict):
+                prov.pop("verifiedQuote", None)
+    for fw in delta.get("factorWeights") or []:
+        if isinstance(fw, dict):
+            fw.pop("verifiedQuote", None)
+    return delta
+
+
 def _norm_delta(it):
     """Accept either a full delta {source, factorWeights} or a bare source object."""
     if not isinstance(it, dict):
         return None
     if "source" in it:
-        return it
+        return _strip_unverifiable_trust_fields(it)
     if it.get("title") and it.get("position"):
-        return {"source": it, "factorWeights": it.get("factorWeights", [])}
+        return _strip_unverifiable_trust_fields(
+            {"source": it, "factorWeights": it.get("factorWeights", [])})
     return None
 
 
@@ -304,9 +324,9 @@ class Handler(BaseHTTPRequestHandler):
                                             "limit": MAX_FETCH_URLS})
                 docs, skipped = fetch_docs(urls, allow_local=False)
                 # ONE bundle over all fetched sources -> one file to upload, one JSON array back.
-                # Richer per-source text than the old multi-prompt batches (it's a file, not a
-                # paste box), so labelling sees more of each paper.
-                bundle = build_batch_extract_prompt(q["kb"], docs, max_text=8000) if docs else ""
+                # Full per-source text (not the old multi-prompt batches' small per-source cap),
+                # so labelling sees the whole paper, not just the first few thousand characters.
+                bundle = build_batch_extract_prompt(q["kb"], docs) if docs else ""
                 return self._send(200, {"bundle": bundle, "fetched": len(docs),
                                         "skipped": skipped})
             if action == "import-citations":

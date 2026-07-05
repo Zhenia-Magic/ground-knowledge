@@ -65,11 +65,13 @@ def _is_nonhuman(source):
 
 def _edges(source):
     """Split a source's restsOn into (dataset ids, source ids). Source edges are stored as
-    'src:<id>'; everything else is a dataset root."""
+    'src:<id>'; everything else is a dataset root. Case-insensitive prefix check: merge.py
+    always normalizes to lowercase, but a hand-authored/seed KB writing "SRC:<id>" should not
+    silently become a fake dataset (see SCHEMA.md on seed data)."""
     ds, src = [], []
     for e in source.get("restsOn") or []:
         e = str(e)
-        if e.startswith("src:"):
+        if e.lower().startswith("src:"):
             src.append(e[4:])
         else:
             ds.append(e)

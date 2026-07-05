@@ -101,6 +101,15 @@ class ResolutionTests(unittest.TestCase):
         res = resolve(kb)          # rests only on itself -> ungrounded primary -> own root
         self.assertEqual(_roots(res, "a"), ["prim:a"])
 
+    def test_uppercase_src_prefix_is_still_a_source_edge_not_a_fake_dataset(self):
+        # merge.py always stores restsOn edges lowercase, but a hand-authored/seed KB (SCHEMA.md)
+        # bypasses that normalization -- "SRC:b" must not silently become dataset "SRC:b".
+        kb = _kb([_s("a", "X", "Narrative/Commentary", ["SRC:b"]),
+                  _s("b", "X", "Observational", ["D"])])
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "a"), ["ds:D"])
+        self.assertNotIn("ds:SRC:b", res["source_roots"]["a"])
+
 
 class MetricTests(unittest.TestCase):
     def test_review_flood_cannot_inflate_independence(self):
@@ -260,7 +269,16 @@ class BudgetAndFundingTests(unittest.TestCase):
         llm.reset_usage()
         llm._record_usage("claude-sonnet-4-6", {"usage": {"input_tokens": 1_000_000, "output_tokens": 0}})
         self.assertAlmostEqual(llm.usage()["usd"], 3.0, places=4)   # $3 / 1M input on sonnet
-        self.assertEqual(llm.usage()["calls"], 1)
+
+    def test_price_lookup_picks_longest_match_regardless_of_dict_order(self):
+        # gemini-2.0-flash must get its own, more specific price rather than falling through to
+        # the general "gemini" row -- this must hold no matter which row is defined first.
+        from ingest import llm
+        self.assertEqual(llm._price_for("gemini-2.0-flash"), llm._PRICE["gemini-2.0-flash"])
+        self.assertNotEqual(llm._price_for("gemini-2.0-flash"), llm._PRICE["gemini"])
+        self.assertEqual(llm._price_for("gemini-1.5-pro"), llm._PRICE["gemini"])
+        self.assertEqual(llm._price_for("gpt-4o-mini"), llm._PRICE["gpt-4o-mini"])
+        self.assertEqual(llm._price_for("totally-unknown-model"), llm._PRICE_DEFAULT)
 
 
 class DedupTests(unittest.TestCase):

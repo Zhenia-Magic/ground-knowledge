@@ -56,10 +56,13 @@ def usage():
 
 
 def _price_for(model):
+    """Longest matching key wins (most specific), independent of _PRICE's insertion order — so
+    e.g. "gemini-2.0-flash" can't get shadowed by a future, more general "gemini" row added
+    above it, or vice versa."""
     m = (model or "").lower()
-    for key, val in _PRICE.items():
-        if key in m:
-            return val
+    matches = [(key, val) for key, val in _PRICE.items() if key in m]
+    if matches:
+        return max(matches, key=lambda kv: len(kv[0]))[1]
     return _PRICE_DEFAULT
 
 

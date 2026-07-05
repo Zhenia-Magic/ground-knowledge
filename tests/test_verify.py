@@ -8,7 +8,7 @@ from engine.assess import quote_audit
 from engine.merge import merge_delta
 from engine.schema import empty_kb
 from engine.verify import match_quote
-from ingest.pipeline import _carry_meta
+from ingest.pipeline import _carry_meta, _prompt_text, build_batch_extract_prompt
 
 TEXT = """Title of Paper
 
@@ -86,6 +86,48 @@ class CarryMetaVerificationTests(unittest.TestCase):
         delta = {"source": {"title": "t", "provenance": {"position": {"quote": ""}}}}
         _carry_meta(delta, {"kind": "full", "text": TEXT})
         self.assertNotIn("verifiedQuote", delta["source"]["provenance"]["position"])
+
+    def test_verifies_against_explicit_verify_text_not_full_doc_text(self):
+        # Regression: a batch call may truncate what the model actually sees (max_text) well
+        # below the full fetched doc. Verification must check the SAME truncated slice, not the
+        # fuller doc text -- otherwise a quote the model never saw could "verify" by accident
+        # against content sitting past the truncation point.
+        doc = {"kind": "full", "text": TEXT}
+        truncated = TEXT[:40]  # cuts off before EXACT_QUOTE appears
+        delta = {"source": {"title": "t", "provenance": {
+            "position": {"quote": EXACT_QUOTE},
+        }}}
+        _carry_meta(delta, doc, verify_text=truncated)
+        self.assertEqual(delta["source"]["provenance"]["position"]["verifiedQuote"], "missing")
+        # same quote, no truncation override -> verifies fine against the full doc text
+        delta2 = {"source": {"title": "t", "provenance": {
+            "position": {"quote": EXACT_QUOTE},
+        }}}
+        _carry_meta(delta2, doc)
+        self.assertEqual(delta2["source"]["provenance"]["position"]["verifiedQuote"], "exact")
+
+
+class PromptTextTruncationTests(unittest.TestCase):
+    def test_default_sends_full_text_untruncated(self):
+        doc = {"text": TEXT}
+        self.assertEqual(_prompt_text(doc), TEXT)
+        self.assertEqual(_prompt_text(doc, None), TEXT)
+
+    def test_explicit_max_text_truncates(self):
+        doc = {"text": TEXT}
+        self.assertEqual(_prompt_text(doc, 10), TEXT[:10])
+
+    def test_batch_prompt_embeds_full_text_by_default(self):
+        kb = empty_kb("abc", "Does X cause Y?")
+        prompt = build_batch_extract_prompt(kb, [{"title": "t", "url": "u", "text": TEXT}])
+        self.assertIn(TEXT.strip(), prompt)
+
+    def test_batch_prompt_truncates_when_max_text_given(self):
+        kb = empty_kb("abc", "Does X cause Y?")
+        prompt = build_batch_extract_prompt(kb, [{"title": "t", "url": "u", "text": TEXT}],
+                                            max_text=10)
+        # unique to the doc text (not boilerplate elsewhere in the template), sits past char 10
+        self.assertNotIn("R01-AA000000", prompt)
 
 
 class MergeCarriesVerificationTests(unittest.TestCase):

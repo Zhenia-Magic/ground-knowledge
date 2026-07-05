@@ -65,9 +65,9 @@ multiplying via paraphrase as a case grows):
   one paper; two pieces citing each other). Write "SRC:<existing source id>" or "NEW-SRC:<title>".
   This is how the independence audit detects echo and circular corroboration — name the source
   rather than fabricating a dataset for it.
-- funding: inspect funding statement, affiliations, and COI disclosures. "industry" if any
-  funder/affiliation has a commercial stake (trade groups, food/pharma; for reviews weigh
-  author COI); else "independent".
+- funding: inspect funding statement, affiliations, and COI disclosures; classify into ONE of:
+  Industry, Advocacy, Government/public, Nonprofit/charity, Academic/institutional. Use
+  "Undisclosed" if the text states no funding/COI — do NOT assume independence when it is silent.
 - evidence: the closest EXISTING evidence type; "NEW:<label>" only if none fit.
 - population: the studied GROUP (region / menopausal status / age) — NOT the study design
   (that is `evidence`). Reuse a term; prefer broad buckets; "—" if not population-specific. For a
@@ -103,7 +103,8 @@ multiplying via paraphrase as a case grows):
   "source": {
     "title": "...", "year": 2020, "url": "...",
     "position": "pos_none" | "NEW:Some new stance",
-    "evidence": "Observational", "funding": "independent" | "industry",
+    "evidence": "Observational",
+    "funding": "Industry" | "Advocacy" | "Government/public" | "Nonprofit/charity" | "Academic/institutional" | "Undisclosed",
     "population": "US health professionals", "confidence": "moderate",
     "restsOn": ["ds_nhs", "NEW:US pooled meta"],
     "provenance": {

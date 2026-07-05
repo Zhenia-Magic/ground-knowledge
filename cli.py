@@ -484,8 +484,7 @@ def cmd_ingest_batch(args):
             print("  skipped (couldn't fetch): {}".format(s["target"]))
         if not docs:
             raise SystemExit("Nothing fetched — no labelling file written.")
-        mt = args.max_text if args.max_text != 4000 else 8000   # default richer for a file
-        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=mt)
+        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=args.max_text)
         _write_prompt_files([bundle], "label-sources", tail=False)
         print("\nUpload that ONE file to Claude/ChatGPT, tell it to follow the instructions "
               "inside,\nthen save the JSON array it returns and run:  "
@@ -528,8 +527,7 @@ def cmd_import_citations(args):
             print("  skipped (couldn't fetch): {}".format(s["target"]))
         if not docs:
             raise SystemExit("Nothing fetched.")
-        mt = args.max_text if args.max_text != 4000 else 8000
-        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=mt)
+        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=args.max_text)
         _write_prompt_files([bundle], "label-sources", tail=False)
         print("\nUpload that ONE file to your chatbot; paste the JSON array; then:  "
               "python cli.py add {} <delta.json> --build".format(args.kb))
@@ -736,7 +734,8 @@ def main():
                    help="with --budget: wide-harvest the QUESTION instead of searching gaps")
     s.add_argument("--all", action="store_true", help="pursue all thin spots without prompting")
     s.add_argument("--batch", type=int, default=5)
-    s.add_argument("--max-text", dest="max_text", type=int, default=4000)
+    s.add_argument("--max-text", dest="max_text", type=int, default=None,
+                   help="cap each source's text at N chars per LLM call (default: send the full fetched text)")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_deepen)
     s = sub.add_parser("add"); s.add_argument("kb"); s.add_argument("delta")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_add)
@@ -756,8 +755,8 @@ def main():
     s = sub.add_parser("ingest-batch"); s.add_argument("kb"); s.add_argument("target", nargs="*")
     s.add_argument("--from", dest="from_file", help="discover JSON (array of {url,...}) to ingest")
     s.add_argument("--batch", type=int, default=5, help="sources per LLM call (default 5)")
-    s.add_argument("--max-text", dest="max_text", type=int, default=4000,
-                   help="chars of each source's text per call (default 4000)")
+    s.add_argument("--max-text", dest="max_text", type=int, default=None,
+                   help="cap each source's text at N chars per call (default: send the full fetched text)")
     s.add_argument("--bundle", action="store_true",
                    help="with --dry-run: fetch all sources into ONE labelling file to upload to a chatbot")
     s.add_argument("--dry-run", action="store_true"); s.add_argument("--apply", action="store_true")
@@ -781,7 +780,8 @@ def main():
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_tidy)
     s = sub.add_parser("harvest"); s.add_argument("kb"); s.add_argument("--k", type=int, default=8)
     s.add_argument("--batch", type=int, default=1, help="sources per LLM call; >1 = fewer calls")
-    s.add_argument("--max-text", dest="max_text", type=int, default=4000)
+    s.add_argument("--max-text", dest="max_text", type=int, default=None,
+                   help="cap each source's text at N chars per call (default: send the full fetched text)")
     s.add_argument("--source", choices=["api", "web", "both"], default="web",
                    help="api=OpenAlex (no key), web=LLM web search, both=merge")
     s.add_argument("--deep", action="store_true", help="thorough multi-search web pass (with --source web/both)")
@@ -803,7 +803,8 @@ def main():
     # citation interchange (Zotero / Mendeley / EndNote: .ris / .bib / .csl-json)
     s = sub.add_parser("import-citations"); s.add_argument("kb"); s.add_argument("file")
     s.add_argument("--batch", type=int, default=5)
-    s.add_argument("--max-text", dest="max_text", type=int, default=4000)
+    s.add_argument("--max-text", dest="max_text", type=int, default=None,
+                   help="cap each source's text at N chars per call (default: send the full fetched text)")
     s.add_argument("--dry-run", action="store_true"); s.add_argument("--apply", action="store_true")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_import_citations)
     s = sub.add_parser("export"); s.add_argument("kb")

@@ -113,7 +113,9 @@ _SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...",\n'
            '(e.g. \'Increases risk\', \'No clear effect\', \'Protective\') — NEVER one study metric/endpoint or jargon",\n'
            '"authors":["Surname, F.","..."]  (copy from the Authors: line if present),\n'
            '"venue":"journal/source name if shown","retracted":false  (true only if the text flags a retraction),\n'
-           '"evidence":"...","funding":"independent|industry","population":"...","confidence":"moderate",\n'
+           '"evidence":"...",'
+           '"funding":"Industry|Advocacy|Government/public|Nonprofit/charity|Academic/institutional|Undisclosed",\n'
+           '"population":"...","confidence":"moderate",\n'
            '"restsOn":["ds_id","NEW:Label","SRC:existing_source_id"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
            '"restsOn":{"quote":"...","extractionConfidence":0.8}}},\n'
            '"factorWeights":[{"factor":"exact factor label","weight":"high|med|low","quote":"...","rationale":"..."}]}')
@@ -253,16 +255,26 @@ def build_research_prompt(kb, k=20):
             .replace("%EXISTING_SOURCES%", _existing_sources(kb)))
 
 
-def build_batch_extract_prompt(kb, docs, max_text=4000):
-    """One prompt covering several sources — the KB tables appear once, each source's text is
-    trimmed to max_text to fit the budget. Cuts LLM calls ~len(docs)x at some cost in
-    per-source extraction depth (long full texts are truncated)."""
+def _prompt_text(doc, max_text=None):
+    """The exact text a source contributes to an extraction prompt -- the full fetch (already
+    capped at extract.MAX_CHARS) by default, or truncated to max_text chars when the caller
+    explicitly opts into a smaller per-source budget. Single source of truth for what the model
+    sees, so verification (_carry_meta) can check a quote against this SAME text, not a fuller
+    one the model never saw."""
+    t = doc.get("text") or ""
+    return t if max_text is None else t[:max_text]
+
+
+def build_batch_extract_prompt(kb, docs, max_text=None):
+    """One prompt covering several sources — the KB tables appear once. Sends each source's
+    FULL fetched text by default; pass max_text to cap it (fewer tokens per call, at some cost
+    in per-source extraction depth), e.g. for very large batches."""
     pos, ds, fac = _entity_tables(kb)
     blocks = []
     for n, d in enumerate(docs, 1):
         blocks.append("--- SOURCE {} ---\ntitle: {}\nurl: {}\ntext:\n{}".format(
             n, d.get("title") or "", d.get("url") or "(local document)",
-            (d.get("text") or "")[:max_text]))
+            _prompt_text(d, max_text)))
     return (BATCH_EXTRACT_TEMPLATE
             .replace("%QUESTION%", kb["meta"]["question"])
             .replace("%POSITIONS%", pos).replace("%DATASETS%", ds).replace("%FACTORS%", fac)
@@ -273,13 +285,14 @@ def build_batch_extract_prompt(kb, docs, max_text=4000):
             .replace("%SOURCES%", "\n\n".join(blocks)))
 
 
-def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=4000):
+def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=None):
     """Fetch and extract MANY sources with FEWER LLM calls: each group of up to `batch`
     sources becomes ONE call returning an array of deltas. Fetch failures are skipped, not
     fatal. Returns the list of deltas; in dry_run it RETURNS the list of combined prompt
     strings (one per group) so the caller can write them to files rather than flood the
     terminal. Entity resolution is still deterministic at merge time, so two sources that
-    independently propose "NEW:<same cohort>" collapse onto one dataset."""
+    independently propose "NEW:<same cohort>" collapse onto one dataset. Sends each source's
+    full fetched text by default (see _prompt_text); pass max_text to cap it."""
     docs = []
     for t in targets:
         try:
@@ -301,7 +314,7 @@ def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=4000):
         if isinstance(arr, dict):
             arr = [arr]
         for delta, doc in zip(arr, group):
-            _carry_meta(delta, doc)
+            _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
             deltas.append(delta)
     return None if dry_run else deltas
 
@@ -322,11 +335,16 @@ def _parse_json(raw):
     return value
 
 
-def _carry_meta(delta, doc):
+def _carry_meta(delta, doc, verify_text=None):
     """Copy fetch-derived metadata onto the delta's source when the labeller didn't supply it —
     so url/title/authors/venue/citations/retraction are captured deterministically from the API,
     not left to the model. Also verifies each quote against the text actually fetched (see
-    engine/verify.py, SCHEMA.md) — the only ground truth available here, full text or not."""
+    engine/verify.py, SCHEMA.md) — the only ground truth available here, full text or not.
+
+    verify_text lets a batched caller pass the (possibly max_text-truncated) slice actually sent
+    to the model for THIS source; without it, a quote could "verify" against content the model
+    was never shown, if a batch call trimmed the prompt below the full fetched text. Defaults to
+    the full doc text, correct for the single-source path (never truncated)."""
     src = delta.setdefault("source", {})
     for k in ("url", "title", "authors", "venue"):
         if doc.get(k) and not src.get(k):
@@ -337,7 +355,7 @@ def _carry_meta(delta, doc):
         src["retracted"] = doc["retracted"]
     src["textDepth"] = doc.get("kind", "unknown")
 
-    text = doc.get("text") or ""
+    text = verify_text if verify_text is not None else (doc.get("text") or "")
     for prov in (src.get("provenance") or {}).values():
         if isinstance(prov, dict) and prov.get("quote"):
             prov["verifiedQuote"] = match_quote(prov["quote"], text)
@@ -454,21 +472,7 @@ def fetch_docs(targets, allow_local=True):
     return docs, skipped
 
 
-def extract_prompts(kb, docs, batch=5, max_text=4000):
+def extract_prompts(kb, docs, batch=5, max_text=None):
     """Build the grounded extraction prompt(s) over already-fetched docs."""
     return [build_batch_extract_prompt(kb, docs[i:i + batch], max_text)
             for i in range(0, len(docs), batch)]
-
-
-def deltas_from_docs(kb, docs, batch=5, max_text=4000):
-    """AUTO path: extract deltas from already-fetched docs via the LLM (one call per batch)."""
-    deltas = []
-    for i in range(0, len(docs), batch):
-        group = docs[i:i + batch]
-        arr = _parse_json(llm.complete(build_batch_extract_prompt(kb, group, max_text)))
-        if isinstance(arr, dict):
-            arr = [arr]
-        for delta, doc in zip(arr, group):
-            _carry_meta(delta, doc)
-            deltas.append(delta)
-    return deltas

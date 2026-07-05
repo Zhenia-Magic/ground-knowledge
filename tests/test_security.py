@@ -10,7 +10,7 @@ from engine.render import json_for_script
 from engine.schema import empty_kb
 from ingest.extract import _SafeHTTPSHandler, _connect_public, _validate_remote_url
 from ingest.pipeline import fetch_docs
-from app.portal import _apply_delta
+from app.portal import _apply_delta, _norm_delta
 
 
 class ScriptEmbeddingTests(unittest.TestCase):
@@ -120,6 +120,43 @@ class DeltaValidationTests(unittest.TestCase):
             res = _apply_delta("abc", q, {"source": {"title": "Only a title"}}, "tester")
         self.assertIn("position", res.get("error", ""))
         save.assert_not_called()
+
+
+class UntrustedVerificationFieldTests(unittest.TestCase):
+    """The keyless paste-back endpoint never fetches text server-side, so textDepth and
+    verifiedQuote can only be honest when engine/verify computed them (ingest/pipeline.py's
+    _carry_meta, the CLI/automated paths). A client-submitted delta must not be able to
+    self-declare a fabricated quote as verified."""
+
+    def test_strips_spoofed_text_depth_and_verified_quote_from_full_delta(self):
+        d = _norm_delta({"source": {
+            "title": "t", "position": "NEW:Yes", "textDepth": "full",
+            "provenance": {"position": {"quote": "fabricated", "verifiedQuote": "exact"}},
+        }, "factorWeights": [{"factorLabel": "F", "weight": "high", "quote": "x",
+                              "verifiedQuote": "exact"}]})
+        self.assertNotIn("textDepth", d["source"])
+        self.assertNotIn("verifiedQuote", d["source"]["provenance"]["position"])
+        self.assertNotIn("verifiedQuote", d["factorWeights"][0])
+
+    def test_strips_spoofed_fields_from_bare_source_delta(self):
+        d = _norm_delta({"title": "t", "position": "NEW:Yes", "textDepth": "full",
+                         "provenance": {"position": {"quote": "fabricated",
+                                                      "verifiedQuote": "exact"}}})
+        self.assertNotIn("textDepth", d["source"])
+        self.assertNotIn("verifiedQuote", d["source"]["provenance"]["position"])
+
+    def test_end_to_end_apply_delta_never_persists_spoofed_verification(self):
+        kb = empty_kb("abc", "question")
+        q = {"kb": kb, "version": 0}
+        with mock.patch("app.store.save_kb", return_value=1):
+            _apply_delta("abc", q, {"source": {
+                "title": "t", "position": "NEW:Yes", "evidence": "Observational",
+                "funding": "Undisclosed", "population": "—", "textDepth": "full",
+                "provenance": {"position": {"quote": "fabricated", "verifiedQuote": "exact"}},
+            }}, "tester")
+        src = kb["sources"][0]
+        self.assertEqual(src["textDepth"], "unknown")
+        self.assertNotIn("verifiedQuote", src["provenance"]["position"])
 
 
 if __name__ == "__main__":
