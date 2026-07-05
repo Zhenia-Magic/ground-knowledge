@@ -62,12 +62,13 @@ Everything in the project follows from that commitment.
 For each research question, the tool builds a **knowledge base** — a single structured JSON file
 — and renders it as a clean web report with four tabs:
 
-- **Coverage** — how the evidence splits across positions (the naive view), *immediately
-  complicated* by a funding-bias flag.
-- **Divergence** — a grid showing which specific factors the camps actually disagree on (the
+- **Coverage & warnings** — how the evidence splits across positions (the naive view), *immediately
+  complicated* by a funding-bias flag and, when triggered, a shared-method-bias warning banner.
+- **Divergence matrix** — a grid showing which specific factors the camps actually disagree on (the
   "cruxes"), versus what they agree on.
-- **Independence** — the heart of it: for each position, how concentrated its evidence is on a
-  few datasets. This is the anti-false-balance audit.
+- **Independence & bias** — the heart of it: for each position, how concentrated its evidence is on
+  a few datasets (the anti-false-balance audit), plus the method-bias and quote-verification
+  warnings for that position.
 - **Changes** — a running history of what each newly added source did to the metrics.
 
 The knowledge base is the durable artifact. The web report is just a view of it. Anyone can take
@@ -90,12 +91,17 @@ arranged around a single source of truth (the knowledge-base JSON).
 Three sub-steps, and only the last needs an AI model:
 - **Find** candidate papers via a scholarly search engine (OpenAlex — a free, open index of
   250M+ academic works). No AI, no API key.
-- **Fetch** the real text of each paper by its identifier (DOI / PubMed / arXiv) through open
-  academic APIs — including the **full open-access PDF** when available, which is where the
-  funding statement and methods live. No web scraping, so no bot-walls.
+- **Fetch** the best available text of each paper by its identifier (DOI / PubMed / arXiv)
+  through open academic APIs — including the **full open-access PDF** when available, which is
+  where the funding statement and methods live. No web scraping, so no bot-walls. Not every
+  source yields full text (some APIs only ever return an abstract) — the tool records honestly
+  which it got (`textDepth`: full / abstract / partial) instead of claiming more than it fetched.
 - **Label** the fetched text with an AI model: which position does it take, what kind of evidence
   is it, who funded it, which datasets does it rest on, which factors does it weigh. This is the
-  *only* step that uses an AI.
+  *only* step that uses an AI. Every extracted provenance quote is then spot-checked against the
+  text that was actually fetched — a quote that doesn't match is flagged, but only counted as a
+  real warning on a full-text source; the same check on an abstract-only source is expected
+  noise, not an accusation (see §8).
 
 **Layer 2 — Structure (merging it in).**
 A small piece of **deterministic, plain-Python code** folds each labelled source into the
@@ -157,8 +163,8 @@ The same engine is reachable three ways, so different people can contribute:
 **(a) The web portal** (deployed, multi-user, no setup, no API key).
 Browse and search questions, open the live report, or add sources. The "add source" flow is
 **keyless**: you find papers via the free search (or paste a URL directly), the server fetches
-the real text and bundles it into a single file, you upload that file to *your own* ChatGPT or
-Claude to label it, and paste the result back. **No API key ever touches the server** — the
+the best available text and bundles it into a single file, you upload that file to *your own*
+ChatGPT or Claude to label it, and paste the result back. **No API key ever touches the server** — the
 expensive AI step happens in the user's own chatbot, and folding the result in is just the
 deterministic merge. This sidesteps the "would you trust a website with your API key?" problem
 entirely.
@@ -208,6 +214,21 @@ A guiding principle throughout: **finding and reading sources are free and keyle
   is refused). The same dataset submitted under five different names is matched to one entity, so
   nobody can fake independence by renaming.
 
+- **A second, separate axis for correlated *bias*, not just correlated *data*.** The independence
+  metric catches sources sharing a dataset — but 15 sources on 15 *distinct* cohorts can still all
+  share the same uncontrolled confounder (the textbook case: "moderate alcohol" cohorts sharing
+  abstainer/sick-quitter bias). A method-bias audit flags when a position's evidence leans heavily
+  on one correlated-error family (e.g. observational confounding, Mendelian-randomisation
+  pleiotropy) as a clearly separate warning — deliberately *not* folded into the independent-bases
+  count, so the primary metric's claim stays narrow and defensible while the warning still surfaces
+  the risk (see `MECHANISM.md` §12).
+
+- **Provenance quotes are checked, not just collected.** Every quote is matched against the exact
+  text the labeller actually saw. A mismatch on a full-text source is a real red flag (the model
+  said something the paper doesn't support); the identical mismatch on an abstract-only source is
+  expected noise, since the quote may be true but drawn from body text the tool never had — the two
+  are never conflated (see `SCHEMA.md`).
+
 ---
 
 ## 9. The honest limitations (stated on purpose)
@@ -226,6 +247,16 @@ A core value of the project is naming what it *doesn't* solve:
   determinism and provenance.
 - **Data realism.** One case (eggs) is a fully real, sourced evidence base; the others (COVID,
   black holes) are "worked seeds" — real structure, illustrative content.
+- **Method-bias is a warning, not yet a bounded second score.** The natural next step — a single
+  "triangulation" number that discounts independence for shared correlated error, the way the
+  primary metric discounts for shared datasets — turned out not to have a safe general formula
+  (a naive version could make independence look *higher* after adding the bias signal, the
+  opposite of the intent). Shipping a warning instead of a wrong number was the deliberate choice;
+  the honest math problem is written up, unsolved, in `MECHANISM.md` §12.
+- **Quote verification depends on what got fetched.** A quote can only be checked against text the
+  tool actually retrieved. Sources ingested before this feature existed, or added through the
+  keyless portal's paste-back flow (which never fetches server-side), show `textDepth: "unknown"`
+  and get no verdict at all — never a guessed one.
 
 ---
 
@@ -234,8 +265,11 @@ A core value of the project is naming what it *doesn't* solve:
 - A working three-layer pipeline (find → fetch → label → merge → recompute → view).
 - Real scholarly discovery (OpenAlex) + identifier-based full-text fetch (OpenAlex / arXiv /
   Semantic Scholar / Europe PMC) + Crossref funding lookup — all keyless.
+- Batch ingestion sends each source's full fetched text to the labeller by default (no more
+  silently trimming a paper down to a few thousand characters to save tokens).
 - The deterministic merge engine with entity resolution and anti-gaming defences.
-- All the assessment metrics + a self-contained web viewer.
+- All the assessment metrics + a self-contained web viewer, plus the method-bias audit and
+  quote-verification warnings described in §8.
 - A **deployed, multi-user portal** (live on the web, backed by a Postgres database) where anyone
   can browse, search, create questions, and contribute sources keyless.
 - A local power-user console with automatic labelling and git-like pull/push sync.

@@ -135,9 +135,9 @@ viewer's **Changes** tab. Duplicate sources (same url, or title+year) are refuse
 
 | View | Question it answers | Watch for |
 |------|--------------------|-----------|
-| **Coverage** | Who holds which position? Where's the industry money? | the **funding-skew** banner — which camp industry funding favours |
-| **Divergence** | What do the camps *actually* disagree on? | rows badged **CRUX** (spread ≥2); the rest is hidden agreement |
-| **Independence** | Is a consensus real, or the same data counted twice? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset |
+| **Coverage & warnings** | Who holds which position? Where's the industry money? | the **funding-skew** banner — which camp industry funding favours; a **shared-method-bias** banner when many sources lean on the same correlated-error family |
+| **Divergence matrix** | What do the camps *actually* disagree on? | rows badged **CRUX** (spread ≥2); the rest is hidden agreement |
+| **Independence & bias** | Is a consensus real, or the same data counted twice? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset; the same method-bias warning, plus an **unverified-quote** warning when a full-text source's quote doesn't match its fetched text |
 | **Changes** | What did each new source do to the picture? | concentration/​distribution shifts, new cruxes, blindspots opening/closing |
 
 Reading rules of thumb:
@@ -145,6 +145,10 @@ Reading rules of thumb:
   Adding *correlated* sources makes this **worse**, not better — by design.
 - **Funding skew** is a flag to weigh, not a verdict: it tells you where to apply scrutiny.
 - **Few cruxes** is the normal, healthy finding: most disagreement is local.
+- **Method-bias and quote warnings never change the independence count.** They're a separate
+  signal shown alongside it, not folded into the number — see `MECHANISM.md` §12.
+- **An unverified quote only means something on a full-text source.** The same "missing" verdict
+  on an abstract-only source is expected — the tool never had the text to check against.
 
 Prefer the terminal? `python cli.py show <kb>` prints the same summary;
 `python cli.py assess <kb>` dumps the full metrics as JSON (for scripting / diffing).

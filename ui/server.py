@@ -257,7 +257,7 @@ def extract_op(cid, urls, apply, batch=5, max_text=None):
         return {"mode": "auto" if apply else "manual", "fetched": 0, "skipped": [],
                 "results": [], "prompts": []}
 
-    log("fetching real text for {} source(s)…".format(len(todo)))
+    log("fetching best available text for {} source(s)…".format(len(todo)))
     docs, skipped = [], []
     for i, u in enumerate(todo, 1):
         try:
@@ -295,7 +295,7 @@ def extract_op(cid, urls, apply, batch=5, max_text=None):
 
 
 def run_all_op(cid, k, source="api", deep=False):
-    """One click: discover → fetch real text → label → merge. AUTO only (needs an API key);
+    """One click: discover → fetch best available text → label → merge. AUTO only (needs an API key);
     manual mode can't run unattended because each step is a copy/paste. Re-runnable: if it
     fails partway, finished sources are saved and skipped on the next run."""
     if not has_key():

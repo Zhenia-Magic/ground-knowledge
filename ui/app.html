@@ -68,7 +68,7 @@
     <div>
       <div class="brand">Ground Knowledge</div>
       <h1>Research console</h1>
-      <div class="sub">Find sources → let the AI label the <i>real</i> text we fetch → review what changed.</div>
+      <div class="sub">Find sources → let the AI label the <i>best available</i> text we fetch → review what changed.</div>
     </div>
     <div style="text-align:right">
       <span class="badge manual" id="modeBadge">…</span><br>
@@ -148,7 +148,7 @@
   <div class="card" id="oneClickCard" style="border-color:var(--line-strong)">
     <div class="step">One click</div>
     <h2>Do it all</h2>
-    <p class="desc">Find sources, fetch their real text, label, and import — automatically. <span id="ocMode" class="muted"></span></p>
+    <p class="desc">Find sources, fetch their best available text, label, and import — automatically. <span id="ocMode" class="muted"></span></p>
     <div class="row">
       <div class="narrow"><label for="ock"># sources</label><input id="ock" type="number" value="12" min="1"></div>
       <div class="src"><label for="ocSource">Where to look</label><select id="ocSource">
@@ -194,7 +194,7 @@
   <!-- 3. Fetch & label -->
   <div class="card">
     <div class="step">Step 3 · Fetch &amp; label</div>
-    <h2>Fetch the real text, then label it</h2>
+    <h2>Fetch the best available text, then label it</h2>
     <div class="ground">✓ We download each article ourselves (with a reader-proxy fallback for blocked sites) and ask the AI to label <b>only the text we fetched</b> — it can't invent contents. Pages we can't reach are skipped, not guessed.</div>
     <div class="row" style="margin-top:12px">
       <button id="fetchBtn" disabled>Fetch &amp; label selected</button>

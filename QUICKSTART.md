@@ -118,8 +118,9 @@ python cli.py build cases/salt.kb.json
 open viewer/index.html        # macOS — or just double-click the file
 ```
 
-Four tabs: **Coverage** (who holds what + funding skew), **Divergence** (the cruxes),
-**Independence** (is the consensus real?), **Changes** (history). Prefer the terminal?
+Four tabs: **Coverage & warnings** (who holds what + funding skew + shared-method-bias flag),
+**Divergence matrix** (the cruxes), **Independence & bias** (is the consensus real, plus the same
+method-bias and quote-verification warnings), **Changes** (history). Prefer the terminal?
 `python cli.py show cases/salt.kb.json`.
 
 **Tip — show several disputes in one viewer with a case switcher:**

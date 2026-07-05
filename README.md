@@ -60,9 +60,11 @@ without. Tested on Python 3.9–3.10.
 
 > ### Reviewers — start here
 > **Try the live instance — no setup, no API key: [groundknowledge.org](https://groundknowledge.org)**
-> — browse the cases, open a report (Coverage · Divergence · Independence · Changes), or add a
-> source to one. The **Independence** tab is the thesis made visible: each position shown as its
-> count of genuinely independent evidence bases, with echo collapsed and circular citation flagged.
+> — browse the cases, open a report (Coverage & warnings · Divergence matrix · Independence & bias ·
+> Changes), or add a source to one. The **Independence** tab is the thesis made visible: each
+> position shown as its count of genuinely independent evidence bases, with echo collapsed and
+> circular citation flagged — plus a separate warning when evidence shares a correlated-error
+> family (e.g. observational confounding) or a provenance quote doesn't match its fetched text.
 >
 > Or run it locally (core is pure stdlib — no `pip install`; find + fetch are keyless, only
 > *labelling* needs a model):
