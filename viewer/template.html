@@ -46,6 +46,14 @@
   .splitlabel .q{font-weight:400;color:var(--faint);font-size:12px;}
   .takeaway{margin:14px 0 2px;font-size:14px;line-height:1.55;color:var(--ink);
     background:var(--flag-bg);border-left:3px solid var(--flag);border-radius:0 8px 8px 0;padding:12px 15px;}
+  .method-alert{margin:14px 0 2px;font-size:14px;line-height:1.55;color:var(--ink);
+    background:var(--ochre-bg);border:1px solid #E3CD99;border-left:4px solid var(--ochre);
+    border-radius:0 9px 9px 0;padding:13px 15px;}
+  .method-alert .risk-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:3px;}
+  .method-alert .risk-link{appearance:none;border:1px solid #D5B873;background:#fff;color:var(--ochre);
+    border-radius:6px;padding:5px 9px;margin-top:9px;font:inherit;font-size:12px;cursor:pointer;}
+  .method-alert .risk-link:hover{background:#FFF8E8;}
   .distrib{display:flex;height:40px;border-radius:8px;overflow:hidden;border:1px solid var(--line);}
   .distrib .seg-bar{display:block;line-height:40px;text-align:center;font-size:12px;font-family:var(--mono);
     cursor:pointer;border:0;color:#fff;min-width:0;padding:0 8px;transition:opacity .15s;
@@ -56,6 +64,8 @@
   .legend .key{display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:color .12s;}
   .legend .key:hover{color:var(--ink);text-decoration:underline;}
   .legend .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .riskbadge{font-family:var(--mono);font-size:10px;color:var(--ochre);background:var(--ochre-bg);
+    border:1px solid #E3CD99;border-radius:5px;padding:1px 6px;white-space:nowrap;}
   .skew{font-family:var(--mono);font-size:12px;color:var(--ochre);background:var(--ochre-bg);
     border-radius:8px;padding:9px 12px;margin-top:14px;display:flex;gap:8px;align-items:flex-start;}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;}
@@ -190,9 +200,9 @@
 const DATA = /*__DATA__*/null;
 
 const VIEWS=[
-  {id:"coverage",label:"Coverage & blindspots"},
+  {id:"coverage",label:"Coverage & warnings"},
   {id:"divergence",label:"Divergence matrix"},
-  {id:"independence",label:"Independence audit"},
+  {id:"independence",label:"Independence & bias"},
   {id:"changes",label:"Changes"},
 ];
 const state={caseId:DATA&&DATA.order[0], view:"coverage", filter:null};
@@ -248,6 +258,9 @@ function strengthTier(ev){
 
 function renderCoverage(c){
   const {kb,assessment:a}=c, {pos,ds}=maps(kb), active=state.filter;
+  const methodRisks=(a.methodAudit||[]).filter(m=>m.monoculture);
+  const methodRiskIds={}; methodRisks.forEach(m=>methodRiskIds[m.id]=true);
+  const methodRisk=a.methodMonoculture||methodRisks[0];
   const bar=a.distribution.map(d=>{
     const dim=active&&active!==d.id?"dim":"";
     const barLabel = (pos[d.id] && pos[d.id].shortLabel) || shortLabel(d.label);
@@ -274,8 +287,18 @@ function renderCoverage(c){
       ? `<div class="takeaway">Weighted by independence, <b>${esc(big.label)}</b> drops from <b>${big.rawPct}%</b> of sources to <b>${big.wPct}%</b> of the independent evidence — its support rests on fewer distinct datasets than the headcount implies.</div>`
       : `<div class="takeaway">The two views largely agree here — each position's evidence is about as independent as it is numerous.</div>`;
   }
+  const methodRiskHtml=methodRisk?`<div class="method-alert">
+      <div class="risk-kicker">Potential shared-method bias</div>
+      <div><b>${esc(methodRisk.label)}</b>: ${methodRisk.top.count} of ${methodRisk.raw} sources fall into the same method-risk family, <b>${esc(methodRisk.top.label)}</b>. Separate datasets can still be wrong together when studies share the same design weakness.</div>
+      <button class="risk-link" data-view="independence">See the evidence bases</button>
+    </div>`:"";
+  const qFlagged=(a.quoteAudit&&a.quoteAudit.flagged)||[];
+  const quoteRiskHtml=qFlagged.length?`<div class="method-alert">
+      <div class="risk-kicker">Unverified quote${qFlagged.length===1?"":"s"}</div>
+      <div>${qFlagged.length} source${qFlagged.length===1?" has a provenance quote":"s have provenance quotes"} that ${qFlagged.length===1?"doesn't":"don't"} match the full text we fetched for ${qFlagged.length===1?"it":"them"} — e.g. <b>${esc(qFlagged[0].title||qFlagged[0].id)}</b>. Not a guess about missing text: this is fetched full text the quote should match and doesn't.</div>
+    </div>`:"";
   const legend=a.distribution.map(d=>
-    `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span></span>`).join("");
+    `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${methodRiskIds[d.id]?'<span class="riskbadge">method-bias risk</span>':""}</span>`).join("");
   let skewHtml="";
   if(a.fundingSkew){
     const f=a.fundingSkew, parts=[];
@@ -305,7 +328,11 @@ function renderCoverage(c){
         pq.quote="";}
     const conf=pq.extractionConfidence;
     const confHtml=conf!=null?`<span class="conf${conf<0.5?" low":""}" title="How sure the labeller was that this quote justifies placing the source under “${esc(p.label)}”. Lower = more of a judgement call, worth checking against the source.">${conf<0.5?"⚠ ":""}Labelling confidence: ${Math.round(conf*100)}%${conf<0.5?" — judgement call":""}</span>`:"";
-    const why=pq.quote?`<div class="why"><span class="wl">Filed under “${esc(p.label)}” because</span><q>${esc(pq.quote)}</q>${confHtml}</div>`:"";
+    const depthLabel={full:"full text",abstract:"abstract only",partial:"page text"}[s.textDepth];
+    const depthTag=depthLabel?`<span class="tag" title="How much of the source the labeller actually had: ${esc(depthLabel)}.">${esc(depthLabel)}</span>`:"";
+    const quoteWarn=(pq.verifiedQuote==="missing"&&s.textDepth==="full")
+      ?`<span class="conf low" title="This quote does not match the full text we fetched for this source.">⚠ quote not found in fetched text</span>`:"";
+    const why=pq.quote?`<div class="why"><span class="wl">Filed under “${esc(p.label)}” because</span><q>${esc(pq.quote)}</q>${confHtml}${quoteWarn}</div>`:"";
     return `<div class="card${s.retracted?" retracted":""}" style="border-left-color:${p.hue}">
       <div class="ct"><div class="titlewrap"><span class="title">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`:esc(s.title)}</span> <span class="yr">${esc(s.year||"")}</span></div>
         <span class="stance" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.label)}</span></div>
@@ -316,6 +343,7 @@ function renderCoverage(c){
         <span class="tag ${/industry|advocacy/i.test(s.funding)?'industry':(/undisclosed/i.test(s.funding)?'rests':'')}">${esc(s.funding||'Undisclosed')}</span>
         ${s.population&&s.population!=="—"?`<span class="tag">${esc(s.population)}</span>`:""}
         <span class="tag">conf: ${esc(s.confidence)}</span>
+        ${depthTag}
         ${isNew?`<span class="tag new">added v${s.addedIn}</span>`:""}
         ${rests}
       </div>${why}</div>`;
@@ -336,6 +364,7 @@ function renderCoverage(c){
       <div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
       <div class="distrib">${wbar}</div>
       ${takeaway}`:""}
+      ${methodRiskHtml}${quoteRiskHtml}
       <div class="legend">${legend}</div>${skewHtml}</div>
     <div class="panel"><h3>Sources${active?` — ${esc(pos[active].label)}`:""}</h3>
       <p class="hint">each source tagged with evidence type, funding, population, and the datasets it rests on (↳)</p>
@@ -392,8 +421,11 @@ function renderIndependence(c){
               primary:{lab:"own observation",col:"#222a35"},
               secondary:{lab:"secondary voice",col:"#c4ccd4"},
               cycle:{lab:"circular loop",icon:"⚠"}};
+  const methodByPos={};
+  (a.methodAudit||[]).forEach(m=>methodByPos[m.id]=m);
   const rows=a.independence.map(p=>{
     const eff=p.nEff.toFixed(1);
+    const ma=methodByPos[p.id];
     const bases=(p.bases||[]).map(b=>{
       const k=KIND[b.kind]||KIND.dataset;
       const tag=k.lab+(b.secondaryOnly?" · via review only":"")+(b.nonHuman?" · animal / in-vitro":"")+(b.weight>1?" ×"+b.weight:"");
@@ -403,19 +435,33 @@ function renderIndependence(c){
     }).join("")||`<span class="muted">—</span>`;
     const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
     const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence.</div>`:"";
+    let method="";
+    if(ma&&ma.top){
+      const allShare=pct(ma.top.count/(ma.raw||1));
+      const sourceWord=ma.top.count===1?"source":"sources";
+      const grouped=ma.classed===ma.raw
+        ?"Every source in this position has a recognizable method-risk family."
+        :`This simple check recognized method-risk families for ${ma.classed} of ${ma.raw} sources; the rest are secondary evidence or designs it does not group.`;
+      const status=ma.monoculture
+        ?"Warning: this is enough of the position to suggest a shared blind spot. It does not change the independent-bases count."
+        :"This is below the position-wide warning threshold and does not change the independent-bases count.";
+      method=`<div class="ind-note${ma.monoculture?" warn":""}">Method-bias check: ${ma.top.count} of ${ma.raw} sources fall into the same method-risk family: <b>${esc(ma.top.label)}</b> (${allShare} of all sources). ${grouped} ${status}</div>`;
+    }
     return `<div class="ind2">
       <div class="hd"><span class="dot" style="background:${p.hue}"></span><b>${esc(p.label)}</b>
         <span class="eff">${eff} independent base${eff==="1.0"?"":"s"} <span class="m">from ${p.raw} source${p.raw===1?"":"s"}</span></span></div>
-      <div class="bases">${bases}</div>${sec}${circ}
+      <div class="bases">${bases}</div>${sec}${circ}${method}
     </div>`;
   }).join("");
   const w=a.worstConcentration;
   const flag=w?`<div class="flagbox"><span>⚠</span><span><b>Apparent consensus is correlated.</b> The "${esc(w.label)}" position lists ${w.raw} sources, but ${w.topDataset.count} rest on one dataset — <b>${esc(w.topDataset.label)}</b>. That's closer to ${w.nEff.toFixed(1)} independent bases than ${w.raw}. Counting sources here overstates the weight of evidence.</span></div>`
     :`<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
+  const m=a.methodMonoculture;
+  const mflag=m?`<div class="flagbox"><span>⚠</span><span><b>Method-bias warning.</b> In the "${esc(m.label)}" position, ${m.top.count} of ${m.raw} sources fall into the same method-risk family: <b>${esc(m.top.label)}</b>. Separate datasets can still be wrong together when studies share the same design weakness.</span></div>`:"";
   return `<div class="panel"><h3>Is the consensus real, or the same evidence counted twice?</h3>
       <p class="subnote">Each position is reduced to its <b>independent evidence bases</b>: sources sharing a dataset, echoing as reviews, or citing each other in a loop collapse into one. The number after each position is its effective count of distinct bases — the honest size of its support.</p>
       <div class="indkey"><span><i style="background:#222a35"></i>primary evidence (dataset / own data)</span><span><i style="background:#c4ccd4"></i>secondary voice (collapsed echo)</span><span><b class="warn">⚠</b> circular loop</span></div>
-      ${rows}${flag}</div>`;
+      ${rows}${flag}${mflag}</div>`;
 }
 
 function renderChanges(c){

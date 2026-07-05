@@ -16,10 +16,12 @@ def portal_url(explicit=None):
     return url.rstrip("/")
 
 
-def _request(method, url, payload=None):
+def _request(method, url, payload=None, headers=None):
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
+    request_headers = {"Content-Type": "application/json"}
+    request_headers.update(headers or {})
     req = urllib.request.Request(url, data=data, method=method,
-                                 headers={"Content-Type": "application/json"})
+                                 headers=request_headers)
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
             return r.status, json.loads(r.read() or b"{}")
@@ -53,9 +55,19 @@ def create_question(base, question, contributor="anonymous"):
     return body
 
 
-def put_kb(base, qid, kb, expected_version, contributor="anonymous"):
+def admin_token(explicit=None):
+    token = explicit or os.environ.get("EPISTEMIC_ADMIN_TOKEN") or os.environ.get("ADMIN_TOKEN")
+    if not token:
+        raise SystemExit("Full KB pushes require the portal admin token. Pass --token or set "
+                         "EPISTEMIC_ADMIN_TOKEN.")
+    return token
+
+
+def put_kb(base, qid, kb, expected_version, contributor="anonymous", token=None):
+    token = admin_token(token)
     code, body = _request("PUT", base + "/api/questions/" + qid,
-                          {"kb": kb, "expected_version": expected_version, "contributor": contributor})
+                          {"kb": kb, "expected_version": expected_version, "contributor": contributor},
+                          headers={"X-Admin-Token": token})
     if code == 409:
         raise SystemExit("Version conflict — someone pushed first. Run `pull` to get the latest, "
                          "re-apply your sources, then push again.")

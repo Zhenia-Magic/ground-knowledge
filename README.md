@@ -170,9 +170,10 @@ or `pull` them locally (`python cli.py pull <id>`):
 ## Two surfaces, one compounding knowledge base
 
 - **The portal** (`python -m app.portal`) — a shared, multi-user site: browse and search questions,
-  open the live report, and add sources **with no API key** (we fetch the real text → you label it
-  in *your own* chatbot via one downloadable file → import). The server does **no LLM work and holds
-  no key** — merging is the deterministic stdlib function, so the hosted instance is cheap and has no
+  open the live report, and add sources **with no API key** (we fetch the best available text —
+  open full text when accessible, otherwise abstract/metadata — you label it in *your own* chatbot
+  via one downloadable file → import). The server does **no LLM work and holds no key** — merging is
+  the deterministic stdlib function, so the hosted instance is cheap and has no
   key-trust problem. Admin moderation is gated by a shared token. Stores KBs as JSON documents
   (sqlite locally, Postgres in production — e.g. Railway). For the best, AI-driven retrieval, the
   portal points users to the CLI / local console.

@@ -5,7 +5,7 @@ can't drift apart silently.
 """
 import unittest
 
-from engine.assess import independence, weighted_distribution
+from engine.assess import independence, method_audit, weighted_distribution
 from engine.roots import resolve, tier_of
 
 
@@ -130,6 +130,59 @@ class MetricTests(unittest.TestCase):
         kb = _kb([_s("a", "X", "Observational", ["D1"]),
                   _s("b", "Y", "Narrative/Commentary", [])])
         self.assertEqual(sum(d["pct"] for d in weighted_distribution(kb)), 100)
+
+
+class MethodAuditTests(unittest.TestCase):
+    def test_observational_default_flags_method_monoculture(self):
+        kb = _kb([_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(4)])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["classed"], 4)
+        self.assertEqual(m["top"]["method"], "confounding")
+        self.assertTrue(m["monoculture"])
+
+    def test_vocab_method_class_override_wins(self):
+        kb = _kb([_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(3)],
+                 vocab_evidence=[{"label": "Observational", "aliases": [],
+                                  "methodClass": "measurement"}])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["top"]["method"], "measurement")
+
+    def test_explicit_vocab_opt_out(self):
+        kb = _kb([_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(3)],
+                 vocab_evidence=[{"label": "Observational", "aliases": [],
+                                  "methodClass": ""}])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["classed"], 0)
+        self.assertFalse(m["monoculture"])
+
+    def test_source_method_class_override_and_opt_out(self):
+        a = _s("a", "X", "Observational", ["D1"])
+        a["methodClass"] = "measurement"
+        b = _s("b", "X", "Observational", ["D2"])
+        b["methodClass"] = ""
+        kb = _kb([a, b])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["classed"], 1)
+        self.assertEqual(m["top"]["method"], "measurement")
+
+    def test_secondary_sources_are_not_guessed(self):
+        kb = _kb([_s("r%d" % i, "X", "Meta-analysis", ["D%d" % i]) for i in range(4)])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["classed"], 0)
+        self.assertFalse(m["monoculture"])
+
+    def test_method_monoculture_requires_position_coverage(self):
+        srcs = [_s("o%d" % i, "X", "Observational", ["D%d" % i]) for i in range(3)]
+        srcs += [_s("u%d" % i, "X", "Unspecified", ["U%d" % i]) for i in range(10)]
+        m = {p["id"]: p for p in method_audit(_kb(srcs))}["X"]
+        self.assertEqual(m["classed"], 3)
+        self.assertLess(m["coverage"], 0.30)
+        self.assertFalse(m["monoculture"])
+
+    def test_rcts_do_not_share_a_default_method_root(self):
+        kb = _kb([_s("rct%d" % i, "X", "Experimental (RCT)", ["D%d" % i]) for i in range(4)])
+        m = {p["id"]: p for p in method_audit(kb)}["X"]
+        self.assertEqual(m["classed"], 0)
 
 
 class GapTests(unittest.TestCase):

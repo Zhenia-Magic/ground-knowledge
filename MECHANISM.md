@@ -285,3 +285,183 @@ now collapse (the §4.2 rule), which is the intended re-weighting.
 **Labelling guidance lands in `prompts/ingest.md` + `ingest/pipeline.py`** (the `restsOn` rule and
 the tier table). **Verification** is a separate axis (truthfulness of a quote), not part of this
 file.
+
+---
+
+## 12. Triangulation — a second independence axis (v1 method audit implemented)
+
+### 12.0 The gap this closes
+
+Sections 1–11 count **datasets**. If 15 sources rest on 15 *distinct* cohorts, the mechanism
+correctly reports 15 independent bases. But independence-of-**data** is not the same as
+independence-against-**being-wrong**. If all 15 cohorts share the same uncontrolled confounder —
+the textbook case is "moderate alcohol" studies sharing abstainer/sick-quitter bias — they can all
+be wrong in the same direction for the same reason. Fifteen distinct datasets, one shared way to
+fail. The existing metric is blind to this, because it was never designed to see it: it answers
+"how many different pieces of data?", not "how many different ways this could be an artifact?".
+
+This section proposes a **second, separate metric** for the latter question. It does **not** change
+the existing independence metric (§1–11) at all — that metric's claim ("distinct datasets count
+distinctly, echo and circularity collapse") is clean, defensible, and stays exactly as specified.
+Triangulation is an additional lens shown *alongside* it, not a replacement.
+
+### 12.1 The precise principle: correlated vs. independent error
+
+Replication only buys confidence when the studies being replicated can fail for **independent**
+reasons. This is standard epistemology of evidence (triangulation; Munafo & Davey Smith 2018), not
+a new invention:
+
+| Dominant error source | Correlated across studies of the same design? | More studies help? |
+|---|---|---|
+| Chance / sampling variation | No — each trial's randomization is its own coin flip | Yes (this is why RCT meta-analysis works) |
+| Unmeasured confounding (same lurking variable) | Yes — every cohort fails to measure the same thing | No — replication cannot fix a shared blind spot |
+| Shared measurement error (e.g. self-reported exposure) | Yes | No |
+| Surrogate-endpoint validity (LDL instead of heart attacks) | Yes, across everyone using that surrogate | No |
+| Genetic-instrument pleiotropy (Mendelian randomisation) | Yes, for studies sharing the same instrument | Partially |
+
+So: **observational studies of the same question sharing the same design generally share the same
+confounding risk; RCTs generally do not share a systematic risk with each other.** This is not
+"RCT good, observational bad" — it is domain-general: whenever two studies would be wrong *for the
+same reason*, they should count as one look for triangulation purposes, however many datasets they
+individually rest on.
+
+**The test this must pass:** it must give the *opposite, correct* verdict on cases where
+observational evidence is right. Smoking→lung cancer was established by cohorts + dose-response +
+animal experiments + mechanism + natural experiments — several genuinely *different* method
+families agreeing, not one design repeated. The audit should therefore warn on an alcohol-style
+single-method literature while staying quieter on a genuinely triangulated smoking-style literature.
+Same lens, opposite verdicts, both right — that is the bar for this becoming a real metric and not a
+thumb on the scale.
+
+### 12.2 Ontology addition: Method class
+
+One new concept, parallel to **Tier** (§2):
+
+| Thing | Plain meaning | Example |
+|---|---|---|
+| **Method class** | The correlated-error signature shared by a design family — the *way* a source could be systematically wrong. | `confounding` (observational designs sharing an unmeasured variable), `pleiotropy` (Mendelian-randomisation studies sharing a genetic instrument's off-target effects). |
+
+A method class is usually derived from the source's evidence type, with an optional source-level
+override for curated cases:
+
+- **Tier 1 (default, always on):** from the source's existing `evidence` type, via a small
+  conservative default table plus an optional `methodClass` property on the case's
+  evidence-vocabulary term — the exact same pattern `tier` already uses (§2.3, §3.2). A case can
+  override or opt out of a default by setting `methodClass` on the evidence-vocabulary term.
+- **Tier 2 (optional, sharper, needs one new field):** a `biases` tag on the source itself, drawn
+  from a **per-case controlled vocabulary** (a new `kb.vocab.bias` kind, resolved by the same
+  normalized-string + alias "propose, then deterministically resolve" discipline as datasets and
+  funding — never free text; see §12.7 for why this matters). When present, the specific tag
+  **replaces** the tier-1 default for that source (more specific information wins; the source
+  does not count toward both at once).
+
+**Default tier-1 mapping** (biomedical causal questions; a case may override or extend):
+
+| Evidence type | Method class |
+|---|---|
+| Observational (cohort / case-control / cross-sectional / ecological) | `confounding` |
+| Mendelian randomisation *(a case-introduced evidence type, not in the base vocab)* | `pleiotropy` |
+| Experimental (RCT) | — none (chance error is independent across trials) |
+| Mechanistic / animal / in-vitro | — none in *this* axis (already discounted by the existing non-human halving, §6.5b — deliberately not double-counted here, see §12.7) |
+| Secondary tiers (review, commentary, meta-analysis, …) | — none (already collapsed into the secondary-voice pool by the existing mechanism, §4.2) |
+
+For a non-causal, non-empirical question (a physics dispute, a legal one), the default table should
+not recognize the evidence labels, so sources fall through to "no method class" unless the case
+vocabulary explicitly opts in. The axis silently does nothing rather than inventing a method
+structure it does not understand. This preserves the "new domain adds vocabulary, not code"
+property (§10).
+
+### 12.3 Implemented v1 — method concentration audit
+
+The first build is intentionally a **warning lens**, not a second weighted-distribution bar and not
+a replacement for §1–11. For each source, the assessment layer derives a `methodClass` (§12.2).
+Then, per position, it counts how many sources have a recognizable method-risk family and computes:
+
+- `classed`: internal field name for "sources with a recognizable method-risk family";
+- `top`: the most common method class, with count and share;
+- `method nEff`: Herfindahl numbers-equivalent over method classes only;
+- `monoculture`: true when at least 3 sources have a method-risk family, at least 70% of those
+  sources share one family, and they cover at least 30% of the position's sources.
+
+This ships as a first-screen warning, an annotation on the Independence tab, and in `cli.py show`:
+*"N of M sources share observational confounding risk."* It deliberately **changes no existing
+metric**. It is a prompt for scrutiny: "these datasets may still fail together for the same
+methodological reason."
+
+### 12.4 Why the full triangulation number is deferred
+
+The tempting formula is: take each source's resolved data roots, add a synthetic `method:<class>`
+root, and run the same Herfindahl calculation. That gives the useful alcohol arithmetic:
+
+```
+15 distinct observational datasets + one shared method root
+HHI  = 15 × (1/30)^2 + (15/30)^2 = 0.2667
+nEff = 3.75
+```
+
+But this enriched-root formula is **not** safe as a general second number yet. Adding a synthetic
+method root can *increase* `nEff` in small or already-concentrated cases: one shared dataset plus
+one shared method root has weights `[N, N]`, which yields `nEff = 2` even though the primary data
+independence is `1`. So the invariant "triangulation never exceeds primary independence" is false
+unless we explicitly bound or redesign the formula.
+
+For that reason, v1 reports **method concentration**, not "independent looks against bias." A later
+triangulation score should either be explicitly bounded by the primary independence count or use a
+different combination rule whose semantics are clearer than "add one more root."
+
+### 12.5 Staged build plan (cheapest, lowest-risk first)
+
+1. **Method-monoculture flag — implemented.** No new source field; uses source/vocab
+   `methodClass` when present, with conservative defaults for obvious primary designs such as
+   `Observational → confounding`. It changes no numbers.
+2. **Bounded triangulation score — design still open.** Candidate formulas must not inflate beyond
+   primary data independence and must be labelled separately from the dataset-root count.
+3. **`kb.vocab.bias` controlled vocabulary + `biases` tag (tier 2)** — sharpens tier 1 when a
+   contributor names the actual confounder (`abstainer-bias`, `surrogate-endpoint`, …), resolved
+   through the standard vocab-resolution discipline (§12.7 explains why this step cannot skip that).
+4. **Supersession edges** (`supersedes`/`refutes` between sources) — deliberately **out of scope
+   for this section**. Kept as a lineage/timeline feature only (what the Changes tab shows), with
+   no automatic re-weighting of any metric. Revisit only as a narrative feature.
+
+### 12.6 Why this is a second axis and not a change to §1–11
+
+Keeping the two axes structurally separate (not blended into one composite score) matters for
+three reasons: (a) the existing metric's claim is narrow and easy to defend ("distinct data counts
+distinctly"); blending would make it defend a broader, more contestable claim instead. (b) A single
+blended number would hide *which* kind of independence a position lacks — data or method — exactly
+the transparency §7/§8 are built to preserve. (c) Tier-2 bias tags are more interpretive than
+dataset identity (§12.7); keeping them on a clearly separate, clearly labelled axis stops that
+softer judgment from contaminating the harder, more mechanical primary metric.
+
+### 12.7 New weak spots this would introduce (name them before building, not after)
+
+1. **Tier-2 tags are a new gaming surface.** Free-text bias tags would let a contributor invent a
+   unique fake confounder per source specifically to dodge collapse — worse than not having tier 2
+   at all. This is only safe if bias tags are a **controlled, alias-resolved vocabulary**
+   (`kb.vocab.bias`, same discipline as `dataset`/`funding`/`population`) — never free text. This is
+   a hard requirement on any implementation, not a nice-to-have.
+2. **Tier-1 buckets are coarse by construction.** Two observational studies that actually adjust for
+   *different* confounders get lumped into one `confounding` bucket until someone adds tier-2 tags.
+   This under-counts genuine (if partial) triangulation within the observational literature. It is
+   the deliberate, documented floor — sharpening is opt-in, not automatic.
+3. **Tier-2 tags are judgment calls, more so than dataset identity.** Naming "the" confounder a
+   study shares with others is closer to the "curated factor weights" soft spot already named in
+   `SPEC.md` §8 than to the hard, mechanical parts of this system (counts, dataset ids). It should
+   be labelled as such wherever it is surfaced, not presented with the same confidence as the
+   primary metric.
+4. **The tier-1 mapping is itself a domain judgment**, made once per case (or inherited from a
+   default table) rather than derived from the text. A case that mis-sets `methodClass` — or a
+   domain where the biomedical default is silently wrong — will mis-triangulate. This is the same
+   class of risk as tier mislabelling (§8.1), one level up.
+5. **Interaction with the non-human halving (§6.5b) must stay disjoint**, or a mechanistic/animal
+   source could get discounted twice for what is really one underlying concern (translational
+   validity). §12.2 resolves this by giving mechanistic/animal sources no method class in this axis
+   at all — but that is a design choice to keep stated, not an accident to rediscover later.
+6. **Conservative MR grouping** (all Mendelian-randomisation studies sharing one `pleiotropy` root,
+   regardless of which genetic instrument each one actually used) will over-collapse a position that
+   in fact has several MR studies using genuinely different, uncorrelated instruments. This is a
+   known, deliberate simplification for a first build — the sharper fix is instrument-level tier-2
+   tags, deferred.
+
+If this is built, this list ships with it — the same "document the weak spot, don't hide it"
+discipline as §8.

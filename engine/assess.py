@@ -7,6 +7,8 @@ implementation of every number the tool reports; the viewer renders these output
 not recompute them, so there is no drift between pipeline and UI.
 """
 
+import re
+
 from engine import roots as _roots
 
 # factor weighting vocabulary -> ordinal, for crux spread
@@ -86,6 +88,156 @@ def distribution(kb):
 
 def _low(s):
     return str(s or "").strip().lower()
+
+
+def _norm(s):
+    return re.sub(r"[^a-z0-9]+", " ", str(s if s is not None else "").lower()).strip()
+
+
+_METHOD_DEFAULTS = {
+    # Conservative biomedical / causal defaults. Cases can override by putting
+    # methodClass on the evidence vocab term; unknown terms stay inert.
+    "observational": "confounding",
+    "cohort": "confounding",
+    "case control": "confounding",
+    "case-control": "confounding",
+    "cross sectional": "confounding",
+    "cross-sectional": "confounding",
+    "ecological": "confounding",
+    "mendelian randomisation": "pleiotropy",
+    "mendelian randomization": "pleiotropy",
+}
+
+_METHOD_LABELS = {
+    "confounding": "observational confounding risk",
+    "pleiotropy": "genetic-instrument pleiotropy risk",
+    "surrogate-endpoint": "surrogate-endpoint risk",
+    "measurement": "measurement-error risk",
+}
+
+
+def _method_label(method):
+    return _METHOD_LABELS.get(method, method.replace("-", " "))
+
+
+def method_class_of(kb, source):
+    """Correlated-error method class for a source, or None.
+
+    This is a separate audit axis from evidentiary-root independence. It first honors a source-level
+    or vocab-level methodClass, then falls back to a small conservative default map for common
+    biomedical causal designs. Secondary evidence types stay inert unless a case explicitly tags
+    them; review echo is already handled by the primary independence mechanism.
+    """
+    if "methodClass" in source:
+        if source.get("methodClass"):
+            return _norm(source.get("methodClass")).replace(" ", "-")
+        return None
+
+    ev = _norm(source.get("evidence"))
+    for t in (kb.get("vocab", {}).get("evidence") or []):
+        labels = [_norm(t.get("label"))] + [_norm(a) for a in t.get("aliases", [])]
+        if ev in labels:
+            if t.get("methodClass"):
+                return _norm(t.get("methodClass")).replace(" ", "-")
+            # A case can explicitly opt an evidence type out with methodClass: "" / null.
+            if "methodClass" in t:
+                return None
+            break
+
+    # Unknown/secondary types remain inert unless explicitly tagged. This keeps the audit from
+    # guessing method structure from reviews, guidelines, or commentary.
+    if _roots.tier_of(kb, source) == "secondary":
+        return None
+    return _METHOD_DEFAULTS.get(ev)
+
+
+def method_audit(kb):
+    """Per-position method-class concentration.
+
+    This does not change nEff. It is a warning lens for cases where many sources are independent
+    as datasets but still share a dominant correlated-error structure, such as observational
+    alcohol cohorts sharing confounding risk.
+    """
+    by_pos = {p["id"]: {} for p in kb["positions"]}
+    classed = {p["id"]: 0 for p in kb["positions"]}
+    for s in kb["sources"]:
+        pid = s["position"]
+        m = method_class_of(kb, s)
+        if not m:
+            continue
+        by_pos.setdefault(pid, {})
+        by_pos[pid][m] = by_pos[pid].get(m, 0) + 1
+        classed[pid] = classed.get(pid, 0) + 1
+
+    out = []
+    for p in kb["positions"]:
+        counts = by_pos.get(p["id"], {})
+        n_eff = _n_eff(counts)
+        top_key, top_count = None, 0
+        for k, n in counts.items():
+            if n > top_count:
+                top_key, top_count = k, n
+        top = None
+        share = 0
+        coverage = 0
+        if top_key and classed[p["id"]]:
+            share = top_count / classed[p["id"]]
+            raw = len([s for s in kb["sources"] if s["position"] == p["id"]])
+            coverage = classed[p["id"]] / raw if raw else 0
+            top = {"method": top_key, "label": _method_label(top_key),
+                   "count": top_count, "share": share}
+        else:
+            raw = len([s for s in kb["sources"] if s["position"] == p["id"]])
+        out.append({
+            "id": p["id"], "label": p["label"], "hue": p["hue"],
+            "raw": raw,
+            "classed": classed[p["id"]],
+            "coverage": coverage,
+            "nEff": n_eff,
+            "top": top,
+            "methods": [{"method": k, "label": _method_label(k), "count": n}
+                        for k, n in sorted(counts.items(), key=lambda x: -x[1])],
+            "monoculture": bool(top and top_count >= 3 and share >= 0.70 and coverage >= 0.30),
+        })
+    return out
+
+
+def quote_audit(kb):
+    """Whether each source's quotes are grounded in the text actually fetched for it (see
+    engine/verify.py, SCHEMA.md `textDepth`/`provenance[field].verifiedQuote`).
+
+    A quote that fails to verify on a FULL-text source is a real red flag: the labeller said
+    something the fetched document doesn't support. The same failure on an abstract-only or
+    unknown-depth source is expected noise -- the quote may well be true, drawn from body text
+    the tool never had -- so it is reported as coverage, not counted as a warning. Nothing here
+    is guessed for sources ingested before this existed: they default to textDepth 'unknown'
+    and are excluded from both the warning and the depth-coverage denominator."""
+    by_pos = {p["id"]: {"raw": 0, "depthKnown": 0, "full": 0, "unverifiedFull": 0}
+              for p in kb["positions"]}
+    flagged = []
+    for s in kb["sources"]:
+        pid = s["position"]
+        if pid not in by_pos:
+            continue
+        by_pos[pid]["raw"] += 1
+        depth = s.get("textDepth", "unknown")
+        if depth == "unknown":
+            continue
+        by_pos[pid]["depthKnown"] += 1
+        if depth != "full":
+            continue
+        by_pos[pid]["full"] += 1
+        bad = [f for f, prov in (s.get("provenance") or {}).items()
+               if isinstance(prov, dict) and prov.get("verifiedQuote") == "missing"]
+        if bad:
+            by_pos[pid]["unverifiedFull"] += 1
+            flagged.append({"id": s["id"], "title": s.get("title"), "position": pid,
+                            "fields": bad})
+    positions = []
+    for p in kb["positions"]:
+        c = by_pos[p["id"]]
+        positions.append({"id": p["id"], "label": p["label"], "hue": p["hue"], **c})
+    return {"positions": positions, "flagged": flagged}
 
 
 def funding_skew(kb):
@@ -255,12 +407,15 @@ def dominant_dataset(kb):
 def assess(kb):
     """The whole Assessment artifact -- one dict, diffable across versions."""
     ind = independence(kb)
+    ma = method_audit(kb)
     # worst offender = among CONCENTRATED positions, the one with the most sources resting
     # on a single dataset (then by concentration, then raw). None if nothing is concentrated.
     cand = [x for x in ind if x["concentrated"] and x["topDataset"]]
     cand.sort(key=lambda x: (x["topDataset"]["count"], x["concentration"], x["raw"]),
               reverse=True)
     worst = cand[0] if cand else None
+    mcand = [x for x in ma if x["monoculture"]]
+    mcand.sort(key=lambda x: (x["top"]["count"], x["top"]["share"], x["raw"]), reverse=True)
     return {
         "version": kb.get("meta", {}).get("version"),
         "distribution": distribution(kb),
@@ -269,6 +424,9 @@ def assess(kb):
         "blindspots": blindspots(kb),
         "cruxes": cruxes(kb),
         "independence": ind,
+        "methodAudit": ma,
+        "methodMonoculture": mcand[0] if mcand else None,
+        "quoteAudit": quote_audit(kb),
         "dominantDataset": dominant_dataset(kb),
         "worstConcentration": worst,
     }

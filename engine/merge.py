@@ -305,6 +305,9 @@ def merge_delta(kb, delta):
         "population": _resolve_vocab(kb, "population", src.get("population", "—")),
         "confidence": src.get("confidence", "unstated"),
         "restsOn": rests_on, "provenance": src.get("provenance", {}), "addedIn": version,
+        # 'unknown' when nothing was fetched in-process (e.g. a pasted-back delta) -- see
+        # SCHEMA.md and engine/verify.py. Never guessed as 'full'; that would overclaim.
+        "textDepth": src.get("textDepth", "unknown"),
     })
     report["addedSource"] = sid
 
@@ -316,7 +319,8 @@ def merge_delta(kb, delta):
         if fw.get("rationale") and not factor.get("rationale"):
             factor["rationale"] = fw["rationale"]
         factor.setdefault("provenance", []).append(
-            {"source": sid, "pos": pos_id, "quote": fw.get("quote", "")})
+            {"source": sid, "pos": pos_id, "quote": fw.get("quote", ""),
+             "verifiedQuote": fw.get("verifiedQuote")})
 
     kb["meta"]["version"] = version
     kb["meta"]["updated"] = now_iso()

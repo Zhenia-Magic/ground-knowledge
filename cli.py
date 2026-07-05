@@ -61,8 +61,13 @@ def cmd_show(args):
     for d in a["distribution"]:
         L.append("  " + pad(d["label"], 22) + pad(d["count"], 3) + "  " + str(d["pct"]) + "%")
     if a["fundingSkew"]:
-        L.append('  funding skew: industry money most backs "{}" ({} industry sources)'.format(
-            a["fundingSkew"]["top"]["label"], a["fundingSkew"]["n"]))
+        fs = a["fundingSkew"]
+        if fs.get("top"):
+            L.append('  funding skew: interested money most backs "{}" ({} industry/advocacy sources)'.format(
+                fs["top"]["label"], fs["n"]))
+        elif fs.get("undisclosed"):
+            L.append("  funding gap: {} of {} sources undisclosed".format(
+                fs["undisclosed"], fs["total"]))
     L += ["", "INDEPENDENCE  (concentration on single most-reused dataset)"]
     for p in a["independence"]:
         t = "{} {}/{}".format(p["topDataset"]["label"], p["topDataset"]["count"], p["raw"]) \
@@ -79,6 +84,37 @@ def cmd_show(args):
         L.append('\n  ⚠ worst: "{}" lists {} sources but rests {} on {} — ≈{:.1f} independent '
                  'looks, not {}.'.format(w["label"], w["raw"], pct(w["concentration"]),
                                          w["topDataset"]["label"], w["nEff"], w["raw"]))
+    if a.get("methodAudit"):
+        L += ["", "METHOD-BIAS CHECK  (shared study-method risks; does not change nEff)"]
+        for p in a["methodAudit"]:
+            if not p["top"]:
+                continue
+            top = p["top"]
+            suffix = "   [METHOD-BIAS WARNING]" if p["monoculture"] else ""
+            all_share = top["count"] / p["raw"] if p["raw"] else 0
+            L.append("  {} — {} of {} sources share {} ({})  method nEff≈{:.1f}{}".format(
+                p["label"], top["count"], p["raw"], top["label"],
+                pct(all_share), p["nEff"], suffix))
+        if a.get("methodMonoculture"):
+            m = a["methodMonoculture"]
+            L.append('  ⚠ method-bias warning: "{}" has {} of {} sources in one method-risk family: {}.'.format(
+                m["label"], m["top"]["count"], m["raw"], m["top"]["label"]))
+    qa = a.get("quoteAudit")
+    if qa and any(p["depthKnown"] for p in qa["positions"]):
+        L += ["", "QUOTE CHECK  (does the provenance quote match the text we actually fetched?)"]
+        for p in qa["positions"]:
+            if not p["depthKnown"]:
+                continue
+            L.append("  {} — {} of {} sources fetched as full text".format(
+                p["label"], p["full"], p["depthKnown"]) +
+                (", {} with an unverified quote  [QUOTE WARNING]".format(p["unverifiedFull"])
+                 if p["unverifiedFull"] else ""))
+        if qa["flagged"]:
+            f = qa["flagged"][0]
+            L.append('\n  ⚠ quote warning: "{}" ({}) has a provenance quote for {} that does not '
+                     'match its fetched full text{}.'.format(
+                         f["title"], f["id"], ", ".join(f["fields"]),
+                         " (+{} more)".format(len(qa["flagged"]) - 1) if len(qa["flagged"]) > 1 else ""))
     L += ["", "CRUXES  (● crux = spread ≥2 ; factors only one camp weighs are [1-sided])"]
     order = sorted(a["cruxes"], key=lambda c: (0 if c["isCrux"] else (1 if c["engaged"] >= 2 else 2),
                                                -c["spread"]))
@@ -442,7 +478,7 @@ def cmd_ingest_batch(args):
     # chatbot once, instead of several paste-sized prompts. Richer per-source text (it's a file).
     if args.dry_run and args.bundle:
         from ingest.pipeline import fetch_docs, build_batch_extract_prompt
-        print("Fetching real text for {} source(s)…".format(len(targets)))
+        print("Fetching best available text for {} source(s)…".format(len(targets)))
         docs, skipped = fetch_docs(targets)
         for s in skipped:
             print("  skipped (couldn't fetch): {}".format(s["target"]))

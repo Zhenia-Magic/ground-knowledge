@@ -15,6 +15,7 @@ import sys
 
 from .extract import extract_text
 from . import llm
+from engine.verify import match_quote
 
 # --- Shared, strengthened extraction contract (one place, used by all three prompts) ---------
 # These hints + rules exist to PREVENT entity proliferation: positions, datasets, factors and
@@ -324,7 +325,8 @@ def _parse_json(raw):
 def _carry_meta(delta, doc):
     """Copy fetch-derived metadata onto the delta's source when the labeller didn't supply it —
     so url/title/authors/venue/citations/retraction are captured deterministically from the API,
-    not left to the model."""
+    not left to the model. Also verifies each quote against the text actually fetched (see
+    engine/verify.py, SCHEMA.md) — the only ground truth available here, full text or not."""
     src = delta.setdefault("source", {})
     for k in ("url", "title", "authors", "venue"):
         if doc.get(k) and not src.get(k):
@@ -333,6 +335,15 @@ def _carry_meta(delta, doc):
         src["citations"] = doc["citations"]
     if "retracted" in doc and "retracted" not in src:
         src["retracted"] = doc["retracted"]
+    src["textDepth"] = doc.get("kind", "unknown")
+
+    text = doc.get("text") or ""
+    for prov in (src.get("provenance") or {}).values():
+        if isinstance(prov, dict) and prov.get("quote"):
+            prov["verifiedQuote"] = match_quote(prov["quote"], text)
+    for fw in delta.get("factorWeights", []):
+        if fw.get("quote"):
+            fw["verifiedQuote"] = match_quote(fw["quote"], text)
 
 
 def ingest_source(target, kb, dry_run=False):
@@ -431,7 +442,7 @@ def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=Non
 
 
 def fetch_docs(targets, allow_local=True):
-    """Fetch real text for each URL/path (urllib + reader-proxy fallback in extract.py).
+    """Fetch the best available text for each URL/path (urllib + reader-proxy/API fallbacks).
     Returns (docs, skipped) — skipped lists what couldn't be fetched, so the caller can report
     it honestly rather than letting the model guess at unreachable content."""
     docs, skipped = [], []
@@ -444,7 +455,7 @@ def fetch_docs(targets, allow_local=True):
 
 
 def extract_prompts(kb, docs, batch=5, max_text=4000):
-    """Build the grounded extraction prompt(s) over already-fetched docs (real text embedded)."""
+    """Build the grounded extraction prompt(s) over already-fetched docs."""
     return [build_batch_extract_prompt(kb, docs[i:i + batch], max_text)
             for i in range(0, len(docs), batch)]
 

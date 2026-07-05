@@ -24,6 +24,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from app import store, web
 
+MAX_BODY_BYTES = int(os.environ.get("EPISTEMIC_MAX_BODY_BYTES", str(4 * 1024 * 1024)))
+MAX_FETCH_URLS = int(os.environ.get("EPISTEMIC_MAX_FETCH_URLS", "25"))
+
 
 def _admin_delete_source(qid, sid):
     """Remove one source from a question's KB (admin moderation), prune its factor provenance,
@@ -68,6 +71,28 @@ def _norm_delta(it):
     return None
 
 
+def _delta_validation_error(delta):
+    src = delta.get("source")
+    if not isinstance(src, dict):
+        return "delta.source must be an object"
+    if src.get("relevant") is False:
+        return None
+    for field in ("title", "position"):
+        if not str(src.get(field) or "").strip():
+            return "delta.source.{} is required".format(field)
+    factor_weights = delta.get("factorWeights", [])
+    if not isinstance(factor_weights, list):
+        return "delta.factorWeights must be an array"
+    for i, fw in enumerate(factor_weights):
+        if not isinstance(fw, dict):
+            return "delta.factorWeights[{}] must be an object".format(i)
+        if not str(fw.get("factorLabel") or fw.get("factor") or "").strip():
+            return "delta.factorWeights[{}].factorLabel is required".format(i)
+        if fw.get("weight") not in ("high", "med", "low", "n/a"):
+            return "delta.factorWeights[{}].weight must be high, med, low, or n/a".format(i)
+    return None
+
+
 def _apply_delta(qid, q, delta, contributor):
     """Merge one or many deltas into the question's KB (deterministic, no key), version-checked.
     Records the recompute diff on each source's log entry so the Changes tab shows what moved."""
@@ -75,11 +100,17 @@ def _apply_delta(qid, q, delta, contributor):
     from engine.assess import assess, diff_assessments
     kb, base = q["kb"], q["version"]
     items = delta if isinstance(delta, list) else [delta]
-    added = dups = off = 0
+    deltas = []
     for it in items:
         d = _norm_delta(it)
         if not d:
-            continue
+            return {"error": "delta must be a source object or {source, factorWeights}"}
+        err = _delta_validation_error(d)
+        if err:
+            return {"error": err}
+        deltas.append(d)
+    added = dups = off = 0
+    for d in deltas:
         before = assess(kb)
         rep = merge_delta(kb, d)
         if rep.get("offTopic"):
@@ -123,13 +154,34 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def _body(self):
-        n = int(self.headers.get("Content-Length") or 0)
+        try:
+            n = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            self._body_error = (400, {"error": "invalid Content-Length"})
+            return None
+        if n > MAX_BODY_BYTES:
+            self._body_error = (413, {"error": "request body too large",
+                                      "limit": MAX_BODY_BYTES})
+            return None
         if not n:
             return {}
         try:
             return json.loads(self.rfile.read(n) or b"{}")
         except ValueError:
-            return {}
+            self._body_error = (400, {"error": "invalid JSON body"})
+            return None
+
+    def _json_body(self):
+        self._body_error = None
+        body = self._body()
+        if body is None:
+            code, obj = self._body_error or (400, {"error": "invalid request body"})
+            self._send(code, obj)
+            return None
+        if not isinstance(body, dict):
+            self._send(400, {"error": "JSON body must be an object"})
+            return None
+        return body
 
     def _get_q(self, qid):
         return store.get_question(qid, with_kb=True)
@@ -213,7 +265,9 @@ class Handler(BaseHTTPRequestHandler):
         if len(p) == 3 and p[:2] == ["api", "admin"]:
             if not self._is_admin():
                 return self._send(403, {"error": "admin token required or incorrect"})
-            body = self._body()
+            body = self._json_body()
+            if body is None:
+                return
             if p[2] == "delete-question":
                 store.delete_question(body.get("id"))
                 return self._send(200, {"ok": True})
@@ -221,7 +275,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, _admin_delete_source(body.get("id"), body.get("sourceId")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
-            body = self._body()
+            body = self._json_body()
+            if body is None:
+                return
             question = (body.get("question") or "").strip()
             if not question:
                 return self._send(400, {"error": "question text required"})
@@ -233,7 +289,9 @@ class Handler(BaseHTTPRequestHandler):
             q = self._get_q(qid)
             if not q:
                 return self._send(404, {"error": "no such question"})
-            body = self._body()
+            body = self._json_body()
+            if body is None:
+                return
             if action == "discover":
                 from ingest.search import search_openalex
                 cands = search_openalex(q["question"], int(body.get("k") or 10))
@@ -241,7 +299,10 @@ class Handler(BaseHTTPRequestHandler):
             if action == "fetch":
                 from ingest.pipeline import fetch_docs, build_batch_extract_prompt
                 urls = [u for u in (body.get("urls") or []) if u]
-                docs, skipped = fetch_docs(urls)
+                if len(urls) > MAX_FETCH_URLS:
+                    return self._send(400, {"error": "too many URLs in one fetch request",
+                                            "limit": MAX_FETCH_URLS})
+                docs, skipped = fetch_docs(urls, allow_local=False)
                 # ONE bundle over all fetched sources -> one file to upload, one JSON array back.
                 # Richer per-source text than the old multi-prompt batches (it's a file, not a
                 # paste box), so labelling sees more of each paper.
@@ -256,8 +317,8 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "could not parse citations: {}".format(e)})
                 return self._send(200, {"candidates": cands})
             if action == "delta":
-                return self._send(200, _apply_delta(qid, q, body.get("delta"),
-                                                    body.get("contributor")))
+                res = _apply_delta(qid, q, body.get("delta"), body.get("contributor"))
+                return self._send(400 if res.get("error") else 200, res)
             return self._send(404, {"error": "unknown action"})
         self._send(404, {"error": "not found"})
 
@@ -266,7 +327,9 @@ class Handler(BaseHTTPRequestHandler):
         if len(p) == 3 and p[:2] == ["api", "questions"]:
             if not self._is_admin():
                 return self._send(403, {"error": "admin token required or incorrect"})
-            body = self._body()
+            body = self._json_body()
+            if body is None:
+                return
             kb = body.get("kb")
             if not isinstance(kb, dict):
                 return self._send(400, {"error": "kb (object) required"})

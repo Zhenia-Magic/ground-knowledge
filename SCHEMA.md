@@ -12,11 +12,12 @@ data changes, never the code.
   "meta":      { "id", "question", "version", "updated", "note" },
   "positions": [ { "id", "label", "hue" } ],                 // the camps
   "datasets":  [ { "id", "label", "aliases": [..] } ],       // underlying evidence bases
-  "vocab":     { "evidence":   [ { "label", "aliases": [..] } ],   // per-case controlled
+  "vocab":     { "evidence":   [ { "label", "aliases": [..],
+                                   "tier"?, "methodClass"? } ],    // per-case controlled
                  "population": [ { "label", "aliases": [..] } ],   //   tag vocabularies
                  "funding":    [ { "label", "aliases": [..] } ] }, // closed funder categories
   "factors":   [ { "id", "label", "weights": {posId: high|med|low|n/a},
-                   "rationale", "provenance": [{source, pos, quote}] } ],
+                   "rationale", "provenance": [{source, pos, quote, verifiedQuote?}] } ],
   "sources":   [ { "id", "title", "year", "url",
                    "authors": [ "name", ... ],               // citation metadata (Zotero import/export)
                    "venue", "citations", "retracted",        // evidence-quality signals (from the fetch)
@@ -25,10 +26,15 @@ data changes, never the code.
                    "funding",   // Government/public | Nonprofit/charity | Academic/institutional
                                 //   | Industry | Advocacy | Undisclosed  (default Undisclosed)
                    "population", "confidence",
+                   "methodClass"?,                         // optional correlated-error class override
                    "restsOn": [datasetId | "src:sourceId", ...],  // evidentiary roots: datasets
                                 //   AND/OR other sources (derivation edges) -> independence +
                                 //   circular-corroboration detection (see MECHANISM.md)
-                   "provenance": { field: {quote, extractionConfidence} },
+                   "textDepth",                    // full | abstract | partial | unknown -- how
+                                //   much of the source the labeller actually saw (engine/verify.py)
+                   "provenance": { field: {quote, extractionConfidence, verifiedQuote?} },
+                                //   verifiedQuote: exact | fuzzy | missing -- read together with
+                                //   textDepth, never alone (see problem 3 below)
                    "addedIn": version } ],                    // powers the diff
   "log":       [ { "version", "action", "source", "ts", ... } ]  // audit trail
 }
@@ -58,6 +64,28 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    back to the source. Without it the KB can't be audited and fails "withstands motivated
    reading." (Seed data leaves these empty and says so; real ingestion fills them.)
 
+   A quote is only as trustworthy as what the labeller actually saw. Ingestion does not always
+   get the full paper: `ingest/extract.py` tries open full text (OA PDF, Europe PMC fullTextXML,
+   a local file) first, but for many DOI/PubMed/arXiv links the only thing available is an
+   abstract, and a plain page scrape is sometimes the real article body and sometimes a
+   paywall's abstract-only landing page. Every fetched doc is honestly tagged with a `kind`
+   (`full` / `abstract` / `partial`), copied onto the source as `textDepth`.
+
+   `engine/verify.py::match_quote(quote, text)` then checks each provenance quote against that
+   **same fetched text** — not against "the true paper," which the tool may not have — and
+   records `exact` / `fuzzy` / `missing` as `verifiedQuote`. This is wired into `_carry_meta`
+   in `ingest/pipeline.py`, the one place a freshly fetched doc and its LLM-produced delta are
+   both in scope in the same process (the automated `--ai` / API paths). Deltas built from a
+   pasted-back chatbot response never have the original doc in scope, so they get `textDepth:
+   "unknown"` and no `verifiedQuote` rather than a guessed value.
+
+   The crucial reading rule, enforced in `engine/assess.py::quote_audit`: **never read
+   `verifiedQuote` without `textDepth`.** A `missing` quote on a `full`-text source is a real
+   red flag — the labeller asserted something the fetched document doesn't support — and is
+   what `quote_audit` counts as a warning. The identical `missing` verdict on an `abstract` or
+   `unknown` source is expected background noise (the quote may be true, drawn from body text
+   the tool never had) and is reported only as coverage, never as a warning.
+
 4. **Open schema (interoperability vs nuance).** A small fixed *core* the metrics operate on
    (source, position, dataset, factor, edge) plus *open vocabularies* as tags (`evidence`,
    `funding`, `population`). New domains add vocabulary, not new code — this is what lets one
@@ -71,6 +99,11 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    `population` starts empty and grows per topic. The vocabulary lives in the artifact, not in
    code — so it is per-domain by construction while staying small enough for blindspots to mean
    something. The ingestion prompt shows the model the current vocabulary so it reuses terms.
+   Evidence vocabulary terms may optionally carry `tier` (primary vs secondary for the
+   independence engine) and `methodClass` (the correlated-error family used only by the
+   method-monoculture audit; see `MECHANISM.md` §12). A source-level `methodClass` can override the
+   vocabulary for curated cases, but it does not change `restsOn` or the primary independence
+   metric.
    `funding` is a **closed** vocabulary (`BASE_FUNDING`: Government/public, Nonprofit/charity,
    Academic/institutional, Industry, Advocacy, Undisclosed) — `merge._resolve_funding` snaps to
    it and **defaults to "Undisclosed", never "independent"**, so a missing funding statement

@@ -129,8 +129,7 @@ class _SafeHTTPSHandler(urllib.request.HTTPSHandler):
     handler_order = 100
 
     def https_open(self, req):
-        return self.do_open(_SafeHTTPSConnection, req, context=self._context,
-                            check_hostname=self._check_hostname)
+        return self.do_open(_SafeHTTPSConnection, req, context=self._context)
 
 
 # Ignore ambient HTTP(S)_PROXY settings: a proxy would perform its own DNS lookup and undo the
@@ -209,7 +208,7 @@ def _europepmc(target):
     if jnl:
         body += "\nJournal: {} ({})".format(jnl, r.get("pubYear", ""))
     return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip(),
-            "url": target, "authors": authors, "venue": jnl or ""}
+            "url": target, "authors": authors, "venue": jnl or "", "kind": "abstract"}
 
 
 # ---- structured academic APIs: get paper metadata by identifier, no scraping ----------
@@ -278,7 +277,7 @@ def _epmc_fulltext(target):
     if jnl:
         head += "\nJournal: {} ({})".format(jnl, r.get("pubYear", ""))
     return {"text": (head + "\n\n--- full text ---\n" + body)[:MAX_CHARS], "title": title,
-            "url": target, "authors": authors, "venue": jnl}
+            "url": target, "authors": authors, "venue": jnl, "kind": "full"}
 
 
 def _pmid_from(url):
@@ -341,7 +340,7 @@ def _semantic_scholar(target):
         body += "\nVenue: {} ({})".format(r["venue"], r.get("year", ""))
     return {"text": body[:MAX_CHARS], "authors": authors, "venue": r.get("venue") or "",
             "title": re.sub(r"\s+", " ", title).strip() or target,
-            "url": target}
+            "url": target, "kind": "abstract"}
 
 
 def _deinvert(inv):
@@ -467,7 +466,7 @@ def _openalex(target):
     body = "\n\n".join(parts)
     return {"text": body[:MAX_CHARS], "title": re.sub(r"\s+", " ", title).strip() or target,
             "url": target, "authors": authors, "venue": venue,
-            "citations": citations, "retracted": retracted}
+            "citations": citations, "retracted": retracted, "kind": "full" if full else "abstract"}
 
 
 def _arxiv(target):
@@ -497,7 +496,7 @@ def _arxiv(target):
     if authors:
         body += "\n\nAuthors: " + ", ".join(authors[:8])
     return {"text": body[:MAX_CHARS], "title": title or ("arXiv:" + ax), "url": target,
-            "authors": authors}
+            "authors": authors, "kind": "abstract"}
 
 
 _API_LABELS = {"_semantic_scholar": "Semantic Scholar", "_openalex": "OpenAlex",
@@ -556,7 +555,8 @@ def _fallback(target):
     txt = _reader_proxy(target)
     if txt and not _looks_blocked(txt, _title_from_text(txt)):
         print("  (fetched via reader proxy)")
-        return {"text": txt[:MAX_CHARS], "title": _title_from_text(txt), "url": target}
+        return {"text": txt[:MAX_CHARS], "title": _title_from_text(txt), "url": target,
+                "kind": "partial"}
     doc, label = _academic(target)
     if doc:
         print("  (blocked → fetched abstract via {})".format(label))
@@ -627,7 +627,10 @@ def extract_text(target, allow_local=True):
         text, title = _strip_html(html)[:MAX_CHARS], _title_from_html(html)
         if _looks_blocked(text, title):            # 200 OK but it's a Cloudflare interstitial
             return _fallback(target)
-        return {"text": text, "title": title, "url": target}
+        # A plain page scrape: could be the real article body (many OA journal HTML pages) or a
+        # paywall's abstract-only landing page that slipped past _looks_blocked -- honestly
+        # "partial" rather than claiming either extreme (see SCHEMA.md textDepth).
+        return {"text": text, "title": title, "url": target, "kind": "partial"}
 
     if not allow_local:
         raise SystemExit("only absolute http(s) URLs can be fetched here")
@@ -641,8 +644,9 @@ def extract_text(target, allow_local=True):
     with open(target, encoding="utf-8", errors="ignore") as f:
         txt = f.read()
     if ext in (".html", ".htm"):
-        return {"text": _strip_html(txt)[:MAX_CHARS], "title": _title_from_html(txt), "url": None}
-    return {"text": txt[:MAX_CHARS], "title": os.path.basename(target), "url": None}
+        return {"text": _strip_html(txt)[:MAX_CHARS], "title": _title_from_html(txt), "url": None,
+                "kind": "full"}
+    return {"text": txt[:MAX_CHARS], "title": os.path.basename(target), "url": None, "kind": "full"}
 
 
 def _from_pdf(data, title, url):
@@ -652,7 +656,7 @@ def _from_pdf(data, title, url):
         raise SystemExit("PDF support needs pypdf:  pip install pypdf")
     reader = PdfReader(io.BytesIO(data))
     text = "\n".join((pg.extract_text() or "") for pg in reader.pages)
-    return {"text": text[:MAX_CHARS], "title": title, "url": url}
+    return {"text": text[:MAX_CHARS], "title": title, "url": url, "kind": "full"}
 
 
 def _from_docx(path):
@@ -662,4 +666,4 @@ def _from_docx(path):
         raise SystemExit("DOCX support needs python-docx:  pip install python-docx")
     d = docx.Document(path)
     text = "\n".join(p.text for p in d.paragraphs)
-    return {"text": text[:MAX_CHARS], "title": os.path.basename(path), "url": None}
+    return {"text": text[:MAX_CHARS], "title": os.path.basename(path), "url": None, "kind": "full"}

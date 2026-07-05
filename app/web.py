@@ -4,7 +4,7 @@ Three pages, all served by app/portal.py:
   home_html()        GET /            browse + search questions, create a new one
   viewer_html(qid)   GET /q/{id}      the read view — reuses viewer/template.html, rendered live
   contribute_html()  GET /q/{id}/add  add sources WITHOUT a server key: find (OpenAlex, free) ->
-                                       fetch real text -> copy a labelling prompt for YOUR chatbot
+                                       fetch best available paper text -> copy a labelling prompt for YOUR chatbot
                                        -> paste the JSON back -> deterministic merge server-side.
 
 The contribute flow keeps the manual / chatbot path available in the browser (no key ever leaves
@@ -331,12 +331,15 @@ python cli.py assess cases/eggs.kb.json
 python cli.py push cases/eggs.kb.json --as "Your name"</pre>
 
     <h2 id="sync">Push &amp; pull (sync with this portal)</h2>
-    <p>Set <code>EPISTEMIC_PORTAL</code> in <code>.env</code> (or pass <code>--portal</code>), then:</p>
+    <p>Set <code>EPISTEMIC_PORTAL</code> in <code>.env</code> (or pass <code>--portal</code>).
+    Whole-KB replacement via <code>push</code> also needs the portal admin token in
+    <code>EPISTEMIC_ADMIN_TOKEN</code> or <code>--token</code>:</p>
     <pre>python cli.py questions                 <span class="c"># browse what's here</span>
 python cli.py pull &lt;question-id&gt;        <span class="c"># grab it locally</span>
-python cli.py push cases/your.kb.json   <span class="c"># send your sources up</span></pre>
+python cli.py push cases/your.kb.json --token "$EPISTEMIC_ADMIN_TOKEN"</pre>
     <div class="note">Source-by-source contributions are <b>keyless</b> — anyone can push new
-    sources. Replacing a whole knowledge base is gated by the portal's admin token.</div>
+    sources through the browser contribution flow. Replacing a whole knowledge base from the CLI
+    is gated by the portal's admin token.</div>
 
     <p style="margin-top:30px"><a href="%REPO%">Full source &amp; README on GitHub →</a></p>
     </div>"""
@@ -453,7 +456,7 @@ def contribute_html(qid, get_question):
     <div class="back"><a href="/q/{id}">← back to the report</a></div>
     <div class="kicker">Add sources · no API key needed</div>
     <h1>{question}</h1>
-    <p class="sub">Find papers, fetch their real text, then label them with <b>your own</b> chatbot
+    <p class="sub">Find papers, fetch the best available text, then label them with <b>your own</b> chatbot
     — copy the prompt below into Claude or ChatGPT and paste its JSON back. Nothing you paste needs
     a key on our side; the merge is deterministic.</p>
     """.format(id=_esc(qid), question=_esc(q["question"]))
@@ -478,9 +481,10 @@ def contribute_html(qid, get_question):
     </div>
     <div class="panel">
       <div class="step">Step 2 · Fetch &amp; get one file</div><h2>Fetch text &amp; get one labelling file</h2>
-      <p class="desc">We download every selected paper's real text and bundle it into a <b>single
-      file</b>. Upload that one file to Claude or ChatGPT and ask it to follow the instructions
-      inside — it returns one JSON array for all of them. No more pasting prompts one by one.</p>
+      <p class="desc">We download the richest text available for each selected paper — open full
+      text when available, otherwise abstract and metadata — and bundle it into a <b>single file</b>.
+      Upload that one file to Claude or ChatGPT and ask it to follow the instructions inside — it
+      returns one JSON array for all of them. No more pasting prompts one by one.</p>
       <button class="btn" id="fetchBtn" disabled onclick="fetchSel()">Fetch &amp; build file</button>
       <div id="prompts"></div>
     </div>
@@ -533,7 +537,7 @@ def contribute_html(qid, get_question):
     function fetchUrl(){const u=document.getElementById('oneUrl').value.trim(); if(!u){return;} doFetch([u]);}
     async function doFetch(urls){
       if(!urls.length)return;
-      const b=document.getElementById('prompts'); b.innerHTML='Fetching real text…';
+      const b=document.getElementById('prompts'); b.innerHTML='Fetching best available text…';
       const r=await fetch(`/api/questions/${QID}/fetch`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({urls})});
       const j=await r.json();
       BUNDLE=j.bundle||'';
