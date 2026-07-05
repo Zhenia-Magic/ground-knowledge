@@ -458,6 +458,45 @@ def cmd_research(args):
         _build_viewer([args.kb])
 
 
+def _write_labelling_bundle(kb_path, targets, max_text, empty_error, upload_msg, fetch_msg=None):
+    """Fetch every target's text into ONE labelling bundle file to paste into a chatbot --
+    the shared mechanics behind `ingest-batch --dry-run --bundle` and `import-citations
+    --dry-run` (which is bundle-only). Callers keep their own exact wording; only the
+    fetch/build/write-file logic is shared."""
+    from ingest.pipeline import fetch_docs, build_batch_extract_prompt
+    if fetch_msg:
+        print(fetch_msg)
+    docs, skipped = fetch_docs(targets)
+    for s in skipped:
+        print("  skipped (couldn't fetch): {}".format(s["target"]))
+    if not docs:
+        raise SystemExit(empty_error)
+    bundle = build_batch_extract_prompt(read_json(kb_path), docs, max_text=max_text)
+    _write_prompt_files([bundle], "label-sources", tail=False)
+    print(upload_msg.format(kb=kb_path))
+
+
+def _extract_and_report(kb_path, targets, batch, max_text, apply_, build, success_msg,
+                        dpath=None):
+    """Shared tail for a non-dry-run batch ingest: extract via ingest_batch, then either
+    merge + report (--apply) or print the raw deltas as JSON. `ingest-batch` and
+    `import-citations` differ only in where `targets` came from (a URL list/--from file vs a
+    parsed citation export) -- this is everything after that point."""
+    from ingest.pipeline import ingest_batch
+    deltas = ingest_batch(targets, read_json(kb_path), batch=batch, max_text=max_text)
+    if not apply_:
+        print(json.dumps(deltas, indent=2, ensure_ascii=False))
+        return deltas
+    if dpath:
+        write_json(dpath, deltas)
+        print("deltas → {} ({} source(s))\n".format(dpath, len(deltas)))
+    added = _merge_deltas(kb_path, deltas)
+    print(success_msg.format(added=added, total=len(deltas), kb=kb_path))
+    if build:
+        _build_viewer([kb_path])
+    return deltas
+
+
 def cmd_ingest_batch(args):
     """Ingest many sources with FEWER LLM calls — `--batch N` sources per call. Feed a
     discover JSON with --from, and/or list URLs/paths. --dry-run prints the combined prompt(s)
@@ -469,44 +508,31 @@ def cmd_ingest_batch(args):
     # --bundle (manual path): fetch ALL sources and write ONE labelling file to upload to a
     # chatbot once, instead of several paste-sized prompts. Richer per-source text (it's a file).
     if args.dry_run and args.bundle:
-        from ingest.pipeline import fetch_docs, build_batch_extract_prompt
-        print("Fetching best available text for {} source(s)…".format(len(targets)))
-        docs, skipped = fetch_docs(targets)
-        for s in skipped:
-            print("  skipped (couldn't fetch): {}".format(s["target"]))
-        if not docs:
-            raise SystemExit("Nothing fetched — no labelling file written.")
-        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=args.max_text)
-        _write_prompt_files([bundle], "label-sources", tail=False)
-        print("\nUpload that ONE file to Claude/ChatGPT, tell it to follow the instructions "
-              "inside,\nthen save the JSON array it returns and run:  "
-              "python cli.py add {} <delta.json> --build".format(args.kb))
+        _write_labelling_bundle(
+            args.kb, targets, args.max_text,
+            fetch_msg="Fetching best available text for {} source(s)…".format(len(targets)),
+            empty_error="Nothing fetched — no labelling file written.",
+            upload_msg="\nUpload that ONE file to Claude/ChatGPT, tell it to follow the "
+                       "instructions inside,\nthen save the JSON array it returns and run:  "
+                       "python cli.py add {kb} <delta.json> --build")
         return
     print("Sources to ingest: {}  (batch size {})".format(len(targets), args.batch))
-    res = ingest_batch(targets, read_json(args.kb), dry_run=args.dry_run,
-                       batch=args.batch, max_text=args.max_text)
-    if args.dry_run:  # res is a list of combined prompt strings (one per batch)
+    if args.dry_run:  # several paste-sized prompts (one per batch), not the single --bundle file
+        res = ingest_batch(targets, read_json(args.kb), dry_run=True,
+                           batch=args.batch, max_text=args.max_text)
         _write_prompt_files(res, "ingest-batch-prompt")
         return
-    deltas = res
-    if args.apply:
-        dpath = os.path.join(ROOT, "cases", "deltas-batch.json")
-        write_json(dpath, deltas)
-        print("deltas → {} ({} source(s))\n".format(dpath, len(deltas)))
-        added = _merge_deltas(args.kb, deltas)
-        print("Batch complete: {} of {} added to {}.".format(added, len(deltas), args.kb))
-        if args.build:
-            _build_viewer([args.kb])
-    else:
-        print(json.dumps(deltas, indent=2, ensure_ascii=False))
+    dpath = os.path.join(ROOT, "cases", "deltas-batch.json") if args.apply else None
+    _extract_and_report(args.kb, targets, args.batch, args.max_text, args.apply, args.build,
+                        success_msg="Batch complete: {added} of {total} added to {kb}.",
+                        dpath=dpath)
 
 
 def cmd_import_citations(args):
     """Import a Zotero/Mendeley/EndNote export (.ris / .bib / .csl-json) as sources. Each entry's
-    DOI/URL is fetched and labelled through the normal pipeline. --dry-run --bundle writes one
-    labelling file; --apply auto-labels with a key; default prints the deltas."""
+    DOI/URL is fetched and labelled through the normal pipeline. --dry-run writes one labelling
+    bundle file; --apply auto-labels with a key; default prints the deltas."""
     from ingest import citations
-    from ingest.pipeline import ingest_batch, fetch_docs, build_batch_extract_prompt
     with open(args.file, encoding="utf-8", errors="ignore") as f:
         cands = citations.parse(f.read(), filename=args.file)
     urls = [c["url"] for c in cands if c.get("url")]
@@ -514,24 +540,14 @@ def cmd_import_citations(args):
     if not urls:
         raise SystemExit("No DOIs/URLs in that file — nothing to fetch.")
     if args.dry_run:
-        docs, skipped = fetch_docs(urls)
-        for s in skipped:
-            print("  skipped (couldn't fetch): {}".format(s["target"]))
-        if not docs:
-            raise SystemExit("Nothing fetched.")
-        bundle = build_batch_extract_prompt(read_json(args.kb), docs, max_text=args.max_text)
-        _write_prompt_files([bundle], "label-sources", tail=False)
-        print("\nUpload that ONE file to your chatbot; paste the JSON array; then:  "
-              "python cli.py add {} <delta.json> --build".format(args.kb))
+        _write_labelling_bundle(
+            args.kb, urls, args.max_text,
+            empty_error="Nothing fetched.",
+            upload_msg="\nUpload that ONE file to your chatbot; paste the JSON array; then:  "
+                       "python cli.py add {kb} <delta.json> --build")
         return
-    deltas = ingest_batch(urls, read_json(args.kb), batch=args.batch, max_text=args.max_text)
-    if args.apply:
-        added = _merge_deltas(args.kb, deltas)
-        print("Imported {} of {} into {}.".format(added, len(deltas), args.kb))
-        if args.build:
-            _build_viewer([args.kb])
-    else:
-        print(json.dumps(deltas, indent=2, ensure_ascii=False))
+    _extract_and_report(args.kb, urls, args.batch, args.max_text, args.apply, args.build,
+                        success_msg="Imported {added} of {total} into {kb}.")
 
 
 def cmd_export(args):
