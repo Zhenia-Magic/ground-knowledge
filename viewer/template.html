@@ -216,6 +216,19 @@ function maps(kb){
   return {pos,ds};
 }
 
+// ONE renderer for every warning kind (concentration / method-monoculture / quote) -- see
+// engine/assess.py::warnings. Used in both the Coverage and Independence tabs so a warning is
+// never a bespoke banner maintained in two places with two different wordings.
+function warningsHtml(warnings, showLink){
+  const kicker={concentration:"Apparent consensus is correlated",
+    "method-monoculture":"Potential shared-method bias", quote:"Unverified quote"};
+  return (warnings||[]).map(w=>`<div class="method-alert">
+      <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
+      <div>${esc(w.detail)}</div>
+      ${showLink&&w.kind!=="quote"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
+    </div>`).join("");
+}
+
 function caseLabel(c){
   // CLI cases have a human id ("eggs"); portal questions have a generated hex id — for those
   // show a short version of the question instead, so the chip is informative.
@@ -258,9 +271,8 @@ function strengthTier(ev){
 
 function renderCoverage(c){
   const {kb,assessment:a}=c, {pos,ds}=maps(kb), active=state.filter;
-  const methodRisks=(a.methodAudit||[]).filter(m=>m.monoculture);
-  const methodRiskIds={}; methodRisks.forEach(m=>methodRiskIds[m.id]=true);
-  const methodRisk=a.methodMonoculture||methodRisks[0];
+  const warningBadges={};   // positionId -> [{kind,badge}] -- drives the legend risk badges below
+  (a.warnings||[]).forEach(w=>(warningBadges[w.positionId]=warningBadges[w.positionId]||[]).push(w));
   const bar=a.distribution.map(d=>{
     const dim=active&&active!==d.id?"dim":"";
     const barLabel = (pos[d.id] && pos[d.id].shortLabel) || shortLabel(d.label);
@@ -287,18 +299,11 @@ function renderCoverage(c){
       ? `<div class="takeaway">Weighted by independence, <b>${esc(big.label)}</b> drops from <b>${big.rawPct}%</b> of sources to <b>${big.wPct}%</b> of the independent evidence — its support rests on fewer distinct datasets than the headcount implies.</div>`
       : `<div class="takeaway">The two views largely agree here — each position's evidence is about as independent as it is numerous.</div>`;
   }
-  const methodRiskHtml=methodRisk?`<div class="method-alert">
-      <div class="risk-kicker">Potential shared-method bias</div>
-      <div><b>${esc(methodRisk.label)}</b>: ${methodRisk.top.count} of ${methodRisk.raw} sources fall into the same method-risk family, <b>${esc(methodRisk.top.label)}</b>. Separate datasets can still be wrong together when studies share the same design weakness.</div>
-      <button class="risk-link" data-view="independence">See the evidence bases</button>
-    </div>`:"";
-  const qFlagged=(a.quoteAudit&&a.quoteAudit.flagged)||[];
-  const quoteRiskHtml=qFlagged.length?`<div class="method-alert">
-      <div class="risk-kicker">Unverified quote${qFlagged.length===1?"":"s"}</div>
-      <div>${qFlagged.length} source${qFlagged.length===1?" has a provenance quote":"s have provenance quotes"} that ${qFlagged.length===1?"doesn't":"don't"} match the full text we fetched for ${qFlagged.length===1?"it":"them"} — e.g. <b>${esc(qFlagged[0].title||qFlagged[0].id)}</b>. Not a guess about missing text: this is fetched full text the quote should match and doesn't.</div>
-    </div>`:"";
-  const legend=a.distribution.map(d=>
-    `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${methodRiskIds[d.id]?'<span class="riskbadge">method-bias risk</span>':""}</span>`).join("");
+  const warningHtml=warningsHtml(a.warnings, true);
+  const legend=a.distribution.map(d=>{
+    const badges=(warningBadges[d.id]||[]).map(w=>`<span class="riskbadge">${esc(w.badge)}</span>`).join("");
+    return `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${badges}</span>`;
+  }).join("");
   let skewHtml="";
   if(a.fundingSkew){
     const f=a.fundingSkew, parts=[];
@@ -364,7 +369,7 @@ function renderCoverage(c){
       <div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
       <div class="distrib">${wbar}</div>
       ${takeaway}`:""}
-      ${methodRiskHtml}${quoteRiskHtml}
+      ${warningHtml}
       <div class="legend">${legend}</div>${skewHtml}</div>
     <div class="panel"><h3>Sources${active?` — ${esc(pos[active].label)}`:""}</h3>
       <p class="hint">each source tagged with evidence type, funding, population, and the datasets it rests on (↳)</p>
@@ -453,15 +458,12 @@ function renderIndependence(c){
       <div class="bases">${bases}</div>${sec}${circ}${method}
     </div>`;
   }).join("");
-  const w=a.worstConcentration;
-  const flag=w?`<div class="flagbox"><span>⚠</span><span><b>Apparent consensus is correlated.</b> The "${esc(w.label)}" position lists ${w.raw} sources, but ${w.topDataset.count} rest on one dataset — <b>${esc(w.topDataset.label)}</b>. That's closer to ${w.nEff.toFixed(1)} independent bases than ${w.raw}. Counting sources here overstates the weight of evidence.</span></div>`
-    :`<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
-  const m=a.methodMonoculture;
-  const mflag=m?`<div class="flagbox"><span>⚠</span><span><b>Method-bias warning.</b> In the "${esc(m.label)}" position, ${m.top.count} of ${m.raw} sources fall into the same method-risk family: <b>${esc(m.top.label)}</b>. Separate datasets can still be wrong together when studies share the same design weakness.</span></div>`:"";
+  const flag=(a.warnings&&a.warnings.length) ? warningsHtml(a.warnings, false)
+    : `<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
   return `<div class="panel"><h3>Is the consensus real, or the same evidence counted twice?</h3>
       <p class="subnote">Each position is reduced to its <b>independent evidence bases</b>: sources sharing a dataset, echoing as reviews, or citing each other in a loop collapse into one. The number after each position is its effective count of distinct bases — the honest size of its support.</p>
       <div class="indkey"><span><i style="background:#222a35"></i>primary evidence (dataset / own data)</span><span><i style="background:#c4ccd4"></i>secondary voice (collapsed echo)</span><span><b class="warn">⚠</b> circular loop</span></div>
-      ${rows}${flag}${mflag}</div>`;
+      ${rows}${flag}</div>`;
 }
 
 function renderChanges(c){

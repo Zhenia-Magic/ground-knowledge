@@ -5,7 +5,7 @@ can't drift apart silently.
 """
 import unittest
 
-from engine.assess import independence, method_audit, weighted_distribution
+from engine.assess import independence, method_audit, quote_audit, warnings, weighted_distribution
 from engine.roots import resolve, tier_of
 
 
@@ -192,6 +192,52 @@ class MethodAuditTests(unittest.TestCase):
         kb = _kb([_s("rct%d" % i, "X", "Experimental (RCT)", ["D%d" % i]) for i in range(4)])
         m = {p["id"]: p for p in method_audit(kb)}["X"]
         self.assertEqual(m["classed"], 0)
+
+
+class WarningsTests(unittest.TestCase):
+    """warnings() unifies the concentration / method-bias / quote signals that used to be three
+    separately-computed, separately-rendered fields (worstConcentration, methodMonoculture,
+    quoteAudit["flagged"]). These tests pin the wording and selection so the consolidation is a
+    pure refactor -- same information, one mechanism."""
+
+    def test_no_warnings_on_a_clean_kb(self):
+        srcs = [_s("p1", "X", "Observational", ["D1"]),
+                _s("p2", "X", "Experimental (RCT)", ["D2"])]
+        self.assertEqual(warnings(_kb(srcs)), [])
+
+    def test_concentration_warning_names_the_worst_position(self):
+        srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]
+        ws = warnings(_kb(srcs))
+        conc = [w for w in ws if w["kind"] == "concentration"]
+        self.assertEqual(len(conc), 1)
+        self.assertEqual(conc[0]["positionId"], "X")
+        self.assertIn("Apparent consensus is correlated", conc[0]["headline"])
+        self.assertIn("closer to", conc[0]["detail"])
+
+    def test_method_monoculture_warning(self):
+        srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(4)]
+        ws = warnings(_kb(srcs))
+        mono = [w for w in ws if w["kind"] == "method-monoculture"]
+        self.assertEqual(len(mono), 1)
+        self.assertEqual(mono[0]["positionId"], "X")
+        self.assertIn("observational confounding risk", mono[0]["detail"])
+
+    def test_quote_warning_reports_first_flagged_source(self):
+        s = _s("s1", "X", "Observational", ["D1"])
+        s["textDepth"] = "full"
+        s["provenance"] = {"position": {"quote": "x", "verifiedQuote": "missing"}}
+        kb = _kb([s])
+        ws = warnings(kb)
+        quote = [w for w in ws if w["kind"] == "quote"]
+        self.assertEqual(len(quote), 1)
+        self.assertEqual(quote[0]["positionId"], "X")
+        self.assertIn("s1", quote[0]["detail"])
+
+    def test_precomputed_audits_can_be_passed_in_without_recomputing(self):
+        srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]
+        kb = _kb(srcs)
+        ind, ma, qa = independence(kb), method_audit(kb), quote_audit(kb)
+        self.assertEqual(warnings(kb, ind, ma, qa), warnings(kb))
 
 
 class GapTests(unittest.TestCase):

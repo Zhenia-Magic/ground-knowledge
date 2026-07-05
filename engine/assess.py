@@ -389,6 +389,68 @@ def independence(kb):
     return out
 
 
+def warnings(kb, ind=None, ma=None, qa=None):
+    """Unified warning feed -- one consistent shape for every 'this needs scrutiny' signal the
+    assessment produces (concentration, method-bias, unverified quotes), so the CLI and viewer
+    render every warning through ONE mechanism instead of a bespoke banner/print-block per
+    audit. No new signal lives here: each condition and its wording is exactly what
+    independence()/method_audit()/quote_audit() already compute -- this only collects and
+    picks the single worst instance of each kind, matching what was shown before this existed
+    (worstConcentration / methodMonoculture / quoteAudit["flagged"])."""
+    ind = independence(kb) if ind is None else ind
+    ma = method_audit(kb) if ma is None else ma
+    qa = quote_audit(kb) if qa is None else qa
+    out = []
+
+    cand = [p for p in ind if p["concentrated"] and p["topDataset"]]
+    cand.sort(key=lambda p: (p["topDataset"]["count"], p["concentration"], p["raw"]), reverse=True)
+    if cand:
+        w = cand[0]
+        out.append({
+            "kind": "concentration", "positionId": w["id"], "label": w["label"], "hue": w["hue"],
+            "badge": "concentration risk",
+            "headline": "Apparent consensus is correlated.",
+            "detail": ('The "{}" position lists {} sources, but {} rest on one dataset — {}. '
+                       'That is closer to {:.1f} independent bases than {}. Counting sources '
+                       'here overstates the weight of evidence.').format(
+                           w["label"], w["raw"], w["topDataset"]["count"], w["topDataset"]["label"],
+                           w["nEff"], w["raw"]),
+        })
+
+    mcand = [m for m in ma if m["monoculture"]]
+    mcand.sort(key=lambda m: (m["top"]["count"], m["top"]["share"], m["raw"]), reverse=True)
+    if mcand:
+        m = mcand[0]
+        out.append({
+            "kind": "method-monoculture", "positionId": m["id"], "label": m["label"], "hue": m["hue"],
+            "badge": "method-bias risk",
+            "headline": "Method-bias warning.",
+            "detail": ('In the "{}" position, {} of {} sources fall into the same method-risk '
+                       'family: {}. Separate datasets can still be wrong together when studies '
+                       'share the same design weakness.').format(
+                           m["label"], m["top"]["count"], m["raw"], m["top"]["label"]),
+        })
+
+    flagged = qa.get("flagged") or []
+    if flagged:
+        f = flagged[0]
+        pos_by_id = {p["id"]: p for p in ind}
+        p = pos_by_id.get(f["position"])
+        out.append({
+            "kind": "quote", "positionId": f["position"],
+            "label": p["label"] if p else f["position"], "hue": p["hue"] if p else "#8a6510",
+            "badge": "unverified quote{}".format("" if len(flagged) == 1 else "s"),
+            "headline": "Unverified quote{}.".format("" if len(flagged) == 1 else "s"),
+            "detail": ('{} source{} {} a provenance quote that does not match the full text '
+                       'fetched for {} — e.g. "{}". Not a guess about missing text: this is '
+                       'fetched full text the quote should match and does not.').format(
+                           len(flagged), "" if len(flagged) == 1 else "s",
+                           "has" if len(flagged) == 1 else "have",
+                           "it" if len(flagged) == 1 else "them", f.get("title") or f["id"]),
+        })
+    return out
+
+
 def dominant_dataset(kb):
     """Case-wide, which single dataset underlies the most sources. The Huanan-market /
     NHS-HPFS detector. Ties returned together."""
@@ -408,14 +470,7 @@ def assess(kb):
     """The whole Assessment artifact -- one dict, diffable across versions."""
     ind = independence(kb)
     ma = method_audit(kb)
-    # worst offender = among CONCENTRATED positions, the one with the most sources resting
-    # on a single dataset (then by concentration, then raw). None if nothing is concentrated.
-    cand = [x for x in ind if x["concentrated"] and x["topDataset"]]
-    cand.sort(key=lambda x: (x["topDataset"]["count"], x["concentration"], x["raw"]),
-              reverse=True)
-    worst = cand[0] if cand else None
-    mcand = [x for x in ma if x["monoculture"]]
-    mcand.sort(key=lambda x: (x["top"]["count"], x["top"]["share"], x["raw"]), reverse=True)
+    qa = quote_audit(kb)
     return {
         "version": kb.get("meta", {}).get("version"),
         "distribution": distribution(kb),
@@ -425,10 +480,9 @@ def assess(kb):
         "cruxes": cruxes(kb),
         "independence": ind,
         "methodAudit": ma,
-        "methodMonoculture": mcand[0] if mcand else None,
-        "quoteAudit": quote_audit(kb),
+        "quoteAudit": qa,
         "dominantDataset": dominant_dataset(kb),
-        "worstConcentration": worst,
+        "warnings": warnings(kb, ind, ma, qa),
     }
 
 
