@@ -25,8 +25,11 @@
      content that has already scrolled away reads as broken, and an internal overflow-y:auto
      reads as a stray scrollbar (both tried, both rejected). The rail is just a normal column
      that scrolls with the page like the rest of it. */
+  /* No align-self:flex-start -- the row's default stretch keeps the rail's box (and its
+     border-right) as tall as .main, so the divider runs the full length of the page even
+     though the rail's own content is much shorter. */
   .rail{width:var(--rail-w);flex:0 0 var(--rail-w);border-right:1px solid var(--line);
-    padding:22px 18px;align-self:flex-start;}
+    padding:22px 18px;}
   .backhome{display:inline-block;font-size:12px;color:var(--muted);margin-bottom:12px;}
   .backhome:hover{color:var(--flag);}
   .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
