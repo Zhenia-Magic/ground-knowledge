@@ -14,6 +14,10 @@
     --rail-w:270px;
   }
   *{box-sizing:border-box;} html,body{margin:0;}
+  /* Reserve the scrollbar gutter unconditionally -- otherwise a short tab (e.g. Divergence,
+     which rarely needs to scroll) renders ~15px wider than a long one, and the whole centered
+     .shell (and the rail's divider with it) visibly shifts/narrows switching between tabs. */
+  html{overflow-y:scroll;scrollbar-gutter:stable;}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
     -webkit-font-smoothing:antialiased;font-size:15px;}
   a{color:var(--flag);text-decoration:none;cursor:pointer;} a:hover{text-decoration:underline;}
@@ -78,6 +82,12 @@
   label.flagonly{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
     cursor:pointer;margin-top:6px;}
   label.flagonly input{width:auto;margin:0;}
+  /* Filter sources lives with the table/cards it filters (Coverage panel), not in the rail --
+     it's only ever relevant there, and a horizontal bar reads better with the extra width. */
+  .filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .filterbar input[type=text]{flex:1 1 220px;margin-bottom:0;}
+  .filterbar select{width:auto;flex:0 0 auto;margin-bottom:0;}
+  .filterbar label.flagonly{margin-top:0;flex:0 0 auto;white-space:nowrap;}
   .warnmini{border:1px solid #E3CD99;background:var(--ochre-bg);border-radius:7px;padding:8px 10px;
     font-size:11.5px;color:var(--ink);margin-bottom:8px;cursor:pointer;}
   .warnmini b{color:var(--ochre);display:block;font-size:10px;text-transform:uppercase;
@@ -279,7 +289,6 @@
       <h4>Active warnings</h4>
       <div id="warnList"></div>
     </div>
-    <div id="covFilters" class="railsec" style="display:none;"></div>
     <details id="caseSec" class="railsec" style="display:none;">
       <summary>Export &amp; Manage</summary>
       <div class="caselinks" id="caseLinks"></div>
@@ -448,22 +457,6 @@ function renderChrome(){
       `<div class="warnmini" data-jump="${w.kind==="quote"||w.kind==="low-confidence"?"coverage":"independence"}"><b>${esc(w.badge)}</b>${esc(w.label)}</div>`).join("");
   } else warnEl.style.display="none";
 
-  const covEl=el("covFilters");
-  if(!empty && state.view==="coverage"){
-    covEl.style.display="";
-    const evs=[...new Set(kb.sources.map(s=>s.evidence))].sort();
-    const fus=[...new Set(kb.sources.map(s=>s.funding||"Undisclosed"))].sort();
-    covEl.innerHTML=`<h4>Filter sources</h4>
-      <input type="text" id="fq" placeholder="Search title or venue" value="${esc(state.filter.q)}" />
-      <select id="fEv"><option value="">Evidence: all</option>${evs.map(e=>`<option${state.filter.ev===e?" selected":""}>${esc(e)}</option>`).join("")}</select>
-      <select id="fFu"><option value="">Funding: all</option>${fus.map(f=>`<option${state.filter.fu===f?" selected":""}>${esc(f)}</option>`).join("")}</select>
-      <label class="flagonly"><input type="checkbox" id="fFlag" ${state.filter.flagged?"checked":""} /> Flagged quotes only</label>`;
-    covEl.querySelector("#fq").oninput=e=>{state.filter.q=e.target.value;state.shown=24;renderMain();};
-    covEl.querySelector("#fEv").onchange=e=>{state.filter.ev=e.target.value;state.shown=24;renderMain();};
-    covEl.querySelector("#fFu").onchange=e=>{state.filter.fu=e.target.value;state.shown=24;renderMain();};
-    covEl.querySelector("#fFlag").onchange=e=>{state.filter.flagged=e.target.checked;state.shown=24;renderMain();};
-  } else covEl.style.display="none";
-
   const caseSec=el("caseSec");
   if(links){
     caseSec.style.display="";
@@ -562,6 +555,14 @@ function renderCoverageView(){
   });
   const total=rows.length, visible=rows.slice(0,state.shown);
   const active=[...state.posOn].length<kb.positions.length ? [...state.posOn] : null;
+  const evs=[...new Set(kb.sources.map(s=>s.evidence))].sort();
+  const fus=[...new Set(kb.sources.map(s=>s.funding||"Undisclosed"))].sort();
+  const filterBar=`<div class="filterbar">
+      <input type="text" id="fq" placeholder="Search title or venue" value="${esc(state.filter.q)}" />
+      <select id="fEv"><option value="">Evidence: all</option>${evs.map(e=>`<option${state.filter.ev===e?" selected":""}>${esc(e)}</option>`).join("")}</select>
+      <select id="fFu"><option value="">Funding: all</option>${fus.map(f=>`<option${state.filter.fu===f?" selected":""}>${esc(f)}</option>`).join("")}</select>
+      <label class="flagonly"><input type="checkbox" id="fFlag" ${state.filter.flagged?"checked":""} /> Flagged quotes only</label>
+    </div>`;
   const toolbar=`<div class="toolbar"><div class="count">${total} of ${kb.sources.length} sources shown</div>
     <div class="toggle"><button data-d="table" class="${state.display==="table"?"on":""}">Table</button><button data-d="cards" class="${state.display==="cards"?"on":""}">Cards</button></div></div>`;
   const maxVer=kb.meta.version;
@@ -643,8 +644,13 @@ function renderCoverageView(){
 
   el("main").innerHTML=`<h1>Coverage & warnings</h1><div class="mmeta">who holds which position, and what to watch for</div>`
     +headline(c)
-    +`<div class="panel">${toolbar}${body}${more}</div>`
+    +`<div class="panel">${filterBar}${toolbar}${body}${more}</div>`
     +`<div class="panel"><h1 style="font-size:14px;margin:0 0 4px;">Blindspots — what each side leaves out</h1><div class="mmeta" style="margin-bottom:14px;">evidence types & subgroups present in the case but absent from a position's own sources</div><div class="bs-grid">${bsCards}</div></div>`;
+
+  el("main").querySelector("#fq").oninput=e=>{state.filter.q=e.target.value;state.shown=24;renderMain();};
+  el("main").querySelector("#fEv").onchange=e=>{state.filter.ev=e.target.value;state.shown=24;renderMain();};
+  el("main").querySelector("#fFu").onchange=e=>{state.filter.fu=e.target.value;state.shown=24;renderMain();};
+  el("main").querySelector("#fFlag").onchange=e=>{state.filter.flagged=e.target.checked;state.shown=24;renderMain();};
 
   if(state.display==="table"){
     el("main").querySelectorAll("[data-sort]").forEach(th=>th.onclick=()=>{
