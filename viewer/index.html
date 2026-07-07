@@ -23,7 +23,9 @@
   .shell{display:flex;max-width:1440px;margin:0 auto;min-height:100vh;}
   .rail{width:var(--rail-w);flex:0 0 var(--rail-w);border-right:1px solid var(--line);
     padding:22px 18px;position:sticky;top:0;align-self:flex-start;height:100vh;
-    overflow-y:auto;display:flex;flex-direction:column;}
+    overflow-y:auto;display:flex;flex-direction:column;
+    scrollbar-width:none;-ms-overflow-style:none;}
+  .rail::-webkit-scrollbar{display:none;}
   .backhome{display:inline-block;font-size:12px;color:var(--muted);margin-bottom:12px;}
   .backhome:hover{color:var(--flag);}
   .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
@@ -135,9 +137,11 @@
   td{padding:8px 10px;font-size:12.5px;border-bottom:1px solid var(--line);vertical-align:top;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   td.wrap{white-space:normal;}
-  td.clamp2{white-space:normal;overflow:hidden;}
-  td.clamp2>*,.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-    overflow:hidden;}
+  /* Line-clamping needs display:-webkit-box, which breaks a <td>'s table-cell layout if
+     applied directly to it (collapses column widths / row heights) -- so this only ever
+     goes on a <div> nested inside the cell, never the cell itself. */
+  .clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;white-space:normal;}
   tbody tr.rowmain{cursor:pointer;}
   tbody tr.rowmain:hover td{background:#FAFBFB;}
   tr.onesided td{opacity:.55;}
@@ -192,7 +196,7 @@
     border-radius:5px;padding:2px 7px;}
   .onetag{font-family:var(--mono);font-size:9.5px;color:var(--faint);}
   .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);
-    margin:12px 0 0;}
+    margin:12px 0 16px;}
   .wkey .ws{font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:5px;
     border:1px solid var(--line);}
   .bs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;}
@@ -800,10 +804,10 @@ function renderChangesView(){
     const detail=open?`<tr class="detailrow"><td colspan="4">${detailBody}</td></tr>`:"";
     return `<tr class="rowmain" data-key="${esc(key)}"><td style="font-family:var(--mono);color:var(--muted);white-space:nowrap;">v${e.version}</td>
         <td style="color:var(--faint);white-space:nowrap;">${esc(e.ts||"")}</td>
-        <td class="clamp2">${esc(title)}</td>
+        <td><div class="clamp2">${esc(title)}</div></td>
         <td><div class="deltawrap">${badges}</div></td></tr>${detail}`;
   }).join("");
-  const colgroup=`<colgroup><col style="width:6%"><col style="width:14%"><col style="width:54%"><col style="width:26%"></colgroup>`;
+  const colgroup=`<colgroup><col style="width:9%"><col style="width:14%"><col style="width:51%"><col style="width:26%"></colgroup>`;
   el("main").innerHTML=`<h1>Changes</h1><div class="mmeta">how the picture changed as evidence arrived — newest first</div>
     <div class="panel">${rows?`<div class="tbl-wrap"><table>${colgroup}<thead><tr><th class="nosort">Version</th><th class="nosort">Date</th><th class="nosort">Source added</th><th class="nosort">Key change</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No history yet — only the seed.</div>'}</div>`;
   el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
