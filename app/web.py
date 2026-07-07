@@ -348,33 +348,30 @@ python cli.py push cases/your.kb.json --token "$EPISTEMIC_ADMIN_TOKEN"</pre>
 
 
 def viewer_html(qid, get_question):
-    """The read view: reuse viewer/template.html, populated live with this one question."""
+    """The read view: reuse viewer/template.html, populated live with this one question.
+
+    The template is render-only and knows nothing about portal routes (see its header
+    comment); it just renders a `portalLinks` field verbatim if present. A CLI-built static
+    multi-case bundle (cli.py build) never sets this key, so Add source / Export / Manage
+    simply don't render there — there is no server behind a static bundle to point them at.
+    """
     q = get_question(qid)
     if not q:
         return None
-    bundle = {"order": [q["id"]], "cases": {q["id"]: {"kb": q["kb"], "assessment": assess(q["kb"])}}}
+    bundle = {
+        "order": [q["id"]],
+        "cases": {q["id"]: {"kb": q["kb"], "assessment": assess(q["kb"])}},
+        "portalLinks": {
+            "home": "/",
+            "add": "/q/{}/add".format(qid),
+            "manage": "/q/{}/manage".format(qid),
+            "export": {fmt: "/api/questions/{}/export?format={}".format(qid, fmt)
+                       for fmt in ("kb", "bibtex", "ris", "csl")},
+        },
+    }
     with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as f:
         tpl = f.read()
-    html = tpl.replace("/*__DATA__*/null", json_for_script(bundle))
-    # inject a thin top bar linking back home and to the contribute flow.
-    # Use a <style> (not inline colors) so :hover works — inline styles can't carry :hover.
-    # Built by concatenation (NOT .format) because the CSS braces would clash with placeholders.
-    qe = _esc(qid)
-    bar = ("<style>.pbar{max-width:980px;margin:0 auto;padding:14px 24px 0;"
-           "font-family:ui-monospace,monospace;font-size:12px;}"
-           ".pbar a{color:#2f6296;text-decoration:none;cursor:pointer;}"
-           ".pbar a:hover{text-decoration:underline;}"
-           ".pbar .sep{color:#8A9098;margin:0 8px;} .pbar .lbl{color:#8A9098;}</style>"
-           "<div class='pbar'><a href='/'>← all questions</a>"
-           "<span class='sep'>·</span><a href='/q/" + qe + "/add'>+ add sources</a>"
-           "<span class='sep'>·</span><span class='lbl'>export</span> "
-           "<a href='/api/questions/" + qe + "/export?format=kb'>knowledge base (JSON)</a>"
-           "<span class='lbl'> · citations:</span> "
-           "<a href='/api/questions/" + qe + "/export?format=bibtex'>BibTeX</a> "
-           "<a href='/api/questions/" + qe + "/export?format=ris'>RIS</a> "
-           "<a href='/api/questions/" + qe + "/export?format=csl'>CSL-JSON</a>"
-           "<span class='sep'>·</span><a href='/q/" + qe + "/manage'>manage</a></div>")
-    return html.replace("<body>", "<body>" + bar, 1)
+    return tpl.replace("/*__DATA__*/null", json_for_script(bundle))
 
 
 def manage_html(qid, get_question):

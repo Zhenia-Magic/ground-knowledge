@@ -11,192 +11,276 @@
     --ochre:#8a6510; --ochre-bg:#F5ECD6; --flag:#2f6296; --flag-bg:#E7EEF6;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
     --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    --rail-w:270px;
   }
   *{box-sizing:border-box;} html,body{margin:0;}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
     -webkit-font-smoothing:antialiased;font-size:15px;}
-  .wrap{max-width:980px;margin:0 auto;padding:32px 24px 80px;}
   a{color:var(--flag);text-decoration:none;cursor:pointer;} a:hover{text-decoration:underline;}
-  header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;
-    border-bottom:1px solid var(--line-strong);padding-bottom:18px;margin-bottom:8px;}
-  .brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-family:var(--mono);}
-  h1{font-size:25px;font-weight:600;margin:6px 0 0;letter-spacing:-.01em;}
-  .sub{color:var(--muted);font-size:14px;margin-top:4px;max-width:52ch;}
-  .seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:var(--surface);}
   button{cursor:pointer;}
-  .seg button{appearance:none;border:0;background:transparent;font:inherit;color:var(--muted);padding:8px 14px;cursor:pointer;font-size:13px;transition:background .12s,color .12s;}
-  .seg button+button{border-left:1px solid var(--line);}
-  .seg button:hover{background:#eef0f1;color:var(--ink);}
-  .seg button[aria-pressed="true"]{background:var(--chrome);color:#fff;}
-  nav.tabs{display:flex;gap:2px;margin:22px 0 4px;border-bottom:1px solid var(--line);}
-  nav.tabs button{appearance:none;border:0;background:transparent;font:inherit;cursor:pointer;
-    color:var(--muted);padding:10px 4px;margin-right:22px;font-size:14px;position:relative;transition:color .12s;}
-  nav.tabs button:hover{color:var(--ink);}
-  nav.tabs button[aria-selected="true"]{color:var(--ink);font-weight:500;}
-  nav.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--chrome);}
-  .qbar{margin:22px 0 6px;} .qbar .q{font-size:18px;font-weight:600;}
-  .qbar .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:2px;}
-  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0;}
-  .panel h3{margin:0 0 4px;font-size:14px;font-weight:600;}
-  .panel .hint{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin:0 0 14px;}
-  .subnote{color:var(--muted);font-size:13px;margin:0 0 16px;line-height:1.5;}
-  .splitlabel{font-size:13px;font-weight:600;color:var(--ink);margin:18px 0 7px;display:flex;
+
+  /* ---------- shell / rail ---------- */
+  .shell{display:flex;max-width:1440px;margin:0 auto;min-height:100vh;}
+  .rail{width:var(--rail-w);flex:0 0 var(--rail-w);border-right:1px solid var(--line);
+    padding:22px 18px;position:sticky;top:0;align-self:flex-start;height:100vh;
+    overflow-y:auto;display:flex;flex-direction:column;}
+  .backhome{display:inline-block;font-size:12px;color:var(--muted);margin-bottom:12px;}
+  .backhome:hover{color:var(--flag);}
+  .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    font-family:var(--mono);margin-bottom:8px;}
+  .qtitle{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:4px;}
+  .qmeta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:18px;}
+  .casesec{margin-bottom:14px;display:flex;flex-direction:column;gap:5px;}
+  .cchip{display:block;width:100%;text-align:left;font:inherit;font-size:12px;color:var(--muted);
+    background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 8px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .cchip:hover{background:#EEF0F1;}
+  .cchip[aria-pressed="true"]{background:var(--flag-bg);color:var(--flag);font-weight:600;
+    border-color:var(--flag-bg);}
+  nav#nav{margin-bottom:6px;}
+  .navitem{display:flex;flex-direction:column;padding:8px 10px;border-radius:8px;cursor:pointer;
+    margin-bottom:2px;border:0;background:transparent;font:inherit;text-align:left;width:100%;}
+  .navitem:hover{background:#EEF0F1;}
+  .navitem[aria-selected="true"]{background:var(--flag-bg);}
+  .navitem .l{font-size:13.5px;color:var(--muted);}
+  .navitem[aria-selected="true"] .l{color:var(--flag);font-weight:600;}
+  .addsrc{display:block;text-align:center;width:100%;font:inherit;font-size:13px;font-weight:600;
+    padding:9px 0;margin:6px 0 6px;border:1px solid var(--flag);border-radius:8px;
+    background:var(--flag-bg);color:var(--flag);cursor:pointer;}
+  .addsrc:hover{background:var(--flag);color:#fff;text-decoration:none;}
+  .railsec{border-top:1px solid var(--line);margin-top:16px;padding-top:14px;}
+  .railsec h4{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);
+    margin:0 0 10px;font-weight:600;}
+  .poschip{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:13px;color:var(--muted);
+    cursor:pointer;border-radius:6px;}
+  .poschip:hover{background:#EEF0F1;}
+  .poschip .dot{width:9px;height:9px;border-radius:2px;flex:0 0 auto;}
+  .poschip .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .poschip .risk{color:var(--ochre);font-size:11px;flex:0 0 auto;}
+  .poschip .n{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint);
+    flex:0 0 auto;}
+  .poschip.off{opacity:.4;}
+  input[type=text],select{width:100%;font:inherit;font-size:12.5px;padding:7px 9px;
+    border:1px solid var(--line-strong);border-radius:7px;background:var(--surface);
+    color:var(--ink);margin-bottom:8px;}
+  select{appearance:none;-webkit-appearance:none;-moz-appearance:none;padding-right:26px;
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" fill="none" stroke="%2361676E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    background-repeat:no-repeat;background-position:right 8px center;cursor:pointer;}
+  select:hover{border-color:var(--faint);}
+  input[type=text]:focus,select:focus{outline:none;border-color:var(--flag);
+    box-shadow:0 0 0 2px var(--flag-bg);}
+  label.flagonly{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
+    cursor:pointer;margin-top:6px;}
+  label.flagonly input{width:auto;margin:0;}
+  .warnmini{border:1px solid #E3CD99;background:var(--ochre-bg);border-radius:7px;padding:8px 10px;
+    font-size:11.5px;color:var(--ink);margin-bottom:8px;cursor:pointer;}
+  .warnmini b{color:var(--ochre);display:block;font-size:10px;text-transform:uppercase;
+    letter-spacing:.04em;margin-bottom:2px;}
+  .caselinks{display:flex;flex-direction:column;gap:3px;}
+  .caselinks .lbl{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;
+    margin:8px 0 2px;}
+  .caselinks .lbl:first-child{margin-top:0;}
+  .caselinks a{font-size:12.5px;color:var(--muted);}
+  .caselinks a:hover{color:var(--flag);}
+
+  /* ---------- main ---------- */
+  .main{flex:1;min-width:0;padding:26px 32px 60px;}
+  .main h1{font-size:20px;font-weight:600;margin:0 0 4px;}
+  .mmeta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-bottom:20px;}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;margin-bottom:16px;}
+  .subnote{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.5;}
+  .splitlabel{font-size:13px;font-weight:600;color:var(--ink);margin:16px 0 7px;display:flex;
     align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .splitlabel:first-child{margin-top:0;}
   .splitlabel .num{font-family:var(--mono);color:var(--faint);font-weight:400;}
   .splitlabel .q{font-weight:400;color:var(--faint);font-size:12px;}
-  .takeaway{margin:14px 0 2px;font-size:14px;line-height:1.55;color:var(--ink);
-    background:var(--flag-bg);border-left:3px solid var(--flag);border-radius:0 8px 8px 0;padding:12px 15px;}
-  .method-alert{margin:14px 0 2px;font-size:14px;line-height:1.55;color:var(--ink);
-    background:var(--ochre-bg);border:1px solid #E3CD99;border-left:4px solid var(--ochre);
-    border-radius:0 9px 9px 0;padding:13px 15px;}
-  .method-alert .risk-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  .distrib{display:flex;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+  .seg{display:flex;align-items:center;justify-content:center;font-size:11.5px;font-family:var(--mono);
+    color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .15s,filter .12s;
+    min-width:0;padding:0 8px;border:0;background:transparent;}
+  .seg:hover{filter:brightness(1.1);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);}
+  .seg.dim{opacity:.32;}
+  .takeaway{font-size:13.5px;background:var(--flag-bg);border-left:3px solid var(--flag);
+    border-radius:0 8px 8px 0;padding:10px 14px;margin:14px 0 2px;}
+  .method-alert{background:var(--ochre-bg);border:1px solid #E3CD99;border-left:4px solid var(--ochre);
+    border-radius:0 9px 9px 0;padding:12px 14px;margin:14px 0 2px;font-size:13.5px;line-height:1.5;}
+  .method-alert .risk-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
     text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:3px;}
-  .method-alert .risk-link{appearance:none;border:1px solid #D5B873;background:#fff;color:var(--ochre);
+  .risk-link{appearance:none;border:1px solid #D5B873;background:#fff;color:var(--ochre);
     border-radius:6px;padding:5px 9px;margin-top:9px;font:inherit;font-size:12px;cursor:pointer;}
-  .method-alert .risk-link:hover{background:#FFF8E8;}
-  .distrib{display:flex;height:40px;border-radius:8px;overflow:hidden;border:1px solid var(--line);}
-  .distrib .seg-bar{display:block;line-height:40px;text-align:center;font-size:12px;font-family:var(--mono);
-    cursor:pointer;border:0;color:#fff;min-width:0;padding:0 8px;transition:opacity .15s;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .distrib .seg-bar.dim{opacity:.32;}
-  .distrib .seg-bar:hover{filter:brightness(1.1);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);}
-  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:12.5px;color:var(--muted);}
-  .legend .key{display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:color .12s;}
+  .risk-link:hover{background:#FFF8E8;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--muted);}
+  .legend .key{display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:color .12s;
+    border:0;background:transparent;font:inherit;padding:0;text-align:left;}
   .legend .key:hover{color:var(--ink);text-decoration:underline;}
   .legend .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
   .riskbadge{font-family:var(--mono);font-size:10px;color:var(--ochre);background:var(--ochre-bg);
     border:1px solid #E3CD99;border-radius:5px;padding:1px 6px;white-space:nowrap;}
   .skew{font-family:var(--mono);font-size:12px;color:var(--ochre);background:var(--ochre-bg);
     border-radius:8px;padding:9px 12px;margin-top:14px;display:flex;gap:8px;align-items:flex-start;}
+  .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
+    flex-wrap:wrap;gap:8px;}
+  .toolbar .count{font-size:12px;color:var(--muted);}
+  .toggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:7px;overflow:hidden;}
+  .toggle button{border:0;background:transparent;font:inherit;font-size:11.5px;padding:6px 13px;
+    cursor:pointer;color:var(--muted);}
+  .toggle button.on{background:var(--chrome);color:#fff;}
+  .toggle button+button{border-left:1px solid var(--line-strong);}
+  table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  th{text-align:left;padding:8px 10px;font-size:10.5px;font-weight:600;color:var(--faint);
+    text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid var(--line);cursor:pointer;
+    white-space:nowrap;background:#FAFBFB;overflow:hidden;text-overflow:ellipsis;}
+  th.nosort{cursor:default;}
+  td{padding:8px 10px;font-size:12.5px;border-bottom:1px solid var(--line);vertical-align:top;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  td.wrap{white-space:normal;}
+  td.clamp2{white-space:normal;overflow:hidden;}
+  td.clamp2>*,.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden;}
+  tbody tr.rowmain{cursor:pointer;}
+  tbody tr.rowmain:hover td{background:#FAFBFB;}
+  tr.onesided td{opacity:.55;}
+  .tbl-wrap{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+  .postag{font-size:10.5px;padding:2px 8px;border-radius:5px;white-space:nowrap;}
+  .flagicon{color:var(--ochre);} .okicon{color:var(--faint);}
+  .detailrow td{background:#FAFBFB;padding:12px 14px 14px 16px;font-size:12px;color:var(--muted);
+    white-space:normal;}
+  .detailrow .metarow{margin-bottom:6px;}
+  .detailrow .q{font-style:italic;color:var(--ink);margin:6px 0;}
+  .why{margin-top:8px;padding:9px 11px;border-left:3px solid var(--line-strong);background:var(--bg);
+    border-radius:0 7px 7px 0;font-size:12px;line-height:1.5;color:var(--muted);}
+  .why .wl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:3px;}
+  .why q{color:var(--ink);font-style:italic;quotes:"\201C" "\201D";}
+  .conf{display:block;margin-top:7px;font-family:var(--mono);font-size:10px;color:var(--faint);
+    cursor:help;}
+  .conf.low{color:var(--ochre);}
+  .showmore{text-align:center;padding:12px;}
+  .showmore button{font:inherit;font-size:12px;padding:7px 16px;border:1px solid var(--line-strong);
+    border-radius:7px;background:var(--surface);cursor:pointer;color:var(--muted);}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;}
-  .card{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:var(--surface);border-left-width:3px;}
-  .card .ct{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .card{border:1px solid var(--line);border-left:3px solid var(--line-strong);border-radius:10px;
+    padding:13px 15px;background:var(--surface);}
+  .card.retracted{background:#FCF3F1;border-color:#E6C3BA;}
+  .card .ct{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
   .card .titlewrap{min-width:0;flex:1 1 auto;}
-  .card .title{font-size:14.5px;font-weight:600;overflow-wrap:anywhere;} .card .yr{font-family:var(--mono);font-size:11px;color:var(--faint);}
-  .stance{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:6px;white-space:normal;
-    text-align:right;flex:0 1 auto;max-width:52%;line-height:1.4;}
-  .tags{margin-top:11px;display:flex;flex-wrap:wrap;gap:6px;}
-  .tag{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:6px;background:#F1F3F4;color:var(--muted);}
-  .tag.industry{background:var(--ochre-bg);color:var(--ochre);} .tag.rests{background:#EFF1F2;color:var(--faint);}
+  .card .title{font-size:13.5px;font-weight:600;line-height:1.4;overflow-wrap:anywhere;}
+  .card .yr{font-family:var(--mono);font-size:10.5px;color:var(--faint);white-space:nowrap;}
+  .card .venue{font-size:11.5px;color:var(--faint);font-style:italic;margin:3px 0 9px;
+    overflow-wrap:anywhere;}
+  .card .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px;}
+  .tag{font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:5px;
+    background:#F1F3F4;color:var(--muted);white-space:nowrap;}
+  .tag.industry{background:var(--ochre-bg);color:var(--ochre);}
+  .tag.rests{background:#EFF1F2;color:var(--faint);}
   .tag.new{background:var(--flag-bg);color:var(--flag);}
   .tag.retr{background:#F6E0DB;color:#B4502E;font-weight:600;}
-  .strength{margin-left:6px;letter-spacing:1px;font-size:9px;vertical-align:middle;}
+  .strength{margin-left:3px;letter-spacing:1px;font-size:9px;vertical-align:middle;}
   .strength.s3{color:#2E8B6F;} .strength.s2{color:#8a6510;} .strength.s1{color:var(--faint);}
-  .srcmeta{font-size:12px;color:var(--faint);font-style:italic;margin:1px 0 8px;overflow-wrap:anywhere;}
-  .why{margin-top:10px;padding:9px 11px;border-left:3px solid var(--line-strong);background:#FAFBFB;
-       border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.5;color:var(--muted);}
-  .why .wl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;
-       color:var(--faint);margin-bottom:3px;}
-  .why q{color:var(--ink);font-style:italic;quotes:"“" "”";}
-  .why .conf{display:block;margin-top:7px;font-family:var(--mono);font-size:10px;color:var(--faint);cursor:help;}
-  .why .conf.low{color:var(--ochre);}
-  .card.retracted{background:#FCF3F1;border-color:#E6C3BA;}
+  .card .ds{font-size:11px;color:var(--faint);margin-top:8px;}
+  .card .ds b{color:var(--muted);font-weight:600;}
+  .factor{border:1px dashed var(--line-strong);border-radius:10px;padding:11px 16px;
+    margin-bottom:8px;opacity:.75;}
+  .factor.crux{border:1px solid var(--line);border-left:3px solid var(--flag);padding:13px 16px;
+    margin-bottom:10px;opacity:1;}
+  .factor.shared{opacity:1;}
+  .factor .fh{display:flex;align-items:baseline;gap:8px;margin-bottom:3px;flex-wrap:wrap;}
+  .factor .flabel{font-size:13px;font-weight:500;color:var(--muted);}
+  .factor.crux .flabel{font-size:13.5px;font-weight:600;color:var(--ink);}
+  .cruxbadge{font-family:var(--mono);font-size:9.5px;background:var(--chrome);color:#fff;
+    border-radius:5px;padding:2px 7px;}
+  .onetag{font-family:var(--mono);font-size:9.5px;color:var(--faint);}
+  .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);
+    margin:12px 0 0;}
+  .wkey .ws{font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:5px;
+    border:1px solid var(--line);}
   .bs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;}
   .bs{border:1px solid var(--line);border-radius:11px;padding:13px 15px;}
-  .bs .bs-h{font-family:var(--mono);font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
-  .bs ul{margin:0;padding-left:16px;} .bs li{font-size:13px;color:var(--muted);margin:4px 0;} .bs li b{color:var(--ink);font-weight:500;}
-  .mtxscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table.mtx{border-collapse:collapse;width:100%;font-size:13px;}
-  table.mtx th,table.mtx td{padding:9px 10px;text-align:center;border:1px solid var(--line);}
-  table.mtx th.factor,table.mtx td.factor{text-align:left;font-weight:500;width:34%;}
-  table.mtx thead th{font-family:var(--mono);font-size:11.5px;font-weight:500;color:#fff;overflow-wrap:break-word;vertical-align:top;}
-  table.mtx thead th:not(.factor){min-width:74px;}
-  table.mtx td.cell{font-family:var(--mono);font-size:11px;color:var(--ink);font-weight:600;}
-  table.mtx tr.crux td.factor{font-weight:600;}
-  .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:12px 0 0;}
-  .wkey .ws{font-family:var(--mono);font-size:11px;padding:2px 9px;border-radius:5px;border:1px solid var(--line);}
-  .cruxbadge{font-family:var(--mono);font-size:10px;color:#fff;background:var(--chrome);border-radius:5px;padding:2px 6px;margin-left:8px;vertical-align:1px;}
-  .onetag{font-family:var(--mono);font-size:10px;color:var(--faint);margin-left:8px;}
-  table.mtx tr.onesided td{opacity:.5;}
-  .rationale{font-size:13px;color:var(--muted);background:#FAFBFB;border-left:3px solid var(--line-strong);
-    padding:10px 14px;margin:12px 0 0;border-radius:0 8px 8px 0;display:none;}
-  .rationale.show{display:block;}
-  tr.factor-row{cursor:pointer;} tr.factor-row:hover td{background:#FAFBFB;}
-  .ind-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;padding:15px 0;border-bottom:1px solid var(--line);}
-  .ind-row:last-child{border-bottom:0;}
-  .ind-name{font-size:14px;font-weight:500;} .ind-sub{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:3px;}
-  .ind-sub2{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:8px;}
-  .cmeter{position:relative;height:26px;border:1px solid var(--line);border-radius:7px;background:#F4F6F7;overflow:hidden;margin-top:9px;max-width:460px;}
-  .cmeter-fill{position:absolute;left:0;top:0;bottom:0;opacity:.22;}
-  .cmeter-lab{position:relative;font-family:var(--mono);font-size:11px;color:var(--ink);padding:0 9px;line-height:26px;white-space:nowrap;}
-  .ind-readout{text-align:right;min-width:78px;}
-  .ind-readout .pctn{font-family:var(--mono);font-size:21px;font-weight:600;line-height:1.1;}
-  .ind-readout .plab{font-family:var(--mono);font-size:10px;color:var(--faint);}
-  .ind2{padding:15px 0;border-bottom:1px solid var(--line);} .ind2:last-child{border-bottom:0;}
-  .ind2 .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
-  .ind2 .hd .dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
-  .ind2 .hd b{font-size:14.5px;}
-  .ind2 .eff{font-family:var(--mono);font-size:12px;color:var(--ink);margin-left:auto;}
-  .ind2 .eff .m{color:var(--faint);}
-  .bases{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0;}
-  .base{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:8px;
-        padding:5px 9px;background:#fff;max-width:100%;}
-  .base .bk{width:8px;height:8px;border-radius:2px;flex:0 0 auto;}
-  .base .bl{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:230px;}
-  .base .bw{font-family:var(--mono);font-size:10px;color:var(--faint);white-space:nowrap;}
+  .bs .bs-h{font-family:var(--mono);font-size:12px;margin-bottom:8px;display:flex;
+    align-items:center;gap:7px;}
+  .bs ul{margin:0;padding-left:16px;} .bs li{font-size:13px;color:var(--muted);margin:4px 0;}
+  .bs li b{color:var(--ink);font-weight:500;}
+  .indpos{margin-bottom:22px;}
+  .indpos:last-child{margin-bottom:0;}
+  .indpos .ph{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .indpos .plabel{font-size:14px;font-weight:600;}
+  .indpos .peff{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .infoicon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;
+    border-radius:50%;border:1px solid var(--faint);color:var(--faint);font-size:9.5px;
+    font-family:var(--sans);cursor:help;vertical-align:1px;}
+  .indkey{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 16px;}
+  .indkey span{display:flex;align-items:center;gap:6px;}
+  .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
+  .indkey .warn{color:#b4232f;font-style:normal;font-weight:700;}
   .ind-note{font-size:12px;color:var(--muted);margin:8px 0 0;}
   .ind-note.warn{color:var(--ochre);font-weight:500;}
-  .indkey{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:2px 0 14px;}
-  .indkey span{display:flex;align-items:center;gap:6px;} .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
-  .base .bk-ic{font-size:11px;line-height:1;color:#b4232f;flex:0 0 auto;}
-  .indkey .warn{color:#b4232f;font-style:normal;font-weight:700;}
-  .domline{font-family:var(--mono);font-size:12px;color:var(--flag);background:var(--flag-bg);border-radius:8px;
-    padding:9px 12px;margin:0 0 16px;display:flex;gap:8px;align-items:flex-start;}
-  .flagbox{font-size:13px;color:var(--flag);background:var(--flag-bg);border-radius:8px;padding:11px 14px;margin-top:6px;
-    display:flex;gap:9px;align-items:flex-start;line-height:1.5;}
+  .flagbox{font-size:13px;color:var(--flag);background:var(--flag-bg);border-radius:8px;
+    padding:11px 14px;margin-top:6px;display:flex;gap:9px;align-items:flex-start;line-height:1.5;}
+  .deltawrap{display:flex;flex-wrap:wrap;gap:5px;white-space:normal;align-items:center;}
+  .deltapill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;
+    color:var(--muted);border:1px solid var(--line-strong);border-radius:6px;padding:2px 7px;
+    white-space:nowrap;}
+  .deltapill .dot{width:7px;height:7px;border-radius:2px;flex:0 0 auto;}
+  .deltamore{font-family:var(--mono);font-size:10.5px;color:var(--faint);align-self:center;}
   .empty-state{text-align:center;padding:54px 28px;}
-  .empty-state .mark{width:46px;height:46px;margin:0 auto 16px;border-radius:12px;background:var(--flag-bg);
-    color:var(--flag);display:grid;place-items:center;font-family:var(--mono);font-size:21px;}
+  .empty-state .mark{width:46px;height:46px;margin:0 auto 16px;border-radius:12px;
+    background:var(--flag-bg);color:var(--flag);display:grid;place-items:center;
+    font-family:var(--mono);font-size:21px;}
   .empty-state h2{font-size:19px;margin:0 0 7px;}
   .empty-state p{max-width:54ch;margin:0 auto;color:var(--muted);font-size:14px;}
-  .empty-state .empty-action{display:inline-block;margin-top:19px;background:var(--chrome);color:#fff;
-    border-radius:8px;padding:9px 15px;font-size:13px;font-weight:500;}
+  .empty-state .empty-action{display:inline-block;margin-top:19px;background:var(--chrome);
+    color:#fff;border-radius:8px;padding:9px 15px;font-size:13px;font-weight:500;}
   .empty-state .empty-action:hover{text-decoration:none;background:#30333c;}
-  .ch{border-left:2px solid var(--line-strong);padding:2px 0 2px 16px;margin:0 0 4px 6px;position:relative;}
-  .ch::before{content:"";position:absolute;left:-5px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--chrome);}
-  .ch-h{font-size:14px;font-weight:600;margin-top:8px;}
-  .ch-meta{font-family:var(--mono);font-size:11px;color:var(--faint);margin:1px 0 7px;}
-  .ch-diff{font-family:var(--mono);font-size:12px;color:var(--muted);background:#FAFBFB;border:1px solid var(--line);
-    border-radius:8px;padding:9px 12px;}
-  .ch-diff div{margin:3px 0;} .ch-diff div.warn{color:var(--ochre);} .ch-diff div.add{color:var(--flag);}
-  footer.note{margin-top:30px;font-family:var(--mono);font-size:11px;color:var(--faint);border-top:1px solid var(--line);padding-top:14px;line-height:1.7;}
-  .empty{padding:60px 20px;text-align:center;color:var(--muted);}
+  .empty{padding:40px;text-align:center;color:var(--muted);}
+  @media (max-width:900px){
+    .shell{flex-direction:column;}
+    .rail{width:100%;flex:none;position:static;height:auto;border-right:0;
+      border-bottom:1px solid var(--line);}
+  }
   @media (max-width:640px){
-    .wrap{padding:20px 14px 60px;}
-    h1{font-size:20px;} header.top .sub{display:none;} header.top{padding-bottom:14px;gap:10px;}
-    nav.tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0 4px;}
-    nav.tabs::-webkit-scrollbar{height:0;}
-    nav.tabs button{white-space:nowrap;flex:0 0 auto;margin-right:18px;padding:10px 2px;font-size:13px;}
-    .qbar{margin:16px 0 6px;} .qbar .q{font-size:16px;}
-    .panel{padding:15px 14px;}
+    .main{padding:18px 16px 50px;}
+    .panel{padding:14px 14px;}
     .cards{grid-template-columns:1fr;} .bs-grid{grid-template-columns:1fr;}
-    table.mtx{font-size:12px;} table.mtx th,table.mtx td{padding:7px 7px;}
-    table.mtx th.factor,table.mtx td.factor{width:auto;min-width:128px;}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <div class="brand">Ground Knowledge</div>
-      <h1>Research disputes, mapped by the evidence</h1>
-      <div class="sub">Who holds which position, where the disagreement actually lives, and whether an apparent consensus is real — or the same few sources counted many times.</div>
+<div class="shell">
+  <div class="rail">
+    <a href="#" id="backHome" class="backhome" style="display:none;">← All questions</a>
+    <div id="caseSwitch" class="casesec" style="display:none;"></div>
+    <div class="brand">Ground Knowledge</div>
+    <div id="qtitle" class="qtitle"></div>
+    <div id="qmeta" class="qmeta"></div>
+    <nav id="nav" role="tablist" aria-label="Views"></nav>
+    <a href="#" id="addSourceLink" class="addsrc" style="display:none;">+ Add source</a>
+    <div id="posSec" class="railsec">
+      <h4>Positions</h4>
+      <div id="posChips"></div>
     </div>
-    <div class="seg" id="caseSwitch" role="group" aria-label="Choose a case"></div>
-  </header>
-  <nav class="tabs" id="tabs" role="tablist" aria-label="Views"></nav>
-  <div class="qbar"><div class="q" id="qText"></div><div class="meta" id="qMeta"></div></div>
-  <div id="view"></div>
-  <footer class="note" id="foot"></footer>
+    <div id="warnRail" class="railsec" style="display:none;">
+      <h4>Active warnings</h4>
+      <div id="warnList"></div>
+    </div>
+    <div id="covFilters" class="railsec" style="display:none;"></div>
+    <div id="caseSec" class="railsec" style="display:none;margin-top:auto;">
+      <h4>Case</h4>
+      <div class="caselinks" id="caseLinks"></div>
+    </div>
+  </div>
+  <div class="main" id="main"></div>
 </div>
 
 <script>
 /* This file is RENDER-ONLY. Every number was computed once, in Python (engine/assess.py),
-   and baked into DATA by `python cli.py build`. The viewer never recomputes — so there is
+   and baked into DATA by `python cli.py build`. The viewer never recomputes -- so there is
    no drift between what the pipeline concludes and what you see. DATA = { order, cases:{ id:
-   { kb, assessment } } }. kb.log carries the per-version diff that powers the Changes tab. */
+   { kb, assessment } }, portalLinks? }. kb.log carries the per-version diff that powers the
+   Changes tab. portalLinks is only present for the live portal's single-case view (app/web.py);
+   a CLI-built static multi-case bundle has no backing server, so Add source / Export / Manage
+   simply do not render for it. */
 const DATA = /*__DATA__*/null;
 
 const VIEWS=[
@@ -205,9 +289,27 @@ const VIEWS=[
   {id:"independence",label:"Independence & bias"},
   {id:"changes",label:"Changes"},
 ];
-const state={caseId:DATA&&DATA.order[0], view:"coverage", filter:null};
+const WV={high:3,med:2,low:1,"n/a":0};
+const WLABEL={high:"high",med:"med",low:"low","n/a":"n/a"};
+const WCELL={3:"#2f6296",2:"#7fa8ce",1:"#dce6f0",0:"transparent"};
+
+const state={
+  caseId: DATA && DATA.order[0],
+  view:"coverage",
+  posOn:new Set(),
+  sort:{key:"y",dir:-1},
+  shown:24,
+  filter:{q:"",ev:"",fu:"",flagged:false},
+  // A 6-column sortable table has no room to breathe under ~700px -- default to cards there;
+  // the toggle still lets anyone switch either way regardless of width.
+  display: (typeof window!=="undefined" && window.matchMedia && window.matchMedia("(max-width:700px)").matches) ? "cards" : "table",
+  expanded:new Set(),
+  expandedBases:{},
+  expandedChanges:new Set(),
+};
+
 const el=id=>document.getElementById(id);
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function rgba(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;}
 function pct(x){return Math.round(x*100)+"%";}
 function cur(){return DATA.cases[state.caseId];}
@@ -216,51 +318,15 @@ function maps(kb){
   return {pos,ds};
 }
 
-// ONE renderer for every warning kind (concentration / method-monoculture / quote) -- see
-// engine/assess.py::warnings. Used in both the Coverage and Independence tabs so a warning is
-// never a bespoke banner maintained in two places with two different wordings.
-function warningsHtml(warnings, showLink){
-  const kicker={concentration:"Apparent consensus is correlated",
-    "method-monoculture":"Potential shared-method bias", quote:"Unverified quote"};
-  return (warnings||[]).map(w=>`<div class="method-alert">
-      <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
-      <div>${esc(w.detail)}</div>
-      ${showLink&&w.kind!=="quote"&&w.kind!=="low-confidence"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
-    </div>`).join("");
-}
-
-function caseLabel(c){
-  // CLI cases have a human id ("eggs"); portal questions have a generated hex id — for those
-  // show a short version of the question instead, so the chip is informative.
-  const mid=c.kb.meta.id||"";
-  if(/^[0-9a-f]{8,}$/i.test(mid)){
-    const q=c.kb.meta.question||mid;
-    return q.length>44?q.slice(0,42)+"…":q;
-  }
-  return mid;
-}
-function renderChrome(){
-  // a single chip for one question is just a redundant label (the question shows below) — hide it
-  el("caseSwitch").style.display = DATA.order.length>1 ? "" : "none";
-  el("caseSwitch").innerHTML=DATA.order.map(id=>{
-    const c=DATA.cases[id];
-    return `<button data-case="${id}" aria-pressed="${id===state.caseId}">${esc(caseLabel(c))}</button>`;
-  }).join("");
-  el("tabs").innerHTML=VIEWS.map(v=>
-    `<button role="tab" data-view="${v.id}" aria-selected="${v.id===state.view}">${esc(v.label)}</button>`).join("");
-  const kb=cur().kb;
-  el("qText").textContent=kb.meta.question;
-  el("qMeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} factors · ${kb.datasets.length} datasets`;
-}
-
+// Fallback for KBs without a stored shortLabel: plain word-boundary truncation.
 function shortLabel(s, max=20){
-  // Fallback for KBs without a stored shortLabel: plain word-boundary truncation
+  s=String(s||"");
   if(s.length <= max) return s;
   const cut = s.lastIndexOf(' ', max);
   return (cut > max * 0.4 ? s.slice(0, cut) : s.slice(0, max)) + '…';
 }
 
-// Evidence-strength tier from study design — a quality signal, not a gameable "trust score".
+// Evidence-strength tier from study design -- a quality signal, not a gameable "trust score".
 function strengthTier(ev){
   const e=(ev||"").toLowerCase();
   if(/rct|experimental|meta-analysis|evidence-synthesis|systematic/.test(e)) return {n:3,label:"strong evidence"};
@@ -269,40 +335,182 @@ function strengthTier(ev){
   return {n:0,label:""};
 }
 
-function renderCoverage(c){
-  const {kb,assessment:a}=c, {pos,ds}=maps(kb), active=state.filter;
-  const warningBadges={};   // positionId -> [{kind,badge}] -- drives the legend risk badges below
+// Drop a "quote" that justifies nothing: the paper's title echoed back, or a metadata /
+// boilerplate line (publication dates, "accepted for publication", "a literature search was
+// conducted", ...). Same guard as the pre-redesign template -- moved here so both the table
+// and card views share it instead of duplicating the regex.
+function cleanQuote(quote, title){
+  if(!quote) return quote;
+  const qn=q=>String(q||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+  const q=qn(quote), t=qn(title);
+  const META=/^(accepted for publication|received|published|revised|first published|a (comprehensive )?literature search was conducted|this (review|article|study) (summari|describe|present))/;
+  if(q && ((t && (q===t || (q.length>=12 && (t.indexOf(q)>=0||q.indexOf(t)>=0)))) || META.test(q))) return "";
+  return quote;
+}
+
+function confBadge(conf, posLabel){
+  if(conf==null) return "";
+  const low=conf<0.5;
+  return `<span class="conf${low?" low":""}" title="How sure the labeller was that this quote justifies placing the source under “${esc(posLabel)}”. Lower = more of a judgement call, worth checking against the source.">${low?"⚠ ":""}Labelling confidence: ${Math.round(conf*100)}%${low?" — judgement call":""}</span>`;
+}
+
+function quoteWarnHtml(pq, textDepth){
+  return (pq.verifiedQuote==="missing" && textDepth==="full")
+    ? `<span class="conf low" title="This quote does not match the full text we fetched for this source.">⚠ quote not found in fetched text</span>`
+    : "";
+}
+
+// ONE renderer for every warning kind (concentration / method-monoculture / quote /
+// low-confidence) -- see engine/assess.py::warnings. Used in both Coverage and Independence so
+// a warning is never a bespoke banner maintained in two places with two different wordings.
+function warningsHtml(warnings, showLink){
+  const kicker={concentration:"Apparent consensus is correlated",
+    "method-monoculture":"Potential shared-method bias", quote:"Unverified quote",
+    "low-confidence":"Weak quote grounding"};
+  return (warnings||[]).map(w=>`<div class="method-alert">
+      <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
+      <div>${esc(w.detail)}</div>
+      ${showLink&&w.kind!=="quote"&&w.kind!=="low-confidence"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
+    </div>`).join("");
+}
+
+function caseLabel(c){
+  // CLI cases have a human id ("eggs"); portal questions have a generated hex id -- for those
+  // show a short version of the question instead, so the chip is informative.
+  const mid=c.kb.meta.id||"";
+  if(/^[0-9a-f]{8,}$/i.test(mid)){
+    const q=c.kb.meta.question||mid;
+    return q.length>44?q.slice(0,42)+"…":q;
+  }
+  return mid;
+}
+
+function renderChrome(){
+  const links=DATA.portalLinks;
+  const backHome=el("backHome");
+  if(links&&links.home){backHome.style.display="";backHome.href=links.home;}
+  else backHome.style.display="none";
+
+  const cs=el("caseSwitch");
+  if(DATA.order.length>1){
+    cs.style.display="";
+    cs.innerHTML=DATA.order.map(id=>{
+      const c=DATA.cases[id];
+      return `<button class="cchip" data-case="${id}" aria-pressed="${id===state.caseId}" title="${esc(c.kb.meta.question||"")}">${esc(caseLabel(c))}</button>`;
+    }).join("");
+  } else cs.style.display="none";
+
+  const c=cur(), kb=c.kb, a=c.assessment;
+  el("qtitle").textContent=kb.meta.question;
+  el("qmeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} factors · ${kb.datasets.length} datasets`;
+
+  const empty=kb.sources.length===0;
+  el("nav").style.display=empty?"none":"";
+  el("nav").innerHTML=VIEWS.map(v=>
+    `<button class="navitem" role="tab" data-view="${v.id}" aria-selected="${v.id===state.view}"><span class="l">${esc(v.label)}</span></button>`).join("");
+
+  const addLink=el("addSourceLink");
+  if(links&&links.add){addLink.style.display="";addLink.href=links.add;}
+  else addLink.style.display="none";
+
+  el("posSec").style.display=empty?"none":"";
+  if(!empty){
+    const warningBadges={};
+    (a.warnings||[]).forEach(w=>(warningBadges[w.positionId]=warningBadges[w.positionId]||[]).push(w));
+    el("posChips").innerHTML=kb.positions.map(p=>{
+      const d=(a.distribution||[]).find(x=>x.id===p.id);
+      const risk=(warningBadges[p.id]||[]).length?`<span class="risk" title="${esc((warningBadges[p.id]||[]).map(w=>w.badge).join(", "))}">⚠</span>`:"";
+      return `<div class="poschip${state.posOn.has(p.id)?"":" off"}" data-pos="${p.id}">
+         <span class="dot" style="background:${p.hue}"></span><span class="lab">${esc(p.shortLabel||shortLabel(p.label))}</span>${risk}<span class="n">${d?d.count:0}</span>
+       </div>`;
+    }).join("");
+  }
+
+  const warnEl=el("warnRail");
+  if(!empty && a.warnings && a.warnings.length){
+    warnEl.style.display="";
+    el("warnList").innerHTML=a.warnings.map(w=>
+      `<div class="warnmini" data-jump="${w.kind==="quote"||w.kind==="low-confidence"?"coverage":"independence"}"><b>${esc(w.badge)}</b>${esc(w.label)}</div>`).join("");
+  } else warnEl.style.display="none";
+
+  const covEl=el("covFilters");
+  if(!empty && state.view==="coverage"){
+    covEl.style.display="";
+    const evs=[...new Set(kb.sources.map(s=>s.evidence))].sort();
+    const fus=[...new Set(kb.sources.map(s=>s.funding||"Undisclosed"))].sort();
+    covEl.innerHTML=`<h4>Filter sources</h4>
+      <input type="text" id="fq" placeholder="Search title or venue" value="${esc(state.filter.q)}" />
+      <select id="fEv"><option value="">Evidence: all</option>${evs.map(e=>`<option${state.filter.ev===e?" selected":""}>${esc(e)}</option>`).join("")}</select>
+      <select id="fFu"><option value="">Funding: all</option>${fus.map(f=>`<option${state.filter.fu===f?" selected":""}>${esc(f)}</option>`).join("")}</select>
+      <label class="flagonly"><input type="checkbox" id="fFlag" ${state.filter.flagged?"checked":""} /> Flagged quotes only</label>`;
+    covEl.querySelector("#fq").oninput=e=>{state.filter.q=e.target.value;state.shown=24;renderMain();};
+    covEl.querySelector("#fEv").onchange=e=>{state.filter.ev=e.target.value;state.shown=24;renderMain();};
+    covEl.querySelector("#fFu").onchange=e=>{state.filter.fu=e.target.value;state.shown=24;renderMain();};
+    covEl.querySelector("#fFlag").onchange=e=>{state.filter.flagged=e.target.checked;state.shown=24;renderMain();};
+  } else covEl.style.display="none";
+
+  const caseSec=el("caseSec");
+  if(links){
+    caseSec.style.display="";
+    const fmts=[["kb","knowledge base (JSON)"],["bibtex","BibTeX"],["ris","RIS"],["csl","CSL-JSON"]];
+    const exportLinks=(links.export?fmts.map(([k,l])=>`<a href="${esc(links.export[k])}">${esc(l)}</a>`).join(""):"");
+    el("caseLinks").innerHTML=
+      (exportLinks?`<div class="lbl">Export</div>${exportLinks}`:"")+
+      (links.manage?`<div class="lbl">Admin</div><a href="${esc(links.manage)}">Manage question</a>`:"");
+  } else caseSec.style.display="none";
+}
+
+function filteredSources(kb){
+  return kb.sources.filter(s=>{
+    if(!state.posOn.has(s.position)) return false;
+    if(state.filter.q){
+      const q=state.filter.q.toLowerCase();
+      if(!(s.title||"").toLowerCase().includes(q) && !(s.venue||"").toLowerCase().includes(q)) return false;
+    }
+    if(state.filter.ev && s.evidence!==state.filter.ev) return false;
+    if(state.filter.fu && (s.funding||"Undisclosed")!==state.filter.fu) return false;
+    if(state.filter.flagged){
+      const pq=((s.provenance||{}).position)||{};
+      if(!(pq.verifiedQuote==="missing" && s.textDepth==="full")) return false;
+    }
+    return true;
+  });
+}
+
+function headline(c){
+  const {kb,assessment:a}=c, {pos}=maps(kb);
+  const warningBadges={};
   (a.warnings||[]).forEach(w=>(warningBadges[w.positionId]=warningBadges[w.positionId]||[]).push(w));
-  const bar=a.distribution.map(d=>{
-    const dim=active&&active!==d.id?"dim":"";
-    const barLabel = (pos[d.id] && pos[d.id].shortLabel) || shortLabel(d.label);
-    return `<button class="seg-bar ${dim}" data-pos="${d.id}" style="flex:${d.count||0.0001};background:${d.hue}"
-      title="${esc(d.label)} — ${d.count} sources">${d.pct>=10?esc(barLabel)+" · "+d.pct+"%":d.pct+"%"}</button>`;
+  // Always render every position so the bar keeps summing to 100% -- a deselected position
+  // dims in place rather than being removed, which would silently re-derive percentages over
+  // a smaller base. A length-aware heuristic decides whether the full label fits a segment,
+  // falling back to just the percentage (full label always in the title= tooltip) so text
+  // never spills into a neighbouring segment.
+  const bar=(rows,pctKey,sizeKey,tipFn)=>rows.map(d=>{
+    const label=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
+    const p=d[pctKey]||0;
+    const fits=p>=(label.length*0.9+4);
+    const text=fits?(label+" · "+p+"%"):(p+"%");
+    const dim=state.posOn.has(d.id)?"":" dim";
+    return `<button class="seg${dim}" data-pos="${d.id}" style="flex:${d[sizeKey]||0.0001};background:${d.hue}" title="${esc(tipFn(d))}">${esc(text)}</button>`;
   }).join("");
-  // Weighted bar — the anti-false-balance view: each position sized by effective INDEPENDENT
-  // evidence (nEff), not raw count, so positions propped up by re-used data shrink.
+  const bar1=bar(a.distribution,"pct","count",d=>`${d.label} — ${d.count} sources`);
   const wd=a.weightedDistribution||[];
-  const wbar=wd.map(d=>{
-    const dim=active&&active!==d.id?"dim":"";
-    const barLabel=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
-    return `<button class="seg-bar ${dim}" data-pos="${d.id}" style="flex:${d.weight||0.0001};background:${d.hue}"
-      title="${esc(d.label)} — ${d.raw} sources ≈ ${(d.weight||0).toFixed(1)} independent looks">${d.pct>=10?esc(barLabel)+" · "+d.pct+"%":d.pct+"%"}</button>`;
-  }).join("");
-  // Plain-language takeaway: which position shrinks most when weighted by independence?
+  const bar2=bar(wd,"pct","weight",d=>`${d.label} — ${d.raw} sources ≈ ${(d.weight||0).toFixed(1)} independent looks`);
   let takeaway="";
-  if(wbar){
+  if(wd.length){
     const rawById={}; a.distribution.forEach(d=>rawById[d.id]=d);
     let big=null;
     wd.forEach(w=>{const r=rawById[w.id]; if(!r)return; const drop=r.pct-w.pct;
-      if(big===null||drop>big.drop) big={label:w.label,rawPct:r.pct,wPct:w.pct,drop:drop};});
+      if(big===null||drop>big.drop) big={label:w.label,rawPct:r.pct,wPct:w.pct,drop};});
     takeaway = (big && big.drop>=5)
       ? `<div class="takeaway">Weighted by independence, <b>${esc(big.label)}</b> drops from <b>${big.rawPct}%</b> of sources to <b>${big.wPct}%</b> of the independent evidence — its support rests on fewer distinct datasets than the headcount implies.</div>`
       : `<div class="takeaway">The two views largely agree here — each position's evidence is about as independent as it is numerous.</div>`;
   }
-  const warningHtml=warningsHtml(a.warnings, true);
+  const warnHtml=warningsHtml(a.warnings, true);
   const legend=a.distribution.map(d=>{
     const badges=(warningBadges[d.id]||[]).map(w=>`<span class="riskbadge">${esc(w.badge)}</span>`).join("");
-    return `<span class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${badges}</span>`;
+    return `<button class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${badges}</button>`;
   }).join("");
   let skewHtml="";
   if(a.fundingSkew){
@@ -311,139 +519,204 @@ function renderCoverage(c){
     if(f.undisclosed) parts.push(`${f.undisclosed} of ${f.total} source${f.total===1?"":"s"} don't disclose funding`);
     if(parts.length) skewHtml=`<div class="skew"><span>⚠</span><span>${parts.join("; ")} — weigh before counting heads.</span></div>`;
   }
+  return `<div class="panel">
+      <div class="subnote">Two views of the same evidence: by <b>how many sources</b> take each side, then by <b>how much independent evidence</b> each side actually rests on.</div>
+      <div class="splitlabel"><span class="num">1</span> By source count <span class="q">— the naïve tally · click a segment to isolate it</span></div>
+      <div class="distrib">${bar1}</div>
+      ${wd.length?`<div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
+      <div class="distrib">${bar2}</div>
+      ${takeaway}`:""}
+      ${warnHtml}
+      <div class="legend">${legend}</div>${skewHtml}
+    </div>`;
+}
+
+function renderCoverageView(){
+  const c=cur(), {kb,assessment:a}=c, {pos,ds}=maps(kb);
+  let rows=filteredSources(kb).slice().sort((x,y)=>{
+    const k=state.sort.key;
+    let av=k==="p"?pos[x.position].label:x[{t:"title",y:"year",ev:"evidence",ds:"restsOn"}[k]||k];
+    let bv=k==="p"?pos[y.position].label:y[{t:"title",y:"year",ev:"evidence",ds:"restsOn"}[k]||k];
+    if(k==="ds"){av=(x.restsOn||[]).length;bv=(y.restsOn||[]).length;}
+    if(k==="flag"){
+      const fv=s=>{const pq=((s.provenance||{}).position)||{}; return (pq.verifiedQuote==="missing"&&s.textDepth==="full")?2:(s.textDepth==="full"?0:1);};
+      av=fv(x);bv=fv(y);
+    }
+    if(typeof av==="string") return av.localeCompare(bv)*state.sort.dir;
+    return ((av||0)-(bv||0))*state.sort.dir;
+  });
+  const total=rows.length, visible=rows.slice(0,state.shown);
+  const active=[...state.posOn].length<kb.positions.length ? [...state.posOn] : null;
+  const toolbar=`<div class="toolbar"><div class="count">${total} of ${kb.sources.length} sources shown</div>
+    <div class="toggle"><button data-d="table" class="${state.display==="table"?"on":""}">Table</button><button data-d="cards" class="${state.display==="cards"?"on":""}">Cards</button></div></div>`;
   const maxVer=kb.meta.version;
-  const cards=kb.sources.filter(s=>!active||s.position===active).map(s=>{
-    const p=pos[s.position];
-    const rests=(s.restsOn||[]).map(id=>`<span class="tag rests">↳ ${esc(ds[id]?ds[id].label:id)}</span>`).join("");
-    const isNew=s.addedIn&&s.addedIn===maxVer&&maxVer>1;
-    const st=strengthTier(s.evidence);
-    const pip=st.n?`<span class="strength s${st.n}" title="${st.label} — by study design">${"●".repeat(st.n)}${"○".repeat(3-st.n)}</span>`:"";
-    const venueBits=[];
-    if(s.venue) venueBits.push(esc(s.venue));
-    if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
-    const venueLine=venueBits.length?`<div class="srcmeta">${venueBits.join(" · ")}</div>`:"";
-    const pq=((s.provenance||{}).position)||{};
-    const qn=q=>String(q||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-    // Drop a "quote" that justifies nothing: the paper's title echoed back (substring, so a
-    // "… - PMC" suffix still counts), or a metadata / boilerplate line (publication dates,
-    // "accepted for publication", "a literature search was conducted", …).
-    if(pq.quote){const q=qn(pq.quote),t=qn(s.title);
-      const META=/^(accepted for publication|received|published|revised|first published|a (comprehensive )?literature search was conducted|this (review|article|study) (summari|describe|present))/;
-      if(q && ((t && (q===t || (q.length>=12 && (t.indexOf(q)>=0||q.indexOf(t)>=0)))) || META.test(q)))
-        pq.quote="";}
-    const conf=pq.extractionConfidence;
-    const confHtml=conf!=null?`<span class="conf${conf<0.5?" low":""}" title="How sure the labeller was that this quote justifies placing the source under “${esc(p.label)}”. Lower = more of a judgement call, worth checking against the source.">${conf<0.5?"⚠ ":""}Labelling confidence: ${Math.round(conf*100)}%${conf<0.5?" — judgement call":""}</span>`:"";
-    const depthLabel={full:"full text",abstract:"abstract only",partial:"page text"}[s.textDepth];
-    const depthTag=depthLabel?`<span class="tag" title="How much of the source the labeller actually had: ${esc(depthLabel)}.">${esc(depthLabel)}</span>`:"";
-    const quoteWarn=(pq.verifiedQuote==="missing"&&s.textDepth==="full")
-      ?`<span class="conf low" title="This quote does not match the full text we fetched for this source.">⚠ quote not found in fetched text</span>`:"";
-    const why=pq.quote?`<div class="why"><span class="wl">Filed under “${esc(p.label)}” because</span><q>${esc(pq.quote)}</q>${confHtml}${quoteWarn}</div>`:"";
-    return `<div class="card${s.retracted?" retracted":""}" style="border-left-color:${p.hue}">
-      <div class="ct"><div class="titlewrap"><span class="title">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`:esc(s.title)}</span> <span class="yr">${esc(s.year||"")}</span></div>
-        <span class="stance" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.label)}</span></div>
-      ${venueLine}
-      <div class="tags">
-        ${s.retracted?`<span class="tag retr">⚠ RETRACTED</span>`:""}
-        <span class="tag">${esc(s.evidence)}${pip}</span>
-        <span class="tag ${/industry|advocacy/i.test(s.funding)?'industry':(/undisclosed/i.test(s.funding)?'rests':'')}">${esc(s.funding||'Undisclosed')}</span>
-        ${s.population&&s.population!=="—"?`<span class="tag">${esc(s.population)}</span>`:""}
-        <span class="tag">conf: ${esc(s.confidence)}</span>
-        ${depthTag}
-        ${isNew?`<span class="tag new">added v${s.addedIn}</span>`:""}
-        ${rests}
-      </div>${why}</div>`;
-  }).join("");
-  const bsCards=a.blindspots.map(p=>{
+  let body;
+  if(state.display==="table"){
+    const COLS=[["t","Title"],["y","Year"],["p","Position"],["ev","Evidence"],["ds","Datasets"],["flag","Flag"]];
+    const thead=COLS.map(([k,l])=>`<th data-sort="${k}">${esc(l)}${state.sort.key===k?(state.sort.dir<0?" ↓":" ↑"):""}</th>`).join("");
+    const trs=visible.map(s=>{
+      const p=pos[s.position], open=state.expanded.has(s.id);
+      const rests=(s.restsOn||[]).map(id=>ds[id]?ds[id].label:id);
+      const dsLabel=rests.length?esc(rests[0])+(rests.length>1?" +"+(rests.length-1):""):"—";
+      const pq=((s.provenance||{}).position)||{};
+      const missing=pq.verifiedQuote==="missing"&&s.textDepth==="full";
+      const icon=missing?'<i class="flagicon" title="quote not found in fetched text">⚠</i>':(s.textDepth==="full"?'<span class="okicon" title="full text">✓</span>':'<span class="okicon">·</span>');
+      let detail="";
+      if(open){
+        const quote=cleanQuote(pq.quote,s.title);
+        const st=strengthTier(s.evidence);
+        const pip=st.n?`<span class="strength s${st.n}" title="${st.label} — by study design">${"●".repeat(st.n)}${"○".repeat(3-st.n)}</span>`:"";
+        const isNew=s.addedIn&&s.addedIn===maxVer&&maxVer>1;
+        const depthLabel={full:"full text",abstract:"abstract only",partial:"page text"}[s.textDepth];
+        const venueBits=[];
+        if(s.venue) venueBits.push(esc(s.venue));
+        if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
+        detail=`<tr class="detailrow"><td colspan="6">
+            <div class="metarow">${venueBits.length?venueBits.join(" · ")+" · ":""}${esc(s.funding||"Undisclosed")} · conf: ${esc(s.confidence)}${depthLabel?" · "+esc(depthLabel):""}${pip}
+              ${s.retracted?' <span class="tag retr">⚠ RETRACTED</span>':""}${isNew?` <span class="tag new">added v${s.addedIn}</span>`:""}</div>
+            ${quote?`<div class="q">“${esc(quote)}”</div>${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}`:""}
+            ${rests.length?`<div>rests on: ${rests.map(esc).join(", ")}</div>`:""}
+          </td></tr>`;
+      }
+      return `<tr class="rowmain" data-id="${esc(s.id)}">
+          <td>${esc(s.title)}</td><td style="font-family:var(--mono);color:var(--muted);">${esc(s.year||"—")}</td>
+          <td><span class="postag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.shortLabel||shortLabel(p.label))}</span></td>
+          <td style="color:var(--muted);">${esc(s.evidence)}</td><td style="color:var(--muted);">${dsLabel}</td><td>${icon}</td>
+        </tr>${detail}`;
+    }).join("")||`<tr><td colspan="6" class="empty">No sources match these filters.</td></tr>`;
+    const colgroup=`<colgroup><col style="width:35%"><col style="width:7%"><col style="width:15%"><col style="width:14%"><col style="width:21%"><col style="width:8%"></colgroup>`;
+    body=`<div class="tbl-wrap"><table>${colgroup}<thead><tr>${thead}</tr></thead><tbody>${trs}</tbody></table></div>`;
+  } else {
+    body=`<div class="cards">${visible.map(s=>{
+      const p=pos[s.position];
+      const rests=(s.restsOn||[]).map(id=>`<span class="tag rests">↳ ${esc(ds[id]?ds[id].label:id)}</span>`).join("");
+      const isNew=s.addedIn&&s.addedIn===maxVer&&maxVer>1;
+      const st=strengthTier(s.evidence);
+      const pip=st.n?`<span class="strength s${st.n}" title="${st.label} — by study design">${"●".repeat(st.n)}${"○".repeat(3-st.n)}</span>`:"";
+      const venueBits=[];
+      if(s.venue) venueBits.push(esc(s.venue));
+      if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
+      const venueLine=venueBits.length?`<div class="venue">${venueBits.join(" · ")}</div>`:"";
+      const pq=((s.provenance||{}).position)||{};
+      const quote=cleanQuote(pq.quote,s.title);
+      const quoteBox=quote?`<div class="why"><span class="wl">Filed under “${esc(p.shortLabel||shortLabel(p.label))}” because</span><q>${esc(quote)}</q>${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}</div>`:"";
+      return `<div class="card${s.retracted?" retracted":""}" style="border-left-color:${p.hue}">
+          <div class="ct"><div class="titlewrap"><span class="title">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`:esc(s.title)}</span></div><span class="yr">${esc(s.year||"")}</span></div>
+          ${venueLine}
+          <div class="tags">
+            <span class="tag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.shortLabel||shortLabel(p.label))}</span>
+            ${s.retracted?'<span class="tag retr">⚠ RETRACTED</span>':""}
+            <span class="tag">${esc(s.evidence)}${pip}</span>
+            <span class="tag ${/industry|advocacy/i.test(s.funding||"")?"industry":(/undisclosed/i.test(s.funding||"undisclosed")?"rests":"")}">${esc(s.funding||"Undisclosed")}</span>
+            ${s.population&&s.population!=="—"?`<span class="tag">${esc(s.population)}</span>`:""}
+            ${isNew?`<span class="tag new">added v${s.addedIn}</span>`:""}
+            ${rests}
+          </div>
+          ${quoteBox}
+        </div>`;
+    }).join("")}</div>`;
+  }
+  const more=total>state.shown?`<div class="showmore"><button id="showMore">Show ${Math.min(24,total-state.shown)} more of ${total-state.shown} remaining</button></div>`:"";
+
+  const bsCards=(a.blindspots||[]).filter(p=>!active||active.includes(p.id)).map(p=>{
     const items=[];
     if(p.missingEvidence.length) items.push(`<li>never argues from <b>${p.missingEvidence.map(esc).join(", ")}</b></li>`);
     if(p.missingPop.length) items.push(`<li>doesn't address <b>${p.missingPop.map(esc).join(", ")}</b></li>`);
     if(!items.length) items.push(`<li style="color:var(--faint)">covers every evidence type & subgroup present</li>`);
     return `<div class="bs"><div class="bs-h"><span class="dot" style="width:10px;height:10px;border-radius:3px;background:${p.hue}"></span>${esc(p.label)} skips</div><ul>${items.join("")}</ul></div>`;
   }).join("");
-  return `
-    <div class="panel"><h3>How the evidence base splits</h3>
-      <p class="subnote">Two views of the same evidence: by <b>how many sources</b> take each side, then by <b>how much independent evidence</b> each side actually rests on.</p>
-      <div class="splitlabel"><span class="num">1</span> By source count <span class="q">— the naïve tally · click a segment to filter</span></div>
-      <div class="distrib">${bar}</div>
-      ${wbar?`
-      <div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
-      <div class="distrib">${wbar}</div>
-      ${takeaway}`:""}
-      ${warningHtml}
-      <div class="legend">${legend}</div>${skewHtml}</div>
-    <div class="panel"><h3>Sources${active?` — ${esc(pos[active].label)}`:""}</h3>
-      <p class="hint">each source tagged with evidence type, funding, population, and the datasets it rests on (↳)</p>
-      <div class="cards">${cards}</div></div>
-    <div class="panel"><h3>Blindspots — what each side leaves out</h3>
-      <p class="hint">blindspots() — evidence types & subgroups present in the case but absent from a position's own sources</p>
-      <div class="bs-grid">${bsCards}</div></div>`;
+
+  el("main").innerHTML=`<h1>Coverage & warnings</h1><div class="mmeta">who holds which position, and what to watch for</div>`
+    +headline(c)
+    +`<div class="panel">${toolbar}${body}${more}</div>`
+    +`<div class="panel"><h1 style="font-size:14px;margin:0 0 4px;">Blindspots — what each side leaves out</h1><div class="mmeta" style="margin-bottom:14px;">evidence types & subgroups present in the case but absent from a position's own sources</div><div class="bs-grid">${bsCards}</div></div>`;
+
+  if(state.display==="table"){
+    el("main").querySelectorAll("[data-sort]").forEach(th=>th.onclick=()=>{
+      const k=th.getAttribute("data-sort");
+      if(state.sort.key===k) state.sort.dir*=-1; else state.sort={key:k,dir:1};
+      renderMain();
+    });
+    el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
+      const id=tr.getAttribute("data-id");
+      if(state.expanded.has(id)) state.expanded.delete(id); else state.expanded.add(id);
+      renderMain();
+    });
+  }
+  el("main").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{state.display=b.getAttribute("data-d");renderMain();});
+  const sm=el("main").querySelector("#showMore"); if(sm) sm.onclick=()=>{state.shown+=24;renderMain();};
 }
 
-function renderDivergence(c){
-  const {kb,assessment:a}=c;
-  const cruxBy={}; a.cruxes.forEach(x=>cruxBy[x.id]=x);
+function renderDivergenceView(){
+  const c=cur(), {kb,assessment:a}=c;
+  const cruxBy={}; (a.cruxes||[]).forEach(x=>cruxBy[x.id]=x);
   const info=f=>cruxBy[f.id]||{spread:0,isCrux:false,engaged:0};
-  const WLABEL={high:"high",med:"med",low:"low","n/a":"n/a"}, WV={high:3,med:2,low:1,"n/a":0};
-  const WCELL={3:"#2f6296",2:"#7fa8ce",1:"#dce6f0",0:"transparent"};   // weight heat-scale
-  // cruxes first, then factors >=2 camps engage, then one-sided (only one camp weighs them)
+  const activePos=kb.positions.filter(p=>state.posOn.has(p.id));
   const rank=z=>z.isCrux?0:(z.engaged>=2?1:2);
-  const ordered=[...kb.factors].sort((x,y)=>{const ix=info(x),iy=info(y);
+  const ordered=kb.factors.slice().sort((x,y)=>{const ix=info(x),iy=info(y);
     return rank(ix)-rank(iy) || iy.spread-ix.spread || iy.engaged-ix.engaged;});
-  const head=`<th class="factor">Factor</th>`+kb.positions.map(p=>`<th style="background:${p.hue}" title="${esc(p.label)}">${esc(p.shortLabel||shortLabel(p.label))}</th>`).join("");
+  const posColW=Math.min(20,Math.floor(60/Math.max(1,activePos.length)));
+  const colgroup=`<colgroup><col style="width:${100-posColW*activePos.length}%">${activePos.map(()=>`<col style="width:${posColW}%">`).join("")}</colgroup>`;
+  const head=`<th class="nosort">Factor</th>`+activePos.map(p=>`<th class="nosort" style="background:${p.hue};color:#fff;text-align:center;" title="${esc(p.label)}">${esc(p.shortLabel||shortLabel(p.label))}</th>`).join("");
   const rows=ordered.map(f=>{
     const cx=info(f), one=cx.engaged<2;
-    const cells=kb.positions.map(p=>{
-      const w=f.weights[p.id]||"—"; const v=WV[w]||0;
-      // colour by the WEIGHT (low/med/high) on one scale, so the rank reads at a glance —
-      // the position is already told by the coloured column header.
+    const cells=activePos.map(p=>{
+      const w=f.weights[p.id]||"—"; const v=WV[WLABEL[w]!==undefined?w:""]||WV[w]||0;
       const bg=WCELL[v], txt=v===3?"#fff":(v?"var(--ink)":"var(--faint)");
-      return `<td class="cell" style="background:${bg};color:${txt}">${WLABEL[w]||"—"}</td>`;
+      return `<td style="text-align:center;background:${bg};color:${txt};font-family:var(--mono);font-weight:600;white-space:nowrap;">${w&&w!=="n/a"?esc(WLABEL[w]||w):"—"}</td>`;
     }).join("");
-    const tag=cx.isCrux?'<span class="cruxbadge">CRUX</span>':(one?'<span class="onetag">one side only</span>':'');
-    return `<tr class="factor-row ${cx.isCrux?'crux':''} ${one?'onesided':''}" data-factor="${f.id}">
-        <td class="factor">${esc(f.label)}${tag}</td>${cells}</tr>
-      <tr><td colspan="${kb.positions.length+1}" style="padding:0;border:0">
-        <div class="rationale" id="r-${f.id}">${esc(f.rationale||"")}</div></td></tr>`;
+    const open=state.expanded.has("f"+f.id);
+    const detail=open?`<tr class="detailrow"><td colspan="${activePos.length+1}">${esc(f.rationale||"No rationale recorded.")}</td></tr>`:"";
+    const tag=cx.isCrux?' <span class="cruxbadge">CRUX</span>':(one?' <span class="onetag">one side only</span>':"");
+    return `<tr class="rowmain${one?" onesided":""}" data-fid="${esc(f.id)}">
+        <td class="wrap" style="${cx.isCrux?"font-weight:600;":"color:var(--muted);"}">${esc(f.label)}${tag}</td>
+        ${cells}
+      </tr>${detail}`;
   }).join("");
-  const nCrux=a.cruxes.filter(x=>x.isCrux).length;
-  const nOne=a.cruxes.filter(x=>x.engaged<2).length;
-  const nShared=a.cruxes.length-nCrux-nOne;
-  return `<div class="panel"><h3>Where the disagreement actually lives</h3>
-      <p class="subnote">Each cell shows <b>how heavily that camp weighs that factor</b> — the colour is the weight. A <b>crux</b> (bold row) is a factor the camps weigh very differently; that's where the disagreement actually is. Click a row for the rationale.</p>
+  const nCrux=(a.cruxes||[]).filter(x=>x.isCrux).length;
+  const nOne=(a.cruxes||[]).filter(x=>x.engaged<2).length;
+  const nShared=(a.cruxes||[]).length-nCrux-nOne;
+  el("main").innerHTML=`<h1>Divergence matrix</h1><div class="mmeta">where the disagreement actually lives</div>
+    <div class="panel">
+      <div class="subnote">Each cell is how heavily that camp weighs that factor. A <b>crux</b> (bold row) is a factor the camps weigh very differently — that is where the real disagreement is; dimmed rows are dimensions only one camp engages, not points of disagreement. Click a row for the rationale.</div>
       <div class="wkey">weight: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">med</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
-      <div class="mtxscroll"><table class="mtx" style="margin-top:12px"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-      <p style="font-size:13px;color:var(--muted);margin:14px 0 0">
-        <b>${nCrux} crux${nCrux===1?'':'es'}</b> · ${nShared} shared · ${nOne} raised by one side.
-        Resolving the cruxes would move the conclusion; the dimmed rows are dimensions only one camp engages — not points of disagreement.</p></div>`;
+      <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+      <p style="font-size:13px;color:var(--muted);margin:14px 0 0"><b>${nCrux} crux${nCrux===1?"":"es"}</b> of ${kb.factors.length} factors · ${nShared} shared · ${nOne} raised by one side.</p>
+    </div>`;
+  el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
+    const k="f"+tr.getAttribute("data-fid");
+    if(state.expanded.has(k)) state.expanded.delete(k); else state.expanded.add(k);
+    renderMain();
+  });
 }
 
-function renderIndependence(c){
-  const a=c.assessment;
-  // Evidence-KIND swatches use an achromatic ramp (dark=primary/strong, light=secondary/weak) +
-  // a ⚠ glyph for circular — deliberately OUTSIDE the coloured stance palette so a kind can never
-  // be mistaken for a position hue.
+function renderIndependenceView(){
+  const c=cur(), {kb,assessment:a}=c;
   const KIND={dataset:{lab:"primary dataset",col:"#222a35"},
               primary:{lab:"own observation",col:"#222a35"},
               secondary:{lab:"secondary voice",col:"#c4ccd4"},
               cycle:{lab:"circular loop",icon:"⚠"}};
-  const methodByPos={};
-  (a.methodAudit||[]).forEach(m=>methodByPos[m.id]=m);
-  const rows=a.independence.map(p=>{
-    const eff=p.nEff.toFixed(1);
-    const ma=methodByPos[p.id];
-    const bases=(p.bases||[]).map(b=>{
+  const methodByPos={}; (a.methodAudit||[]).forEach(m=>methodByPos[m.id]=m);
+  const activePos=(a.independence||[]).filter(p=>state.posOn.has(p.id));
+  const sections=activePos.map(p=>{
+    const list=(p.bases||[]);
+    const shownN=state.expandedBases[p.id]?list.length:Math.min(6,list.length);
+    const shown=list.slice(0,shownN);
+    const rows=shown.map(b=>{
       const k=KIND[b.kind]||KIND.dataset;
-      const tag=k.lab+(b.secondaryOnly?" · via review only":"")+(b.nonHuman?" · animal / in-vitro":"")+(b.weight>1?" ×"+b.weight:"");
-      const sw=k.icon?`<span class="bk-ic">${k.icon}</span>`:`<span class="bk" style="background:${k.col}"></span>`;
-      return `<div class="base" title="${esc(b.label)} — ${tag}">
-        ${sw}<span class="bl">${esc(b.label)}</span><span class="bw">${tag}</span></div>`;
-    }).join("")||`<span class="muted">—</span>`;
+      const notes=[];
+      if(b.secondaryOnly) notes.push("via review only");
+      if(b.nonHuman) notes.push("animal / in-vitro");
+      return `<tr><td>${esc(b.label)}</td><td style="color:var(--muted);white-space:nowrap;">${esc(k.lab)}</td>
+        <td style="font-family:var(--mono);text-align:right;">${b.weight}</td><td style="color:var(--faint);">${esc(notes.join(", ")||"—")}</td></tr>`;
+    }).join("");
+    const more=list.length>6?`<div class="showmore"><button data-more="${p.id}">${state.expandedBases[p.id]?"Show fewer":"Show "+(list.length-6)+" more"}</button></div>`:"";
     const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
     const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence.</div>`:"";
     let method="";
+    const ma=methodByPos[p.id];
     if(ma&&ma.top){
       const allShare=pct(ma.top.count/(ma.raw||1));
-      const sourceWord=ma.top.count===1?"source":"sources";
       const grouped=ma.classed===ma.raw
         ?"Every source in this position has a recognizable method-risk family."
         :`This simple check recognized method-risk families for ${ma.classed} of ${ma.raw} sources; the rest are secondary evidence or designs it does not group.`;
@@ -452,47 +725,98 @@ function renderIndependence(c){
         :"This is below the position-wide warning threshold and does not change the independent-bases count.";
       method=`<div class="ind-note${ma.monoculture?" warn":""}">Method-bias check: ${ma.top.count} of ${ma.raw} sources fall into the same method-risk family: <b>${esc(ma.top.label)}</b> (${allShare} of all sources). ${grouped} ${status}</div>`;
     }
-    return `<div class="ind2">
-      <div class="hd"><span class="dot" style="background:${p.hue}"></span><b>${esc(p.label)}</b>
-        <span class="eff">${eff} independent base${eff==="1.0"?"":"s"} <span class="m">from ${p.raw} source${p.raw===1?"":"s"}</span></span></div>
-      <div class="bases">${bases}</div>${sec}${circ}${method}
-    </div>`;
+    return `<div class="indpos">
+        <div class="ph"><span style="width:9px;height:9px;border-radius:2px;background:${p.hue};display:inline-block;"></span>
+          <span class="plabel">${esc(p.label)}</span>
+          <span class="peff">${p.nEff.toFixed(1)} independent base${p.nEff.toFixed(1)==="1.0"?"":"s"} from ${p.raw} source${p.raw===1?"":"s"}
+            <span class="infoicon" title="Effective count of distinct evidentiary roots (datasets, own primary observations, one collapsed secondary-review voice, one collapsed circular-citation loop), computed as a Herfindahl numbers-equivalent over each root's share of this position's sources. Sharing a dataset, echoing as a review, or citing in a loop all shrink this number toward 1 -- it can never exceed the raw source count.">?</span>
+          </span></div>
+        <div class="tbl-wrap"><table><colgroup><col style="width:46%"><col style="width:16%"><col style="width:12%"><col style="width:26%"></colgroup><thead><tr><th class="nosort">Base</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Weight <span class="infoicon" title="How much this root counts toward the independent-bases number: 1 per source normally, halved (0.5x) if the dataset is only known through a secondary review rather than a primary source citing it directly, and halved again if every source resting on it is an animal or in-vitro study.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
+        ${sec}${circ}${method}
+      </div>`;
   }).join("");
   const flag=(a.warnings&&a.warnings.length) ? warningsHtml(a.warnings, false)
     : `<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
-  return `<div class="panel"><h3>Is the consensus real, or the same evidence counted twice?</h3>
-      <p class="subnote">Each position is reduced to its <b>independent evidence bases</b>: sources sharing a dataset, echoing as reviews, or citing each other in a loop collapse into one. The number after each position is its effective count of distinct bases — the honest size of its support.</p>
+  el("main").innerHTML=`<h1>Independence & bias</h1><div class="mmeta">is the consensus real, or the same evidence counted twice?</div>
+    <div class="panel">
+      <div class="subnote">Each position is reduced to its <b>independent evidence bases</b>: sources sharing a dataset, echoing as reviews, or citing each other in a loop collapse into one. Bases are pre-sorted by weight, so the ones that matter are always visible without expanding.</div>
       <div class="indkey"><span><i style="background:#222a35"></i>primary evidence (dataset / own data)</span><span><i style="background:#c4ccd4"></i>secondary voice (collapsed echo)</span><span><b class="warn">⚠</b> circular loop</span></div>
-      ${rows}${flag}</div>`;
+      ${sections}${flag}
+    </div>`;
+  el("main").querySelectorAll("[data-more]").forEach(b=>b.onclick=()=>{
+    const k=b.getAttribute("data-more"); state.expandedBases[k]=!state.expandedBases[k]; renderMain();
+  });
 }
 
-function renderChanges(c){
-  const kb=c.kb, log=(kb.log||[]).slice().reverse();
-  const items=log.map(e=>{
-    if(e.action==="seed"){
-      return `<div class="ch"><div class="ch-h">v${e.version} · seeded</div>
-        <div class="ch-meta">${esc(e.ts||"")}</div>
-        <div class="ch-diff"><div>${e.sources||kb.sources.length} sources established the initial knowledge base.</div></div></div>`;
+// "distribution: <position label> 41 -> 42" / "concentration: <position label> 45% -> 44%"
+function parseDiffLine(kb,line){
+  const m=line.match(/^(\w[\w -]*):\s*(.+?)\s+([\d.]+%?)\s*→\s*([\d.]+%?)$/);
+  if(!m) return null;
+  const [,metric,label,before,after]=m;
+  const pos=kb.positions.find(p=>p.label===label||p.shortLabel===label);
+  return {metric,before,after,hue:pos?pos.hue:"var(--faint)",label:pos?(pos.shortLabel||shortLabel(pos.label)):label,warn:line.indexOf("⚠")===0};
+}
+function deltaBadges(kb,diff){
+  const parsed=(diff||[]).map(l=>parseDiffLine(kb,l)).filter(Boolean);
+  if(!parsed.length) return (diff&&diff.length)?esc(diff[0]):`<span style="color:var(--faint)">(no metric changes)</span>`;
+  const shown=parsed.slice(0,2).map(d=>
+    `<span class="deltapill"><span class="dot" style="background:${d.hue}"></span>${esc(d.metric)} ${esc(d.before)}→${esc(d.after)}</span>`).join("");
+  const more=parsed.length>2?`<span class="deltamore">+${parsed.length-2}</span>`:"";
+  return shown+more;
+}
+// Curation actions (merge-position / dedupe-sources / tidy / ...) share one shape --
+// {action, summary} with no title/source/diff -- distinct from a seed and from a normal
+// add-source entry. Anything with a summary and no diff array falls in this bucket, so a
+// future curation command needs no viewer change to show up here (same "generic over kind"
+// discipline as warningsHtml).
+const CURATION_LABEL={"merge-position":"merged positions","dedupe-sources":"de-duplicated sources","tidy":"tidied labels"};
+function renderChangesView(){
+  const c=cur(), kb=c.kb, log=(kb.log||[]).slice().reverse();
+  const posLabel=id=>{const p=kb.positions.find(x=>x.id===id); return p?(p.shortLabel||p.label):id;};
+  const rows=log.map(e=>{
+    const key="v"+e.version+"-"+(e.action||"");
+    const open=state.expandedChanges.has(key);
+    const isSeed=e.action==="seed";
+    const isCuration=!isSeed && e.summary!=null && e.diff==null;
+    let title, badges, detailBody;
+    if(isSeed){
+      title=`(seed) ${e.sources||kb.sources.length} sources established the initial knowledge base`;
+      badges=`<span class="deltapill"><span class="dot" style="background:var(--chrome)"></span>seeded · ${e.sources||kb.sources.length} sources</span>`;
+      detailBody=`${esc(e.sources||kb.sources.length)} sources established the initial knowledge base.`;
+    } else if(isCuration){
+      const label=CURATION_LABEL[e.action]||e.action||"curation";
+      title=`${label} — ${e.summary}`;
+      badges=`<span class="deltapill"><span class="dot" style="background:var(--faint)"></span>${esc(label)}</span>`;
+      detailBody=esc(e.summary);
+    } else {
+      title=`added “${e.title||e.source||""}”`;
+      const dsB=(e.newDatasets&&e.newDatasets.length)?`<span class="deltapill"><span class="dot" style="background:var(--flag)"></span>+${e.newDatasets.length} new dataset${e.newDatasets.length===1?"":"s"}</span>`:"";
+      const posB=(e.newPositions&&e.newPositions.length)?`<span class="deltapill"><span class="dot" style="background:var(--ochre)"></span>+${e.newPositions.length} new position${e.newPositions.length===1?"":"s"}</span>`:"";
+      badges=deltaBadges(kb,e.diff)+dsB+posB;
+      detailBody=((e.diff&&e.diff.length)?e.diff.map(d=>`<div>${esc(d)}</div>`).join(""):`<div style="color:var(--faint)">(no metric changes)</div>`)
+        + (e.newDatasets&&e.newDatasets.length?`<div>new dataset(s): ${e.newDatasets.map(esc).join(", ")}</div>`:"")
+        + (e.newPositions&&e.newPositions.length?`<div>new position(s): ${e.newPositions.map(id=>esc(posLabel(id))).join(", ")}</div>`:"");
     }
-    const diff=(e.diff||[]).map(line=>{
-      const cls=line.indexOf("⚠")===0?"warn":(line.indexOf("+")===0?"add":"");
-      return `<div class="${cls}">${esc(line)}</div>`;
-    }).join("")||`<div style="color:var(--faint)">(no metric changes)</div>`;
-    return `<div class="ch"><div class="ch-h">v${e.version} · added “${esc(e.title||e.source||"")}”</div>
-      <div class="ch-meta">${esc(e.ts||"")}${e.newDatasets&&e.newDatasets.length?" · new dataset(s): "+e.newDatasets.map(esc).join(", "):""}</div>
-      <div class="ch-diff">${diff}</div></div>`;
+    const detail=open?`<tr class="detailrow"><td colspan="4">${detailBody}</td></tr>`:"";
+    return `<tr class="rowmain" data-key="${esc(key)}"><td style="font-family:var(--mono);color:var(--muted);white-space:nowrap;">v${e.version}</td>
+        <td style="color:var(--faint);white-space:nowrap;">${esc(e.ts||"")}</td>
+        <td class="clamp2">${esc(title)}</td>
+        <td><div class="deltawrap">${badges}</div></td></tr>${detail}`;
   }).join("");
-  return `<div class="panel"><h3>How the picture changed as evidence arrived</h3>
-    <p class="hint">each entry = one ingested source and what recomputing the metrics revealed · newest first</p>
-    ${items||'<div class="empty">No history yet — only the seed.</div>'}</div>`;
+  const colgroup=`<colgroup><col style="width:6%"><col style="width:14%"><col style="width:54%"><col style="width:26%"></colgroup>`;
+  el("main").innerHTML=`<h1>Changes</h1><div class="mmeta">how the picture changed as evidence arrived — newest first</div>
+    <div class="panel">${rows?`<div class="tbl-wrap"><table>${colgroup}<thead><tr><th class="nosort">Version</th><th class="nosort">Date</th><th class="nosort">Source added</th><th class="nosort">Key change</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No history yet — only the seed.</div>'}</div>`;
+  el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
+    const k=tr.getAttribute("data-key");
+    if(state.expandedChanges.has(k)) state.expandedChanges.delete(k); else state.expandedChanges.add(k);
+    renderMain();
+  });
 }
 
 function renderEmpty(){
-  const portalAdd=document.querySelector('.pbar a[href$="/add"]');
-  const action=portalAdd
-    ? `<a class="empty-action" href="${esc(portalAdd.getAttribute("href"))}">Add the first source</a>`
-    : "";
-  return `<div class="panel empty-state">
+  const links=DATA.portalLinks;
+  const action=(links&&links.add)?`<a class="empty-action" href="${esc(links.add)}">Add the first source</a>`:"";
+  el("main").innerHTML=`<div class="panel empty-state">
     <div class="mark">∅</div>
     <h2>No sources yet</h2>
     <p>This question is ready, but no evidence has been added. Add the first source to build its coverage, divergence, and independence views.</p>
@@ -500,32 +824,36 @@ function renderEmpty(){
   </div>`;
 }
 
-function render(){
-  if(!DATA){el("view").innerHTML='<div class="empty">No data baked in. Run <b>python cli.py build cases/eggs.kb.json cases/covid.kb.json</b> and open the generated <b>viewer/index.html</b>.</div>';return;}
+function renderMain(){
   renderChrome();
-  const c=cur();
-  const empty=c.kb.sources.length===0;
-  el("tabs").style.display=empty?"none":"";
-  if(empty){state.filter=null;el("view").innerHTML=renderEmpty();return;}
-  let html="";
-  if(state.view==="coverage") html=renderCoverage(c);
-  else if(state.view==="divergence") html=renderDivergence(c);
-  else if(state.view==="independence") html=renderIndependence(c);
-  else html=renderChanges(c);
-  el("view").innerHTML=html;
+  if(!DATA){el("main").innerHTML='<div class="empty">No data baked in. Run <b>python cli.py build cases/eggs.kb.json cases/covid.kb.json</b> and open the generated <b>viewer/index.html</b>.</div>';return;}
+  const kb=cur().kb;
+  if(kb.sources.length===0){renderEmpty();return;}
+  if(state.view==="coverage") renderCoverageView();
+  else if(state.view==="divergence") renderDivergenceView();
+  else if(state.view==="independence") renderIndependenceView();
+  else renderChangesView();
 }
 
+function switchCase(id){
+  state.caseId=id;
+  state.posOn=new Set(cur().kb.positions.map(p=>p.id));
+  state.shown=24; state.filter={q:"",ev:"",fu:"",flagged:false};
+  state.expanded=new Set(); state.expandedBases={}; state.expandedChanges=new Set();
+}
+if(DATA) switchCase(state.caseId);
+
 document.addEventListener("click",e=>{
-  const c=e.target.closest("[data-case]");
-  if(c){state.caseId=c.dataset.case;state.filter=null;render();return;}
-  const t=e.target.closest("[data-view]");
-  if(t){state.view=t.dataset.view;render();return;}
-  const pos=e.target.closest("[data-pos]");
-  if(pos){state.filter=state.filter===pos.dataset.pos?null:pos.dataset.pos;render();return;}
-  const fr=e.target.closest("[data-factor]");
-  if(fr){const r=el("r-"+fr.dataset.factor);if(r)r.classList.toggle("show");return;}
+  const cs=e.target.closest("[data-case]"); if(cs){switchCase(cs.getAttribute("data-case"));renderMain();return;}
+  const nv=e.target.closest("[data-view]"); if(nv){state.view=nv.getAttribute("data-view");state.shown=24;renderMain();return;}
+  const pc=e.target.closest("[data-pos]"); if(pc){
+    const id=pc.getAttribute("data-pos");
+    if(state.posOn.has(id)) state.posOn.delete(id); else state.posOn.add(id);
+    renderMain(); return;
+  }
+  const wj=e.target.closest("[data-jump]"); if(wj){state.view=wj.getAttribute("data-jump");renderMain();return;}
 });
-render();
+renderMain();
 </script>
 </body>
 </html>
