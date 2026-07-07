@@ -1,16 +1,19 @@
 """Model-agnostic LLM access via the stdlib (no SDK dependency).
 
-Dispatches by environment: ANTHROPIC_API_KEY -> Claude (needed for web search / deep research —
-see discover() below); otherwise the first OpenAI-compatible provider whose key is set. NVIDIA's
-build.nvidia.com is checked first among these: it's free (rate-limited, ~40 req/min), so setting
-NVIDIA_API_KEY alongside another compat key gets you free labelling by default, no extra config.
-OpenAI, DeepSeek, Mistral, Groq, Google Gemini, OpenRouter, and NVIDIA all speak the OpenAI
-chat-completions protocol, so one code path (_openai_compat) serves them all.
-With no key set, callers should use --dry-run (print the prompt, paste into any tool).
-`discover()` requests web-grounded search where the backend supports it (Anthropic's
-server-side web_search tool) — that is the "deep research finds its own sources" path.
+Two phases pick their provider INDEPENDENTLY (see _search_provider / _label_provider):
+  * SEARCH / discovery -> Anthropic first (its server-side web_search tool + deep research), any
+    OpenAI-compatible key as a model-knowledge-only fallback.
+  * LABELLING (reads text we already fetched) -> the first OpenAI-compatible key first; NVIDIA's
+    build.nvidia.com leads that list and is free (rate-limited, ~40 req/min), so it labels by
+    default even when an Anthropic key is present. Anthropic is the fallback when it's the only key.
+So with BOTH an ANTHROPIC_API_KEY and a NVIDIA_API_KEY set, Claude searches and NVIDIA labels — the
+expensive model only does the part that actually needs it. OpenAI, DeepSeek, Mistral, Groq, Gemini,
+OpenRouter, and NVIDIA all speak the OpenAI chat-completions protocol, so one code path
+(_openai_compat) serves them all. With no key set, callers should use --dry-run.
 
-Override the model with EPISTEMIC_MODEL. Defaults to a sensible model per provider.
+Models: EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL override each phase independently;
+EPISTEMIC_MODEL is a legacy global default applied to both phases only when they share a provider.
+Otherwise each phase uses a sensible per-provider default.
 """
 import json
 import os
@@ -18,10 +21,9 @@ import time
 import urllib.error
 import urllib.request
 
-MODEL = os.environ.get("EPISTEMIC_MODEL")
 RETRY_CODES = {429, 500, 502, 503, 529}  # transient — Anthropic 529 = Overloaded
 # Sonnet by default: faster/cheaper and far less prone to 529 "Overloaded" than Opus.
-# Override per-run with EPISTEMIC_MODEL=claude-opus-4-8 (or any model id).
+# Override with EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL / EPISTEMIC_MODEL (see module docstring).
 _DEFAULT_ANTHROPIC = "claude-sonnet-4-6"
 
 # OpenAI-compatible providers, checked in this order after Anthropic. Each speaks the standard
@@ -100,8 +102,74 @@ def _active_compat():
     return None
 
 
+def _anthropic_key():
+    return bool(os.environ.get("ANTHROPIC_API_KEY"))
+
+
 def has_key():
-    return bool(os.environ.get("ANTHROPIC_API_KEY")) or _active_compat() is not None
+    return _anthropic_key() or _active_compat() is not None
+
+
+# --- phase-aware provider + model selection ----------------------------------------------------
+# Each selection returns ("anthropic", None) or ("compat", <_OPENAI_COMPAT row>) or None.
+def _search_provider():
+    """SEARCH / discovery: Anthropic first (server-side web search + deep research), then the first
+    compat key (searches from model knowledge only — no live web)."""
+    if _anthropic_key():
+        return ("anthropic", None)
+    c = _active_compat()
+    return ("compat", c) if c else None
+
+
+def _label_provider():
+    """LABELLING: the first compat key first — NVIDIA leads _OPENAI_COMPAT and is free, so it labels
+    by default even alongside an Anthropic key kept for search — then Anthropic as a fallback."""
+    c = _active_compat()
+    if c:
+        return ("compat", c)
+    if _anthropic_key():
+        return ("anthropic", None)
+    return None
+
+
+def _provider_id(sel):
+    if not sel:
+        return None
+    kind, c = sel
+    return "anthropic" if kind == "anthropic" else c[0]
+
+
+def _single_provider():
+    """True when search and label land on the same provider — the historical single-key setup,
+    where the legacy global EPISTEMIC_MODEL is safe to apply to both phases."""
+    return _provider_id(_search_provider()) == _provider_id(_label_provider())
+
+
+def _phase_model(phase, provider_default):
+    """Resolve a phase's model at call time. Precedence: the phase-specific override
+    (EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL); then the legacy global EPISTEMIC_MODEL, but
+    ONLY when both phases share a provider (applying e.g. a Claude id to a split NVIDIA-label setup
+    would just error the NVIDIA call); then the provider's own default."""
+    override = os.environ.get(
+        "EPISTEMIC_SEARCH_MODEL" if phase == "search" else "EPISTEMIC_LABEL_MODEL")
+    if override:
+        return override
+    if _single_provider():
+        legacy = os.environ.get("EPISTEMIC_MODEL")
+        if legacy:
+            return legacy
+    return provider_default
+
+
+def _select(phase):
+    """(kind, compat_row_or_None, resolved_model, human_label) for a phase, or None if no key."""
+    sel = _search_provider() if phase == "search" else _label_provider()
+    if sel is None:
+        return None
+    kind, c = sel
+    if kind == "anthropic":
+        return ("anthropic", None, _phase_model(phase, _DEFAULT_ANTHROPIC), "Anthropic")
+    return ("compat", c, _phase_model(phase, c[2]), c[3])
 
 # optional hook the server sets so retry/backoff notices show up in the progress log
 LOG = None
@@ -116,14 +184,18 @@ def _say(msg):
     print(msg, flush=True)
 
 
-def active_model():
-    """Human-readable description of which model the next call will use."""
-    if os.environ.get("ANTHROPIC_API_KEY"):
-        return "Anthropic / " + (MODEL or _DEFAULT_ANTHROPIC)
-    c = _active_compat()
-    if c:
-        return c[3] + " / " + (MODEL or c[2])
-    return "manual (no API key)"
+def active_model(phase="label"):
+    """Human-readable 'Provider / model' the given phase ('search' or 'label') will use."""
+    sel = _select(phase)
+    if sel is None:
+        return "manual (no API key)"
+    return sel[3] + " / " + sel[2]
+
+
+def active_models():
+    """Both phases for status display — collapses to one line when they resolve to the same model."""
+    s, l = active_model("search"), active_model("label")
+    return s if s == l else "search: {} · label: {}".format(s, l)
 
 
 def _post(url, headers, body, tries=4):
@@ -156,8 +228,7 @@ def _post(url, headers, body, tries=4):
             raise SystemExit("network error reaching the LLM API: {}".format(e.reason))
 
 
-def _anthropic(prompt, system, web, deep=False):
-    model = MODEL or _DEFAULT_ANTHROPIC
+def _anthropic(prompt, system, web, deep, model):
     # deep mode: allow far more searches and a longer answer so the model can cover every angle
     body = {"model": model, "max_tokens": 16000 if deep else 8192,
             "messages": [{"role": "user", "content": prompt}]}
@@ -173,11 +244,10 @@ def _anthropic(prompt, system, web, deep=False):
     return "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
 
 
-def _openai_compat(prompt, system, env, base, default_model):
-    """One code path for every OpenAI-compatible backend (OpenAI, DeepSeek, Mistral, Groq,
+def _openai_compat(prompt, system, env, base, model):
+    """One code path for every OpenAI-compatible backend (NVIDIA, OpenAI, DeepSeek, Mistral, Groq,
     Gemini's compat endpoint, OpenRouter). Server-side web search isn't part of this protocol,
     so `discover()` falls back to model-knowledge sources for these providers."""
-    model = MODEL or default_model
     msgs = []
     if system:
         msgs.append({"role": "system", "content": system})
@@ -189,18 +259,27 @@ def _openai_compat(prompt, system, env, base, default_model):
     return resp["choices"][0]["message"]["content"]
 
 
-def complete(prompt, system=None, web=False, deep=False):
-    if os.environ.get("ANTHROPIC_API_KEY"):
-        return _anthropic(prompt, system, web, deep)
-    c = _active_compat()
-    if c:
-        return _openai_compat(prompt, system, c[0], c[1], c[2])
-    raise SystemExit(
-        "No LLM API key set (ANTHROPIC_API_KEY, NVIDIA_API_KEY [free, build.nvidia.com], "
-        "OPENAI_API_KEY, DEEPSEEK_API_KEY, MISTRAL_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, "
-        "or OPENROUTER_API_KEY).\n"
-        "Use --dry-run to print the prompt, paste it into any LLM / deep-research tool,\n"
-        "then save the JSON it returns and run:  python cli.py add <kb.json> <delta.json>")
+_NO_KEY_MSG = (
+    "No LLM API key set (ANTHROPIC_API_KEY, NVIDIA_API_KEY [free, build.nvidia.com], "
+    "OPENAI_API_KEY, DEEPSEEK_API_KEY, MISTRAL_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, "
+    "or OPENROUTER_API_KEY).\n"
+    "Use --dry-run to print the prompt, paste it into any LLM / deep-research tool,\n"
+    "then save the JSON it returns and run:  python cli.py add <kb.json> <delta.json>")
+
+
+def complete(prompt, system=None, web=False, deep=False, phase=None):
+    """Run one completion. `phase` ('search'|'label') decides the provider; it defaults from `web`
+    (a web-grounded call is inherently search, everything else is labelling), but discover()'s
+    no-web fallback passes phase='search' explicitly so it stays on the search provider."""
+    if phase is None:
+        phase = "search" if web else "label"
+    sel = _select(phase)
+    if sel is None:
+        raise SystemExit(_NO_KEY_MSG)
+    kind, c, model, _label = sel
+    if kind == "anthropic":
+        return _anthropic(prompt, system, web, deep, model)
+    return _openai_compat(prompt, system, c[0], c[1], model)
 
 
 def discover(prompt, deep=False):
@@ -214,11 +293,13 @@ def discover(prompt, deep=False):
         sysmsg += (" Work like a deep-research agent: run many separate searches, dig past the "
                    "first page, and be exhaustive across every position before answering.")
     try:
-        return complete(prompt, system=sysmsg, web=True, deep=deep)
+        return complete(prompt, system=sysmsg, web=True, deep=deep, phase="search")
     except SystemExit as web_err:
         try:
+            # still the SEARCH phase, just without the web tool — stay on the search provider
+            # (phase='search'), don't fall through to the labelling provider.
             return complete(prompt, system=sysmsg + " Web search is NOT available — list only "
                             "sources you are highly confident exist, with their correct URLs.",
-                            web=False)
+                            web=False, phase="search")
         except SystemExit:
             raise web_err  # both failed: surface the original (web-search) error

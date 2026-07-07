@@ -183,8 +183,9 @@ or `pull` them locally (`python cli.py pull <id>`):
   it's **git for knowledge bases**. `pull` a question, `harvest`/`deepen` it with your own
   compute/key, `push` the result back (admin-token protected, optimistic version-locked). Discovery
   and fetch are keyless; only labelling uses your key, on your machine. Works with Anthropic, NVIDIA
-  (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter — pick a provider
-  in the console or via `.env`.
+  (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter — and search vs.
+  labelling pick a provider independently, so an Anthropic + NVIDIA pair does Claude web search with
+  free NVIDIA labelling.
 
 Both write the same portable `cases/<id>.kb.json` through the same merge. Labelling reads the **full
 open-access PDF** when one exists (richer positions, named datasets from the methods, and the

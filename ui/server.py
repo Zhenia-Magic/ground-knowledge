@@ -67,7 +67,7 @@ def set_key_op(key, provider=None):
         if e != env:
             os.environ.pop(e, None)
     os.environ[env] = key
-    return {"hasKey": has_key(), "model": llm.active_model()}
+    return {"hasKey": has_key(), "model": llm.active_models()}
 
 
 # --- progress log (visible in the UI via /api/progress, and on the server console) -----------
@@ -220,7 +220,7 @@ def discover_op(cid, k, apply, source="api", deep=False):
         if not apply:  # manual: can't call the model — hand back the prompt to paste
             return {"mode": "manual", "prompt": prompt, "candidates": cands}
         log("searching the web via {}{}…".format(
-            llm.active_model(), " (deep research)" if deep else ""))
+            llm.active_model("search"), " (deep research)" if deep else ""))
         before = len(cands)
         _merge([c for c in (_parse_json(llm.discover(prompt, deep=deep)) or []) if isinstance(c, dict)])
         log("web search added {} new candidate(s).".format(len(cands) - before))
@@ -280,7 +280,7 @@ def extract_op(cid, urls, apply, batch=5, max_text=None):
     for bi in range(0, len(docs), batch):
         group = docs[bi:bi + batch]
         n = bi // batch + 1
-        log("labelling batch {}/{} ({} sources) via {}…".format(n, nbatches, len(group), llm.active_model()))
+        log("labelling batch {}/{} ({} sources) via {}…".format(n, nbatches, len(group), llm.active_model("label")))
         kbnow = _read(path)  # fresh each batch so the prompt sees entities added earlier → reuse
         arr = _parse_json(llm.complete(build_batch_extract_prompt(kbnow, group, max_text)))
         if isinstance(arr, dict):
@@ -302,7 +302,7 @@ def run_all_op(cid, k, source="api", deep=False):
         raise ValueError("'Do it all' needs an API key (Anthropic, NVIDIA [free], OpenAI, "
                          "DeepSeek, Mistral, Groq, Gemini, or OpenRouter). Without one, use "
                          "Find → Fetch & label to run the steps by hand.")
-    log("=== Do it all · model: {} ===".format(llm.active_model()))
+    log("=== Do it all · model: {} ===".format(llm.active_models()))
     cands = discover_op(cid, k, apply=True, source=source, deep=deep).get("candidates", [])
     urls = [c.get("url") for c in cands if c.get("url")]
     if not urls:
@@ -603,7 +603,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._file(os.path.join(ROOT, "viewer", "index.html"), "text/html; charset=utf-8")
         if self.path == "/api/cases":
             return self._send(200, {"cases": list_cases(), "hasKey": has_key(),
-                                    "model": llm.active_model(),
+                                    "model": llm.active_models(),
                                     "portal": os.environ.get("EPISTEMIC_PORTAL", "")})
         if self.path == "/api/progress":
             return self._send(200, {"lines": list(_PROGRESS)})

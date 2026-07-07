@@ -99,9 +99,10 @@
       <button id="keyBtn">Use key</button>
     </div>
     <p class="desc" style="margin:8px 0 0">Web search / deep research need Anthropic; the others
-    label fetched text fine — NVIDIA's build.nvidia.com is free (rate-limited). Tip:
-    <code>EPISTEMIC_MODEL</code> in <code>.env</code> overrides the default model for your
-    provider.</p>
+    label fetched text fine — NVIDIA's build.nvidia.com is free (rate-limited). In <code>.env</code>
+    you can set an Anthropic <b>and</b> an NVIDIA key together so Claude searches while NVIDIA labels
+    for free; <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code> pin each phase's
+    model.</p>
     <div class="toast" id="keyToast"></div>
   </div>
   <pre id="log"></pre>

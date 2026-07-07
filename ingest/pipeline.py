@@ -454,7 +454,7 @@ def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=Non
             return out or None
         try:
             print("Searching the web via {}{}…".format(
-                llm.active_model(), " (deep research)" if deep else ""), file=sys.stderr)
+                llm.active_model("search"), " (deep research)" if deep else ""), file=sys.stderr)
             web_cands = _parse_json(llm.discover(prompt, deep=deep))
             before = len(out)
             _merge(web_cands)

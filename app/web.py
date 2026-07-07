@@ -233,7 +233,7 @@ def docs_html(repo="https://github.com/Zhenia-Magic/epistemic-coverage"):
     label automatically, and they can do things the website can't:</p>
     <ul>
       <li><b>Cold-start</b> a brand-new question from scratch (discover + label dozens of sources).</li>
-      <li><b>Automatic labelling</b> of fetched text using your own key — Anthropic, NVIDIA (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter.</li>
+      <li><b>Automatic labelling</b> of fetched text using your own key — Anthropic, NVIDIA (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter. Set an Anthropic <i>and</i> an NVIDIA key together and Claude does the web search while NVIDIA does the (free) labelling.</li>
       <li><b>Import a whole library</b> from Zotero / Mendeley / EndNote (.ris, .bib, .csl-json).</li>
       <li><b>Curate</b>: merge duplicate datasets, rename, tidy messy labels.</li>
       <li><b>Push / pull</b> a knowledge base between your machine and this portal.</li>
@@ -260,7 +260,8 @@ pip install -r requirements.txt</pre>
 cp .env.example .env</pre>
     <table class="cmdtbl">
       <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Your AI key for automatic labelling. Web search / deep research need Anthropic.</td></tr>
-      <tr><td>… or any one of</td><td><code>NVIDIA_API_KEY</code> (free, build.nvidia.com), <code>OPENAI_API_KEY</code>, <code>DEEPSEEK_API_KEY</code>, <code>MISTRAL_API_KEY</code>, <code>GROQ_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>OPENROUTER_API_KEY</code> — all label fetched text fine. The local app also lets you paste a key and pick the provider.</td></tr>
+      <tr><td>… or any one of</td><td><code>NVIDIA_API_KEY</code> (free, build.nvidia.com), <code>OPENAI_API_KEY</code>, <code>DEEPSEEK_API_KEY</code>, <code>MISTRAL_API_KEY</code>, <code>GROQ_API_KEY</code>, <code>GEMINI_API_KEY</code>, <code>OPENROUTER_API_KEY</code> — all label fetched text fine. Set NVIDIA alongside Anthropic and Claude searches while NVIDIA labels for free. The local app also lets you paste a key and pick the provider.</td></tr>
+      <tr><td><code>EPISTEMIC_MODEL</code> <span style="color:var(--faint)">/ <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code></span></td><td>Pin the model. The <code>SEARCH</code>/<code>LABEL</code> variants set each phase independently; plain <code>EPISTEMIC_MODEL</code> applies to both when they share a provider.</td></tr>
       <tr><td><code>EPISTEMIC_PORTAL</code></td><td>This portal's URL for push/pull — e.g. <code>https://groundknowledge.org</code>.</td></tr>
       <tr><td><code>EPISTEMIC_CONTACT_EMAIL</code></td><td>Your email → OpenAlex/Crossref "polite pool" (faster, higher limits).</td></tr>
       <tr><td><code>EPISTEMIC_ADMIN_TOKEN</code></td><td>Only if you run a portal and want to push whole-KB replacements.</td></tr>
