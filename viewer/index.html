@@ -21,74 +21,84 @@
 
   /* ---------- shell / rail ---------- */
   .shell{display:flex;max-width:1440px;margin:0 auto;min-height:100vh;}
-  /* The rail never scrolls on its own -- only the whole page does. .railtop (brand, case
-     switcher, nav, add-source: a small, bounded set of items that never grows with case
-     data) stays pinned via position:sticky. .railbody (positions, warnings, filters, case
-     links: everything whose height depends on how much data the case has) flows normally
-     and scrolls away with the page like any other content -- so there is never a second,
-     independent scroll region to get stuck in or hide. */
+  /* Deliberately NOT sticky and NOT independently scrollable. A pinned header sitting above
+     content that has already scrolled away reads as broken (tried it, looked terrible); an
+     internal overflow-y:auto reads as a stray scrollbar (tried that too). The rail is just a
+     normal, compact column that scrolls with the page like the rest of it -- the fix for "too
+     much rail" is less rail, not a cleverer scroll mechanism. */
   .rail{width:var(--rail-w);flex:0 0 var(--rail-w);border-right:1px solid var(--line);
-    display:flex;flex-direction:column;align-self:flex-start;}
-  .railtop{position:sticky;top:0;background:var(--bg);padding:22px 18px 14px;z-index:2;}
-  .railbody{padding:0 18px 22px;}
-  .backhome{display:inline-block;font-size:12px;color:var(--muted);margin-bottom:12px;}
+    padding:18px 16px 24px;align-self:flex-start;}
+  .backhome{display:inline-block;font-size:12px;color:var(--muted);margin-bottom:10px;}
   .backhome:hover{color:var(--flag);}
   .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
-    font-family:var(--mono);margin-bottom:8px;}
-  .qtitle{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:4px;}
-  .qmeta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:18px;}
-  .casesec{margin-bottom:14px;display:flex;flex-direction:column;gap:5px;}
+    font-family:var(--mono);margin-bottom:7px;}
+  .qtitle{font-size:15px;font-weight:600;line-height:1.35;margin-bottom:4px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .qmeta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:14px;}
+  .casesec{margin-bottom:10px;display:flex;flex-direction:column;gap:3px;}
   .cchip{display:block;width:100%;text-align:left;font:inherit;font-size:12px;color:var(--muted);
-    background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 8px;
+    background:transparent;border:1px solid transparent;border-radius:6px;padding:5px 7px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .cchip:hover{background:#EEF0F1;}
   .cchip[aria-pressed="true"]{background:var(--flag-bg);color:var(--flag);font-weight:600;
     border-color:var(--flag-bg);}
-  nav#nav{margin-bottom:6px;}
-  .navitem{display:flex;flex-direction:column;padding:8px 10px;border-radius:8px;cursor:pointer;
-    margin-bottom:2px;border:0;background:transparent;font:inherit;text-align:left;width:100%;}
+  nav#nav{margin-bottom:4px;}
+  .navitem{display:block;padding:6px 8px;border-radius:7px;cursor:pointer;
+    margin-bottom:1px;border:0;background:transparent;font:inherit;text-align:left;width:100%;}
   .navitem:hover{background:#EEF0F1;}
   .navitem[aria-selected="true"]{background:var(--flag-bg);}
-  .navitem .l{font-size:13.5px;color:var(--muted);}
+  .navitem .l{font-size:13px;color:var(--muted);}
   .navitem[aria-selected="true"] .l{color:var(--flag);font-weight:600;}
-  .addsrc{display:block;text-align:center;width:100%;font:inherit;font-size:13px;font-weight:600;
-    padding:9px 0;margin:6px 0 6px;border:1px solid var(--flag);border-radius:8px;
+  .addsrc{display:block;text-align:center;width:100%;font:inherit;font-size:12.5px;font-weight:600;
+    padding:7px 0;margin:5px 0 5px;border:1px solid var(--flag);border-radius:7px;
     background:var(--flag-bg);color:var(--flag);cursor:pointer;}
   .addsrc:hover{background:var(--flag);color:#fff;text-decoration:none;}
-  .railsec{border-top:1px solid var(--line);margin-top:16px;padding-top:14px;}
-  .railsec h4{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);
-    margin:0 0 10px;font-weight:600;}
-  .poschip{display:flex;align-items:center;gap:8px;padding:6px 4px;font-size:13px;color:var(--muted);
+  .railsec{border-top:1px solid var(--line);margin-top:11px;padding-top:10px;}
+  .railsec h4{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);
+    margin:0 0 7px;font-weight:600;}
+  .poschip{display:flex;align-items:center;gap:7px;padding:4px;font-size:12.5px;color:var(--muted);
     cursor:pointer;border-radius:6px;}
   .poschip:hover{background:#EEF0F1;}
-  .poschip .dot{width:9px;height:9px;border-radius:2px;flex:0 0 auto;}
+  .poschip .dot{width:8px;height:8px;border-radius:2px;flex:0 0 auto;}
   .poschip .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .poschip .risk{color:var(--ochre);font-size:11px;flex:0 0 auto;}
   .poschip .n{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint);
     flex:0 0 auto;}
   .poschip.off{opacity:.4;}
-  input[type=text],select{width:100%;font:inherit;font-size:12.5px;padding:7px 9px;
-    border:1px solid var(--line-strong);border-radius:7px;background:var(--surface);
-    color:var(--ink);margin-bottom:8px;}
-  select{appearance:none;-webkit-appearance:none;-moz-appearance:none;padding-right:26px;
+  input[type=text],select{width:100%;font:inherit;font-size:12px;padding:6px 8px;
+    border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);
+    color:var(--ink);margin-bottom:6px;}
+  select{appearance:none;-webkit-appearance:none;-moz-appearance:none;padding-right:24px;
     background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" fill="none" stroke="%2361676E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-    background-repeat:no-repeat;background-position:right 8px center;cursor:pointer;}
+    background-repeat:no-repeat;background-position:right 7px center;cursor:pointer;}
   select:hover{border-color:var(--faint);}
   input[type=text]:focus,select:focus{outline:none;border-color:var(--flag);
     box-shadow:0 0 0 2px var(--flag-bg);}
-  label.flagonly{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);
-    cursor:pointer;margin-top:6px;}
+  label.flagonly{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);
+    cursor:pointer;margin-top:4px;}
   label.flagonly input{width:auto;margin:0;}
-  .warnmini{border:1px solid #E3CD99;background:var(--ochre-bg);border-radius:7px;padding:8px 10px;
-    font-size:11.5px;color:var(--ink);margin-bottom:8px;cursor:pointer;}
-  .warnmini b{color:var(--ochre);display:block;font-size:10px;text-transform:uppercase;
-    letter-spacing:.04em;margin-bottom:2px;}
-  .caselinks{display:flex;flex-direction:column;gap:3px;}
-  .caselinks .lbl{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;
-    margin:8px 0 2px;}
+  /* One line per warning in the rail -- the full explanation already lives in the on-page
+     banner (warningsHtml); this is a jump link, not a second copy of the text. */
+  .warnmini{display:flex;align-items:baseline;gap:6px;border-left:3px solid var(--ochre);
+    background:var(--ochre-bg);border-radius:0 6px 6px 0;padding:5px 8px;
+    font-size:12px;color:var(--ink);margin-bottom:4px;cursor:pointer;
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .warnmini b{color:var(--ochre);font-size:11px;font-weight:600;flex:0 0 auto;}
+  .warnmini span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);}
+  .caselinks{display:flex;flex-direction:column;gap:2px;}
+  .caselinks .lbl{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;
+    margin:7px 0 1px;}
   .caselinks .lbl:first-child{margin-top:0;}
-  .caselinks a{font-size:12.5px;color:var(--muted);}
+  .caselinks a{font-size:12px;color:var(--muted);}
   .caselinks a:hover{color:var(--flag);}
+  /* Collapsed by default -- export/admin are occasional actions, not something worth a
+     permanently-open block of space in a rail that's already asked to hold a lot. */
+  #caseSec summary{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--faint);font-weight:600;cursor:pointer;list-style:none;}
+  #caseSec summary::-webkit-details-marker{display:none;}
+  #caseSec summary::after{content:"▾";float:right;color:var(--faint);}
+  #caseSec[open] summary::after{content:"▴";}
+  #caseSec .caselinks{margin-top:8px;}
 
   /* ---------- main ---------- */
   .main{flex:1;min-width:0;padding:26px 32px 60px;}
@@ -245,7 +255,6 @@
   @media (max-width:900px){
     .shell{flex-direction:column;}
     .rail{width:100%;flex:none;border-right:0;border-bottom:1px solid var(--line);}
-    .railtop{position:static;}
   }
   @media (max-width:640px){
     .main{padding:18px 16px 50px;}
@@ -258,30 +267,26 @@
 <body>
 <div class="shell">
   <div class="rail">
-    <div class="railtop">
-      <a href="#" id="backHome" class="backhome" style="display:none;">← All questions</a>
-      <div id="caseSwitch" class="casesec" style="display:none;"></div>
-      <div class="brand">Ground Knowledge</div>
-      <div id="qtitle" class="qtitle"></div>
-      <div id="qmeta" class="qmeta"></div>
-      <nav id="nav" role="tablist" aria-label="Views"></nav>
-      <a href="#" id="addSourceLink" class="addsrc" style="display:none;">+ Add source</a>
+    <a href="#" id="backHome" class="backhome" style="display:none;">← All questions</a>
+    <div id="caseSwitch" class="casesec" style="display:none;"></div>
+    <div class="brand">Ground Knowledge</div>
+    <div id="qtitle" class="qtitle"></div>
+    <div id="qmeta" class="qmeta"></div>
+    <nav id="nav" role="tablist" aria-label="Views"></nav>
+    <a href="#" id="addSourceLink" class="addsrc" style="display:none;">+ Add source</a>
+    <div id="posSec" class="railsec">
+      <h4>Positions</h4>
+      <div id="posChips"></div>
     </div>
-    <div class="railbody">
-      <div id="posSec" class="railsec">
-        <h4>Positions</h4>
-        <div id="posChips"></div>
-      </div>
-      <div id="warnRail" class="railsec" style="display:none;">
-        <h4>Active warnings</h4>
-        <div id="warnList"></div>
-      </div>
-      <div id="covFilters" class="railsec" style="display:none;"></div>
-      <div id="caseSec" class="railsec" style="display:none;">
-        <h4>Case</h4>
-        <div class="caselinks" id="caseLinks"></div>
-      </div>
+    <div id="warnRail" class="railsec" style="display:none;">
+      <h4>Active warnings</h4>
+      <div id="warnList"></div>
     </div>
+    <div id="covFilters" class="railsec" style="display:none;"></div>
+    <details id="caseSec" class="railsec" style="display:none;">
+      <summary>Case</summary>
+      <div class="caselinks" id="caseLinks"></div>
+    </details>
   </div>
   <div class="main" id="main"></div>
 </div>
@@ -415,6 +420,7 @@ function renderChrome(){
 
   const c=cur(), kb=c.kb, a=c.assessment;
   el("qtitle").textContent=kb.meta.question;
+  el("qtitle").title=kb.meta.question;
   el("qmeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} factors · ${kb.datasets.length} datasets`;
 
   const empty=kb.sources.length===0;
@@ -443,7 +449,7 @@ function renderChrome(){
   if(!empty && a.warnings && a.warnings.length){
     warnEl.style.display="";
     el("warnList").innerHTML=a.warnings.map(w=>
-      `<div class="warnmini" data-jump="${w.kind==="quote"||w.kind==="low-confidence"?"coverage":"independence"}"><b>${esc(w.badge)}</b>${esc(w.label)}</div>`).join("");
+      `<div class="warnmini" data-jump="${w.kind==="quote"||w.kind==="low-confidence"?"coverage":"independence"}" title="${esc(w.badge)} — ${esc(w.label)}"><b>${esc(w.badge)}</b><span>${esc(w.label)}</span></div>`).join("");
   } else warnEl.style.display="none";
 
   const covEl=el("covFilters");
