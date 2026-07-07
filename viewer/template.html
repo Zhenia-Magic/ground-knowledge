@@ -225,7 +225,7 @@ function warningsHtml(warnings, showLink){
   return (warnings||[]).map(w=>`<div class="method-alert">
       <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
       <div>${esc(w.detail)}</div>
-      ${showLink&&w.kind!=="quote"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
+      ${showLink&&w.kind!=="quote"&&w.kind!=="low-confidence"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
     </div>`).join("");
 }
 

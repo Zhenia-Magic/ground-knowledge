@@ -86,6 +86,12 @@ multiplying via paraphrase as a case grows):
   search was conducted from …"). If the text has no sentence stating the finding, set
   extractionConfidence ≤ 0.3 and quote the closest real statement, or leave the quote empty — never
   pad it with boilerplate.
+- Quote RELEVANCE, not just presence: the quote must directly support the SPECIFIC position
+  assigned, not merely be a true sentence somewhere in the paper. Don't stretch a tangential
+  finding to justify a position it doesn't actually state. If no passage genuinely states this
+  source's stance after reading the whole text, don't force a best-guess position with a weak
+  quote — reconsider relevant:false instead. An ungrounded position is worse than a source
+  correctly marked off-topic; when torn, prefer off-topic and say why in offTopicReason.
 - factorWeights: a factor is a DIMENSION THE CAMPS DISAGREE ON (a crux), e.g. "weight given to
   industry funding", "biomarkers vs hard outcomes" — NOT a study parameter / subgroup / outcome
   (gestational age, parity, dose, cesarean rate: those describe a study, skip them). Name the

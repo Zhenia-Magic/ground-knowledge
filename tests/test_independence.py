@@ -233,11 +233,22 @@ class WarningsTests(unittest.TestCase):
         self.assertEqual(quote[0]["positionId"], "X")
         self.assertIn("s1", quote[0]["detail"])
 
+    def test_low_confidence_warning_fires_on_weak_quote_grounding(self):
+        srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(3)]
+        for s in srcs:
+            s["provenance"] = {"position": {"quote": "q", "extractionConfidence": 0.2}}
+        ws = warnings(_kb(srcs))
+        weak = [w for w in ws if w["kind"] == "low-confidence"]
+        self.assertEqual(len(weak), 1)
+        self.assertEqual(weak[0]["positionId"], "X")
+        self.assertIn("weak quote", weak[0]["badge"])
+
     def test_precomputed_audits_can_be_passed_in_without_recomputing(self):
+        from engine.assess import confidence_audit
         srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]
         kb = _kb(srcs)
-        ind, ma, qa = independence(kb), method_audit(kb), quote_audit(kb)
-        self.assertEqual(warnings(kb, ind, ma, qa), warnings(kb))
+        ind, ma, qa, ca = independence(kb), method_audit(kb), quote_audit(kb), confidence_audit(kb)
+        self.assertEqual(warnings(kb, ind, ma, qa, ca), warnings(kb))
 
 
 class GapTests(unittest.TestCase):

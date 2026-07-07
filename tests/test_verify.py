@@ -190,5 +190,61 @@ class QuoteAuditTests(unittest.TestCase):
         self.assertEqual(pos["unverifiedFull"], 0)
 
 
+class ConfidenceAuditTests(unittest.TestCase):
+    """confidence_audit is the OTHER quote-quality axis: quote_audit asks 'is this quote real
+    (present in the fetched text)'; confidence_audit asks 'is a real quote actually a confident
+    basis for the position it's filed under' (prompts/ingest.md's quote-RELEVANCE rule)."""
+
+    def _kb_with(self, sources):
+        return {"positions": [{"id": "X", "label": "X", "hue": "#111"}],
+                "datasets": [], "factors": [], "sources": sources,
+                "vocab": {"evidence": []}}
+
+    def _src(self, sid, conf):
+        prov = {"position": {"quote": "q", "extractionConfidence": conf}} if conf is not None else {}
+        return {"id": sid, "position": "X", "title": sid, "provenance": prov}
+
+    def test_low_confidence_source_is_counted_and_flagged(self):
+        from engine.assess import confidence_audit
+        kb = self._kb_with([self._src("s1", 0.3)])
+        ca = confidence_audit(kb)
+        pos = ca["positions"][0]
+        self.assertEqual(pos["classed"], 1)
+        self.assertEqual(pos["low"], 1)
+        self.assertEqual(ca["flagged"][0]["id"], "s1")
+
+    def test_high_confidence_source_is_not_flagged(self):
+        from engine.assess import confidence_audit
+        kb = self._kb_with([self._src("s1", 0.9)])
+        ca = confidence_audit(kb)
+        pos = ca["positions"][0]
+        self.assertEqual(pos["classed"], 1)
+        self.assertEqual(pos["low"], 0)
+        self.assertEqual(ca["flagged"], [])
+
+    def test_missing_confidence_excluded_from_denominator_not_guessed(self):
+        from engine.assess import confidence_audit
+        kb = self._kb_with([self._src("s1", None), self._src("s2", 0.9)])
+        ca = confidence_audit(kb)
+        pos = ca["positions"][0]
+        self.assertEqual(pos["raw"], 2)
+        self.assertEqual(pos["classed"], 1)
+        self.assertEqual(pos["low"], 0)
+
+    def test_weak_flag_requires_a_real_count_not_just_share(self):
+        from engine.assess import confidence_audit
+        # one low-confidence source out of one classed is 100% share, but too small a sample
+        # to warrant a case-wide warning -- matches method_audit's "count first" discipline.
+        kb = self._kb_with([self._src("s1", 0.2)])
+        ca = confidence_audit(kb)
+        self.assertFalse(ca["positions"][0]["weak"])
+
+    def test_weak_flag_fires_with_enough_low_confidence_sources(self):
+        from engine.assess import confidence_audit
+        kb = self._kb_with([self._src("s%d" % i, 0.2) for i in range(3)])
+        ca = confidence_audit(kb)
+        self.assertTrue(ca["positions"][0]["weak"])
+
+
 if __name__ == "__main__":
     unittest.main()

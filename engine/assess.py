@@ -240,6 +240,48 @@ def quote_audit(kb):
     return {"positions": positions, "flagged": flagged}
 
 
+_LOW_CONFIDENCE = 0.5
+
+
+def confidence_audit(kb):
+    """Whether a source's POSITION assignment rests on a confident quote (see prompts/ingest.md
+    / ingest/pipeline.py's "quote RELEVANCE, not just presence" rule and SCHEMA.md's
+    extractionConfidence field).
+
+    This is a different failure mode from quote_audit: that checks whether a quote is REAL
+    (present in the fetched text); this checks whether a real quote is actually a confident
+    basis for the position it's filed under. A low extractionConfidence means the labeller
+    itself flagged the quote as a loose or partial match -- worth a curator's second look,
+    same spirit as the funding/method/quote audits: never block ingestion, always surface the
+    soft spot honestly. Sources with no recorded extractionConfidence (legacy data, or a
+    paste-back delta that never set it) are excluded from both the warning and the denominator,
+    never guessed as confident or not."""
+    by_pos = {p["id"]: {"raw": 0, "classed": 0, "low": 0} for p in kb["positions"]}
+    flagged = []
+    for s in kb["sources"]:
+        pid = s["position"]
+        if pid not in by_pos:
+            continue
+        by_pos[pid]["raw"] += 1
+        prov = (s.get("provenance") or {}).get("position") or {}
+        conf = prov.get("extractionConfidence")
+        if conf is None:
+            continue
+        by_pos[pid]["classed"] += 1
+        if conf < _LOW_CONFIDENCE:
+            by_pos[pid]["low"] += 1
+            flagged.append({"id": s["id"], "title": s.get("title"), "position": pid,
+                            "confidence": conf})
+    positions = []
+    for p in kb["positions"]:
+        c = by_pos[p["id"]]
+        share = (c["low"] / c["classed"]) if c["classed"] else 0
+        positions.append({"id": p["id"], "label": p["label"], "hue": p["hue"], "share": share,
+                          "weak": bool(c["low"] >= 3 or (c["low"] >= 2 and share >= 0.3)), **c})
+    flagged.sort(key=lambda f: f["confidence"])
+    return {"positions": positions, "flagged": flagged}
+
+
 def funding_skew(kb):
     """Which position *interested* money (industry or advocacy) most favours, plus how much of
     the case rests on sources that don't disclose funding. Defaulting unclear funding to
@@ -389,17 +431,19 @@ def independence(kb):
     return out
 
 
-def warnings(kb, ind=None, ma=None, qa=None):
+def warnings(kb, ind=None, ma=None, qa=None, ca=None):
     """Unified warning feed -- one consistent shape for every 'this needs scrutiny' signal the
-    assessment produces (concentration, method-bias, unverified quotes), so the CLI and viewer
-    render every warning through ONE mechanism instead of a bespoke banner/print-block per
-    audit. No new signal lives here: each condition and its wording is exactly what
-    independence()/method_audit()/quote_audit() already compute -- this only collects and
-    picks the single worst instance of each kind, matching what was shown before this existed
-    (worstConcentration / methodMonoculture / quoteAudit["flagged"])."""
+    assessment produces (concentration, method-bias, unverified quotes, weak quote grounding),
+    so the CLI and viewer render every warning through ONE mechanism instead of a bespoke
+    banner/print-block per audit. No new signal lives here: each condition and its wording is
+    exactly what independence()/method_audit()/quote_audit()/confidence_audit() already
+    compute -- this only collects and picks the single worst instance of each kind, matching
+    what was shown before this existed (worstConcentration / methodMonoculture /
+    quoteAudit["flagged"])."""
     ind = independence(kb) if ind is None else ind
     ma = method_audit(kb) if ma is None else ma
     qa = quote_audit(kb) if qa is None else qa
+    ca = confidence_audit(kb) if ca is None else ca
     out = []
 
     cand = [p for p in ind if p["concentrated"] and p["topDataset"]]
@@ -448,6 +492,20 @@ def warnings(kb, ind=None, ma=None, qa=None):
                            "has" if len(flagged) == 1 else "have",
                            "it" if len(flagged) == 1 else "them", f.get("title") or f["id"]),
         })
+
+    wcand = [p for p in ca["positions"] if p["weak"]]
+    wcand.sort(key=lambda p: (p["low"], p["share"], p["raw"]), reverse=True)
+    if wcand:
+        w = wcand[0]
+        out.append({
+            "kind": "low-confidence", "positionId": w["id"], "label": w["label"], "hue": w["hue"],
+            "badge": "weak quote grounding",
+            "headline": "Some position assignments rest on a weak quote.",
+            "detail": ('In the "{}" position, {} of {} sources have a labelling confidence '
+                       'below 50% — a real quote that only loosely supports the position it is '
+                       'filed under, not a fabricated one. Worth a curator\'s second look.').format(
+                           w["label"], w["low"], w["classed"]),
+        })
     return out
 
 
@@ -471,6 +529,7 @@ def assess(kb):
     ind = independence(kb)
     ma = method_audit(kb)
     qa = quote_audit(kb)
+    ca = confidence_audit(kb)
     return {
         "version": kb.get("meta", {}).get("version"),
         "distribution": distribution(kb),
@@ -481,8 +540,9 @@ def assess(kb):
         "independence": ind,
         "methodAudit": ma,
         "quoteAudit": qa,
+        "confidenceAudit": ca,
         "dominantDataset": dominant_dataset(kb),
-        "warnings": warnings(kb, ind, ma, qa),
+        "warnings": warnings(kb, ind, ma, qa, ca),
     }
 
 

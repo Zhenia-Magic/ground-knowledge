@@ -94,6 +94,14 @@ _RULES = """Rules (apply to each source):
   state no finding. If the fetched text genuinely contains no sentence stating the finding (e.g. only
   metadata came through), set extractionConfidence ≤ 0.3 and quote the closest real statement, or
   leave the quote empty — never pad it with boilerplate.
+- Quote RELEVANCE, not just quote presence: the quote must directly support the SPECIFIC position
+  assigned, not merely be a true, well-formed sentence from the paper. Do not stretch a tangential
+  or partial finding to justify a position it does not actually state. If, after reading the whole
+  text, no passage genuinely states this source's stance on the question, do not force a
+  best-guess position with a weak or loosely-related quote — reconsider "relevant": false instead
+  (see the relevance rule above). A position asserted with no real textual grounding is a worse
+  outcome than a source correctly marked off-topic; when genuinely torn between a weak position
+  and off-topic, prefer off-topic and say why in offTopicReason.
 - factorWeights: a factor is a DIMENSION THE CAMPS DISAGREE ON (a crux) — e.g. "weight given to
   industry funding", "how much to discount observational confounding", "biomarkers vs hard
   outcomes". It is NOT a study parameter, subgroup, measured outcome, or topic (gestational age,
