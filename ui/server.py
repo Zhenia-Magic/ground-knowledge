@@ -42,7 +42,7 @@ def has_key():
 
 # provider id (from the UI dropdown) -> env var the LLM layer reads
 _PROVIDER_ENV = {
-    "anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY",
+    "anthropic": "ANTHROPIC_API_KEY", "nvidia": "NVIDIA_API_KEY", "openai": "OPENAI_API_KEY",
     "deepseek": "DEEPSEEK_API_KEY", "mistral": "MISTRAL_API_KEY",
     "groq": "GROQ_API_KEY", "gemini": "GEMINI_API_KEY", "openrouter": "OPENROUTER_API_KEY",
 }
@@ -299,9 +299,9 @@ def run_all_op(cid, k, source="api", deep=False):
     manual mode can't run unattended because each step is a copy/paste. Re-runnable: if it
     fails partway, finished sources are saved and skipped on the next run."""
     if not has_key():
-        raise ValueError("'Do it all' needs an API key (Anthropic, OpenAI, DeepSeek, Mistral, "
-                         "Groq, Gemini, or OpenRouter). Without one, use Find → Fetch & label to "
-                         "run the steps by hand.")
+        raise ValueError("'Do it all' needs an API key (Anthropic, NVIDIA [free], OpenAI, "
+                         "DeepSeek, Mistral, Groq, Gemini, or OpenRouter). Without one, use "
+                         "Find → Fetch & label to run the steps by hand.")
     log("=== Do it all · model: {} ===".format(llm.active_model()))
     cands = discover_op(cid, k, apply=True, source=source, deep=deep).get("candidates", [])
     urls = [c.get("url") for c in cands if c.get("url")]

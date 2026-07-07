@@ -1,8 +1,11 @@
 """Model-agnostic LLM access via the stdlib (no SDK dependency).
 
-Dispatches by environment: ANTHROPIC_API_KEY -> Claude; otherwise the first OpenAI-compatible
-provider whose key is set (OpenAI, DeepSeek, Mistral, Groq, Google Gemini, OpenRouter — all speak
-the OpenAI chat-completions protocol, so one code path serves them all).
+Dispatches by environment: ANTHROPIC_API_KEY -> Claude (needed for web search / deep research —
+see discover() below); otherwise the first OpenAI-compatible provider whose key is set. NVIDIA's
+build.nvidia.com is checked first among these: it's free (rate-limited, ~40 req/min), so setting
+NVIDIA_API_KEY alongside another compat key gets you free labelling by default, no extra config.
+OpenAI, DeepSeek, Mistral, Groq, Google Gemini, OpenRouter, and NVIDIA all speak the OpenAI
+chat-completions protocol, so one code path (_openai_compat) serves them all.
 With no key set, callers should use --dry-run (print the prompt, paste into any tool).
 `discover()` requests web-grounded search where the backend supports it (Anthropic's
 server-side web_search tool) — that is the "deep research finds its own sources" path.
@@ -25,6 +28,11 @@ _DEFAULT_ANTHROPIC = "claude-sonnet-4-6"
 # /chat/completions protocol, so adding one is just a row here.
 # (env var, base URL, default model, human label)
 _OPENAI_COMPAT = [
+    # NVIDIA first: free (build.nvidia.com, ~40 req/min rate limit), so it wins by default over
+    # any other compat key set alongside it. Pick another EPISTEMIC_MODEL from the same platform:
+    # z-ai/glm-5.2, minimaxai/minimax-m3, nvidia/nemotron-3-ultra-550b-a55b,
+    # deepseek-ai/deepseek-v4-pro, deepseek-ai/deepseek-v4-flash.
+    ("NVIDIA_API_KEY",     "https://integrate.api.nvidia.com/v1",                     "deepseek-ai/deepseek-v4-flash", "NVIDIA"),
     ("OPENAI_API_KEY",     "https://api.openai.com/v1",                               "gpt-4o",                  "OpenAI"),
     ("DEEPSEEK_API_KEY",   "https://api.deepseek.com/v1",                             "deepseek-chat",           "DeepSeek"),
     ("MISTRAL_API_KEY",    "https://api.mistral.ai/v1",                               "mistral-large-latest",    "Mistral"),
@@ -42,6 +50,12 @@ _PRICE = {
     "gpt-4o-mini": (0.15, 0.60), "gpt-4o": (2.50, 10.0), "gpt-4": (10.0, 30.0),
     "deepseek": (0.27, 1.10), "mistral": (2.0, 6.0), "llama": (0.59, 0.79),
     "gemini-2.0-flash": (0.10, 0.40), "gemini": (1.25, 5.0),
+    # build.nvidia.com is free (rate-limited) -- these full model ids are longer/more specific
+    # than the generic "deepseek" row above, so they win the longest-match lookup and correctly
+    # report $0 instead of inheriting DeepSeek's own direct-API pricing.
+    "z-ai/glm-5.2": (0.0, 0.0), "minimaxai/minimax-m3": (0.0, 0.0),
+    "nvidia/nemotron-3-ultra-550b-a55b": (0.0, 0.0),
+    "deepseek-ai/deepseek-v4-pro": (0.0, 0.0), "deepseek-ai/deepseek-v4-flash": (0.0, 0.0),
 }
 _PRICE_DEFAULT = (3.0, 15.0)
 _USAGE = {"calls": 0, "input": 0, "output": 0, "usd": 0.0}   # running spend this process
@@ -182,8 +196,9 @@ def complete(prompt, system=None, web=False, deep=False):
     if c:
         return _openai_compat(prompt, system, c[0], c[1], c[2])
     raise SystemExit(
-        "No LLM API key set (ANTHROPIC_API_KEY, OPENAI_API_KEY, DEEPSEEK_API_KEY, "
-        "MISTRAL_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, or OPENROUTER_API_KEY).\n"
+        "No LLM API key set (ANTHROPIC_API_KEY, NVIDIA_API_KEY [free, build.nvidia.com], "
+        "OPENAI_API_KEY, DEEPSEEK_API_KEY, MISTRAL_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, "
+        "or OPENROUTER_API_KEY).\n"
         "Use --dry-run to print the prompt, paste it into any LLM / deep-research tool,\n"
         "then save the JSON it returns and run:  python cli.py add <kb.json> <delta.json>")
 

@@ -40,7 +40,7 @@ by construction: flooding a position with echo can neither inflate it **nor** ta
 | `ingest/pipeline.py` · `prompts/` | **Ingestion** | discovery + one-source labelling (link / PDF / docx / txt); tells the model what's already in the KB so it finds *new* sources |
 | `ingest/extract.py` | Ingestion | fetch text by identifier — OpenAlex / arXiv / Semantic Scholar / Europe PMC; uses the **full open-access PDF** when available (+ Crossref funder lookup); no scraping |
 | `ingest/search.py` | Ingestion | keyless scholarly search via OpenAlex (the *fallback* discovery engine) |
-| `ingest/llm.py` | Ingestion | model-agnostic LLM access — **Anthropic / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter**; used only to *label*; `--dry-run` needs no key |
+| `ingest/llm.py` | Ingestion | model-agnostic LLM access — **Anthropic / NVIDIA (free) / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter**; used only to *label*; `--dry-run` needs no key |
 | `engine/merge.py` | **Structure** | deterministic merge + entity resolution (LLM proposes ids, code disposes); duplicate / alias / off-topic defences; resolves source→source citation edges |
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
@@ -182,8 +182,9 @@ or `pull` them locally (`python cli.py pull <id>`):
 - **The local workstation** (`python cli.py ui`, or the CLI) — for power users with their own key:
   it's **git for knowledge bases**. `pull` a question, `harvest`/`deepen` it with your own
   compute/key, `push` the result back (admin-token protected, optimistic version-locked). Discovery
-  and fetch are keyless; only labelling uses your key, on your machine. Works with Anthropic, OpenAI,
-  DeepSeek, Mistral, Groq, Gemini, or OpenRouter — pick a provider in the console or via `.env`.
+  and fetch are keyless; only labelling uses your key, on your machine. Works with Anthropic, NVIDIA
+  (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter — pick a provider
+  in the console or via `.env`.
 
 Both write the same portable `cases/<id>.kb.json` through the same merge. Labelling reads the **full
 open-access PDF** when one exists (richer positions, named datasets from the methods, and the

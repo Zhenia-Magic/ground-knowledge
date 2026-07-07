@@ -86,6 +86,7 @@
       <div class="narrow"><label for="keyProvider">Provider</label>
         <select id="keyProvider">
           <option value="anthropic">Anthropic (Claude)</option>
+          <option value="nvidia">NVIDIA (build.nvidia.com, free)</option>
           <option value="openai">OpenAI (GPT)</option>
           <option value="deepseek">DeepSeek</option>
           <option value="mistral">Mistral</option>
@@ -98,8 +99,9 @@
       <button id="keyBtn">Use key</button>
     </div>
     <p class="desc" style="margin:8px 0 0">Web search / deep research need Anthropic; the others
-    label fetched text fine. Tip: <code>EPISTEMIC_MODEL</code> in <code>.env</code> overrides the
-    default model for your provider.</p>
+    label fetched text fine — NVIDIA's build.nvidia.com is free (rate-limited). Tip:
+    <code>EPISTEMIC_MODEL</code> in <code>.env</code> overrides the default model for your
+    provider.</p>
     <div class="toast" id="keyToast"></div>
   </div>
   <pre id="log"></pre>
@@ -159,7 +161,7 @@
     </div>
     <label class="chk"><input type="checkbox" id="ocAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="ocDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With NVIDIA (free), OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
     <div class="toast" id="ocToast"></div>
     <div class="results" id="ocResults"></div>
   </div>
@@ -181,7 +183,7 @@
     </div>
     <label class="chk"><input type="checkbox" id="findAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="findDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With NVIDIA (free), OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
     <div class="toast ok" id="findToast"></div>
     <div id="findManual" style="display:none">
       <label for="candIn" style="margin-top:12px">Paste the chatbot's list of sources (JSON array)</label>
