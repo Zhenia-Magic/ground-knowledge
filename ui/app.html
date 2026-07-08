@@ -7,21 +7,43 @@
 <style>
   :root{
     --bg:#F5F6F7; --surface:#FFFFFF; --ink:#15171B; --muted:#61676E; --faint:#8A9098;
-    --line:#E4E7EA; --line-strong:#CDD2D7; --chrome:#1B1D24; --accent:#2f6296;
+    --line:#E4E7EA; --line-strong:#CDD2D7; --chrome:#1B1D24; --chrome-ink:#E9ECEF; --accent:#2f6296;
     --ok:#2E8B6F; --okbg:#E6F2ED; --warn:#8a6510; --warnbg:#F5ECD6; --errbg:#F6E7E4; --err:#B4502E;
     --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    --shadow:0 1px 2px rgba(21,23,27,.04),0 4px 14px rgba(21,23,27,.05);
   }
   *{box-sizing:border-box;} html,body{margin:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:112px;}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:840px;margin:0 auto;padding:30px 22px 90px;}
-  .brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-family:var(--mono);}
-  h1{font-size:23px;font-weight:600;margin:6px 0 2px;letter-spacing:-.01em;}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 18px;}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;}
-  .card.sub-card{background:#FBFCFC;}
-  .step{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;}
-  h2{font-size:16px;font-weight:600;margin:3px 0 4px;}
+
+  /* ---- sticky chrome: topbar + section nav ---- */
+  .topbar{position:sticky;top:0;z-index:40;background:var(--chrome);color:var(--chrome-ink);
+    box-shadow:0 1px 0 rgba(255,255,255,.06),0 2px 10px rgba(0,0,0,.25);}
+  .topbar .in{max-width:920px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .brand{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9AA3AD;font-family:var(--mono);white-space:nowrap;}
+  .brand b{color:#fff;font-weight:600;}
+  .topbar select{flex:1;min-width:180px;max-width:460px;background:#262932;color:#E9ECEF;border:1px solid #3A3E49;border-radius:8px;padding:7px 10px;font:inherit;font-size:13.5px;}
+  .toppill{font-family:var(--mono);font-size:11px;color:#B7BEC7;background:#262932;border-radius:6px;padding:3px 8px;white-space:nowrap;}
+  .badge{font-family:var(--mono);font-size:11px;border-radius:6px;padding:4px 10px;white-space:nowrap;border:1px solid transparent;}
+  .badge.auto{background:rgba(46,139,111,.18);color:#7CC8AE;border-color:rgba(124,200,174,.35);}
+  .badge.manual{background:#262932;color:#B7BEC7;border-color:#3A3E49;}
+  .topbar .ghostbtn{background:transparent;color:#B7C6DA;border:1px solid #3A3E49;border-radius:8px;font:inherit;font-size:12.5px;padding:6px 11px;cursor:pointer;white-space:nowrap;}
+  .topbar .ghostbtn:hover{border-color:#5A6170;color:#fff;}
+  .navstrip{position:sticky;top:57px;z-index:39;background:rgba(245,246,247,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+  .navstrip .in{max-width:920px;margin:0 auto;padding:7px 22px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .navstrip a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;padding:4px 9px;border-radius:6px;white-space:nowrap;}
+  .navstrip a:hover{color:var(--ink);background:#EBEDEF;}
+  .navstrip a.on{color:#fff;background:var(--chrome);}
+
+  .wrap{max-width:920px;margin:0 auto;padding:20px 22px 110px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:var(--shadow);}
+  .card.sub-card{background:#FBFCFC;box-shadow:none;}
+  .card.attention{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,98,150,.10),var(--shadow);}
+  .step{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px;}
+  .stepnum{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;
+    background:var(--chrome);color:#fff;font-size:10.5px;font-weight:600;letter-spacing:0;}
+  h2{font-size:16px;font-weight:600;margin:5px 0 4px;}
   .desc{font-size:13px;color:var(--muted);margin:0 0 12px;}
   label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px;}
   input,select,textarea{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line-strong);border-radius:8px;padding:9px 11px;}
@@ -30,8 +52,8 @@
   input[type=file]{padding:7px;border-style:dashed;background:#FAFBFB;}
   .row{display:flex;gap:10px;align-items:end;flex-wrap:wrap;}
   .chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);margin:9px 0 0;cursor:pointer;}
-  .srchnote{font-size:12.5px;line-height:1.55;color:var(--muted);background:#EEF4FB;border-left:3px solid #2f6296;border-radius:0 7px 7px 0;padding:9px 12px;margin:11px 0 0;}
   .chk input{width:auto;}
+  .srchnote{font-size:12.5px;line-height:1.55;color:var(--muted);background:#EEF4FB;border-left:3px solid #2f6296;border-radius:0 7px 7px 0;padding:9px 12px;margin:11px 0 0;}
   .row .src{flex:0 0 160px;min-width:0;}
   .row>div{flex:1;min-width:150px;} .row .narrow{flex:0 0 90px;min-width:0;} .row .auto{flex:0 0 auto;}
   button{appearance:none;border:0;border-radius:8px;font:inherit;font-size:14px;font-weight:500;padding:9px 15px;cursor:pointer;background:var(--chrome);color:#fff;}
@@ -48,9 +70,6 @@
   .diff{font-family:var(--mono);font-size:12px;color:var(--muted);margin:6px 0 0;} .diff div{margin:2px 0;} .diff div.warn{color:var(--warn);} .diff div.add{color:var(--accent);}
   .muted{color:var(--muted);} a{color:var(--accent);}
   .pill{font-family:var(--mono);font-size:11px;background:#EEF0F1;color:var(--muted);border-radius:6px;padding:2px 7px;}
-  .badge{font-family:var(--mono);font-size:11px;border-radius:6px;padding:3px 9px;}
-  .badge.auto{background:var(--okbg);color:var(--ok);} .badge.manual{background:#EEF0F1;color:var(--muted);}
-  .toprow{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;}
   .cand{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin:7px 0;}
   .cand input{width:auto;margin-top:3px;} .cand .cm{flex:1;min-width:0;} .cand .ct{font-size:13.5px;font-weight:600;word-break:break-word;}
   .cand .cu{font-size:12px;color:var(--accent);word-break:break-all;} .cand .cw{font-size:12px;color:var(--muted);}
@@ -58,32 +77,95 @@
   .promptcard .ph{display:flex;justify-content:space-between;align-items:center;}
   details summary{cursor:pointer;font-size:14px;font-weight:500;color:var(--accent);}
   .divider{height:1px;background:var(--line);margin:12px 0;}
-  #log{display:none;background:#15171B;color:#D7DBE0;border-radius:10px;padding:12px 14px;margin:12px 0 0;
-    font-family:var(--mono);font-size:12px;line-height:1.5;max-height:220px;overflow:auto;white-space:pre-wrap;}
+  .orline{display:flex;align-items:center;gap:12px;color:var(--faint);font-size:12.5px;margin:22px 0 4px;}
+  .orline::before,.orline::after{content:"";flex:1;height:1px;background:var(--line-strong);}
+
+  /* ---- Models & access panel ---- */
+  .phaserow{display:grid;grid-template-columns:76px 1fr 1fr;gap:10px;align-items:end;margin-top:10px;}
+  @media (max-width:640px){.phaserow{grid-template-columns:1fr;}}
+  .phasetag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+    background:#EEF0F1;border-radius:7px;padding:8px 0;text-align:center;align-self:end;}
+  .resline{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#F8F9FA;border:1px solid var(--line);
+    border-radius:9px;padding:9px 12px;margin:4px 0 2px;font-size:13px;}
+  .resline .who{font-weight:600;}
+  .resline .mono{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .cap{font-family:var(--mono);font-size:10.5px;border-radius:5px;padding:2px 6px;}
+  .cap.web{background:#EAF1F8;color:var(--accent);} .cap.free{background:var(--okbg);color:var(--ok);}
+  .cap.warn{background:var(--warnbg);color:var(--warn);} .cap.pin{background:#EEE9F6;color:#6b4fa3;}
+  .keychips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px;}
+  .kchip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:7px;padding:4px 8px;background:#FBFCFC;}
+  .kchip .dot{width:7px;height:7px;border-radius:50%;background:#D4D8DC;}
+  .kchip.set{color:var(--ink);border-color:#BFD4C9;background:#F4FAF7;} .kchip.set .dot{background:var(--ok);}
+  .kchip .rm{cursor:pointer;color:var(--faint);font-size:12px;padding:0 1px;border:0;background:none;line-height:1;}
+  .kchip .rm:hover{color:var(--err);}
+
+  /* ---- log drawer ---- */
+  #logDrawer{position:fixed;left:0;right:0;bottom:0;z-index:50;transform:translateY(calc(100% - 34px));transition:transform .18s ease;}
+  #logDrawer.open{transform:none;}
+  #logDrawer .bar{max-width:920px;margin:0 auto;display:flex;align-items:center;gap:10px;background:var(--chrome);color:#B7BEC7;
+    border-radius:10px 10px 0 0;padding:7px 14px;font-family:var(--mono);font-size:11.5px;cursor:pointer;}
+  #logDrawer .bar .spin{display:none;} #logDrawer.working .bar .spin{display:inline-block;animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #logDrawer pre{max-width:920px;margin:0 auto;background:#15171B;color:#D7DBE0;padding:12px 16px 16px;height:200px;overflow:auto;
+    font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre-wrap;border-radius:0;}
 </style>
 </head>
 <body>
+
+<div class="topbar"><div class="in">
+  <span class="brand"><b>Ground Knowledge</b> · console</span>
+  <select id="caseSel" title="Active case"></select>
+  <span class="toppill" id="casePill">—</span>
+  <span class="badge manual" id="modeBadge" title="Auto = your key runs search/label; Manual = copy prompts into a chatbot">…</span>
+  <button class="ghostbtn" id="openViewer">Viewer ↗</button>
+</div></div>
+<div class="navstrip"><div class="in" id="navstrip">
+  <a href="#sec-models">Models</a><a href="#sec-case">Case</a><a href="#sec-portal">Portal</a>
+  <a href="#sec-auto">Do it all</a><a href="#sec-find">Find</a><a href="#sec-label">Label</a>
+  <a href="#sec-import">Import</a><a href="#sec-gaps">Deepen</a><a href="#sec-curate">Curate</a><a href="#sec-more">More</a>
+</div></div>
+
 <div class="wrap">
-  <div class="toprow">
-    <div>
-      <div class="brand">Ground Knowledge</div>
-      <h1>Research console</h1>
-      <div class="sub">Find sources → let the AI label the <i>best available</i> text we fetch → review what changed.</div>
+
+  <!-- Models & access -->
+  <div class="card" id="sec-models">
+    <div class="step">Setup · Models &amp; access</div>
+    <h2>Who searches, who labels</h2>
+    <p class="desc">The two AI phases pick their provider independently: <b>search</b> needs live web
+    (an Anthropic feature); <b>labelling</b> only reads text this tool already fetched, so any provider
+    works — NVIDIA's build.nvidia.com is free. Defaults are sensible; pin a provider or model below to override.</p>
+    <div id="noKeyMsg" class="srchnote" style="display:none">No API key found. Finding &amp; fetching work
+      without one (and every step has a copy-paste manual mode) — add a key to enable automatic search &amp;
+      labelling. Keys stay on this machine; add them to <code>.env</code> to persist.</div>
+
+    <div id="phaseSummary"></div>
+
+    <div class="phaserow">
+      <div class="phasetag">Search</div>
+      <div><label for="searchProv">Provider</label><select id="searchProv"></select></div>
+      <div><label for="searchModel">Model <span class="muted">(blank = default)</span></label>
+        <input id="searchModel" list="searchModels" placeholder="" autocomplete="off"><datalist id="searchModels"></datalist></div>
     </div>
-    <div style="text-align:right">
-      <span class="badge manual" id="modeBadge">…</span><br>
-      <span class="hint" id="modelLine"></span><br>
-      <button class="ghost sm" id="openViewer" style="margin-top:8px">Open viewer ↗</button>
+    <div class="phaserow">
+      <div class="phasetag">Label</div>
+      <div><label for="labelProv">Provider</label><select id="labelProv"></select></div>
+      <div><label for="labelModel">Model <span class="muted">(blank = default)</span></label>
+        <input id="labelModel" list="labelModels" placeholder="" autocomplete="off"><datalist id="labelModels"></datalist></div>
     </div>
-  </div>
-  <div class="card" id="keyCard" style="display:none;border-color:var(--line-strong)">
-    <div class="step">Auto mode · API key</div>
-    <h2>Add an API key for automatic labelling</h2>
-    <p class="desc">No key found in the environment. Finding &amp; fetching still work without one,
-    but auto-labelling needs a key. Paste one here for this session, or add it to a <b>.env</b>
-    file (copy <code>.env.example</code>) so it loads every time. The key stays on this machine.</p>
+    <div class="row" style="margin-top:12px">
+      <button id="cfgApply">Apply</button>
+      <button class="ghost" id="cfgReset">Reset to auto</button>
+      <span class="hint" style="flex:1">Session-only. Persist with <code>EPISTEMIC_SEARCH_PROVIDER</code> /
+      <code>EPISTEMIC_LABEL_PROVIDER</code> / <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code> in <code>.env</code>.</span>
+    </div>
+    <div class="toast" id="cfgToast"></div>
+
+    <div class="divider"></div>
+    <div class="step">API keys</div>
+    <div class="keychips" id="keyChips"></div>
     <div class="row">
-      <div class="narrow"><label for="keyProvider">Provider</label>
+      <div class="src"><label for="keyProvider">Provider</label>
         <select id="keyProvider">
           <option value="anthropic">Anthropic (Claude)</option>
           <option value="nvidia">NVIDIA (build.nvidia.com, free)</option>
@@ -95,43 +177,34 @@
           <option value="openrouter">OpenRouter</option>
         </select></div>
       <div><label for="keyIn">API key</label>
-        <input id="keyIn" type="password" placeholder="paste your key…" autocomplete="off"></div>
-      <button id="keyBtn">Use key</button>
+        <input id="keyIn" type="password" placeholder="paste a key… (kept in memory, never written to disk)" autocomplete="off"></div>
+      <button id="keyBtn" class="auto">Add key</button>
     </div>
-    <p class="desc" style="margin:8px 0 0">Web search / deep research need Anthropic; the others
-    label fetched text fine — NVIDIA's build.nvidia.com is free (rate-limited). In <code>.env</code>
-    you can set an Anthropic <b>and</b> an NVIDIA key together so Claude searches while NVIDIA labels
-    for free; <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code> pin each phase's
-    model.</p>
+    <p class="hint">Set an Anthropic <b>and</b> an NVIDIA key together and the default split does the right
+    thing: Claude searches the live web, NVIDIA labels for free (~40 req/min limit).</p>
     <div class="toast" id="keyToast"></div>
   </div>
-  <pre id="log"></pre>
 
-  <!-- 1. Case -->
-  <div class="card">
-    <div class="step">Step 1 · Case</div>
+  <!-- Case -->
+  <div class="card" id="sec-case">
+    <div class="step"><span class="stepnum">1</span> Case</div>
     <h2>Choose or create a question</h2>
+    <p class="desc">The active case is selected in the top bar. Create a new question here — it starts
+    <b>local</b>; push it to a portal when it's ready.</p>
     <div class="row">
-      <div><label for="caseSel">Existing case</label><select id="caseSel"></select></div>
-      <button class="ghost auto" id="newToggle">+ New</button>
-    </div>
-    <div id="newBox" style="display:none">
-      <div class="row" style="margin-top:6px">
-        <div><label for="newQ">question</label><input id="newQ" placeholder="Does dietary salt raise cardiovascular risk?"></div>
-        <div class="narrow"><label for="newId">id (optional)</label><input id="newId" placeholder="auto"></div>
-        <button class="auto" id="createBtn">Create</button>
-      </div>
-      <p class="hint">Creates a question <b>locally</b> — work on it here, then <b>Push current case</b> to publish it to the portal.</p>
+      <div><label for="newQ">Question</label><input id="newQ" placeholder="Does remote work increase productivity?"></div>
+      <div class="narrow"><label for="newId">id (optional)</label><input id="newId" placeholder="auto"></div>
+      <button class="auto" id="createBtn">Create</button>
     </div>
     <div class="hint" id="caseInfo"></div>
   </div>
 
   <!-- Portal sync -->
-  <div class="card">
+  <div class="card" id="sec-portal">
     <div class="step">Portal · sync</div>
     <h2>Pull &amp; push to a shared portal</h2>
-    <p class="desc">Work on questions from a shared portal here with your own key (fully
-    automatic), then push the result back. The portal never sees your key.</p>
+    <p class="desc">Work on portal questions here with your own key (fully automatic), then push the
+    result back. The portal never sees your key.</p>
     <div class="row">
       <div><label for="portalUrl">Portal URL</label><input id="portalUrl" placeholder="http://localhost:8810"></div>
       <button class="ghost" id="portalListBtn">List remote</button>
@@ -148,7 +221,7 @@
   </div>
 
   <!-- One click -->
-  <div class="card" id="oneClickCard" style="border-color:var(--line-strong)">
+  <div class="card" id="sec-auto" style="border-color:var(--line-strong)">
     <div class="step">One click</div>
     <h2>Do it all</h2>
     <p class="desc">Find sources, fetch their best available text, label, and import — automatically. <span id="ocMode" class="muted"></span></p>
@@ -162,16 +235,16 @@
     </div>
     <label class="chk"><input type="checkbox" id="ocAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="ocDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With NVIDIA (free), OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote" id="ocNote">ℹ <b>AI web search</b> &amp; <b>deep research</b> need an <b>Anthropic</b> key on the search phase (see Models above). With any other search provider, choose <b>Papers · OpenAlex</b> — labelling then works with every provider.</p>
     <div class="toast" id="ocToast"></div>
     <div class="results" id="ocResults"></div>
   </div>
 
-  <p class="desc" style="text-align:center;margin:18px 0 0">— or run the steps yourself —</p>
+  <p class="orline">or run the steps yourself</p>
 
   <!-- 2. Find -->
-  <div class="card">
-    <div class="step">Step 2 · Find</div>
+  <div class="card" id="sec-find">
+    <div class="step"><span class="stepnum">2</span> Find</div>
     <h2>Find candidate sources</h2>
     <p class="desc">Search across the different positions. <span id="findMode"></span></p>
     <div class="row">
@@ -184,7 +257,7 @@
     </div>
     <label class="chk"><input type="checkbox" id="findAll"> Find all possible sources (ignore the limit)</label>
     <label class="chk"><input type="checkbox" id="findDeep"> Deep research — many searches, more thorough (web/both only)</label>
-    <p class="srchnote">ℹ <b>AI web search</b> &amp; <b>deep research</b> work only with an <b>Anthropic</b> key. With NVIDIA (free), OpenAI, DeepSeek, Mistral, Groq, Gemini or OpenRouter, choose <b>Papers · OpenAlex</b> to find sources — labelling the fetched text then works with any provider.</p>
+    <p class="srchnote" id="findNote">ℹ <b>AI web search</b> &amp; <b>deep research</b> need an <b>Anthropic</b> key on the search phase (see Models above). With any other search provider, choose <b>Papers · OpenAlex</b> — labelling then works with every provider.</p>
     <div class="toast ok" id="findToast"></div>
     <div id="findManual" style="display:none">
       <label for="candIn" style="margin-top:12px">Paste the chatbot's list of sources (JSON array)</label>
@@ -195,8 +268,8 @@
   </div>
 
   <!-- 3. Fetch & label -->
-  <div class="card">
-    <div class="step">Step 3 · Fetch &amp; label</div>
+  <div class="card" id="sec-label">
+    <div class="step"><span class="stepnum">3</span> Fetch &amp; label</div>
     <h2>Fetch the best available text, then label it</h2>
     <div class="ground">✓ We download each article ourselves (with a reader-proxy fallback for blocked sites) and ask the AI to label <b>only the text we fetched</b> — it can't invent contents. Pages we can't reach are skipped, not guessed.</div>
     <div class="row" style="margin-top:12px">
@@ -208,8 +281,8 @@
   </div>
 
   <!-- 4. Import -->
-  <div class="card">
-    <div class="step">Step 4 · Import</div>
+  <div class="card" id="sec-import">
+    <div class="step"><span class="stepnum">4</span> Import</div>
     <h2>Paste the labelled JSON</h2>
     <p class="desc">From step 3, the single-source tool, or any chatbot. One object or an array — code fences are fine.</p>
     <textarea id="jsonIn" rows="7" placeholder='[ { "source": { "title":"...", "position":"...", "restsOn":["..."] }, "factorWeights":[ ... ] } ]'></textarea>
@@ -219,7 +292,7 @@
   </div>
 
   <!-- Gaps -->
-  <div class="card">
+  <div class="card" id="sec-gaps">
     <div class="step">Deepen</div>
     <h2>Gaps — where the evidence is thin</h2>
     <p class="desc">After labelling, this reads the independence audit for where a position has little
@@ -244,10 +317,10 @@
   </div>
 
   <!-- Curate -->
-  <div class="card">
+  <div class="card" id="sec-curate">
     <div class="step">Curate</div>
     <h2>Merge duplicates &amp; tidy labels</h2>
-    <p class="desc">Fold paraphrase duplicates (e.g. three "mixed women" populations) into one, or rename messy labels. Recomputes every metric.</p>
+    <p class="desc">Fold paraphrase duplicates (e.g. three "mixed adults" populations) into one, or rename messy labels. Recomputes every metric.</p>
     <button class="ghost sm" id="curLoad">Load entities</button>
     <button class="ghost sm" id="curTidy">Tidy slug labels</button>
     <div id="curDup"></div>
@@ -275,8 +348,8 @@
     </div>
   </div>
 
-  <!-- Quick add -->
-  <div class="card sub-card">
+  <!-- Quick add + one-shot -->
+  <div class="card sub-card" id="sec-more">
     <div class="step">Add one source</div>
     <h2>From a link or a document</h2>
     <div class="row">
@@ -291,11 +364,10 @@
     <div id="oneOut"></div>
   </div>
 
-  <!-- One-shot (secondary) -->
   <div class="card sub-card">
     <details>
       <summary>Fast one-shot prompt (chatbot browses on its own)</summary>
-      <p class="desc" style="margin-top:10px">One prompt that asks the chatbot to find <i>and</i> read sources itself. Faster, but the labels are only as good as the chatbot's own browsing — the Step 2–3 flow above is more trustworthy because we fetch the text. </p>
+      <p class="desc" style="margin-top:10px">One prompt that asks the chatbot to find <i>and</i> read sources itself. Faster, but the labels are only as good as the chatbot's own browsing — the Step 2–3 flow above is more trustworthy because we fetch the text.</p>
       <div class="row"><div class="narrow"><label for="osk"># sources</label><input id="osk" type="number" value="20" min="1"></div>
         <button id="oneShotBtn">Generate &amp; copy prompt</button></div>
       <div class="toast ok" id="osToast">Copied — paste into a browsing chatbot, then paste its JSON into Step 4.</div>
@@ -304,23 +376,36 @@
   </div>
 </div>
 
+<!-- live progress drawer -->
+<div id="logDrawer">
+  <div class="bar" id="logBar"><span class="spin">◌</span><span id="logTitle">Activity log</span><span style="flex:1"></span><span id="logChev">▴</span></div>
+  <pre id="log"></pre>
+</div>
+
 <script>
 const $=s=>document.querySelector(s);
 const api=(p,b)=>fetch(p,{method:b?"POST":"GET",headers:{"Content-Type":"application/json"},body:b?JSON.stringify(b):undefined})
   .then(async r=>{const j=await r.json();if(!r.ok)throw new Error(j.error||"error");return j;});
-const esc=s=>String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const copy=async t=>{try{await navigator.clipboard.writeText(t);}catch(_){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");a.remove();}};
-const toast=(el,msg,cls)=>{el.className="toast show "+(cls||"ok");if(msg!=null)el.textContent=msg;setTimeout(()=>el.classList.remove("show"),5000);};
-let CASES=[], HASKEY=false, MODE=null, CANDS=[];
+const toast=(el,msg,cls)=>{el.className="toast show "+(cls||"ok");if(msg!=null)el.textContent=msg;setTimeout(()=>el.classList.remove("show"),6000);};
+let CASES=[], HASKEY=false, MODE=null, CANDS=[], CFG=null;
 const isAuto=()=>MODE==="auto";
+
 function renderMode(){
   const b=$("#modeBadge");
-  if(isAuto()){b.className="badge auto";b.textContent="Auto · click to switch to manual";}
-  else{b.className="badge manual";b.textContent=HASKEY?"Manual · click to switch to auto":"Manual · no API key";}
+  if(isAuto()){b.className="badge auto";b.textContent="Auto · "+(CFG?shortSummary():"");}
+  else{b.className="badge manual";b.textContent=HASKEY?"Manual · click for auto":"Manual · no API key";}
   b.style.cursor=HASKEY?"pointer":"default";
   $("#findMode").textContent=isAuto()?"Runs automatically.":"You'll copy a prompt into a chatbot and paste its list back.";
   $("#runAllBtn").disabled=!isAuto();
-  $("#ocMode").textContent=isAuto()?"Runs with your API key.":(HASKEY?"Switch the badge to Auto to use this.":"Needs an API key — use the steps below to do it by hand.");
+  $("#ocMode").textContent=isAuto()?"Runs with your API key.":(HASKEY?"Switch the badge in the top bar to Auto to use this.":"Needs an API key — use the steps below to do it by hand.");
+}
+function shortSummary(){
+  if(!CFG)return "";
+  const s=CFG.search,l=CFG.label;
+  const sm=(s.model||"—").split("/").pop(), lm=(l.model||"—").split("/").pop();
+  return (s.provider===l.provider&&s.model===l.model)?sm:sm+" → "+lm;
 }
 $("#modeBadge").addEventListener("click",()=>{if(!HASKEY)return;MODE=isAuto()?"manual":"auto";renderMode();});
 const caseId=()=>$("#caseSel").value;
@@ -330,32 +415,100 @@ async function loadCases(keep){
   let j;
   try{ j=await api("/api/cases"); }
   catch(e){ $("#caseInfo").innerHTML='<span style="color:var(--err)">Could not reach the server ('+esc(e.message)+'). Is <b>python cli.py ui</b> still running? Try reloading.</span>'; return; }
-  CASES=j.cases||[]; HASKEY=j.hasKey;
+  CASES=j.cases||[]; HASKEY=j.hasKey; CFG=j.config||null;
   if(MODE===null) MODE=HASKEY?"auto":"manual";  // default by key, but the user can toggle
   if(!$("#portalUrl").value) $("#portalUrl").value = localStorage.getItem("portalUrl") || j.portal || "";
-  $("#keyCard").style.display = HASKEY ? "none" : "block";
-  $("#modelLine").textContent = j.model ? "model: "+j.model : "";
+  renderConfig();
   renderMode();
   const sel=$("#caseSel");
-  sel.innerHTML=CASES.map(c=>`<option value="${c.id}">${esc(c.id)} — ${esc(c.question||"(no question)")}</option>`).join("")||`<option value="">(none — create one)</option>`;
+  sel.innerHTML=CASES.map(c=>`<option value="${c.id}">${esc(c.question||c.id)}</option>`).join("")||`<option value="">(no cases — create one below)</option>`;
   if(keep&&CASES.some(c=>c.id===keep))sel.value=keep;
   showInfo();
 }
 function showInfo(){const c=CASES.find(x=>x.id===caseId());
-  $("#caseInfo").innerHTML=c?`<span class="pill">v${c.version}</span> ${c.sources} source(s) · <span class="muted">${esc(c.question)}</span>`:"";}
+  $("#casePill").textContent=c?`v${c.version} · ${c.sources} src`:"—";
+  $("#caseInfo").innerHTML=c?`Active: <span class="pill">${esc(c.id)}</span> <span class="pill">v${c.version}</span> ${c.sources} source(s) · <span class="muted">${esc(c.question)}</span>`:"";}
 $("#caseSel").addEventListener("change",showInfo);
 
-// ---- API key (when none in env)
+// ---- Models & access -----------------------------------------------------------------------
+const PROVIDER_SHORT={anthropic:"Anthropic",nvidia:"NVIDIA",openai:"OpenAI",deepseek:"DeepSeek",
+  mistral:"Mistral",groq:"Groq",gemini:"Gemini",openrouter:"OpenRouter"};
+function provById(id){return (CFG.providers||[]).find(p=>p.id===id);}
+function renderConfig(){
+  if(!CFG){$("#phaseSummary").innerHTML="";return;}
+  $("#noKeyMsg").style.display=HASKEY?"none":"block";
+  $("#sec-models").classList.toggle("attention",!HASKEY);
+  // resolution summary: one line per phase
+  const line=(tag,ph)=>{
+    if(!ph.provider)return `<div class="resline"><span class="phasetag" style="padding:2px 8px">${tag}</span><span class="muted">manual — no API key</span></div>`;
+    const p=provById(ph.provider)||{};
+    const caps=[];
+    if(p.webSearch)caps.push('<span class="cap web">live web ✓</span>');
+    if(p.free)caps.push('<span class="cap free">free</span>');
+    if(ph.pinnedProvider&&!ph.pinBroken)caps.push('<span class="cap pin">pinned</span>');
+    if(ph.pinBroken)caps.push(`<span class="cap warn">pin “${esc(ph.pinnedProvider)}” has no key — using auto</span>`);
+    if(tag==="Search"&&!p.webSearch)caps.push('<span class="cap warn">no live web — model knowledge only</span>');
+    return `<div class="resline"><span class="phasetag" style="padding:2px 8px">${tag}</span>
+      <span class="who">${esc(ph.providerLabel||p.label||ph.provider)}</span>
+      <span class="mono">${esc(ph.model||"")}</span>${caps.join("")}</div>`;
+  };
+  $("#phaseSummary").innerHTML=line("Search",CFG.search)+line("Label",CFG.label);
+  // per-phase provider selects: Auto + every provider (keyless ones disabled)
+  const opts=cur=>['<option value="auto">Auto (recommended)</option>']
+    .concat((CFG.providers||[]).map(p=>`<option value="${p.id}" ${p.hasKey?"":"disabled"} ${cur===p.id?"selected":""}>${esc(p.label)}${p.free?" — free":""}${p.hasKey?"":" — no key"}</option>`)).join("");
+  $("#searchProv").innerHTML=opts(CFG.search.pinnedProvider||"auto");
+  $("#labelProv").innerHTML=opts(CFG.label.pinnedProvider||"auto");
+  $("#searchModel").value=CFG.search.pinnedModel||"";
+  $("#labelModel").value=CFG.label.pinnedModel||"";
+  syncModelHints();
+  // key chips
+  $("#keyChips").innerHTML=(CFG.providers||[]).map(p=>`<span class="kchip ${p.hasKey?"set":""}"><span class="dot"></span>${esc(PROVIDER_SHORT[p.id]||p.label)}${p.hasKey?`<button class="rm" title="Forget this key for this session" data-rm="${p.id}">✕</button>`:""}</span>`).join("");
+  $("#keyChips").querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click",async()=>{
+    if(!confirm("Forget the "+(PROVIDER_SHORT[b.dataset.rm]||b.dataset.rm)+" key for this session? (Keys in .env come back on restart.)"))return;
+    try{const r=await api("/api/key",{provider:b.dataset.rm,remove:true});CFG=r.config;HASKEY=r.hasKey;if(!HASKEY)MODE="manual";renderConfig();renderMode();toast($("#keyToast"),"Key removed for this session.","ok");}
+    catch(e){toast($("#keyToast"),e.message,"warn");}
+  }));
+}
+function syncModelHints(){
+  // placeholder + datalist follow the (possibly just-changed) provider select
+  [["#searchProv","#searchModel","#searchModels","search"],["#labelProv","#labelModel","#labelModels","label"]].forEach(([ps,mi,dl,phase])=>{
+    const pid=$(ps).value==="auto"?(CFG[phase].provider||""):$(ps).value;
+    const p=provById(pid);
+    $(mi).placeholder=p?("default: "+p.defaultModel):"";
+    $(dl).innerHTML=p?(p.models||[]).map(m=>`<option value="${esc(m)}">`).join(""):"";
+  });
+}
+$("#searchProv").addEventListener("change",syncModelHints);
+$("#labelProv").addEventListener("change",syncModelHints);
+$("#cfgApply").addEventListener("click",()=>busy($("#cfgApply"),async()=>{
+  try{
+    const r=await api("/api/config",{searchProvider:$("#searchProv").value,searchModel:$("#searchModel").value,
+                                     labelProvider:$("#labelProv").value,labelModel:$("#labelModel").value});
+    CFG=r.config;renderConfig();renderMode();
+    toast($("#cfgToast"),"Applied — "+r.model,"ok");
+  }catch(e){toast($("#cfgToast"),e.message,"warn");}
+},"Applying…"));
+$("#cfgReset").addEventListener("click",()=>busy($("#cfgReset"),async()=>{
+  try{
+    const r=await api("/api/config",{searchProvider:"auto",searchModel:"",labelProvider:"auto",labelModel:""});
+    CFG=r.config;renderConfig();renderMode();
+    toast($("#cfgToast"),"Back to automatic selection — "+r.model,"ok");
+  }catch(e){toast($("#cfgToast"),e.message,"warn");}
+},"Resetting…"));
+
+// ---- API key add
 $("#keyBtn").addEventListener("click",()=>busy($("#keyBtn"),async()=>{
   const key=$("#keyIn").value.trim();
   if(!key){toast($("#keyToast"),"Paste a key first.","warn");return;}
   const provider=$("#keyProvider").value;
-  const r=await api("/api/key",{key,provider});
-  if(r.error){toast($("#keyToast"),r.error,"warn");return;}
-  $("#keyIn").value="";
-  MODE=null;                       // re-default to auto now that a key exists
-  await loadCases(caseId());
-  toast($("#keyToast"),"Key set for this session ("+esc(r.model)+"). Auto mode enabled.","ok");
+  try{
+    const r=await api("/api/key",{key,provider});
+    $("#keyIn").value="";
+    CFG=r.config;HASKEY=r.hasKey;
+    if(MODE!=="manual"||HASKEY)MODE="auto";     // a fresh key turns auto on
+    renderConfig();renderMode();
+    toast($("#keyToast"),"Key added for this session. "+esc(r.model),"ok");
+  }catch(e){toast($("#keyToast"),e.message,"warn");}
 },"Saving…"));
 
 // ---- portal sync (pull / push)
@@ -401,9 +554,8 @@ $("#portalPushBtn").addEventListener("click",()=>{if(!need())return;busy($("#por
   await loadCases(caseId());
   toast($("#portalToast"),`Pushed “${esc(r.question)}” → portal (now v${r.version}).`,"ok");
 },"Pushing…");});
-$("#newToggle").addEventListener("click",()=>{const b=$("#newBox");b.style.display=b.style.display==="none"?"block":"none";});
 $("#createBtn").addEventListener("click",async()=>{try{const r=await api("/api/init",{id:$("#newId").value,question:$("#newQ").value});
-  $("#newBox").style.display="none";$("#newId").value="";$("#newQ").value="";await loadCases(r.id);}catch(e){alert(e.message);}});
+  $("#newId").value="";$("#newQ").value="";await loadCases(r.id);}catch(e){alert(e.message);}});
 
 // disable + grey out the "# sources" field whenever "find all" is ticked (synced on load too)
 function syncAll(chk,num){const c=$(chk),n=$(num);const f=()=>{n.disabled=c.checked;n.placeholder=c.checked?"all":"";};c.addEventListener("change",f);f();}
@@ -419,8 +571,7 @@ $("#runAllBtn").addEventListener("click",()=>{if(!need())return;busy($("#runAllB
   toast($("#ocToast"),`Done — found ${r.candidates}, fetched ${r.fetched}${skip}, imported.`,"ok");
 },"Working…",true);});
 
-// ---- live progress log (polls /api/progress while a long op runs)
-// ---- Gaps (deepen): read where evidence is thin, then search those gaps for NEW sources
+// ---- Gaps (deepen)
 let GAPS=[];
 const GAPICON={3:"⚠",2:"!",1:"·"};
 function renderGaps(){
@@ -445,7 +596,7 @@ $("#gapsBtn").addEventListener("click",()=>{if(!need())return;busy($("#gapsBtn")
   }catch(e){gapsErr(e);}
 },"Reading…");});
 function runThorough(btn,mode){if(!need())return;
-  if(!isAuto()){toast($("#gapsToast"),"Thorough mode needs an API key (set one above).","warn");return;}
+  if(!isAuto()){toast($("#gapsToast"),"Thorough mode needs an API key (add one in Models & access).","warn");return;}
   const budget=parseFloat($("#gapsBudget").value)||0;
   if(budget<=0){toast($("#gapsToast"),"Set a budget (e.g. 3).","warn");return;}
   if(!confirm("Run thorough "+mode+" search until ~$"+budget.toFixed(2)+" is spent? This searches, fetches and labels autonomously."))return;
@@ -473,11 +624,14 @@ $("#gapsSearchBtn").addEventListener("click",()=>{if(!need())return;busy($("#gap
   }catch(e){gapsErr(e);}
 },"Searching…",true);});
 
+// ---- live progress drawer (polls /api/progress while a long op runs)
 let _poll=null;
-function startLog(){const b=$("#log");b.style.display="block";b.textContent="working…";
-  const tick=async()=>{try{const {lines}=await api("/api/progress");if(lines&&lines.length){b.textContent=lines.join("\n");b.scrollTop=b.scrollHeight;}}catch(_){}};
+const drawer=$("#logDrawer");
+$("#logBar").addEventListener("click",()=>{drawer.classList.toggle("open");$("#logChev").textContent=drawer.classList.contains("open")?"▾":"▴";});
+function startLog(){drawer.classList.add("open","working");$("#logChev").textContent="▾";$("#logTitle").textContent="Working…";$("#log").textContent="working…";
+  const tick=async()=>{try{const {lines}=await api("/api/progress");if(lines&&lines.length){$("#log").textContent=lines.join("\n");$("#log").scrollTop=$("#log").scrollHeight;}}catch(_){}};
   tick();_poll=setInterval(tick,1200);}
-function stopLog(){if(_poll)clearInterval(_poll);_poll=null;
+function stopLog(){if(_poll)clearInterval(_poll);_poll=null;drawer.classList.remove("working");$("#logTitle").textContent="Activity log";
   api("/api/progress").then(({lines})=>{if(lines&&lines.length)$("#log").textContent=lines.join("\n");}).catch(()=>{});}
 
 // ---- Step 2: find
@@ -551,6 +705,7 @@ function renderResults(results,box){
       const news=[].concat(r.newDatasets||[],r.newPositions||[],r.newFactors||[]);
       return `<div class="res added"><div class="t">✓ ${esc(r.title||r.id)}</div><div class="tag">now v${r.version}${news.length?" · new: "+news.map(esc).join(", "):""}</div><div class="diff">${diff}</div></div>`;}
     if(r.status==="duplicate")return `<div class="res duplicate"><div class="t">↺ ${esc(r.title||"source")}</div><div class="tag">already in the KB — skipped (anti-flooding)</div></div>`;
+    if(r.status==="off-topic")return `<div class="res duplicate"><div class="t">◌ ${esc(r.title||"source")}</div><div class="tag">off-topic — ${esc(r.error||"doesn't bear on the question")}</div></div>`;
     return `<div class="res error"><div class="t">✕ ${esc(r.title||"source")}</div><div class="tag">${esc(r.error)}</div></div>`;
   }).join("");
   if(added)$("#jsonIn").value="";
@@ -588,7 +743,6 @@ function renderDups(){
   Object.keys(sug).forEach(kind=>sug[kind].forEach(p=>rows.push({kind,a:p.a,b:p.b,sim:p.sim})));
   if(!rows.length){box.innerHTML='<div class="hint" style="margin-top:8px">No likely duplicates flagged. You can still merge manually below.</div>';return;}
   box.innerHTML='<div class="hint" style="margin:10px 0 4px">Possible duplicates — keeps the more-used label:</div>'+rows.map((r,i)=>{
-    // keep the higher-count side
     const keepB=entCount(r.kind,r.b.ref)>=entCount(r.kind,r.a.ref);
     const keep=keepB?r.b:r.a,drop=keepB?r.a:r.b;
     return `<div class="cand"><div class="cm"><div class="ct"><span class="tag">${r.kind}</span> fold “${esc(drop.label)}” → keep “${esc(keep.label)}” <span class="muted">(${r.sim})</span></div></div>
@@ -609,6 +763,14 @@ $("#curMerge").addEventListener("click",()=>doMerge($("#curType").value,$("#curS
 $("#curRenameBtn").addEventListener("click",async()=>{const label=$("#curLabel").value.trim();if(!label)return alert("Enter a new label.");
   try{const r=await api("/api/rename",{id:caseId(),type:$("#curType").value,ref:$("#curRen").value,label});ENT=r.entities;renderDups();fillCurSelects();$("#curLabel").value="";await loadCases(caseId());toast($("#curToast"),r.report.summary,"ok");}
   catch(e){alert(e.message);}});
+
+// ---- nav scrollspy
+const navLinks=[...document.querySelectorAll("#navstrip a")];
+const spy=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting){
+    navLinks.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id));}});
+},{rootMargin:"-30% 0px -60% 0px"});
+navLinks.forEach(a=>{const t=document.querySelector(a.getAttribute("href"));if(t)spy.observe(t);});
 
 // open synchronously inside the click (an await first would let popup-blockers kill it);
 // /viewer rebuilds itself server-side, so it's always fresh.

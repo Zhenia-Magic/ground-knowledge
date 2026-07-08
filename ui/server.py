@@ -48,11 +48,17 @@ _PROVIDER_ENV = {
 }
 
 
-def set_key_op(key, provider=None):
-    """Accept an API key pasted in the local UI (this machine, this session) when none is in the
-    env. The provider comes from the dropdown; if omitted we guess (sk-ant… = Anthropic, else
-    OpenAI). Sets it in-process so the LLM layer picks it up. Not written to disk — put it in .env
-    for persistence."""
+def set_key_op(key, provider=None, remove=False):
+    """Add or remove an API key for this session (this machine, this process). NON-destructive:
+    adding a key never clears other providers' keys — the phase dispatch (Anthropic search /
+    first-compat label) plus the explicit per-phase pins in config_op decide who does what, and
+    the Models panel shows the resolution. Not written to disk — put keys in .env to persist."""
+    if remove:
+        env = _PROVIDER_ENV.get((provider or "").lower())
+        if not env:
+            raise ValueError("Unknown provider: " + str(provider))
+        os.environ.pop(env, None)
+        return {"hasKey": has_key(), "model": llm.active_models(), "config": llm.provider_status()}
     key = (key or "").strip()
     if not key:
         raise ValueError("Paste an API key.")
@@ -62,12 +68,42 @@ def set_key_op(key, provider=None):
             raise ValueError("Unknown provider: " + provider)
     else:
         env = "ANTHROPIC_API_KEY" if key.startswith("sk-ant") else "OPENAI_API_KEY"
-    # clear the other keys we manage so the chosen provider actually wins the dispatch order
-    for e in set(_PROVIDER_ENV.values()):
-        if e != env:
-            os.environ.pop(e, None)
     os.environ[env] = key
-    return {"hasKey": has_key(), "model": llm.active_models()}
+    return {"hasKey": has_key(), "model": llm.active_models(), "config": llm.provider_status()}
+
+
+# env vars behind the Models panel's per-phase pins
+_PHASE_ENV = {"search": ("EPISTEMIC_SEARCH_PROVIDER", "EPISTEMIC_SEARCH_MODEL"),
+              "label": ("EPISTEMIC_LABEL_PROVIDER", "EPISTEMIC_LABEL_MODEL")}
+
+
+def config_op(search_provider=None, search_model=None, label_provider=None, label_model=None):
+    """Pin (or un-pin, with ''/'auto') each phase's provider and model for this session — the same
+    EPISTEMIC_*_PROVIDER / EPISTEMIC_*_MODEL env vars documented in .env.example, set in-process.
+    A provider pin requires that provider's key; a model pin is free-typed (a wrong id errors the
+    API call with the provider's own message, never silently falls back)."""
+    known = {p["id"]: p for p in llm.provider_status()["providers"]}
+    for phase, prov, model in (("search", search_provider, search_model),
+                               ("label", label_provider, label_model)):
+        penv, menv = _PHASE_ENV[phase]
+        if prov is not None:
+            prov = (prov or "").strip().lower()
+            if prov in ("", "auto"):
+                os.environ.pop(penv, None)
+            elif prov not in known:
+                raise ValueError("Unknown provider: " + prov)
+            elif not known[prov]["hasKey"]:
+                raise ValueError("No {} key set — add one above first.".format(known[prov]["label"]))
+            else:
+                os.environ[penv] = prov
+        if model is not None:
+            model = (model or "").strip()
+            if model:
+                os.environ[menv] = model
+            else:
+                os.environ.pop(menv, None)
+    log("models configured: " + llm.active_models())
+    return {"model": llm.active_models(), "config": llm.provider_status()}
 
 
 # --- progress log (visible in the UI via /api/progress, and on the server console) -----------
@@ -604,6 +640,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/api/cases":
             return self._send(200, {"cases": list_cases(), "hasKey": has_key(),
                                     "model": llm.active_models(),
+                                    "config": llm.provider_status(),
                                     "portal": os.environ.get("EPISTEMIC_PORTAL", "")})
         if self.path == "/api/progress":
             return self._send(200, {"lines": list(_PROGRESS)})
@@ -657,7 +694,11 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/tidy":
                 return self._send(200, tidy_op(body.get("id")))
             if self.path == "/api/key":
-                return self._send(200, set_key_op(body.get("key"), body.get("provider")))
+                return self._send(200, set_key_op(body.get("key"), body.get("provider"),
+                                                  body.get("remove", False)))
+            if self.path == "/api/config":
+                return self._send(200, config_op(body.get("searchProvider"), body.get("searchModel"),
+                                                 body.get("labelProvider"), body.get("labelModel")))
             if self.path == "/api/portal/list":
                 return self._send(200, portal_list_op(body.get("url")))
             if self.path == "/api/portal/pull":

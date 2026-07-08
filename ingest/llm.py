@@ -11,9 +11,13 @@ expensive model only does the part that actually needs it. OpenAI, DeepSeek, Mis
 OpenRouter, and NVIDIA all speak the OpenAI chat-completions protocol, so one code path
 (_openai_compat) serves them all. With no key set, callers should use --dry-run.
 
-Models: EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL override each phase independently;
-EPISTEMIC_MODEL is a legacy global default applied to both phases only when they share a provider.
-Otherwise each phase uses a sensible per-provider default.
+Overrides (all optional, all also settable live from the local console's Models panel):
+  * EPISTEMIC_SEARCH_PROVIDER / EPISTEMIC_LABEL_PROVIDER pin a phase to one provider by id
+    ("anthropic", "nvidia", "openai", "deepseek", "mistral", "groq", "gemini", "openrouter").
+    A pin whose key isn't set is ignored (auto-fallback beats a hard failure on a stale pin).
+  * EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL pin each phase's model independently;
+    EPISTEMIC_MODEL is a legacy global default applied to both phases only when they share a
+    provider. Otherwise each phase uses a sensible per-provider default.
 """
 import json
 import os
@@ -102,6 +106,18 @@ def _active_compat():
     return None
 
 
+def _compat_id(row):
+    """Stable provider id for a compat row, derived from its env var: NVIDIA_API_KEY -> 'nvidia'."""
+    return row[0].split("_")[0].lower()
+
+
+def _compat_by_id(pid):
+    for row in _OPENAI_COMPAT:
+        if _compat_id(row) == pid:
+            return row
+    return None
+
+
 def _anthropic_key():
     return bool(os.environ.get("ANTHROPIC_API_KEY"))
 
@@ -112,9 +128,28 @@ def has_key():
 
 # --- phase-aware provider + model selection ----------------------------------------------------
 # Each selection returns ("anthropic", None) or ("compat", <_OPENAI_COMPAT row>) or None.
+_PIN_ENV = {"search": "EPISTEMIC_SEARCH_PROVIDER", "label": "EPISTEMIC_LABEL_PROVIDER"}
+
+
+def _pinned_provider(phase):
+    """The user's explicit provider pin for a phase, resolved to a selection — or None when the
+    pin is unset, 'auto', or names a provider whose key isn't set (a stale pin falls back to the
+    automatic choice rather than hard-failing every call)."""
+    pid = (os.environ.get(_PIN_ENV[phase]) or "").strip().lower()
+    if not pid or pid == "auto":
+        return None
+    if pid == "anthropic":
+        return ("anthropic", None) if _anthropic_key() else None
+    row = _compat_by_id(pid)
+    return ("compat", row) if row and os.environ.get(row[0]) else None
+
+
 def _search_provider():
-    """SEARCH / discovery: Anthropic first (server-side web search + deep research), then the first
-    compat key (searches from model knowledge only — no live web)."""
+    """SEARCH / discovery: an explicit pin wins; else Anthropic first (server-side web search +
+    deep research), then the first compat key (searches from model knowledge only — no live web)."""
+    pin = _pinned_provider("search")
+    if pin:
+        return pin
     if _anthropic_key():
         return ("anthropic", None)
     c = _active_compat()
@@ -122,8 +157,12 @@ def _search_provider():
 
 
 def _label_provider():
-    """LABELLING: the first compat key first — NVIDIA leads _OPENAI_COMPAT and is free, so it labels
-    by default even alongside an Anthropic key kept for search — then Anthropic as a fallback."""
+    """LABELLING: an explicit pin wins; else the first compat key — NVIDIA leads _OPENAI_COMPAT and
+    is free, so it labels by default even alongside an Anthropic key kept for search — then
+    Anthropic as a fallback."""
+    pin = _pinned_provider("label")
+    if pin:
+        return pin
     c = _active_compat()
     if c:
         return ("compat", c)
@@ -133,10 +172,12 @@ def _label_provider():
 
 
 def _provider_id(sel):
+    """Stable id of a selection: 'anthropic' or the compat id ('nvidia', 'openai', …) — the same
+    ids EPISTEMIC_*_PROVIDER pins and the console's Models panel use."""
     if not sel:
         return None
     kind, c = sel
-    return "anthropic" if kind == "anthropic" else c[0]
+    return "anthropic" if kind == "anthropic" else _compat_id(c)
 
 
 def _single_provider():
@@ -196,6 +237,50 @@ def active_models():
     """Both phases for status display — collapses to one line when they resolve to the same model."""
     s, l = active_model("search"), active_model("label")
     return s if s == l else "search: {} · label: {}".format(s, l)
+
+
+# Suggested model ids per provider, for UI dropdowns. Free-typed ids are always allowed on top of
+# these; a wrong id simply errors the API call with the provider's own message.
+SUGGESTED_MODELS = {
+    "anthropic": ["claude-sonnet-4-6", "claude-opus-4-8", "claude-haiku-4-5"],
+    "nvidia": ["deepseek-ai/deepseek-v4-flash", "deepseek-ai/deepseek-v4-pro", "z-ai/glm-5.2",
+               "minimaxai/minimax-m3", "nvidia/nemotron-3-ultra-550b-a55b"],
+    "openai": ["gpt-4o", "gpt-4o-mini"],
+    "deepseek": ["deepseek-chat", "deepseek-reasoner"],
+    "mistral": ["mistral-large-latest"],
+    "groq": ["llama-3.3-70b-versatile"],
+    "gemini": ["gemini-2.0-flash"],
+    "openrouter": ["deepseek/deepseek-chat"],
+}
+
+
+def provider_status():
+    """Introspection for UIs (the local console's Models panel): every known provider with its key
+    state and suggested models, plus how each phase currently resolves — including whether a pin is
+    set and whether it is 'broken' (points at a keyless provider, so auto-fallback is in effect)."""
+    providers = [{"id": "anthropic", "label": "Anthropic (Claude)", "hasKey": _anthropic_key(),
+                  "free": False, "webSearch": True, "defaultModel": _DEFAULT_ANTHROPIC,
+                  "models": SUGGESTED_MODELS["anthropic"]}]
+    for row in _OPENAI_COMPAT:
+        pid = _compat_id(row)
+        providers.append({"id": pid, "label": row[3], "hasKey": bool(os.environ.get(row[0])),
+                          "free": pid == "nvidia", "webSearch": False, "defaultModel": row[2],
+                          "models": SUGGESTED_MODELS.get(pid, [row[2]])})
+    phases = {}
+    for phase in ("search", "label"):
+        sel = _select(phase)
+        pin = (os.environ.get(_PIN_ENV[phase]) or "").strip().lower() or None
+        eff = _provider_id(_search_provider() if phase == "search" else _label_provider())
+        phases[phase] = {
+            "provider": eff, "providerLabel": sel[3] if sel else None,
+            "model": sel[2] if sel else None,
+            "pinnedProvider": pin,
+            "pinnedModel": os.environ.get(
+                "EPISTEMIC_SEARCH_MODEL" if phase == "search" else "EPISTEMIC_LABEL_MODEL") or None,
+            "pinBroken": bool(pin and pin != "auto" and pin != eff),
+        }
+    return {"providers": providers, "search": phases["search"], "label": phases["label"],
+            "hasKey": has_key(), "summary": active_models()}
 
 
 def _post(url, headers, body, tries=4):

@@ -19,12 +19,18 @@ is real and runnable from the repo root.
 
   ```bash
   export ANTHROPIC_API_KEY=sk-ant-...   # Claude (recommended; needed for web search), or any of:
+  export NVIDIA_API_KEY=...             # free (build.nvidia.com) — labels by default when set
   export OPENAI_API_KEY=...  DEEPSEEK_API_KEY=...  MISTRAL_API_KEY=...  GROQ_API_KEY=...
   export GEMINI_API_KEY=...  OPENROUTER_API_KEY=...
-  # export EPISTEMIC_MODEL=...                    # optional model override for your provider
+  # export EPISTEMIC_SEARCH_PROVIDER=... EPISTEMIC_LABEL_PROVIDER=...  # pin a phase's provider
+  # export EPISTEMIC_SEARCH_MODEL=...  EPISTEMIC_LABEL_MODEL=...       # pin a phase's model
+  # export EPISTEMIC_MODEL=...   # legacy global override (single-provider setups only)
   # export EPISTEMIC_PORTAL=https://groundknowledge.org   # for pull/push
   # export EPISTEMIC_CONTACT_EMAIL=you@org        # faster OpenAlex "polite pool"
   ```
+  Search and labelling pick their provider independently (Claude searches, the first other key —
+  NVIDIA free first — labels); the local console's **Models & access** panel shows and pins this
+  per session.
   Without a key you use the *manual path*: the tool finds + fetches sources for free, then prints a
   labelling prompt (or a single bundle file) to paste into any chatbot; you paste the JSON back.
 
