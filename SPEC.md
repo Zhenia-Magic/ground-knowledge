@@ -96,8 +96,12 @@ non-deterministic, so we confine it to *proposing*: it reads one fetched source 
 that links to existing entity ids *or* marks something `"NEW:<label>"`. Deterministic code then
 *disposes* — resolving links by normalized-string + alias matching. The reproducible, auditable
 parts (which datasets, which positions, counts, metrics) never depend on model temperature; merge,
-metrics, and viewer are deterministic and offline. So the conclusions are reproducible regardless
-of which model — or no model — produced the inputs.
+metrics, and viewer are deterministic and offline. The precise claim: **everything downstream of
+the labels is reproducible regardless of which model — or no model — produced them.** The labels
+themselves can vary between models (position, tier, and `restsOn` assignments are judgment calls),
+and that variance is measurable — run several models over the same source set and report per-field
+agreement — but is not yet measured; labelling is the one load-bearing AI step, and this is the
+system's honestly-stated biggest lever (MECHANISM.md §8.1), not something determinism erases.
 
 ---
 
@@ -108,8 +112,8 @@ serve the thesis:
 
 **Distribution — naive *and* independence-weighted.** Two bars of the same split, shown together.
 The first is the naive aggregator's view (share of *sources* per position). The second re-sizes
-each position by its **effective independent evidence bases** — the Herfindahl numbers-equivalent
-over the *resolved roots* its sources reduce to (`weighted_distribution`; see the independence
+each position by its **effective independent evidence bases** — each distinct *resolved root* its
+sources reduce to, counted once at its strength (`weighted_distribution`; see the independence
 engine below), so sources sharing a dataset, echoing as reviews, or citing each other in a loop all
 collapse toward one "look" and a position propped up by re-used, derivative, or circular data
 **shrinks**. Seeing the correlated position contract between the two bars *is* the thesis, rendered.
@@ -144,13 +148,26 @@ depends on by following its `restsOn` edges (to datasets **and to other sources*
 - a dataset known **only via a review**, or a root backed **only by animal / in-vitro** sources,
   counts at **half** (weak evidence, shown distinctly).
 
-The effective count is the Herfindahl numbers-equivalent (`nEff`) over those resolved roots, and the
-audit **shows its work**: each position is broken down into its bases, with the collapsed-source
-count surfaced separately. **Adding correlated, derivative, or circular evidence can only leave a
-position's independence unchanged or lower — never raise it.** This is the metric that refuses to be
+The effective count (`nEff`) counts **each distinct resolved root once, at its strength** — never
+how many sources landed on it — and the audit **shows its work**: each position is broken down into
+its bases (each base's one-time `strength` contribution sums to `nEff` exactly), with the
+collapsed-source count surfaced separately. The invariant, enforced by a randomized monotonicity
+test: **adding a source never lowers any position's `nEff`, and only genuinely new evidentiary
+roots (or an upgrade — primary grounding for a review-only dataset, human evidence for an
+animal-only root) can raise it.** Flooding a position with correlated, derivative, or circular
+evidence moves nothing; junk "support" aimed at a rival moves nothing of theirs either — the
+pile-up surfaces only as *concentration*, honestly labelled. This is the metric that refuses to be
 flooded, and it produces honest, differing verdicts (e.g. on the real COVID-origin case the
 best-supported camp rests on several genuinely independent primary datasets while others collapse to
 a single government-report or commentary voice — invisible to a source count).
+
+One scope line, stated where the number is defined rather than discovered by a skeptical reader:
+**independence is deliberately orthogonal to per-study quality.** `nEff` answers "how many
+independent looks support this position," not "how good is each look" — one decisive RCT is a
+single root, seven independent anecdotes are seven. It composes with, and does not replace,
+GRADE-style per-study quality appraisal; read it next to the evidence-type, confidence, and method
+audits, never as a settledness score. (The only quality-like terms inside `nEff` are the two root
+halvings above — provenance strength, not study quality.)
 
 **Blindspots.** Evidence types and populations present elsewhere in the case but absent from a
 position's own sources — operationalising FLF's "surface what's missing." Two data-quality

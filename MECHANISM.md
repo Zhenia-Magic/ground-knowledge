@@ -114,15 +114,32 @@ sources that mutually depend):
   naming the loop. This is the adversarial pattern, surfaced loudly.
 
 ### 4.4 Count effective independent roots per position
-For each position, take all its sources, map each to its resolved root(s), and tally how many
-sources land on each root. Then compute the **Herfindahl numbers-equivalent**:
+For each position, take all its sources, map each to its resolved root(s), and count **each
+distinct root exactly once, at its strength**:
 
 ```
-nEff = 1 / Σ (share_of_root_i)²
+nEff = Σ strength(root_i)     over the position's DISTINCT resolved roots
+
+strength = 1.0   for a real root (dataset, own primary observation)
+         × 0.5   if the root is known only via secondary sources (§6.5)
+         × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
+         = 1.0   for the one collapsed secondary voice, or a collapsed circular loop
 ```
 
-This is the "effective number of independent looks." One root used by everyone → nEff ≈ 1. Ten
-roots each used once → nEff = 10. A pile on one root collapses toward 1 even if a few others exist.
+This is the "effective number of independent looks," as a full-strength-equivalent root count.
+One root used by everyone → nEff = 1. Ten roots → nEff = 10, whether each is used once or one of
+them is used a hundred times. **How many sources land on each root is deliberately excluded from
+this number** — it feeds the separate *concentration* display ("82% of this position's sourcing
+leans on one cohort"), which is where a pile-up honestly belongs.
+
+*Why not a share-based concentration index (Herfindahl) over the per-root source tallies?* Because
+any formula that reads per-source tallies is movable by adding worthless sources: echoing reviews
+onto a position's *minority* root evens out the shares and raises such an index (flooding fakes
+independence), and piling junk "support" onto a rival's biggest root skews the shares and tanks
+theirs (poisoning by agreement). Counting each root once makes both attacks inert by construction
+— the only ways nEff moves are adding a genuinely **new root** or **upgrading** a root's strength
+(a primary source landing on a review-only dataset; a human study landing on an animal-only root),
+and both of those *should* move it.
 
 ### 4.5 The two bars the reader sees
 - **By source count** — the naive tally (kept, honestly labelled as naive).
@@ -136,7 +153,7 @@ roots each used once → nEff = 10. A pile on one root collapses toward 1 even i
 ## 5. Worked examples
 
 **E1 — Echo.** Position has 1 primary study (dataset D) + 12 narrative reviews, all `restsOn`
-empty, all secondary. → roots = {D, secondary-pool}. nEff ≈ 2. The 12 reviews are one voice.
+empty, all secondary. → roots = {D, secondary-pool}. nEff = 2. The 12 reviews are one voice.
 
 **E2 — Echo, well-tagged.** Same, but each review `restsOn` D (we tagged what they summarize). →
 every node resolves to D. nEff = 1. Even cleaner — and no tier rule was needed.
@@ -218,16 +235,31 @@ meta-flag: "this root is read both ways" (contested evidence).
 | Attack | What the attacker wants | Defense |
 |---|---|---|
 | Flood with review articles | Inflate independence with echo | Secondary tier collapses to one voice per position |
+| Flood echo onto a *minority* root the position already has | Even out the per-root source shares so a share-based index reads "more independent" | nEff counts each distinct root once (§4.4) — share-shuffling is arithmetic on a number the metric doesn't use |
+| Pile junk "support" onto a **rival's** biggest root | Poison by agreement: skew their shares, tank their score | Same — presence, not tallies. The rival's nEff holds; the pile-up surfaces as *their concentration rising*, clearly labelled as a warning about correlation, not a lower independence count |
 | Re-submit one cohort under many names | Fake many independent datasets | Normalized + alias root resolution; concentration *rises*, not falls |
 | Mutual citation ring (A↔B↔C↔A) | Manufacture corroboration from nothing | SCC collapse to one root + `circularCorroboration` flag |
 | Mislabel a commentary as `Observational` | Mint a free independent root | Tier from controlled vocab; verification pass; relevance gate |
-| Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark (proposed) |
+| Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
 
-The deep property: **adding correlated or derivative evidence cannot raise a position's
-independence; at best it leaves it unchanged, and circular evidence raises a warning.** Flooding
-the zone makes a side look *less* independent, never more.
+The deep property, stated precisely (and enforced by a randomized monotonicity test in
+`tests/test_independence.py`): **adding a source never lowers any position's nEff, and raises it
+only by introducing a new root or upgrading an existing root's strength** (primary grounding for a
+review-only dataset; human evidence for an animal-only root — both of which *should* raise it).
+Correlated, derivative, and circular evidence lands on roots already counted, so it moves nEff
+nowhere; a first wave of ungrounded echo adds at most the one collapsed secondary voice, once.
+An earlier formulation (a Herfindahl index over per-root source tallies) passed the ungrounded
+attacks in this table but failed the two grounded ones — found by adversarially testing the metric
+against its own claims, which is why the grounded rows above exist and why the invariant is now a
+tested property rather than a slogan.
+
+What this arithmetic cannot see is a source that **fabricates a root outright** — claiming a
+dataset that doesn't actually back it. That is edge *fabrication*, the dual of the edge *omission*
+in §8.3, and it is a labelling-integrity problem, not a counting problem: the partial defenses are
+the per-`restsOn` provenance quote, quote verification against fetched text, and the relevance
+gate. Named in §8 rather than hidden behind the invariant.
 
 ---
 
@@ -241,8 +273,12 @@ the zone makes a side look *less* independent, never more.
    the KB actually instantiates (edge case 5/12). v1 may over-count these.
 3. **Citation data is self-reported.** We only know A rests on B because the labeller said so.
    We do not crawl real citation graphs. A truly adversarial actor can *omit* a `SRC:` edge to hide
-   a dependency and look more independent than they are. The verification pass can catch *false*
-   quotes but not *missing* derivation edges.
+   a dependency and look more independent than they are — and the dual attack, *fabricating* a
+   `restsOn` edge to a dataset that doesn't actually back the source, mints a root the position
+   hasn't earned (§7). The verification pass can catch *false quotes* (including the quote each
+   `restsOn` edge is supposed to carry) but not *missing* edges; crawling an external citation
+   graph (OpenAlex/Crossref) and diffing declared-vs-crawled edges is the known fix for the
+   omission half, not yet built.
 4. **Cross-position cycles** have genuinely ambiguous semantics (edge case 7).
 5. **Alias gaps.** A novel name for an existing cohort counts as new until someone curates it.
 6. **"One voice" is a modelling choice, not a measurement.** Two truly independent review teams
@@ -260,8 +296,11 @@ Most tools in this space do one of: (a) count studies; (b) score each study's *i
 them measure **how many independent evidentiary roots actually support a claim**, and none treat
 **echo, cohort re-use, and circular citation as one phenomenon** resolved by collapsing a
 derivation graph to its roots. The combination — *tier-aware grounding* + *root-resolution over a
-derivation graph* + *strongly-connected-component collapse for circular corroboration* + *Herfindahl
-effective-count* — is, as far as we know, new as a single, deterministic, auditable metric.
+derivation graph* + *strongly-connected-component collapse for circular corroboration* + a
+*strength-weighted distinct-root count* with a tested flooding-immunity invariant — is, as far as
+we know, new as a single, deterministic, auditable metric. (The honest lineage: this is the
+"studies vs. reports" de-duplication discipline systematic-review craft applies by hand in one
+domain, generalized to arbitrary disputes, automated, and made adversarially robust.)
 
 ## 10. Why it is general
 
@@ -391,7 +430,9 @@ methodological reason."
 ### 12.4 Why the full triangulation number is deferred
 
 The tempting formula is: take each source's resolved data roots, add a synthetic `method:<class>`
-root, and run the same Herfindahl calculation. That gives the useful alcohol arithmetic:
+root, and run a Herfindahl-style share calculation over the enriched tallies (note: the *primary*
+metric deliberately does not use share arithmetic at all — §4.4 — which is one more reason not to
+bolt this on). That gives the useful alcohol arithmetic:
 
 ```
 15 distinct observational datasets + one shared method root

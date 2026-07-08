@@ -22,13 +22,22 @@ def _ds_label(kb, did):
     return did
 
 
-def _root_incidence(kb, res):
-    """Per position, the weighted incidence of each resolved evidentiary ROOT (see MECHANISM.md):
-    sources collapse onto shared datasets, secondary echo collapses to one voice, citation cycles
-    collapse to one loop-root. Returns {posId: {rootKey: weight}}, the basis for nEff and the bar."""
-    src_by_pos = {}
+def _src_by_pos(kb):
+    by = {}
     for s in kb["sources"]:
-        src_by_pos.setdefault(s["position"], []).append(s)
+        by.setdefault(s["position"], []).append(s)
+    return by
+
+
+def _root_incidence(kb, res):
+    """Per position, the source-weighted INCIDENCE of each resolved evidentiary root: how much of
+    the position's sourcing leans on each root (root strength summed once per source resting on
+    it). This drives the CONCENTRATION share, the topDataset display, and the bases 'weight'
+    column — the "everyone is leaning on one look" signal, which legitimately rises when sources
+    pile onto one root. It is deliberately NOT the basis for nEff (see _root_presence): a tally
+    that grows with source count must never feed the independence number, or piling sources on a
+    minority root would shift the shares and move nEff without adding any new evidence."""
+    src_by_pos = _src_by_pos(kb)
     secondary_only = res["secondary_only"]
     nonhuman_only = res.get("nonhuman_only", frozenset())
     per_pos = {}
@@ -38,14 +47,51 @@ def _root_incidence(kb, res):
             for r in res["source_roots"].get(s["id"], ()):
                 if r.startswith("secpool:") or r.startswith("cycle:"):
                     weights[r] = 1            # a COLLAPSED voice counts once, no matter how many
-                else:                          #   sources fell into it (robust to echo-flooding both
+                else:                          #   sources fell into it; real roots accumulate per
                     weights[r] = weights.get(r, 0) + _roots.root_strength(
-                        r, secondary_only, nonhuman_only)   # halved for review-only / animal roots
-        per_pos[p["id"]] = weights             #   ways); the source count is surfaced separately
+                        r, secondary_only, nonhuman_only)   # source (halved for review-only /
+        per_pos[p["id"]] = weights                          # animal roots)
     return per_pos
 
 
+def _root_presence(kb, res):
+    """Per position, each resolved root's OWN strength, counted exactly once no matter how many
+    sources rest on it: {posId: {rootKey: strength}}. Strength is 1.0 for a real root, halved for
+    a dataset known only via a secondary source, halved again for a root backed only by animal /
+    in-vitro studies; the collapsed secondary voice and a circular loop each count once at 1.0.
+    This idempotent map is the basis for nEff — writing the same key again cannot change it, which
+    is what makes the independence number immune to flooding by construction."""
+    src_by_pos = _src_by_pos(kb)
+    secondary_only = res["secondary_only"]
+    nonhuman_only = res.get("nonhuman_only", frozenset())
+    per_pos = {}
+    for p in kb["positions"]:
+        pres = {}
+        for s in src_by_pos.get(p["id"], []):
+            for r in res["source_roots"].get(s["id"], ()):
+                pres[r] = 1 if r.startswith(("secpool:", "cycle:")) else \
+                    _roots.root_strength(r, secondary_only, nonhuman_only)
+        per_pos[p["id"]] = pres
+    return per_pos
+
+
+def _n_indep(presence):
+    """Effective independent bases = the sum of distinct-root strengths (a full-strength-equivalent
+    root count). Monotonicity invariant, relied on by tests/test_independence.py: adding a source
+    can only add new keys to the presence map or raise an existing root's strength (secondary_only
+    / nonhuman_only sets only ever shrink as sources are added, and an added source never changes
+    existing sources' resolved roots — it has no incoming edges, so existing SCCs are untouched).
+    Therefore nEff never decreases when a source is added, and stays EXACTLY equal unless the
+    source introduces a new root or upgrades one (a primary source landing on a review-only
+    dataset, a human study landing on an animal-only root). Piling sources onto already-counted
+    roots — grounded echo, cohort re-use, junk 'support' aimed at a rival — moves nothing."""
+    return sum(presence.values())
+
+
 def _n_eff(weights):
+    # Herfindahl numbers-equivalent (an EVENNESS measure over a tally). Used only by the method
+    # audit's diversity-of-methods reading; the independence metric uses _n_indep over _root_presence
+    # instead, because an evenness measure over per-source tallies is movable by flooding.
     total = sum(weights.values())
     hhi = sum((w / total) ** 2 for w in weights.values()) if total else 0
     return (1 / hhi) if hhi else 0
@@ -53,16 +99,16 @@ def _n_eff(weights):
 
 def weighted_distribution(kb):
     """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
-    sized not by raw source count but by its effective number of independent evidence ROOTS: the
-    Herfindahl numbers-equivalent over resolved roots (MECHANISM.md). Sources sharing a dataset,
+    sized not by raw source count but by its effective number of independent evidence ROOTS: each
+    distinct resolved root counted once at its strength (MECHANISM.md). Sources sharing a dataset,
     echoing as secondary reviews, or citing each other in a loop all collapse toward one 'look'. A
     position propped up by re-used, derivative, or circular evidence shrinks vs. its raw bar."""
     res = _roots.resolve(kb)
-    inc = _root_incidence(kb, res)
+    pres = _root_presence(kb, res)
     out, weights = [], []
     for p in kb["positions"]:
         mine = [s for s in kb["sources"] if s["position"] == p["id"]]
-        n_eff = _n_eff(inc[p["id"]])
+        n_eff = _n_indep(pres[p["id"]])
         weights.append(n_eff)
         out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
                     "raw": len(mine), "weight": round(n_eff, 2)})
@@ -380,15 +426,25 @@ def independence(kb):
     MECHANISM.md and engine/roots.py).
         raw          = source count
         distinct     = number of distinct resolved roots
-        nEff         = Herfindahl numbers-equivalent over root incidence -> effective independent bases
-        concentration= share resting on the single most-relied-on root
-        bases        = the full 'show your work' breakdown (label, kind, weighted count)
+        nEff         = sum of distinct-root strengths (each root ONCE) -> effective independent bases
+        concentration= share of the position's sourcing resting on the single most-relied-on root
+        bases        = the full 'show your work' breakdown: per root, 'weight' (source-weighted
+                       incidence, what concentration reads) and 'strength' (its one-time
+                       contribution to nEff; the strengths sum to nEff exactly)
         collapsedSecondary = how many secondary sources folded into the one 'secondary voice'
         circular     = circular-corroboration loops touching this position
-    Adding correlated, derivative, or circular evidence pushes concentration UP: flooding the zone
-    makes a position look LESS independent, not more. That is the design intent."""
+
+    The invariant (enforced by tests/test_independence.py, incl. a randomized monotonicity test):
+    adding a source NEVER lowers any position's nEff, and raises it only by introducing a new
+    root or upgrading an existing root's strength (primary grounding for a review-only dataset,
+    human evidence for an animal-only root). Correlated, derivative, or circular evidence lands
+    on roots already counted, so it moves nEff nowhere — it can only push CONCENTRATION up, and
+    the pile-up is surfaced there. What this cannot see is a source that fabricates a new root
+    outright (claiming a dataset that doesn't back it) — that is an edge-fabrication attack,
+    caught (partially) by quote verification, not by this arithmetic; see MECHANISM.md §8."""
     res = _roots.resolve(kb)
     inc = _root_incidence(kb, res)
+    pres = _root_presence(kb, res)
     sec_only = res["secondary_only"]
     nonhuman = res.get("nonhuman_only", frozenset())
     circ_by_pos = {}
@@ -399,8 +455,9 @@ def independence(kb):
     for p in kb["positions"]:
         mine = [s for s in kb["sources"] if s["position"] == p["id"]]
         weights = inc[p["id"]]
+        strengths = pres[p["id"]]
         raw = len(mine)
-        n_eff = _n_eff(weights)
+        n_eff = _n_indep(strengths)
         total_w = sum(weights.values())
         top_key, top_w = None, 0.0
         for rk, w in weights.items():
@@ -409,7 +466,8 @@ def independence(kb):
         conc = (top_w / total_w) if total_w else 0
         bases = sorted(
             ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman), "kind": res["kind"][rk],
-              "weight": round(w, 2), "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman}
+              "weight": round(w, 2), "strength": round(strengths[rk], 2),
+              "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman}
              for rk, w in weights.items()), key=lambda b: -b["weight"])
         collapsed_secondary = sum(1 for s in mine
                                   if ("secpool:" + p["id"]) in res["source_roots"].get(s["id"], ()))

@@ -112,33 +112,140 @@ class ResolutionTests(unittest.TestCase):
 
 
 class MetricTests(unittest.TestCase):
-    def test_review_flood_cannot_inflate_independence(self):
-        # one real study + a flood of ungrounded reviews -> ~2 effective bases, not many
+    """The gaming-resistance contract. Two ways to try to move nEff with worthless sources:
+    UNGROUNDED junk (no restsOn) is absorbed by the one collapsed secondary voice; GROUNDED junk
+    (resting on roots the KB already counts) is absorbed by presence-weighting — a root counts
+    once no matter how many sources pile onto it. Both directions are covered: you can't inflate
+    your own position, and you can't tank a rival by 'supporting' it with correlated junk. An
+    earlier count-weighted formula passed the ungrounded tests below while failing the grounded
+    ones (nEff 1.2 -> 2.0 under grounded echo; a rival's 5.0 -> 1.4 under grounded junk), so the
+    grounded tests are the load-bearing ones — do not weaken them."""
+
+    def _neff(self, srcs, pos="X"):
+        return {p["id"]: p for p in independence(_kb(srcs))}[pos]["nEff"]
+
+    def test_ungrounded_review_flood_cannot_inflate_independence(self):
+        # one real study + a flood of ungrounded reviews -> exactly 2 bases (study + one voice)
         srcs = [_s("study", "X", "Observational", ["D"])]
         srcs += [_s("r%d" % i, "X", "Narrative/Commentary", []) for i in range(50)]
         ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
-        self.assertLessEqual(ind["nEff"], 2.01)
+        self.assertAlmostEqual(ind["nEff"], 2.0, places=6)
         self.assertEqual(ind["collapsedSecondary"], 50)
 
-    def test_review_flood_cannot_tank_a_rivals_independence(self):
-        # flooding a position that has 3 distinct primary datasets with reviews must not crash it
+    def test_grounded_echo_flood_cannot_inflate_independence(self):
+        # THE attack the count-weighted formula failed: 10 sources on D1 + 1 on D2 reads as ~2
+        # bases; echoing 9 more reviews onto the minority root D2 evens out the source shares but
+        # adds no new root -- nEff must not move at all.
+        srcs = [_s("d1_%d" % i, "X", "Observational", ["D1"]) for i in range(10)]
+        srcs += [_s("d2", "X", "Observational", ["D2"])]
+        base = self._neff(srcs)
+        srcs += [_s("echo%d" % i, "X", "Systematic review", ["D2"]) for i in range(9)]
+        self.assertAlmostEqual(self._neff(srcs), base, places=9)
+        # ... and the same flood as primary 're-analyses' of D2 is just as inert
+        srcs += [_s("re%d" % i, "X", "Observational", ["D2"]) for i in range(9)]
+        self.assertAlmostEqual(self._neff(srcs), base, places=9)
+
+    def test_grounded_junk_cannot_tank_a_rivals_independence(self):
+        # Poisoning-by-agreement: pile junk 'support' onto one of a rival's roots. The rival's
+        # nEff must hold at 5; the pile-up may only surface as CONCENTRATION rising.
+        srcs = [_s("p%d" % i, "X", "Observational", ["D%d" % i]) for i in range(5)]
+        base = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(base["nEff"], 5.0, places=6)
+        srcs += [_s("junk%d" % i, "X", "Observational", ["D0"]) for i in range(20)]
+        after = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(after["nEff"], 5.0, places=6)
+        self.assertGreater(after["concentration"], base["concentration"])
+
+    def test_ungrounded_review_flood_cannot_tank_a_rivals_independence(self):
+        # ungrounded junk aimed at a rival adds exactly the one collapsed voice, then nothing
         srcs = [_s("p1", "X", "Observational", ["D1"]),
                 _s("p2", "X", "Observational", ["D2"]),
                 _s("p3", "X", "Observational", ["D3"])]
-        base = {p["id"]: p for p in independence(_kb(srcs))}["X"]["nEff"]
+        base = self._neff(srcs)
         srcs += [_s("r%d" % i, "X", "Evidence-synthesis", []) for i in range(40)]
-        flooded = {p["id"]: p for p in independence(_kb(srcs))}["X"]["nEff"]
-        self.assertGreaterEqual(flooded, base)         # adding echo never lowers independence
+        self.assertAlmostEqual(self._neff(srcs), base + 1.0, places=6)  # + one voice, once
+        srcs += [_s("r2_%d" % i, "X", "Evidence-synthesis", []) for i in range(40)]
+        self.assertAlmostEqual(self._neff(srcs), base + 1.0, places=6)  # a second wave adds 0
+
+    def test_new_root_raises_neff(self):
+        # the ONLY honest way up: bring genuinely new evidence
+        srcs = [_s("a", "X", "Observational", ["D1"])]
+        self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)
+        srcs += [_s("b", "X", "Observational", ["D2"])]
+        self.assertAlmostEqual(self._neff(srcs), 2.0, places=6)
+
+    def test_primary_grounding_upgrades_a_review_only_root(self):
+        # the other honest way up: a dataset known only via a review counts at half until a
+        # primary source actually instantiates it
+        srcs = [_s("rev", "X", "Systematic review", ["D"])]
+        self.assertAlmostEqual(self._neff(srcs), 0.5, places=6)
+        srcs += [_s("prim", "X", "Observational", ["D"])]
+        self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)
 
     def test_cohort_reuse_still_concentrates(self):
         srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]
         ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
         self.assertAlmostEqual(ind["nEff"], 1.0, places=6)   # 8 papers, one dataset = one look
 
+    def test_bases_strengths_sum_to_neff(self):
+        # the 'show your work' contract: the visible per-root strengths reproduce the headline
+        srcs = [_s("a", "X", "Observational", ["D1", "D2"]),
+                _s("b", "X", "Systematic review", ["D3"]),
+                _s("c", "X", "Narrative/Commentary", [])]
+        ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(sum(b["strength"] for b in ind["bases"]), ind["nEff"], places=2)
+
     def test_weighted_distribution_sums_to_about_100(self):
         kb = _kb([_s("a", "X", "Observational", ["D1"]),
                   _s("b", "Y", "Narrative/Commentary", [])])
         self.assertEqual(sum(d["pct"] for d in weighted_distribution(kb)), 100)
+
+
+class MonotonicityPropertyTests(unittest.TestCase):
+    """Randomized check of the independence invariant: adding a source through the merge path
+    (a new node with only OUTGOING restsOn edges — merge_delta can never create incoming edges
+    or cycles) never lowers ANY position's nEff. Not just the flooded position's: a new primary
+    source can shrink the global secondary_only / nonhuman_only sets, which only ever RAISES
+    other positions' root strengths. A fixed seed keeps the run deterministic; the generator
+    mixes grounded/ungrounded sources, primary/secondary/unknown evidence types, animal and
+    human populations, shared and fresh datasets, and source->source derivation chains."""
+
+    EVIDENCE = ["Observational", "Experimental (RCT)", "Systematic review",
+                "Narrative/Commentary", "Meta-analysis", "Mechanistic", "Unclassified type"]
+    POPULATION = ["—", "Adults", "Older adults", "Mice", "In vitro / cell culture"]
+
+    def _rand_source(self, rng, sid, kb):
+        pos = rng.choice([p["id"] for p in kb["positions"]])
+        rests = []
+        for _ in range(rng.randint(0, 3)):
+            kind = rng.random()
+            if kind < 0.45:                                    # an existing or fresh dataset
+                rests.append("D%d" % rng.randint(0, 7))
+            elif kind < 0.75 and kb["sources"]:                # derive from an existing source
+                rests.append("src:" + rng.choice(kb["sources"])["id"])
+            # else: leave this slot empty (contributes to ungrounded sources)
+        return {"id": sid, "position": pos, "title": sid,
+                "evidence": rng.choice(self.EVIDENCE),
+                "population": rng.choice(self.POPULATION),
+                "restsOn": rests, "funding": "Undisclosed", "confidence": "unstated"}
+
+    def test_adding_a_source_never_lowers_any_positions_neff(self):
+        import random
+        rng = random.Random(20260707)
+        for trial in range(12):
+            kb = _kb([], positions=("X", "Y", "Z"))
+            for i in range(2 + rng.randint(0, 3)):             # small seed KB
+                kb["sources"].append(self._rand_source(rng, "seed%d_%d" % (trial, i), kb))
+            for i in range(25):                                # then grow it one source at a time
+                before = {p["id"]: p["nEff"] for p in independence(kb)}
+                new = self._rand_source(rng, "s%d_%d" % (trial, i), kb)
+                kb["sources"].append(new)
+                after = {p["id"]: p["nEff"] for p in independence(kb)}
+                for pid in before:
+                    self.assertGreaterEqual(
+                        after[pid], before[pid] - 1e-9,
+                        "trial %d step %d: position %s nEff fell %.4f -> %.4f after adding %r"
+                        % (trial, i, pid, before[pid], after[pid], new))
 
 
 class MethodAuditTests(unittest.TestCase):

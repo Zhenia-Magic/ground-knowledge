@@ -142,11 +142,14 @@ And then the metrics computed from these:
   many sources don't disclose funding at all. Funding is a fixed set of categories
   (Government, Nonprofit, Academic, Industry, Advocacy, Undisclosed) and **defaults to
   "Undisclosed" — it never assumes independence** when a source is silent.
-- **Independence / concentration** — *the core metric.* For each position, it measures how much
-  its sources lean on the same few datasets, using a "Herfindahl numbers-equivalent" (a standard
-  economics measure of concentration). If five sources all rest on one dataset, that's "≈2.5
-  independent looks, not 5." **Adding a correlated source pushes concentration UP** — making the
-  position look less independent. This is the metric that refuses to be gamed by volume.
+- **Independence / concentration** — *the core metric.* For each position, it resolves every
+  source down to the underlying evidence it rests on and counts **each distinct evidentiary root
+  once** (at half weight when a root is known only via a review, or backed only by animal /
+  in-vitro work). If five sources all rest on one dataset, that's **1 independent look, not 5** —
+  and adding a sixth, sixtieth, or six-hundredth source on that dataset moves the count by exactly
+  nothing; the pile-up shows only in the separate *concentration* share. This is the metric that
+  refuses to be gamed by volume, in either direction: you can't inflate your own side with
+  correlated sources, and you can't tank a rival by "supporting" it with junk.
 - **Cruxes** — from the factor grid: a factor is a "crux" when the camps weigh it very
   differently (spread of ≥2 levels). This localises *where* the disagreement actually is. Cruxes
   **emerge** as the base grows — a factor only becomes a crux once two different camps have
@@ -189,8 +192,10 @@ A guiding principle throughout: **finding and reading sources are free and keyle
 - **"Propose, then deterministically resolve."** The AI is powerful but unpredictable, so it's
   confined to *proposing* (read this paper, suggest its labels). All the reproducible parts —
   which datasets, which counts, every metric — are computed by deterministic code that never
-  depends on AI randomness. So the conclusions are the same regardless of which AI (or no AI)
-  produced the inputs.
+  depends on AI randomness. The precise claim: everything *downstream of the labels* is
+  reproducible regardless of which AI (or no AI) produced them. The labels themselves can vary
+  between models — that variance is measurable (label-agreement across models on the same
+  sources) and is an acknowledged open item, not something determinism erases.
 
 - **The server holds no API key and does no AI work.** Because merging is deterministic, the
   hosted portal is cheap, safe, and has no abuse surface for expensive AI calls.
@@ -301,8 +306,10 @@ anti-false-balance independence audit is the central bet.
   built-in SQLite database for the portal); in production it's PostgreSQL — but always the same
   portable JSON inside.
 - **Hosting:** the portal runs on Railway with a Postgres database.
-- **AI:** model-agnostic — works with Claude or OpenAI, and is used *only* to label fetched text.
-  Discovery, fetching, merging, metrics, and the viewer involve no AI at all.
+- **AI:** provider-agnostic — works with Claude, OpenAI, and several others, and is used *only*
+  to label fetched text. Discovery, fetching, merging, metrics, and the viewer involve no AI at
+  all ("provider-agnostic" means any model can do the labelling — not that different models
+  produce identical labels; see §8 on what is and isn't deterministic).
 
 ---
 

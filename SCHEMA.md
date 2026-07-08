@@ -123,9 +123,12 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    labelling time and refused at merge; (d) the independence metric counts **independent evidentiary
    roots**, not sources — re-used cohorts, review/meta-analysis **echo**, and **circular citation**
    (A↔B) all collapse to one root (the cycle is flagged), and animal/in-vitro or review-only roots
-   count at half. So **flooding a position with correlated, derivative, or circular evidence can
-   only lower its independence or leave it unchanged — never raise it**, and you can't tank a rival
-   by flooding *it* either. Verified in `tests/test_independence.py`.
+   count at half. Each distinct root then counts **once**, no matter how many sources rest on it —
+   so **flooding a position with correlated, derivative, or circular evidence cannot move its
+   independence at all** (only a genuinely new root, or primary/human grounding upgrading a halved
+   one, raises it), and junk "support" aimed at a rival can't tank theirs either — the pile-up
+   surfaces only as concentration, honestly labelled. Verified in `tests/test_independence.py`,
+   including a randomized never-decreases monotonicity test.
 
    `restsOn` therefore holds **two kinds of edge**: a dataset id, or `"src:<sourceId>"` — a
    derivation edge to another source, which is what lets the audit follow citation chains to their
