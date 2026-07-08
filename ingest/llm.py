@@ -28,17 +28,18 @@ import urllib.request
 RETRY_CODES = {429, 500, 502, 503, 529}  # transient — Anthropic 529 = Overloaded
 # Sonnet by default: faster/cheaper and far less prone to 529 "Overloaded" than Opus.
 # Override with EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL / EPISTEMIC_MODEL (see module docstring).
-_DEFAULT_ANTHROPIC = "claude-sonnet-4-6"
+_DEFAULT_ANTHROPIC = "claude-sonnet-5"
 
 # OpenAI-compatible providers, checked in this order after Anthropic. Each speaks the standard
 # /chat/completions protocol, so adding one is just a row here.
 # (env var, base URL, default model, human label)
 _OPENAI_COMPAT = [
     # NVIDIA first: free (build.nvidia.com, ~40 req/min rate limit), so it wins by default over
-    # any other compat key set alongside it. Pick another EPISTEMIC_MODEL from the same platform:
-    # z-ai/glm-5.2, minimaxai/minimax-m3, nvidia/nemotron-3-ultra-550b-a55b,
-    # deepseek-ai/deepseek-v4-pro, deepseek-ai/deepseek-v4-flash.
-    ("NVIDIA_API_KEY",     "https://integrate.api.nvidia.com/v1",                     "deepseek-ai/deepseek-v4-flash", "NVIDIA"),
+    # any other compat key set alongside it. Default is z-ai/glm-5.2 — a strong general-purpose
+    # text model, a better labeller than the smaller flash default it replaced. Other options:
+    # deepseek-ai/deepseek-v4-pro, deepseek-ai/deepseek-v4-flash, minimaxai/minimax-m3,
+    # nvidia/nemotron-3-ultra-550b-a55b.
+    ("NVIDIA_API_KEY",     "https://integrate.api.nvidia.com/v1",                     "z-ai/glm-5.2",            "NVIDIA"),
     ("OPENAI_API_KEY",     "https://api.openai.com/v1",                               "gpt-4o",                  "OpenAI"),
     ("DEEPSEEK_API_KEY",   "https://api.deepseek.com/v1",                             "deepseek-chat",           "DeepSeek"),
     ("MISTRAL_API_KEY",    "https://api.mistral.ai/v1",                               "mistral-large-latest",    "Mistral"),
@@ -242,8 +243,8 @@ def active_models():
 # Suggested model ids per provider, for UI dropdowns. Free-typed ids are always allowed on top of
 # these; a wrong id simply errors the API call with the provider's own message.
 SUGGESTED_MODELS = {
-    "anthropic": ["claude-sonnet-4-6", "claude-opus-4-8", "claude-haiku-4-5"],
-    "nvidia": ["deepseek-ai/deepseek-v4-flash", "deepseek-ai/deepseek-v4-pro", "z-ai/glm-5.2",
+    "anthropic": ["claude-sonnet-5", "claude-opus-4-8", "claude-haiku-4-5"],
+    "nvidia": ["z-ai/glm-5.2", "deepseek-ai/deepseek-v4-pro", "deepseek-ai/deepseek-v4-flash",
                "minimaxai/minimax-m3", "nvidia/nemotron-3-ultra-550b-a55b"],
     "openai": ["gpt-4o", "gpt-4o-mini"],
     "deepseek": ["deepseek-chat", "deepseek-reasoner"],

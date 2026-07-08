@@ -23,8 +23,30 @@
   .topbar .in{max-width:920px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
   .brand{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9AA3AD;font-family:var(--mono);white-space:nowrap;}
   .brand b{color:#fff;font-weight:600;}
-  .topbar select{flex:1;min-width:180px;max-width:460px;background:#262932;color:#E9ECEF;border:1px solid #3A3E49;border-radius:8px;padding:7px 10px;font:inherit;font-size:13.5px;}
-  .toppill{font-family:var(--mono);font-size:11px;color:#B7BEC7;background:#262932;border-radius:6px;padding:3px 8px;white-space:nowrap;}
+  .casebtn{display:flex;align-items:center;gap:9px;flex:1;min-width:120px;max-width:520px;background:#262932;color:#E9ECEF;
+    border:1px solid #3A3E49;border-radius:8px;padding:6px 12px;font:inherit;font-size:13.5px;cursor:pointer;text-align:left;}
+  .casebtn:hover{border-color:#5A6170;}
+  .casebtn .cb-q{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;}
+  .casebtn .cb-meta{font-family:var(--mono);font-size:11px;color:#8B939E;white-space:nowrap;}
+  .casebtn .cb-caret{color:#8B939E;font-size:12px;line-height:1;}
+  /* case switcher modal */
+  .cmodal{position:fixed;inset:0;z-index:60;background:rgba(15,17,20,.46);backdrop-filter:blur(3px);
+    display:flex;align-items:flex-start;justify-content:center;padding:11vh 16px 16px;}
+  .cmodal[hidden]{display:none;}
+  .cmodal-box{width:100%;max-width:580px;background:var(--surface);border:1px solid var(--line-strong);border-radius:14px;
+    box-shadow:0 24px 64px rgba(0,0,0,.30);overflow:hidden;display:flex;flex-direction:column;max-height:78vh;}
+  .cmodal-search{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);}
+  .cmodal-search .cm-ico{color:var(--faint);font-size:17px;}
+  .cmodal-search input{border:0;padding:0;font-size:16px;background:none;}
+  .cmodal-search input:focus{outline:none;}
+  .cmodal-list{overflow:auto;padding:6px;}
+  .crow{display:flex;align-items:baseline;gap:10px;padding:9px 11px;border-radius:9px;cursor:pointer;}
+  .crow:hover,.crow.hl{background:#EEF2F6;}
+  .crow.active{background:#E9F1F8;box-shadow:inset 0 0 0 1px #CFE0EF;}
+  .crow .cq{flex:1;min-width:0;font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .crow .cmeta{font-family:var(--mono);font-size:11px;color:var(--faint);white-space:nowrap;}
+  .cmodal-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line);background:#FBFCFC;}
+  .cmodal-empty{padding:22px;text-align:center;color:var(--faint);font-size:13px;}
   .badge{font-family:var(--mono);font-size:11px;border-radius:6px;padding:4px 10px;white-space:nowrap;border:1px solid transparent;}
   .badge.auto{background:rgba(46,139,111,.18);color:#7CC8AE;border-color:rgba(124,200,174,.35);}
   .badge.manual{background:#262932;color:#B7BEC7;border-color:#3A3E49;}
@@ -114,12 +136,28 @@
 <body>
 
 <div class="topbar"><div class="in">
-  <span class="brand"><b>Ground Knowledge</b> · console</span>
-  <select id="caseSel" title="Active case"></select>
-  <span class="toppill" id="casePill">—</span>
+  <span class="brand"><b>Ground Knowledge</b></span>
+  <button class="casebtn" id="caseBtn" title="Switch question  (Ctrl/⌘-K)">
+    <span class="cb-q" id="caseBtnLabel">Select a question…</span>
+    <span class="cb-meta" id="casePill"></span>
+    <span class="cb-caret">⌄</span>
+  </button>
   <span class="badge manual" id="modeBadge" title="Auto = your key runs search/label; Manual = copy prompts into a chatbot">…</span>
   <button class="ghostbtn" id="openViewer">Viewer ↗</button>
 </div></div>
+
+<!-- searchable case switcher (command-palette style; scales to many questions) -->
+<div id="caseModal" class="cmodal" hidden>
+  <div class="cmodal-box" role="dialog" aria-label="Switch question">
+    <div class="cmodal-search"><span class="cm-ico">⌕</span>
+      <input id="caseSearch" placeholder="Search questions by title or id…" autocomplete="off"></div>
+    <div class="cmodal-list" id="caseList"></div>
+    <div class="cmodal-foot">
+      <span class="hint" id="caseCount"></span>
+      <button class="ghost sm" id="caseNewBtn">+ New question</button>
+    </div>
+  </div>
+</div>
 <div class="navstrip"><div class="in" id="navstrip">
   <a href="#sec-models">Models</a><a href="#sec-case">Case</a><a href="#sec-portal">Portal</a>
   <a href="#sec-auto">Do it all</a><a href="#sec-find">Find</a><a href="#sec-label">Label</a>
@@ -188,15 +226,19 @@
   <!-- Case -->
   <div class="card" id="sec-case">
     <div class="step"><span class="stepnum">1</span> Case</div>
-    <h2>Choose or create a question</h2>
-    <p class="desc">The active case is selected in the top bar. Create a new question here — it starts
-    <b>local</b>; push it to a portal when it's ready.</p>
+    <h2>Active question</h2>
+    <div class="hint" id="caseInfo"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="ghost auto" id="switchBtn">⌕ Switch question</button>
+      <span class="hint" style="align-self:center">or press <code>Ctrl/⌘-K</code> anywhere</span>
+    </div>
+    <div class="divider"></div>
+    <p class="desc">Create a new question — it starts <b>local</b>; push it to a portal when it's ready.</p>
     <div class="row">
       <div><label for="newQ">Question</label><input id="newQ" placeholder="Does remote work increase productivity?"></div>
       <div class="narrow"><label for="newId">id (optional)</label><input id="newId" placeholder="auto"></div>
       <button class="auto" id="createBtn">Create</button>
     </div>
-    <div class="hint" id="caseInfo"></div>
   </div>
 
   <!-- Portal sync -->
@@ -408,7 +450,10 @@ function shortSummary(){
   return (s.provider===l.provider&&s.model===l.model)?sm:sm+" → "+lm;
 }
 $("#modeBadge").addEventListener("click",()=>{if(!HASKEY)return;MODE=isAuto()?"manual":"auto";renderMode();});
-const caseId=()=>$("#caseSel").value;
+
+// ---- active case (state, not a <select> — the switcher below scales to many questions)
+let ACTIVE=null;
+const caseId=()=>ACTIVE||"";
 const need=()=>{if(!caseId()){alert("Choose or create a case first.");return false;}return true;};
 
 async function loadCases(keep){
@@ -420,15 +465,67 @@ async function loadCases(keep){
   if(!$("#portalUrl").value) $("#portalUrl").value = localStorage.getItem("portalUrl") || j.portal || "";
   renderConfig();
   renderMode();
-  const sel=$("#caseSel");
-  sel.innerHTML=CASES.map(c=>`<option value="${c.id}">${esc(c.question||c.id)}</option>`).join("")||`<option value="">(no cases — create one below)</option>`;
-  if(keep&&CASES.some(c=>c.id===keep))sel.value=keep;
-  showInfo();
+  // choose the active case: an explicit keep, else the current one if it survived, else the first
+  ACTIVE = (keep&&CASES.some(c=>c.id===keep)) ? keep
+         : (CASES.some(c=>c.id===ACTIVE) ? ACTIVE
+         : (CASES[0]?CASES[0].id:null));
+  renderActiveCase();
+  if(!$("#caseModal").hidden) renderCaseList();
 }
-function showInfo(){const c=CASES.find(x=>x.id===caseId());
-  $("#casePill").textContent=c?`v${c.version} · ${c.sources} src`:"—";
-  $("#caseInfo").innerHTML=c?`Active: <span class="pill">${esc(c.id)}</span> <span class="pill">v${c.version}</span> ${c.sources} source(s) · <span class="muted">${esc(c.question)}</span>`:"";}
-$("#caseSel").addEventListener("change",showInfo);
+function activeCase(){return CASES.find(x=>x.id===ACTIVE);}
+function renderActiveCase(){
+  const c=activeCase();
+  $("#caseBtnLabel").textContent = c ? (c.question||c.id) : "Select a question…";
+  $("#casePill").textContent = c ? `v${c.version} · ${c.sources} src` : "";
+  $("#caseInfo").innerHTML = c
+    ? `<span class="pill">${esc(c.id)}</span> <span class="pill">v${c.version}</span> ${c.sources} source(s)<br><span class="muted">${esc(c.question)}</span>`
+    : `<span class="muted">No case selected. Create one below, or pull from a portal.</span>`;
+}
+
+// ---- searchable case switcher (command palette) ----
+let FILTERED=[], hlIndex=0;
+function openPicker(){const m=$("#caseModal");m.hidden=false;$("#caseSearch").value="";renderCaseList();
+  const cur=FILTERED.findIndex(c=>c.id===ACTIVE);hlIndex=cur>=0?cur:0;paintHl();
+  setTimeout(()=>$("#caseSearch").focus(),0);}
+function closePicker(){$("#caseModal").hidden=true;}
+function renderCaseList(){
+  const term=($("#caseSearch").value||"").trim().toLowerCase();
+  FILTERED = term ? CASES.filter(c=>((c.question||"")+" "+(c.id||"")).toLowerCase().includes(term)) : CASES.slice();
+  const box=$("#caseList");
+  if(!FILTERED.length){box.innerHTML=`<div class="cmodal-empty">${CASES.length?"No questions match “"+esc(term)+"”.":"No cases yet — create one."}</div>`;}
+  else box.innerHTML=FILTERED.map((c,i)=>`<div class="crow${c.id===ACTIVE?" active":""}" data-i="${i}">
+      <span class="cq">${esc(c.question||c.id)}</span>
+      <span class="cmeta">v${c.version} · ${c.sources} src</span></div>`).join("");
+  box.querySelectorAll(".crow").forEach(r=>{
+    r.addEventListener("click",()=>pickCase(FILTERED[+r.dataset.i].id));
+    r.addEventListener("mousemove",()=>{hlIndex=+r.dataset.i;paintHl();});
+  });
+  $("#caseCount").textContent=`${FILTERED.length} of ${CASES.length} question${CASES.length===1?"":"s"}`;
+  if(hlIndex>=FILTERED.length)hlIndex=Math.max(0,FILTERED.length-1);
+  paintHl();
+}
+function paintHl(){$("#caseList").querySelectorAll(".crow").forEach(r=>r.classList.toggle("hl",+r.dataset.i===hlIndex));
+  const el=$("#caseList").querySelector(".crow.hl");if(el)el.scrollIntoView({block:"nearest"});}
+function pickCase(id){if(id&&id!==ACTIVE){ACTIVE=id;renderActiveCase();clearCaseOutputs();}closePicker();}
+function clearCaseOutputs(){  // switching case: drop the previous case's transient panels
+  ["#candidates","#results","#ocResults","#extractOut","#gapsList","#oneOut","#curDup"].forEach(s=>{const e=$(s);if(e)e.innerHTML="";});
+  $("#curManual").style.display="none";$("#fetchBtn").disabled=true;$("#fetchHint").textContent="Select sources above first.";
+  CANDS=[];GAPS=[];
+}
+$("#caseBtn").addEventListener("click",openPicker);
+$("#switchBtn").addEventListener("click",openPicker);
+$("#caseSearch").addEventListener("input",()=>{hlIndex=0;renderCaseList();});
+$("#caseSearch").addEventListener("keydown",e=>{
+  if(e.key==="ArrowDown"){e.preventDefault();hlIndex=Math.min(FILTERED.length-1,hlIndex+1);paintHl();}
+  else if(e.key==="ArrowUp"){e.preventDefault();hlIndex=Math.max(0,hlIndex-1);paintHl();}
+  else if(e.key==="Enter"){e.preventDefault();if(FILTERED[hlIndex])pickCase(FILTERED[hlIndex].id);}
+  else if(e.key==="Escape"){closePicker();}
+});
+$("#caseModal").addEventListener("mousedown",e=>{if(e.target===$("#caseModal"))closePicker();});
+$("#caseNewBtn").addEventListener("click",()=>{closePicker();document.querySelector("#sec-case").scrollIntoView({block:"center"});setTimeout(()=>$("#newQ").focus(),200);});
+document.addEventListener("keydown",e=>{
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#caseModal").hidden?openPicker():closePicker();}
+});
 
 // ---- Models & access -----------------------------------------------------------------------
 const PROVIDER_SHORT={anthropic:"Anthropic",nvidia:"NVIDIA",openai:"OpenAI",deepseek:"DeepSeek",

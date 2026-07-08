@@ -110,7 +110,12 @@ class ModelResolutionTests(EnvCase):
 
     def test_provider_defaults_apply_when_nothing_is_pinned(self):
         os.environ["NVIDIA_API_KEY"] = "k"
-        self.assertEqual(self._phase("label")[1], "deepseek-ai/deepseek-v4-flash")
+        self.assertEqual(self._phase("label")[1], "z-ai/glm-5.2")
+
+    def test_anthropic_default_is_sonnet_5(self):
+        os.environ["ANTHROPIC_API_KEY"] = "k"
+        self.assertEqual(self._phase("search")[1], "claude-sonnet-5")
+        self.assertEqual(self._phase("label")[1], "claude-sonnet-5")
 
 
 class ProviderStatusTests(EnvCase):

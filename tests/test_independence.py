@@ -431,7 +431,7 @@ class BudgetAndFundingTests(unittest.TestCase):
     def test_usage_accumulates_and_prices(self):
         from ingest import llm
         llm.reset_usage()
-        llm._record_usage("claude-sonnet-4-6", {"usage": {"input_tokens": 1_000_000, "output_tokens": 0}})
+        llm._record_usage("claude-sonnet-5", {"usage": {"input_tokens": 1_000_000, "output_tokens": 0}})
         self.assertAlmostEqual(llm.usage()["usd"], 3.0, places=4)   # $3 / 1M input on sonnet
 
     def test_price_lookup_picks_longest_match_regardless_of_dict_order(self):
