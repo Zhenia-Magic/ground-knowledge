@@ -21,6 +21,7 @@ Overrides (all optional, all also settable live from the local console's Models 
 """
 import json
 import os
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -30,6 +31,32 @@ RETRY_CODES = {429, 500, 502, 503, 529}  # transient — Anthropic 529 = Overloa
 # runs past this silently truncates the JSON array and drops trailing sources — which is why
 # this must be generous AND why batches are packed to a bounded size (ingest/pipeline.py).
 _MAX_OUTPUT_TOKENS = int(os.environ.get("EPISTEMIC_MAX_OUTPUT_TOKENS", "8192"))
+
+# Requests/min ceiling for the rate-limited free provider (NVIDIA build.nvidia.com ~= 40/min).
+# A multi-model ensemble multiplies request count, so this gate keeps a long run under the limit.
+_RATE_LIMIT_RPM = int(os.environ.get("EPISTEMIC_RATE_LIMIT_RPM", "40"))
+_rate_lock = threading.Lock()
+_rate_calls = []   # timestamps of recent rate-gated requests (sliding 60s window)
+
+
+def _rate_gate():
+    """Block until issuing another rate-limited request keeps us within _RATE_LIMIT_RPM over a
+    trailing 60s window. Thread-safe (the console serves requests on threads); computes the wait
+    under the lock but sleeps OUTSIDE it, then re-checks, so callers queue rather than busy-spin."""
+    if _RATE_LIMIT_RPM <= 0:
+        return
+    while True:
+        with _rate_lock:
+            now = time.time()
+            cutoff = now - 60.0
+            while _rate_calls and _rate_calls[0] < cutoff:
+                _rate_calls.pop(0)
+            if len(_rate_calls) < _RATE_LIMIT_RPM:
+                _rate_calls.append(now)
+                return
+            wait = 60.0 - (now - _rate_calls[0]) + 0.05
+        _say("  rate limit {}/min reached — pausing {:.1f}s".format(_RATE_LIMIT_RPM, wait))
+        time.sleep(max(wait, 0.1))
 # Sonnet by default: faster/cheaper and far less prone to 529 "Overloaded" than Opus.
 # Override with EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL / EPISTEMIC_MODEL (see module docstring).
 _DEFAULT_ANTHROPIC = "claude-sonnet-5"
@@ -230,12 +257,43 @@ def _say(msg):
     print(msg, flush=True)
 
 
+def label_models():
+    """The labelling ENSEMBLE: EPISTEMIC_LABEL_MODELS as a list when it names 2+ models, else [].
+    When non-empty, labelling runs each model and combines the results (ingest/ensemble.py)."""
+    raw = os.environ.get("EPISTEMIC_LABEL_MODELS", "")
+    models = [m.strip() for m in raw.replace("\n", ",").split(",") if m.strip()]
+    return models if len(models) >= 2 else []
+
+
 def active_model(phase="label"):
     """Human-readable 'Provider / model' the given phase ('search' or 'label') will use."""
     sel = _select(phase)
     if sel is None:
         return "manual (no API key)"
+    if phase == "label" and label_models():
+        return sel[3] + " / ensemble: " + " + ".join(m.split("/")[-1] for m in label_models())
     return sel[3] + " / " + sel[2]
+
+
+def complete_ensemble(prompt, system=None):
+    """Run `prompt` through EVERY ensemble label model on the label provider's transport, returning
+    [(model, text), ...] — or None when no ensemble is configured (caller falls back to complete()).
+    Calls are SEQUENTIAL and rate-gated (via the transport) so a free provider's req/min limit
+    isn't blown by fanning out N models per batch."""
+    models = label_models()
+    if not models:
+        return None
+    sel = _label_provider()
+    if sel is None:
+        raise SystemExit(_NO_KEY_MSG)
+    kind, c = sel
+    out = []
+    for m in models:
+        if kind == "anthropic":
+            out.append((m, _anthropic(prompt, system, False, False, m)))
+        else:
+            out.append((m, _openai_compat(prompt, system, c[0], c[1], m)))
+    return out
 
 
 def active_models():
@@ -271,21 +329,26 @@ def provider_status():
         providers.append({"id": pid, "label": row[3], "hasKey": bool(os.environ.get(row[0])),
                           "free": pid == "nvidia", "webSearch": False, "defaultModel": row[2],
                           "models": SUGGESTED_MODELS.get(pid, [row[2]])})
+    ensemble = label_models()
     phases = {}
     for phase in ("search", "label"):
         sel = _select(phase)
         pin = (os.environ.get(_PIN_ENV[phase]) or "").strip().lower() or None
         eff = _provider_id(_search_provider() if phase == "search" else _label_provider())
+        model = sel[2] if sel else None
+        pinned_model = os.environ.get(
+            "EPISTEMIC_SEARCH_MODEL" if phase == "search" else "EPISTEMIC_LABEL_MODEL") or None
+        if phase == "label" and ensemble:
+            model = "ensemble: " + " + ".join(m.split("/")[-1] for m in ensemble)
+            pinned_model = ", ".join(ensemble)          # so the UI input round-trips the list
         phases[phase] = {
-            "provider": eff, "providerLabel": sel[3] if sel else None,
-            "model": sel[2] if sel else None,
-            "pinnedProvider": pin,
-            "pinnedModel": os.environ.get(
-                "EPISTEMIC_SEARCH_MODEL" if phase == "search" else "EPISTEMIC_LABEL_MODEL") or None,
+            "provider": eff, "providerLabel": sel[3] if sel else None, "model": model,
+            "pinnedProvider": pin, "pinnedModel": pinned_model,
             "pinBroken": bool(pin and pin != "auto" and pin != eff),
+            "ensemble": ensemble if phase == "label" else [],
         }
     return {"providers": providers, "search": phases["search"], "label": phases["label"],
-            "hasKey": has_key(), "summary": active_models()}
+            "hasKey": has_key(), "summary": active_models(), "rateLimitRpm": _RATE_LIMIT_RPM}
 
 
 def _post(url, headers, body, tries=4):
@@ -343,6 +406,8 @@ def _openai_compat(prompt, system, env, base, model):
         msgs.append({"role": "system", "content": system})
     msgs.append({"role": "user", "content": prompt})
     headers = {"Authorization": "Bearer " + os.environ[env], "content-type": "application/json"}
+    if "nvidia" in base.lower():          # free tier ~40 req/min — pace ensemble + batch runs
+        _rate_gate()
     # max_tokens is REQUIRED here: without it these backends fall back to a small default output
     # cap (often ~4k) and silently truncate a multi-source batch's JSON array mid-array.
     resp = _post(base.rstrip("/") + "/chat/completions", headers,

@@ -188,14 +188,19 @@
     <div class="phaserow">
       <div class="phasetag">Label</div>
       <div><label for="labelProv">Provider</label><select id="labelProv"></select></div>
-      <div><label for="labelModel">Model <span class="muted">(blank = default)</span></label>
+      <div><label for="labelModel">Model <span class="muted">(blank = default; comma-separate 2+ for an ensemble)</span></label>
         <input id="labelModel" list="labelModels" placeholder="" autocomplete="off"><datalist id="labelModels"></datalist></div>
     </div>
+    <p class="hint" style="margin:2px 0 0">Enter several label models comma-separated (e.g.
+    <code>z-ai/glm-5.2, deepseek-ai/deepseek-v4-pro, minimaxai/minimax-m3</code>) to run each and
+    combine by majority vote — a less model-dependent label. Ensemble runs stay under the free
+    provider's request/min limit automatically.</p>
     <div class="row" style="margin-top:12px">
       <button id="cfgApply">Apply</button>
       <button class="ghost" id="cfgReset">Reset to auto</button>
       <span class="hint" style="flex:1">Session-only. Persist with <code>EPISTEMIC_SEARCH_PROVIDER</code> /
-      <code>EPISTEMIC_LABEL_PROVIDER</code> / <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code> in <code>.env</code>.</span>
+      <code>EPISTEMIC_LABEL_PROVIDER</code> / <code>EPISTEMIC_SEARCH_MODEL</code> / <code>EPISTEMIC_LABEL_MODEL</code>
+      (or <code>EPISTEMIC_LABEL_MODELS</code> for an ensemble) in <code>.env</code>.</span>
     </div>
     <div class="toast" id="cfgToast"></div>
 

@@ -564,6 +564,18 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
                        'filed under, not a fabricated one. Worth a curator\'s second look.').format(
                            w["label"], w["low"], w["classed"]),
         })
+
+    # multi-model ensemble: sources where the models had NO majority position (ingest/ensemble.py)
+    dis = [s for s in kb["sources"] if (s.get("modelAgreement") or {}).get("flagged")]
+    if dis:
+        out.append({
+            "kind": "model-disagreement", "positionId": None, "label": "labelling ensemble",
+            "hue": "#8a6510", "badge": "model disagreement",
+            "headline": "Models disagreed on some labels.",
+            "detail": ('{} source(s) had no majority position across the labelling ensemble; the '
+                       'highest-confidence model\'s label was used and flagged. Worth a curator\'s '
+                       'check.').format(len(dis)),
+        })
     return out
 
 

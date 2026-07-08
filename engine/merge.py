@@ -346,6 +346,8 @@ def merge_delta(kb, delta):
         # SCHEMA.md and engine/verify.py. Never guessed as 'full'; that would overclaim.
         "textDepth": src.get("textDepth", "unknown"),
     })
+    if src.get("modelAgreement"):        # multi-model ensemble agreement report (ingest/ensemble.py)
+        kb["sources"][-1]["modelAgreement"] = src["modelAgreement"]
     report["addedSource"] = sid
 
     for fw in delta.get("factorWeights", []):

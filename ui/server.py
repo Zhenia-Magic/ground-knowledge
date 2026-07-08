@@ -33,7 +33,7 @@ from ingest import llm
 from ingest.extract import extract_text, clean_url
 from ingest.pipeline import (build_research_prompt, build_discover_prompt, build_extract_prompt,
                              build_batch_extract_prompt, extract_prompts, _parse_json,
-                             _carry_meta, _prompt_text, pack_batches, is_nonscholarly)
+                             _carry_meta, _prompt_text, pack_batches, is_nonscholarly, label_batch)
 
 
 def has_key():
@@ -98,10 +98,18 @@ def config_op(search_provider=None, search_model=None, label_provider=None, labe
                 os.environ[penv] = prov
         if model is not None:
             model = (model or "").strip()
-            if model:
-                os.environ[menv] = model
-            else:
+            # For the LABEL phase, a comma/newline-separated list means a multi-model ENSEMBLE
+            # (EPISTEMIC_LABEL_MODELS); a single value is the plain per-phase model pin.
+            if phase == "label" and ("," in model or "\n" in model):
+                os.environ["EPISTEMIC_LABEL_MODELS"] = model
                 os.environ.pop(menv, None)
+            else:
+                if phase == "label":
+                    os.environ.pop("EPISTEMIC_LABEL_MODELS", None)
+                if model:
+                    os.environ[menv] = model
+                else:
+                    os.environ.pop(menv, None)
     log("models configured: " + llm.active_models())
     return {"model": llm.active_models(), "config": llm.provider_status()}
 
@@ -326,9 +334,7 @@ def extract_op(cid, urls, apply, batch=None, max_text=None):
         log("labelling batch {}/{} ({} source(s), ~{}k chars) via {}…".format(
             n, nbatches, len(group), chars // 1000, llm.active_model("label")))
         kbnow = _read(path)  # fresh each batch so the prompt sees entities added earlier → reuse
-        arr = _parse_json(llm.complete(build_batch_extract_prompt(kbnow, group, max_text)))
-        if isinstance(arr, dict):
-            arr = [arr]
+        arr = label_batch(kbnow, group, max_text)   # ensemble-combined when 2+ label models
         if len(arr) != len(group):   # truncated/miscounted array: labels would misalign with docs
             log("  ⚠ model returned {} delta(s) for {} source(s) — labelling by-source may be "
                 "misaligned; check results.".format(len(arr), len(group)))

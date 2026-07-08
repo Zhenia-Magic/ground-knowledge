@@ -15,6 +15,7 @@ import sys
 
 from .extract import extract_text
 from . import llm
+from . import ensemble
 from engine.verify import match_quote
 
 # --- Shared, strengthened extraction contract (one place, used by all three prompts) ---------
@@ -372,6 +373,24 @@ def pack_batches(docs, budget_chars=None, max_count=None):
     return batches
 
 
+def label_batch(kb, docs, max_text=None):
+    """Label one packed batch and return a list of deltas aligned to `docs`. Uses the multi-model
+    ENSEMBLE (running each EPISTEMIC_LABEL_MODELS model and combining, ingest/ensemble.py) when 2+
+    are configured, else the single label model. The deterministic merge downstream is identical
+    either way — the ensemble only produces a less model-dependent delta before it."""
+    prompt = build_batch_extract_prompt(kb, docs, max_text)
+    ens = llm.complete_ensemble(prompt)
+    if ens:
+        arrays = []
+        for _m, text in ens:
+            a = _parse_json(text)
+            arrays.append(a if isinstance(a, list) else [a])
+        consensus, _agree = ensemble.combine(arrays, len(docs))
+        return consensus
+    arr = _parse_json(llm.complete(prompt))
+    return arr if isinstance(arr, list) else [arr]
+
+
 def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
     """Fetch and extract MANY sources with FEWER LLM calls: each group of up to `batch`
     sources becomes ONE call returning an array of deltas. Fetch failures are skipped, not
@@ -395,10 +414,7 @@ def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
                 for group in pack_batches(docs, max_count=batch)]
     deltas = []
     for group in pack_batches(docs, max_count=batch):
-        prompt = build_batch_extract_prompt(kb, group, max_text)
-        arr = _parse_json(llm.complete(prompt))
-        if isinstance(arr, dict):
-            arr = [arr]
+        arr = label_batch(kb, group, max_text)
         for delta, doc in zip(arr, group):
             _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
             deltas.append(delta)
