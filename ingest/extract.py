@@ -16,7 +16,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-MAX_CHARS = 24000  # keep the extraction prompt within a sane token budget
+# Per-source text is sent to the labeller IN FULL — do not truncate a real paper (the old 24k
+# cap silently threw away most of a full-text article, so labels rested on the intro alone).
+# This is only a pathological-safety ceiling (a runaway HTML scrape), set very high and
+# env-overridable; batching (ingest/pipeline.pack_batches) is what bounds each LLM call now.
+MAX_CHARS = int(os.environ.get("EPISTEMIC_MAX_SOURCE_CHARS", str(1_000_000)))
 MAX_FETCH_BYTES = int(os.environ.get("EPISTEMIC_MAX_FETCH_BYTES", str(12 * 1024 * 1024)))
 BLOCK_CODES = {401, 403, 429, 451}  # publisher/bot blocks worth a reader-proxy retry
 # markers of a bot-wall / CAPTCHA / interstitial page — NOT real article text

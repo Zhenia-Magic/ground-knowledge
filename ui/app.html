@@ -765,7 +765,7 @@ function updateFetch(){const n=selectedUrls().length;$("#fetchBtn").disabled=!n;
 
 // ---- Step 3: fetch & label
 $("#fetchBtn").addEventListener("click",()=>{const urls=selectedUrls();if(!urls.length)return;busy($("#fetchBtn"),async()=>{
-  const r=await api("/api/extract",{id:caseId(),urls,apply:isAuto(),batch:8});
+  const r=await api("/api/extract",{id:caseId(),urls,apply:isAuto()});  // server packs batches by input size
   const skip=r.skipped&&r.skipped.length?` · ${r.skipped.length} skipped (couldn't fetch)`:"";
   if(r.mode==="manual"||r.prompts){
     renderPrompts(r.prompts||[]);

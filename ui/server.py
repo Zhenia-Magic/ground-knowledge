@@ -33,7 +33,7 @@ from ingest import llm
 from ingest.extract import extract_text, clean_url
 from ingest.pipeline import (build_research_prompt, build_discover_prompt, build_extract_prompt,
                              build_batch_extract_prompt, extract_prompts, _parse_json,
-                             _carry_meta, _prompt_text)
+                             _carry_meta, _prompt_text, pack_batches, is_nonscholarly)
 
 
 def has_key():
@@ -226,11 +226,14 @@ def discover_op(cid, k, apply, source="api", deep=False):
     want_api = source in ("api", "both") and not os.environ.get("EPISTEMIC_NO_API")
     want_web = source in ("web", "both")
 
-    cands, seen = [], set()
+    cands, seen, dropped = [], set(), [0]
 
-    def _merge(arr):
+    def _merge(arr, filter_nonscholarly=False):
         for c in arr or []:
             if not isinstance(c, dict) or not c.get("url"):
+                continue
+            if filter_nonscholarly and is_nonscholarly(c.get("url")):
+                dropped[0] += 1                     # encyclopedia / news / press page from web search
                 continue
             key = norm(c.get("title") or "") or c.get("url")
             if key in seen:
@@ -258,22 +261,26 @@ def discover_op(cid, k, apply, source="api", deep=False):
         log("searching the web via {}{}…".format(
             llm.active_model("search"), " (deep research)" if deep else ""))
         before = len(cands)
-        _merge([c for c in (_parse_json(llm.discover(prompt, deep=deep)) or []) if isinstance(c, dict)])
+        _merge([c for c in (_parse_json(llm.discover(prompt, deep=deep)) or []) if isinstance(c, dict)],
+               filter_nonscholarly=True)
         log("web search added {} new candidate(s).".format(len(cands) - before))
+        if dropped[0]:
+            log("dropped {} non-scholarly result(s) (encyclopedia / news / press release).".format(dropped[0]))
 
     log("{} candidate(s) total.".format(len(cands)))
     return {"mode": "auto", "candidates": cands}
 
 
-def extract_op(cid, urls, apply, batch=5, max_text=None):
+def extract_op(cid, urls, apply, batch=None, max_text=None):
     """The grounded step: WE fetch each URL's best available text, then build the extraction
     prompt (MANUAL) or run it through the model (AUTO). Two reliability features:
       * skip URLs already in the KB BEFORE fetching/labelling — so re-running after a failure
         never re-spends credits on sources already added.
       * AUTO merges batch-by-batch, persisting after each, so a mid-run error keeps finished work.
-    Unfetchable pages are skipped and reported, never guessed. Sends each source's full fetched
-    text by default (max_text=None); pass a char cap to trim it for very large batches."""
-    batch = int(batch or 5)
+    Unfetchable pages are skipped and reported, never guessed. Sends each source's FULL fetched
+    text; batches are packed size-adaptively (ingest.pipeline.pack_batches) so a call fits the
+    input window — a long source may go alone. `batch` optionally caps sources per batch."""
+    batch = int(batch) if batch else None
     max_text = int(max_text) if max_text else None
     urls = [clean_url(u) for u in (urls or []) if u]
     if not urls:
@@ -311,16 +318,20 @@ def extract_op(cid, urls, apply, batch=5, max_text=None):
         log("built {} extraction prompt(s) to paste.".format(len(prompts)))
         return {"mode": "manual", "fetched": len(docs), "skipped": skipped, "prompts": prompts}
 
-    nbatches = (len(docs) + batch - 1) // batch
+    batches = pack_batches(docs, max_count=batch)
+    nbatches = len(batches)
     results = []
-    for bi in range(0, len(docs), batch):
-        group = docs[bi:bi + batch]
-        n = bi // batch + 1
-        log("labelling batch {}/{} ({} sources) via {}…".format(n, nbatches, len(group), llm.active_model("label")))
+    for n, group in enumerate(batches, 1):
+        chars = sum(len(d.get("text") or "") for d in group)
+        log("labelling batch {}/{} ({} source(s), ~{}k chars) via {}…".format(
+            n, nbatches, len(group), chars // 1000, llm.active_model("label")))
         kbnow = _read(path)  # fresh each batch so the prompt sees entities added earlier → reuse
         arr = _parse_json(llm.complete(build_batch_extract_prompt(kbnow, group, max_text)))
         if isinstance(arr, dict):
             arr = [arr]
+        if len(arr) != len(group):   # truncated/miscounted array: labels would misalign with docs
+            log("  ⚠ model returned {} delta(s) for {} source(s) — labelling by-source may be "
+                "misaligned; check results.".format(len(arr), len(group)))
         for delta, doc in zip(arr, group):
             _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
         res = _merge_list(cid, arr)  # persists to disk immediately → resume-safe
@@ -344,7 +355,7 @@ def run_all_op(cid, k, source="api", deep=False):
     if not urls:
         log("no candidate URLs returned.")
         return {"candidates": 0, "fetched": 0, "skipped": [], "results": []}
-    ex = extract_op(cid, urls, apply=True, batch=8)
+    ex = extract_op(cid, urls, apply=True)   # size-adaptive batching (pack_batches)
     added = sum(1 for r in ex.get("results", []) if r.get("status") == "added")
     log("=== done — {} source(s) added ===".format(added))
     return {"candidates": len(cands), "fetched": ex.get("fetched", 0),

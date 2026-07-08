@@ -64,7 +64,9 @@ _RULES = """Rules (apply to each source):
   "conditionally safe" camps — one for scar status, one for elective timing). Use a SINGLE "it
   depends / conditionally" position and capture each differing condition as a FACTOR. If a new
   position label would share its stance word with an existing one (both "safe", both "increases"),
-  reuse that position instead.
+  reuse that position instead. The label states ONLY the direction — never a parenthetical or
+  qualifier like "(after bias adjustment)", "(short-term)", "(with caveats)"; that condition is a
+  FACTOR. "No clear effect (after adjustment)" and "No clear effect" are the SAME position.
 - restsOn: the underlying PRIMARY evidence — named cohorts, trials, or biobanks (e.g. Nurses'
   Health Study, EPIC, a specific RCT). A review or meta-analysis restsOn the cohorts/trials it
   POOLS — NOT "the literature", "studies through <year>", or a label that just describes this
@@ -78,6 +80,11 @@ _RULES = """Rules (apply to each source):
 - funding: classify the funder from the funding/COI statement into ONE of: Industry, Advocacy,
   Government/public, Nonprofit/charity, Academic/institutional. Use "Undisclosed" if the text
   states no funding/COI — do NOT assume independence when it is silent.
+- SOURCE TYPE: a PRESS RELEASE, newsroom page, news/magazine article, or encyclopedia entry (e.g.
+  a university news page, Wikipedia) is NEVER primary evidence — it only reports on a study. Label
+  it "Narrative/Commentary" and put the STUDY it describes in restsOn via SRC:/NEW-SRC:, never a
+  dataset. Only the study/report ITSELF is primary. A court opinion is likewise not scientific
+  evidence for an empirical question — treat it as commentary, not a data source.
 - evidence: the closest EXISTING evidence type above; "NEW:<label>" only if none fit.
 - population: the studied GROUP (region, menopausal status, age band) — NOT the study design (that
   is "evidence"). Reuse an existing term; prefer broad buckets; "—" if not population-specific.
@@ -175,10 +182,22 @@ RESEARCH_TEMPLATE = (
     + _RULES + "\n\nReturn a JSON ARRAY, one object per source, each matching:\n" + _SCHEMA + "\n")
 
 DISCOVER_TEMPLATE = """Find %COUNT% that bear on this research dispute,
-spanning the DIFFERENT positions people hold (not just one side). Prefer primary sources:
-papers, datasets, judge decisions, debate transcripts, well-known critical analyses.
+spanning the DIFFERENT positions people hold (not just one side).
 
 QUESTION: %QUESTION%
+
+Return ONLY high-quality SCIENTIFIC / SCHOLARLY sources:
+  * peer-reviewed journal articles, systematic reviews, and meta-analyses
+  * preprints (arXiv, SSRN, bioRxiv, PsyArXiv, …)
+  * primary datasets, cohort or trial reports
+  * official scientific or government technical reports
+Give the link to the STUDY ITSELF — prefer a DOI, PubMed, PMC, arXiv, or publisher URL.
+
+Do NOT return, under any circumstances: Wikipedia or other encyclopedias; news or magazine
+articles; university, journal, or company PRESS RELEASES / newsroom pages; blogs; social media;
+court opinions or legal blogs; or marketing pages. If a finding is only reachable through a press
+release or news write-up, return the underlying paper's link instead — if you cannot find it, omit
+that source rather than substituting the write-up.
 
 For each source return an object. Output ONLY a JSON array:
 [{"title":"...","url":"...","year":2020,"why":"one line: which position/angle it represents"}]
@@ -190,8 +209,38 @@ DEEP RESEARCH MODE — be exhaustive, not quick. Run MANY separate web searches;
 the first page. Search at least: (1) each distinct position by name, (2) the strongest evidence
 FOR each side, (3) the strongest criticism AGAINST each side, (4) the primary datasets / cohorts
 / trials the debate rests on, (5) systematic reviews and meta-analyses, (6) notable dissenting or
-minority views. Prefer primary sources over news/blogs, deduplicate, and verify each URL resolves
-before listing it. Return as many high-quality, genuinely distinct sources as you can find."""
+minority views. Return ONLY peer-reviewed papers, preprints, primary datasets, and official
+scientific/government reports — never Wikipedia, news, press releases, blogs, or court opinions
+(see the exclusion list above). Deduplicate, prefer the study's own DOI/PubMed/arXiv link, and
+verify each URL resolves. Return as many high-quality, genuinely distinct scholarly sources as
+you can find."""
+
+
+# Hosts / URL patterns that are never a scientific PRIMARY source. Applied to WEB discovery results
+# as a safety net behind the prompt (OpenAlex results are scholarly by construction, so they never
+# match). A university press release at a bare path can still slip through — the extraction rules
+# then tier it as secondary (never primary), so it can't mint a fake independent root either way.
+_NONSCHOLARLY_HOSTS = (
+    "wikipedia.org", "wikiwand.com", "britannica.com", "scholarpedia.org", "reddit.com",
+    "quora.com", "medium.com", "substack.com", "twitter.com", "x.com", "facebook.com",
+    "instagram.com", "youtube.com", "youtu.be", "linkedin.com", "scotusblog.com", "oyez.org",
+)
+_NONSCHOLARLY_PATH = ("/news/", "/news-", "/newsroom", "/press-release", "/press/", "/media-",
+                      "/blog/", "/blogs/", "/story/", "/stories/", "/opinion/", "/magazine/")
+
+
+def is_nonscholarly(url):
+    """True for a URL that clearly isn't a scientific primary source (encyclopedia, news, press
+    release, blog, social, court page). Conservative: matches known hosts + press/news path
+    patterns, so a DOI / PubMed / arXiv / journal link never trips it."""
+    import urllib.parse
+    u = (url or "").strip().lower()
+    if not u:
+        return False
+    host = urllib.parse.urlsplit(u).netloc
+    if any(h in host for h in _NONSCHOLARLY_HOSTS):
+        return True
+    return any(p in u for p in _NONSCHOLARLY_PATH)
 
 
 def _vocab_options(kb, kind):
@@ -293,7 +342,37 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
             .replace("%SOURCES%", "\n\n".join(blocks)))
 
 
-def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=None):
+# --- size-adaptive batching -------------------------------------------------------------------
+# Sources are sent to the labeller in full (no per-source truncation), so a batch is packed by
+# how much text FITS one LLM input rather than a fixed source count: keep adding sources until the
+# next would push the batch past the char budget (or the count cap that protects the OUTPUT token
+# limit), then start a new batch. A single source larger than the budget goes alone.
+_BATCH_CHARS = int(os.environ.get("EPISTEMIC_BATCH_CHARS", str(200_000)))   # ~50k input tokens
+_BATCH_MAX = int(os.environ.get("EPISTEMIC_BATCH_MAX", "6"))               # output-token safety
+
+
+def _doc_len(d):
+    return len(d.get("text") or "")
+
+
+def pack_batches(docs, budget_chars=None, max_count=None):
+    """Group docs into batches that each fit one LLM call. Greedy first-fit by cumulative source
+    text; an oversized single source forms its own (solo) batch. `max_count` caps sources per
+    batch so a batch of many short sources can't blow the output-token limit either."""
+    budget = int(budget_chars or _BATCH_CHARS)
+    cap = int(max_count or _BATCH_MAX)
+    batches, cur, cur_chars = [], [], 0
+    for d in docs:
+        n = _doc_len(d)
+        if cur and (cur_chars + n > budget or len(cur) >= cap):
+            batches.append(cur); cur, cur_chars = [], 0
+        cur.append(d); cur_chars += n
+    if cur:
+        batches.append(cur)
+    return batches
+
+
+def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
     """Fetch and extract MANY sources with FEWER LLM calls: each group of up to `batch`
     sources becomes ONE call returning an array of deltas. Fetch failures are skipped, not
     fatal. Returns the list of deltas; in dry_run it RETURNS the list of combined prompt
@@ -312,11 +391,10 @@ def ingest_batch(targets, kb, dry_run=False, batch=5, max_text=None):
     if not docs:
         return [] if dry_run else []
     if dry_run:
-        return [build_batch_extract_prompt(kb, docs[i:i + batch], max_text)
-                for i in range(0, len(docs), batch)]
+        return [build_batch_extract_prompt(kb, group, max_text)
+                for group in pack_batches(docs, max_count=batch)]
     deltas = []
-    for i in range(0, len(docs), batch):
-        group = docs[i:i + batch]
+    for group in pack_batches(docs, max_count=batch):
         prompt = build_batch_extract_prompt(kb, group, max_text)
         arr = _parse_json(llm.complete(prompt))
         if isinstance(arr, dict):
@@ -419,12 +497,15 @@ def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=Non
     want_api = source in ("api", "both") and not os.environ.get("EPISTEMIC_NO_API")
     want_web = source in ("web", "both")
 
-    out, seen = [], set()
+    out, seen, dropped = [], set(), [0]
     seen |= {_dedupe_title(t) for t in (exclude or []) if t}   # never re-surface what we already have
 
-    def _merge(cands):
+    def _merge(cands, filter_nonscholarly=False):
         for c in cands or []:
             if not isinstance(c, dict) or not c.get("url"):
+                continue
+            if filter_nonscholarly and is_nonscholarly(c.get("url")):
+                dropped[0] += 1                     # web search returned an encyclopedia/news/press page
                 continue
             key = _dedupe_title(c.get("title")) or c.get("url")
             if key in seen:
@@ -457,8 +538,11 @@ def discover(question, k=8, dry_run=False, source="web", deep=False, exclude=Non
                 llm.active_model("search"), " (deep research)" if deep else ""), file=sys.stderr)
             web_cands = _parse_json(llm.discover(prompt, deep=deep))
             before = len(out)
-            _merge(web_cands)
+            _merge(web_cands, filter_nonscholarly=True)   # net for encyclopedia/news/press pages
             print("Web search added {} new source(s).".format(len(out) - before), file=sys.stderr)
+            if dropped[0]:
+                print("Dropped {} non-scholarly result(s) (encyclopedia / news / press release)."
+                      .format(dropped[0]), file=sys.stderr)
         except SystemExit as e:
             if not out:
                 raise
@@ -480,7 +564,7 @@ def fetch_docs(targets, allow_local=True):
     return docs, skipped
 
 
-def extract_prompts(kb, docs, batch=5, max_text=None):
-    """Build the grounded extraction prompt(s) over already-fetched docs."""
-    return [build_batch_extract_prompt(kb, docs[i:i + batch], max_text)
-            for i in range(0, len(docs), batch)]
+def extract_prompts(kb, docs, batch=None, max_text=None):
+    """Build the grounded extraction prompt(s) over already-fetched docs, one per packed batch."""
+    return [build_batch_extract_prompt(kb, group, max_text)
+            for group in pack_batches(docs, max_count=batch)]

@@ -18,15 +18,30 @@ python cli.py discover cases/eggs.kb.json --k 8 --dry-run # prints the prompt to
 
 ```
 Find up to {K} real, citable sources that bear on this research dispute, spanning the
-DIFFERENT positions people hold (not just one side). Prefer primary sources: papers,
-datasets, judge decisions, debate transcripts, well-known critical analyses.
+DIFFERENT positions people hold (not just one side).
 
 QUESTION: {question}
+
+Return ONLY high-quality SCIENTIFIC / SCHOLARLY sources: peer-reviewed articles, systematic
+reviews and meta-analyses, preprints (arXiv/SSRN/bioRxiv/PsyArXiv), primary datasets or
+cohort/trial reports, and official scientific/government reports. Link to the STUDY ITSELF —
+prefer a DOI, PubMed, PMC, arXiv, or publisher URL.
+
+Do NOT return Wikipedia or other encyclopedias, news or magazine articles, university/company
+PRESS RELEASES or newsroom pages, blogs, social media, court opinions, or marketing pages. If a
+finding is only reachable via a press release or news write-up, return the underlying paper
+instead — else omit it.
 
 For each source return an object. Output ONLY a JSON array:
 [{"title":"...","url":"...","year":2020,"why":"one line: which position/angle it represents"}]
 Aim for coverage across positions and evidence types, and flag any you are unsure are real.
 ```
+
+A deterministic safety net (`ingest/pipeline.is_nonscholarly`, mirrored in the local console)
+drops web-search results on known non-scholarly hosts (Wikipedia, encyclopedias, news/press/blog
+paths, social, court pages) even if the prompt is ignored. Anything that still slips through is
+tiered as secondary at labelling — a press release / news page / encyclopedia entry is never
+primary evidence; it rests on the study it reports via a `SRC:` edge.
 
 ## Why discovery is deliberately coverage-seeking
 

@@ -175,6 +175,40 @@ def _short_label(s, limit=20):
     return cut.rstrip(" ,;:-/")
 
 
+_POS_STOP = {"the", "a", "an", "of", "to", "in", "on", "for", "with", "and", "or", "by", "at",
+             "is", "are", "be", "that", "this", "it", "its"}
+_PAREN_RE = re.compile(r"\s*\([^)]*\)")
+
+
+def _pos_tokens(label):
+    """Content tokens of a position label, minus pure connectives. STANCE words (increase/
+    decrease/no/protective/…) are DELIBERATELY kept — they are what distinguishes camps."""
+    return set(norm(label).split()) - _POS_STOP
+
+
+def _position_dup(kb, label):
+    """The existing position an incoming label should fold into, or None — the deterministic guard
+    against camp-splitting (SCHEMA.md problem 1, positions edition). Two conservative, stance-SAFE
+    rules, so opposite stances are never merged:
+      1. same label once trailing/parenthetical qualifiers are stripped ("No clear effect (after
+         bias adjustment)" -> "No clear effect");
+      2. one label's content tokens are a SUBSET of the other's (a condition/qualifier variant:
+         "No clear effect" ⊆ "No clear effect after bias adjustment"), requiring >=2 shared tokens.
+    We do NOT use token-overlap (Jaccard) similarity: on long labels it merges OPPOSITE stances
+    that differ in one word ("…alcohol increases CV risk" vs "…decreases CV risk" overlap ~0.67).
+    Subset can't do that — opposite stances are never subsets of one another."""
+    probe_bare = norm(_PAREN_RE.sub("", label))
+    probe_tokens = _pos_tokens(label)
+    for p in kb["positions"]:
+        if norm(_PAREN_RE.sub("", p["label"])) == probe_bare and probe_bare:
+            return p
+        pt = _pos_tokens(p["label"])
+        if probe_tokens and pt and (probe_tokens <= pt or pt <= probe_tokens) \
+                and min(len(probe_tokens), len(pt)) >= 2:
+            return p
+    return None
+
+
 def _resolve_position(kb, proposed, short_label=None):
     is_new = proposed.startswith("NEW:")
     label = proposed[4:].strip() if is_new else None
@@ -186,6 +220,9 @@ def _resolve_position(kb, proposed, short_label=None):
     for p in kb["positions"]:
         if norm(p["label"]) == probe:
             return p["id"], False
+    dup = _position_dup(kb, label or proposed)          # near-duplicate / condition-split guard
+    if dup is not None:
+        return dup["id"], False
     nice = prettify_label(label or proposed)
     cid = _unique_id("pos_", slug(nice),
                      lambda x: any(p["id"] == x for p in kb["positions"]))

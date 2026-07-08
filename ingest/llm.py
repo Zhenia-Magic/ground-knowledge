@@ -26,6 +26,10 @@ import urllib.error
 import urllib.request
 
 RETRY_CODES = {429, 500, 502, 503, 529}  # transient — Anthropic 529 = Overloaded
+# Cap on generated tokens. The batch labeller returns one delta per source, so a batch that
+# runs past this silently truncates the JSON array and drops trailing sources — which is why
+# this must be generous AND why batches are packed to a bounded size (ingest/pipeline.py).
+_MAX_OUTPUT_TOKENS = int(os.environ.get("EPISTEMIC_MAX_OUTPUT_TOKENS", "8192"))
 # Sonnet by default: faster/cheaper and far less prone to 529 "Overloaded" than Opus.
 # Override with EPISTEMIC_SEARCH_MODEL / EPISTEMIC_LABEL_MODEL / EPISTEMIC_MODEL (see module docstring).
 _DEFAULT_ANTHROPIC = "claude-sonnet-5"
@@ -316,7 +320,7 @@ def _post(url, headers, body, tries=4):
 
 def _anthropic(prompt, system, web, deep, model):
     # deep mode: allow far more searches and a longer answer so the model can cover every angle
-    body = {"model": model, "max_tokens": 16000 if deep else 8192,
+    body = {"model": model, "max_tokens": max(16000, _MAX_OUTPUT_TOKENS) if deep else _MAX_OUTPUT_TOKENS,
             "messages": [{"role": "user", "content": prompt}]}
     if system:
         body["system"] = system
@@ -339,8 +343,10 @@ def _openai_compat(prompt, system, env, base, model):
         msgs.append({"role": "system", "content": system})
     msgs.append({"role": "user", "content": prompt})
     headers = {"Authorization": "Bearer " + os.environ[env], "content-type": "application/json"}
+    # max_tokens is REQUIRED here: without it these backends fall back to a small default output
+    # cap (often ~4k) and silently truncate a multi-source batch's JSON array mid-array.
     resp = _post(base.rstrip("/") + "/chat/completions", headers,
-                 {"model": model, "messages": msgs})
+                 {"model": model, "messages": msgs, "max_tokens": _MAX_OUTPUT_TOKENS})
     _record_usage(model, resp)
     return resp["choices"][0]["message"]["content"]
 
