@@ -51,6 +51,7 @@ def _pos_key_tokens(proposal):
     if p.lower().startswith("new:"):
         p = p[4:]
     p = re.sub(r"\([^)]*\)", " ", p)
+    p = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", p)   # split camelCase: IncreaseAggression -> Increase Aggression
     out = set()
     for t in _norm(p).split():
         if t in _POS_STOP:

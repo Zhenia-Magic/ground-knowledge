@@ -41,6 +41,14 @@ class CombineOneTests(unittest.TestCase):
         c, rep = self._one([_d("NEW:No clear effect"), _d("no clear effect"), _d("pos_no_clear_effect")])
         self.assertFalse(rep["flagged"])
 
+    def test_formatting_variants_are_the_same_stance(self):
+        # spaced vs camelCase vs snake_case vs plural — all one camp, must not flag
+        for a, b in [("NEW:Increases aggression", "NEW:IncreaseAggression"),
+                     ("NEW:No clear effect", "NEW:NoClearEffect"),
+                     ("NEW:Increases aggression", "NEW:increase_aggression")]:
+            _, rep = self._one([_d(a), _d(b)])
+            self.assertFalse(rep["flagged"], (a, b))
+
     def test_genuine_opposite_stance_still_flags(self):
         c, rep = self._one([_d("NEW:No clear effect", conf=0.7),
                             _d("NEW:Violent video games increase aggression", conf=0.9)])
