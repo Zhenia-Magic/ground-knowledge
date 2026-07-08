@@ -152,5 +152,59 @@ class RateAndModelListTests(unittest.TestCase):
             llm._rate_calls[:] = saved_calls
 
 
+class PostTimeoutRetryTests(unittest.TestCase):
+    """A read timeout (socket.timeout) must be RETRIED, not crash the run as it did before."""
+
+    class _FakeResp:
+        def __init__(self, payload):
+            self._payload = payload
+        def __enter__(self):
+            return self
+        def __exit__(self, *a):
+            return False
+        def read(self):
+            return self._payload
+
+    def _patch(self, sequence):
+        """sequence: list of exceptions-to-raise or payloads-to-return, consumed per call."""
+        import urllib.request
+        calls = {"n": 0}
+        seq = list(sequence)
+
+        def fake_urlopen(req, timeout=None):
+            i = calls["n"]; calls["n"] += 1
+            item = seq[i]
+            if isinstance(item, BaseException):
+                raise item
+            return self._FakeResp(item)
+        self._orig = urllib.request.urlopen
+        urllib.request.urlopen = fake_urlopen
+        self._sleep = time.sleep
+        time.sleep = lambda *_a, **_k: None      # don't actually back off in the test
+        return calls
+
+    def tearDown(self):
+        import urllib.request
+        if hasattr(self, "_orig"):
+            urllib.request.urlopen = self._orig
+        if hasattr(self, "_sleep"):
+            time.sleep = self._sleep
+
+    def test_timeout_then_success_is_retried(self):
+        import socket
+        calls = self._patch([socket.timeout("The read operation timed out"),
+                             b'{"ok": true}'])
+        out = llm._post("http://x", {}, {"a": 1}, tries=4)
+        self.assertEqual(out, {"ok": True})
+        self.assertEqual(calls["n"], 2)          # failed once, retried, succeeded
+
+    def test_persistent_timeout_raises_clean_systemexit(self):
+        import socket
+        self._patch([socket.timeout()] * 4)
+        with self.assertRaises(SystemExit) as cm:
+            llm._post("http://x", {}, {"a": 1}, tries=4)
+        self.assertIn("timed out", str(cm.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -334,7 +334,14 @@ def extract_op(cid, urls, apply, batch=None, max_text=None):
         log("labelling batch {}/{} ({} source(s), ~{}k chars) via {}…".format(
             n, nbatches, len(group), chars // 1000, llm.active_model("label")))
         kbnow = _read(path)  # fresh each batch so the prompt sees entities added earlier → reuse
-        arr = label_batch(kbnow, group, max_text)   # ensemble-combined when 2+ label models
+        try:
+            arr = label_batch(kbnow, group, max_text)   # ensemble-combined when 2+ label models
+        except (Exception, SystemExit) as e:
+            # a slow/failed batch (timeout, provider error) must NOT abort the whole run — finished
+            # batches are already persisted, and re-running skips done sources and retries these.
+            log("  batch {}/{} failed ({}) — skipping; re-run to retry these source(s)."
+                .format(n, nbatches, str(e)[:140]))
+            continue
         if len(arr) != len(group):   # truncated/miscounted array: labels would misalign with docs
             log("  ⚠ model returned {} delta(s) for {} source(s) — labelling by-source may be "
                 "misaligned; check results.".format(len(arr), len(group)))

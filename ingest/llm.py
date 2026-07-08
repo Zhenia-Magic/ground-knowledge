@@ -21,6 +21,7 @@ Overrides (all optional, all also settable live from the local console's Models 
 """
 import json
 import os
+import socket
 import threading
 import time
 import urllib.error
@@ -31,6 +32,9 @@ RETRY_CODES = {429, 500, 502, 503, 529}  # transient — Anthropic 529 = Overloa
 # runs past this silently truncates the JSON array and drops trailing sources — which is why
 # this must be generous AND why batches are packed to a bounded size (ingest/pipeline.py).
 _MAX_OUTPUT_TOKENS = int(os.environ.get("EPISTEMIC_MAX_OUTPUT_TOKENS", "8192"))
+# Per-request read timeout. Free models on a big-context batch can be slow, so this is generous;
+# a timeout is now RETRIED (see _post) rather than crashing the run.
+_HTTP_TIMEOUT = int(os.environ.get("EPISTEMIC_HTTP_TIMEOUT", "300"))
 
 # Requests/min ceiling for the rate-limited free provider (NVIDIA build.nvidia.com ~= 40/min).
 # A multi-model ensemble multiplies request count, so this gate keeps a long run under the limit.
@@ -358,7 +362,7 @@ def _post(url, headers, body, tries=4):
     for attempt in range(tries):
         req = urllib.request.Request(url, data=data, headers=headers, method="POST")
         try:
-            with urllib.request.urlopen(req, timeout=180) as r:
+            with urllib.request.urlopen(req, timeout=_HTTP_TIMEOUT) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
             if e.code in RETRY_CODES and attempt < tries - 1:
@@ -373,7 +377,19 @@ def _post(url, headers, body, tries=4):
             except Exception:
                 msg = ""
             raise SystemExit("LLM API error {}: {}".format(e.code, msg or raw[:500] or e.reason))
+        except (socket.timeout, TimeoutError) as e:
+            # a READ timeout is NOT a URLError and was previously uncaught — it crashed the whole
+            # run ("The read operation timed out"). Retry it like any other transient failure.
+            if attempt < tries - 1:
+                wait = 2 ** attempt * 2
+                _say("  LLM API read timeout ({}s) — retrying in {}s ({}/{})".format(
+                    _HTTP_TIMEOUT, wait, attempt + 1, tries - 1))
+                time.sleep(wait)
+                continue
+            raise SystemExit("LLM API timed out after {}s over {} tries — try a smaller batch "
+                             "(EPISTEMIC_BATCH_CHARS) or a faster model.".format(_HTTP_TIMEOUT, tries))
         except urllib.error.URLError as e:
+            # URLError.reason can itself be a socket.timeout on connect — retry those too
             if attempt < tries - 1:
                 _say("  network error ({}) — retrying…".format(e.reason))
                 time.sleep(2 ** attempt * 2)

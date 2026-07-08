@@ -348,8 +348,12 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
 # how much text FITS one LLM input rather than a fixed source count: keep adding sources until the
 # next would push the batch past the char budget (or the count cap that protects the OUTPUT token
 # limit), then start a new batch. A single source larger than the budget goes alone.
-_BATCH_CHARS = int(os.environ.get("EPISTEMIC_BATCH_CHARS", str(200_000)))   # ~50k input tokens
-_BATCH_MAX = int(os.environ.get("EPISTEMIC_BATCH_MAX", "6"))               # output-token safety
+# Char budget per LLM call. Kept modest because per-call LATENCY (not context size) is the real
+# limit: a big batch on a slow free model — times N models in an ensemble — can exceed the request
+# timeout. ~90k chars ≈ 22k input tokens keeps each call comfortably fast; raise it if your model
+# is fast and you want fewer calls. A single source larger than this still goes alone.
+_BATCH_CHARS = int(os.environ.get("EPISTEMIC_BATCH_CHARS", str(90_000)))
+_BATCH_MAX = int(os.environ.get("EPISTEMIC_BATCH_MAX", "4"))               # output-token safety
 
 
 def _doc_len(d):
