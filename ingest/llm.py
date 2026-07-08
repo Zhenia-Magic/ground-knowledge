@@ -71,9 +71,9 @@ _DEFAULT_ANTHROPIC = "claude-sonnet-5"
 _OPENAI_COMPAT = [
     # NVIDIA first: free (build.nvidia.com, ~40 req/min rate limit), so it wins by default over
     # any other compat key set alongside it. Default is z-ai/glm-5.2 — a strong general-purpose
-    # text model, a better labeller than the smaller flash default it replaced. Other options:
-    # deepseek-ai/deepseek-v4-pro, deepseek-ai/deepseek-v4-flash, minimaxai/minimax-m3,
-    # nvidia/nemotron-3-ultra-550b-a55b.
+    # text model, a better labeller than the smaller flash default it replaced. Other verified
+    # options: openai/gpt-oss-120b (fast, clean JSON), deepseek-ai/deepseek-v4-pro,
+    # deepseek-ai/deepseek-v4-flash, qwen/qwen3-next-80b-a3b-instruct.
     ("NVIDIA_API_KEY",     "https://integrate.api.nvidia.com/v1",                     "z-ai/glm-5.2",            "NVIDIA"),
     ("OPENAI_API_KEY",     "https://api.openai.com/v1",                               "gpt-4o",                  "OpenAI"),
     ("DEEPSEEK_API_KEY",   "https://api.deepseek.com/v1",                             "deepseek-chat",           "DeepSeek"),
@@ -95,8 +95,8 @@ _PRICE = {
     # build.nvidia.com is free (rate-limited) -- these full model ids are longer/more specific
     # than the generic "deepseek" row above, so they win the longest-match lookup and correctly
     # report $0 instead of inheriting DeepSeek's own direct-API pricing.
-    "z-ai/glm-5.2": (0.0, 0.0), "minimaxai/minimax-m3": (0.0, 0.0),
-    "nvidia/nemotron-3-ultra-550b-a55b": (0.0, 0.0),
+    "z-ai/glm-5.2": (0.0, 0.0), "openai/gpt-oss-120b": (0.0, 0.0), "openai/gpt-oss-20b": (0.0, 0.0),
+    "qwen/qwen3-next-80b-a3b-instruct": (0.0, 0.0), "nvidia/llama-3.3-nemotron-super-49b": (0.0, 0.0),
     "deepseek-ai/deepseek-v4-pro": (0.0, 0.0), "deepseek-ai/deepseek-v4-flash": (0.0, 0.0),
 }
 _PRICE_DEFAULT = (3.0, 15.0)
@@ -310,8 +310,11 @@ def active_models():
 # these; a wrong id simply errors the API call with the provider's own message.
 SUGGESTED_MODELS = {
     "anthropic": ["claude-sonnet-5", "claude-opus-4-8", "claude-haiku-4-5"],
-    "nvidia": ["z-ai/glm-5.2", "deepseek-ai/deepseek-v4-pro", "deepseek-ai/deepseek-v4-flash",
-               "minimaxai/minimax-m3", "nvidia/nemotron-3-ultra-550b-a55b"],
+    # verified against build.nvidia.com's live model list; gpt-oss-120b is fast + emits clean
+    # JSON, a good ensemble partner for glm-5.2 (Zhipu) and deepseek-v4-pro (DeepSeek).
+    "nvidia": ["z-ai/glm-5.2", "deepseek-ai/deepseek-v4-pro", "openai/gpt-oss-120b",
+               "deepseek-ai/deepseek-v4-flash", "qwen/qwen3-next-80b-a3b-instruct",
+               "nvidia/llama-3.3-nemotron-super-49b-v1.5"],
     "openai": ["gpt-4o", "gpt-4o-mini"],
     "deepseek": ["deepseek-chat", "deepseek-reasoner"],
     "mistral": ["mistral-large-latest"],

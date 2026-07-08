@@ -37,6 +37,34 @@ def _conf(d):
         return 0.0
 
 
+_POS_STOP = {"the", "a", "an", "of", "to", "in", "on", "for", "with", "and", "or", "by", "at",
+             "is", "are", "be", "that", "this", "it", "its", "new", "pos"}
+
+
+def _pos_key_tokens(proposal):
+    """Stance tokens of a proposed position, for vote clustering: strip a 'NEW:'/'pos_' decoration
+    and parentheticals, normalize, drop connectives, and lightly de-plural (increases->increase)
+    so 'NEW:Violent video games increase aggression', 'increases aggression', and an existing
+    'pos_increases_aggression' id all reduce to overlapping stance tokens — while opposite stances
+    (increase vs decrease) stay disjoint."""
+    p = str(proposal or "")
+    if p.lower().startswith("new:"):
+        p = p[4:]
+    p = re.sub(r"\([^)]*\)", " ", p)
+    out = set()
+    for t in _norm(p).split():
+        if t in _POS_STOP:
+            continue
+        out.add(t[:-1] if len(t) > 4 and t.endswith("s") else t)   # light plural stem
+    return out
+
+
+def _same_stance(a, b):
+    """Two proposals are the same camp if one's stance tokens are a subset of the other's (subset
+    is stance-safe: opposite stances are never subsets). Empty token sets never match."""
+    return bool(a) and bool(b) and (a <= b or b <= a)
+
+
 def _mode(values):
     """Most common non-empty value; ties broken by first-seen order (stable). Preserves the
     original raw form (casing/prefix) rather than the normalized key."""
@@ -97,21 +125,37 @@ def combine_one(deltas):
     rs = [s for _d, s in rel]
     m = len(rd)
 
-    pos_counts = Counter(_norm(s.get("position") or "") for s in rs if s.get("position"))
+    # cluster proposals by STANCE, not raw label string, so 'NEW:Increases X', 'increases X', and
+    # an existing 'pos_increases_x' id count as ONE vote (they're the same camp; the merge would
+    # unify them anyway). Voting on raw strings falsely flagged agreement as disagreement.
+    clusters = []                                    # each: {"tokens": set, "deltas": [], "label": raw}
+    for d, s in zip(rd, rs):
+        lab = s.get("position")
+        if not lab:
+            continue
+        tk = _pos_key_tokens(lab)
+        for c in clusters:
+            if _same_stance(tk, c["tokens"]):
+                c["deltas"].append(d)
+                break
+        else:
+            clusters.append({"tokens": tk, "deltas": [d], "label": lab})
     disagreed, flagged = [], False
-    if pos_counts:
-        top_norm, top_n = pos_counts.most_common(1)[0]
-        if top_n > m / 2.0:                                      # real majority
-            winners = [d for d, s in zip(rd, rs) if _norm(s.get("position") or "") == top_norm]
+    if clusters:
+        clusters.sort(key=lambda c: -len(c["deltas"]))
+        top_n = len(clusters[0]["deltas"])
+        if top_n > m / 2.0:                                      # real majority stance
+            winner = max(clusters[0]["deltas"], key=_conf)
         else:                                                    # tie / plurality -> conf + FLAG
             flagged = True
             disagreed.append("position")
-            winners = rd
-        winner = max(winners, key=_conf)
+            winner = max(rd, key=_conf)
         pos_agree = top_n / m
+        pos_vote = {c["label"]: len(c["deltas"]) for c in clusters}
     else:
         winner = max(rd, key=_conf)
         pos_agree = 0.0
+        pos_vote = {}
     wsrc = _src(winner)
 
     out = dict(wsrc)                                             # keep winner's quote/positionShort
@@ -149,6 +193,6 @@ def combine_one(deltas):
 
     rep = {"models": n, "positionAgreement": round(pos_agree, 2), "flagged": flagged,
            "disagreedFields": sorted(set(disagreed)),
-           "positionVote": dict(pos_counts)}
+           "positionVote": pos_vote}
     out["modelAgreement"] = rep
     return {"source": out, "factorWeights": fws}, rep

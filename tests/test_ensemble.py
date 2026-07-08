@@ -30,6 +30,23 @@ class CombineOneTests(unittest.TestCase):
         self.assertFalse(rep["flagged"])
         self.assertAlmostEqual(rep["positionAgreement"], 2 / 3, places=2)
 
+    def test_same_stance_different_wording_is_agreement_not_disagreement(self):
+        # the real-world false-flag: models agree on stance but phrase the NEW label differently
+        c, rep = self._one([_d("NEW:Violent video games increase aggression", conf=0.8),
+                            _d("increases aggression", conf=0.7)])
+        self.assertFalse(rep["flagged"])
+        self.assertAlmostEqual(rep["positionAgreement"], 1.0, places=2)
+
+    def test_new_prefix_matches_bare_label(self):
+        c, rep = self._one([_d("NEW:No clear effect"), _d("no clear effect"), _d("pos_no_clear_effect")])
+        self.assertFalse(rep["flagged"])
+
+    def test_genuine_opposite_stance_still_flags(self):
+        c, rep = self._one([_d("NEW:No clear effect", conf=0.7),
+                            _d("NEW:Violent video games increase aggression", conf=0.9)])
+        self.assertTrue(rep["flagged"])
+        self.assertEqual(c["source"]["position"], "NEW:Violent video games increase aggression")
+
     def test_tie_falls_to_highest_confidence_and_flags(self):
         c, rep = self._one([_d("NEW:Increases aggression", conf=0.6),
                             _d("NEW:No clear effect", conf=0.95)])
