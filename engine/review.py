@@ -69,9 +69,11 @@ def resolve_review(kb, pr_id, action, position=None):
     Returns the merge report (or {"dropped": True}). Mutates kb; caller persists."""
     entry = _pop(kb, pr_id)
     if action == "drop":
+        kb["meta"]["version"] = kb["meta"].get("version", 0) + 1   # a real decision: version it
+        kb["meta"]["updated"] = now_iso()
         kb.setdefault("log", []).append({
-            "version": kb["meta"].get("version", 0), "action": "review-drop",
-            "title": entry["title"], "ts": now_iso(),
+            "version": kb["meta"]["version"], "action": "review-drop",
+            "title": entry["title"], "ts": kb["meta"]["updated"],
             "summary": "dropped after model disagreement: " + entry["title"]})
         return {"dropped": True, "title": entry["title"]}
     if action != "position":

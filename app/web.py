@@ -389,6 +389,11 @@ def manage_html(qid, get_question):
     <h1>{question}</h1>
     <div id="gate"></div>
     <div id="panel" style="display:none">
+      <div class="panel" id="revpanel" style="display:none"><h2>Needs review <span id="revn"></span></h2>
+        <p class="desc">The labelling models disagreed on these sources' positions — they are parked
+        here (counted in <b>no</b> metric) until someone decides. Read the abstract, then pick a
+        position or drop the paper.</p>
+        <div id="revs"></div></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
         <div id="srcs"></div></div>
@@ -419,12 +424,50 @@ def manage_html(qid, get_question):
       document.getElementById('gate').innerHTML='';
       document.getElementById('panel').style.display='';
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
+      renderReview(kb);
       const srcs=kb.sources||[];
       document.getElementById('srcs').innerHTML = srcs.length? srcs.map(s=>`
         <div class="cand"><div style="flex:1"><b>${E(s.title)}</b> <span class="why">${E(s.year||'')}</span><br>
         <span class="why">${E((s.authors||[]).slice(0,3).join(', '))}${(s.authors||[]).length>3?' et al.':''}</span></div>
         <button class="btn ghost" onclick="delSource('${s.id}',this)">✕ remove</button></div>`).join('')
         : '<div class="empty">No sources yet.</div>';
+    }
+    const posName=k=>{const s=String(k||'').replace(/^NEW:\\s*/i,'').replace(/^pos[_ ]/,'').replace(/_/g,' ');return s.charAt(0).toUpperCase()+s.slice(1);};
+    function renderReview(kb){
+      const pend=kb.pendingReview||[], panel=document.getElementById('revpanel');
+      if(!pend.length){panel.style.display='none';return;}
+      panel.style.display='';
+      document.getElementById('revn').textContent='('+pend.length+')';
+      const posOpts=(kb.positions||[]).map(p=>`<option value="${E(p.id)}">${E(p.label)}</option>`).join('');
+      document.getElementById('revs').innerHTML=pend.map(e=>`
+        <div class="cand" style="flex-direction:column;align-items:stretch">
+          <div><b>${E(e.title)}</b> <span class="why">${E(e.year||'')}</span>
+            ${e.url?` · <a href="${E(e.url)}" target="_blank" rel="noopener">source ↗</a>`:''}</div>
+          ${e.abstract?`<details style="margin:6px 0"><summary class="why">Abstract / what the models read</summary>
+            <div class="why" style="white-space:pre-wrap;margin-top:5px">${E(e.abstract)}</div></details>`:''}
+          ${(e.proposals||[]).map(p=>`
+            <div style="display:flex;gap:8px;align-items:center;margin:5px 0">
+              <div style="flex:1"><b>${E(posName(p.position))}</b> <span class="why">(${p.votes} vote${p.votes===1?'':'s'})</span>
+                ${p.quote?`<br><span class="why">“${E(String(p.quote).slice(0,200))}”</span>`:''}</div>
+              <button class="btn" onclick="resolveRev('${E(e.id)}','position','${E(String(p.position).replace(/'/g,''))}',this)">Use this</button>
+            </div>`).join('')}
+          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+            <select id="sel_${E(e.id)}" style="flex:1">${posOpts}</select>
+            <button class="btn ghost" onclick="resolveRev('${E(e.id)}','existing','',this)">Use selected</button>
+            <button class="btn ghost" style="color:#B4502E;border-color:#B4502E" onclick="resolveRev('${E(e.id)}','drop','',this)">Drop paper</button>
+          </div>
+        </div>`).join('');
+    }
+    async function resolveRev(prId,act,pos,btn){
+      let action='position', position=pos;
+      if(act==='drop'){ if(!confirm('Drop this paper? It will not be added.'))return; action='drop'; position=''; }
+      if(act==='existing'){ position=document.getElementById('sel_'+prId).value; }
+      btn.disabled=true;
+      const r=await fetch('/api/admin/review-resolve',{method:'POST',headers:H(),
+        body:JSON.stringify({id:QID,prId,action,position})});
+      const j=await r.json();
+      if(j.error){alert(j.error);btn.disabled=false;return;}
+      render();
     }
     async function saveTok(){
       const t=document.getElementById('tk').value.trim(); if(!t)return;
