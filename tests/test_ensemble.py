@@ -233,3 +233,118 @@ class PostTimeoutRetryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EdgeClusteringTests(unittest.TestCase):
+    """restsOn vote must cluster two models' names for the SAME cohort — the alias-twin bug that
+    double-counted one study's data as two independent roots (10/40 sources on the real case)."""
+
+    def _one(self, deltas):
+        return ensemble.combine_one(deltas)
+
+    def test_token_overlapping_twin_names_become_one_edge(self):
+        c, _ = self._one([_d("NEW:X", rests=["NEW:GTA V vs Sims 3 longitudinal intervention cohort"]),
+                          _d("NEW:X", rests=["NEW:GTA V longitudinal intervention 2018"])])
+        self.assertEqual(len(c["source"]["restsOn"]), 1)
+
+    def test_token_disjoint_single_proposals_become_one_edge(self):
+        # each model proposed exactly ONE dataset -> same evidence base even with no shared tokens
+        c, _ = self._one([_d("NEW:X", rests=["NEW:UK adolescent VVG and aggression cohort (N=1004)"]),
+                          _d("NEW:X", rests=["NEW:Przybylski2019 adolescent dataset"])])
+        self.assertEqual(len(c["source"]["restsOn"]), 1)
+
+    def test_winner_wording_is_preferred(self):
+        c, _ = self._one([_d("NEW:X", conf=0.9, rests=["NEW:Innsbruck MTurk longitudinal cohort"]),
+                          _d("NEW:X", conf=0.5, rests=["NEW:Greitemeyer 2019 longitudinal"])])
+        self.assertEqual(c["source"]["restsOn"], ["NEW:Innsbruck MTurk longitudinal cohort"])
+
+    def test_two_genuinely_distinct_datasets_survive(self):
+        # both models list the same TWO cohorts (one under a name variant) -> exactly two edges
+        c, _ = self._one([_d("NEW:X", rests=["NEW:Nurses Health Study", "NEW:UK Biobank"]),
+                          _d("NEW:X", rests=["NEW:Nurses' Health Study cohort", "NEW:UK Biobank"])])
+        self.assertEqual(len(c["source"]["restsOn"]), 2)
+
+    def test_src_edges_vote_by_exact_key_and_survive_half(self):
+        c, _ = self._one([_d("NEW:X", rests=["SRC:src_a_2010", "NEW:Cohort Q"]),
+                          _d("NEW:X", rests=["NEW:Cohort Q"])])
+        self.assertIn("SRC:src_a_2010", c["source"]["restsOn"])   # 1 of 2 >= half
+        self.assertEqual(len(c["source"]["restsOn"]), 2)
+
+
+class MergeGuardTests(unittest.TestCase):
+    def setUp(self):
+        from engine.schema import empty_kb
+        from engine.merge import merge_delta
+        self.merge_delta = merge_delta
+        self.kb = empty_kb("t", "q")
+        self.merge_delta(self.kb, {"source": {
+            "title": "Violent Video Game Effects on Aggression Empathy and Prosocial Behavior",
+            "year": 2010, "url": "https://ex.org/anderson2010", "position": "NEW:Increases",
+            "evidence": "Meta-analysis", "restsOn": []}})
+        self.anderson_id = self.kb["sources"][0]["id"]
+
+    def test_unprefixed_source_id_becomes_src_edge_not_dataset(self):
+        self.merge_delta(self.kb, {"source": {
+            "title": "A reanalysis", "year": 2017, "url": "https://ex.org/re",
+            "position": "NEW:No effect", "evidence": "Meta-analysis",
+            "restsOn": ["NEW:" + self.anderson_id]}})       # raw src_... id without SRC: prefix
+        s = self.kb["sources"][1]
+        self.assertEqual(s["restsOn"], ["src:" + self.anderson_id])
+        self.assertFalse(any(d["id"].startswith("ds_src_") for d in self.kb["datasets"]))
+
+    def test_source_title_as_dataset_becomes_src_edge(self):
+        self.merge_delta(self.kb, {"source": {
+            "title": "A commentary", "year": 2011, "url": "https://ex.org/c",
+            "position": "NEW:Increases", "evidence": "Narrative/Commentary",
+            "restsOn": ["NEW:Violent Video Game Effects on Aggression Empathy and Prosocial Behavior"]}})
+        self.assertEqual(self.kb["sources"][1]["restsOn"], ["src:" + self.anderson_id])
+
+    def test_real_cohort_names_still_make_datasets(self):
+        self.merge_delta(self.kb, {"source": {
+            "title": "A cohort study", "year": 2019, "url": "https://ex.org/coh",
+            "position": "NEW:No effect", "evidence": "Observational",
+            "restsOn": ["NEW:UK adolescent cohort"]}})
+        self.assertTrue(self.kb["sources"][1]["restsOn"][0].startswith("ds_"))
+
+    def test_title_prefix_duplicate_refused(self):
+        # same paper: publisher link with full title vs mirror with truncated title, same year
+        rep = self.merge_delta(self.kb, {"source": {
+            "title": "Violent Video Game Effects on Aggression Empathy and Prosocial",
+            "year": 2010, "url": "https://mirror.org/pmc123", "position": "NEW:Increases",
+            "evidence": "Meta-analysis", "restsOn": []}})
+        self.assertTrue(rep["duplicate"])
+
+    def test_different_year_same_prefix_not_refused(self):
+        rep = self.merge_delta(self.kb, {"source": {
+            "title": "Violent Video Game Effects on Aggression Empathy and Prosocial",
+            "year": 2015, "url": "https://ex.org/other", "position": "NEW:Increases",
+            "evidence": "Meta-analysis", "restsOn": []}})
+        self.assertFalse(rep["duplicate"])
+
+    def test_weights_snap_to_vocabulary(self):
+        self.merge_delta(self.kb, {"source": {
+            "title": "Weighted", "year": 2020, "url": "https://ex.org/w",
+            "position": "NEW:Increases", "evidence": "Observational", "restsOn": []},
+            "factorWeights": [
+                {"factor": "Publication bias", "weight": "medium"},
+                {"factor": "Methodological quality", "weight": "High"},
+                {"factor": "Cultural context", "weight": "Moderate"}]})
+        w = {f["label"]: list(f["weights"].values())[0] for f in self.kb["factors"]}
+        self.assertEqual(w["Publication bias"], "med")
+        self.assertEqual(w["Methodological quality"], "high")
+        self.assertEqual(w["Cultural context"], "med")
+
+    def test_exact_title_one_year_apart_is_a_duplicate(self):
+        # print-vs-online mirror drift: Nature 2018 vs PMC listing 2019
+        rep = self.merge_delta(self.kb, {"source": {
+            "title": "Violent Video Game Effects on Aggression Empathy and Prosocial Behavior",
+            "year": 2011, "url": "https://mirror.org/pmcXY", "position": "NEW:Increases",
+            "evidence": "Meta-analysis", "restsOn": []}})
+        self.assertTrue(rep["duplicate"])          # KB copy is 2010; exact title, 1 year apart
+
+    def test_exact_title_two_years_apart_is_not_a_duplicate(self):
+        rep = self.merge_delta(self.kb, {"source": {
+            "title": "Violent Video Game Effects on Aggression Empathy and Prosocial Behavior",
+            "year": 2013, "url": "https://ex.org/later", "position": "NEW:Increases",
+            "evidence": "Meta-analysis", "restsOn": []}})
+        self.assertFalse(rep["duplicate"])

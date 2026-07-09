@@ -386,9 +386,18 @@ def label_batch(kb, docs, max_text=None):
     ens = llm.complete_ensemble(prompt)
     if ens:
         arrays = []
-        for _m, text in ens:
-            a = _parse_json(text)
+        for m, text in ens:
+            try:
+                a = _parse_json(text)
+            except (Exception, SystemExit) as e:
+                # one model returning malformed JSON must not kill the batch — the combiner
+                # votes fine with that model's array missing.
+                print("  ensemble model {} returned unparseable JSON — skipped ({})".format(
+                    m, str(e)[:90]), file=sys.stderr)
+                continue
             arrays.append(a if isinstance(a, list) else [a])
+        if not arrays:
+            raise SystemExit("no ensemble model returned parseable JSON for this batch")
         consensus, _agree = ensemble.combine(arrays, len(docs))
         return consensus
     arr = _parse_json(llm.complete(prompt))

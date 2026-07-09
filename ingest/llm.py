@@ -96,6 +96,7 @@ _PRICE = {
     # than the generic "deepseek" row above, so they win the longest-match lookup and correctly
     # report $0 instead of inheriting DeepSeek's own direct-API pricing.
     "z-ai/glm-5.2": (0.0, 0.0), "openai/gpt-oss-120b": (0.0, 0.0), "openai/gpt-oss-20b": (0.0, 0.0),
+    "mistralai/mistral-nemotron": (0.0, 0.0), "nvidia/nemotron-3-super-120b-a12b": (0.0, 0.0),
     "qwen/qwen3-next-80b-a3b-instruct": (0.0, 0.0), "nvidia/llama-3.3-nemotron-super-49b": (0.0, 0.0),
     "deepseek-ai/deepseek-v4-pro": (0.0, 0.0), "deepseek-ai/deepseek-v4-flash": (0.0, 0.0),
 }
@@ -283,7 +284,11 @@ def complete_ensemble(prompt, system=None):
     """Run `prompt` through EVERY ensemble label model on the label provider's transport, returning
     [(model, text), ...] — or None when no ensemble is configured (caller falls back to complete()).
     Calls are SEQUENTIAL and rate-gated (via the transport) so a free provider's req/min limit
-    isn't blown by fanning out N models per batch."""
+    isn't blown by fanning out N models per batch.
+
+    ONE model failing (timeout after retries, a provider marking that model DEGRADED, a 4xx) must
+    not kill the batch: the combiner already votes fine with a model missing, so its failure is
+    logged and skipped. Only if EVERY model fails does the batch error surface."""
     models = label_models()
     if not models:
         return None
@@ -291,12 +296,19 @@ def complete_ensemble(prompt, system=None):
     if sel is None:
         raise SystemExit(_NO_KEY_MSG)
     kind, c = sel
-    out = []
+    out, errors = [], []
     for m in models:
-        if kind == "anthropic":
-            out.append((m, _anthropic(prompt, system, False, False, m)))
-        else:
-            out.append((m, _openai_compat(prompt, system, c[0], c[1], m)))
+        try:
+            if kind == "anthropic":
+                out.append((m, _anthropic(prompt, system, False, False, m)))
+            else:
+                out.append((m, _openai_compat(prompt, system, c[0], c[1], m)))
+        except (Exception, SystemExit) as e:
+            errors.append("{}: {}".format(m, str(e)[:120]))
+            _say("  ensemble model {} failed — continuing with the others ({})".format(
+                m, str(e)[:90]))
+    if not out:
+        raise SystemExit("every ensemble model failed: " + " | ".join(errors))
     return out
 
 
@@ -310,11 +322,13 @@ def active_models():
 # these; a wrong id simply errors the API call with the provider's own message.
 SUGGESTED_MODELS = {
     "anthropic": ["claude-sonnet-5", "claude-opus-4-8", "claude-haiku-4-5"],
-    # verified against build.nvidia.com's live model list; gpt-oss-120b is fast + emits clean
-    # JSON, a good ensemble partner for glm-5.2 (Zhipu) and deepseek-v4-pro (DeepSeek).
-    "nvidia": ["z-ai/glm-5.2", "deepseek-ai/deepseek-v4-pro", "openai/gpt-oss-120b",
-               "deepseek-ai/deepseek-v4-flash", "qwen/qwen3-next-80b-a3b-instruct",
-               "nvidia/llama-3.3-nemotron-super-49b-v1.5"],
+    # verified against build.nvidia.com's live model list AND latency-benchmarked (warm):
+    # glm-5.2 ~7s, gpt-oss-120b ~4s (clean JSON), mistral-nemotron ~3s — three distinct model
+    # families, the recommended labelling ensemble. deepseek-v4-pro is capable but cold-starts
+    # slowly on the free tier; qwen3-next / llama-3.3-70b timed out entirely when tested.
+    "nvidia": ["z-ai/glm-5.2", "openai/gpt-oss-120b", "mistralai/mistral-nemotron",
+               "deepseek-ai/deepseek-v4-pro", "deepseek-ai/deepseek-v4-flash",
+               "nvidia/nemotron-3-super-120b-a12b"],
     "openai": ["gpt-4o", "gpt-4o-mini"],
     "deepseek": ["deepseek-chat", "deepseek-reasoner"],
     "mistral": ["mistral-large-latest"],

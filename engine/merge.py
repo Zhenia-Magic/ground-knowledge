@@ -141,6 +141,27 @@ def _resolve_source_ref(kb, ref):
     return None
 
 
+def _dataset_is_source_ref(kb, proposed):
+    """Catch a restsOn entry that REFERENCES AN EXISTING SOURCE but was written without the SRC:
+    prefix (labellers copy raw ids like 'src_violent_video_game_effects_...' or paste the title).
+    Left unguarded, merge minted phantom datasets named after sources ('ds_src_*'), so echo never
+    collapsed through the citation edge. Returns the source id, or None for a real dataset name.
+    Conservative: only fires on a normalized match of a source's id or full title."""
+    label = proposed[4:].strip() if proposed.startswith("NEW:") else proposed
+    probe = norm(label)
+    if not probe:
+        return None
+    for s in kb["sources"]:
+        sid_n = norm(s["id"])
+        if probe == sid_n or (probe.startswith("src ") and sid_n.startswith("src ")
+                              and (probe[4:].startswith(sid_n[4:][:20]) if len(sid_n) > 24
+                                   else probe[4:] == sid_n[4:])):
+            return s["id"]
+        if norm(s.get("title")) == probe:
+            return s["id"]
+    return None
+
+
 def _resolve_dataset(kb, proposed):
     is_new = proposed.startswith("NEW:")
     label = proposed[4:].strip() if is_new else None
@@ -253,6 +274,22 @@ def _resolve_vocab(kb, kind, value):
     return label
 
 
+def _snap_weight(w):
+    """Snap a factor weight onto the {high, med, low, n/a} vocabulary. Labellers drift ('medium',
+    'moderate', 'High'); an off-vocabulary value silently drops out of the crux-spread math, so
+    normalize deterministically here. Unknown values pass through lowercased (never guessed)."""
+    v = str(w or "").strip().lower()
+    if v.startswith("hi"):
+        return "high"
+    if v.startswith(("med", "mod")):
+        return "med"
+    if v.startswith("lo"):
+        return "low"
+    if v in ("n/a", "na", "none", "not applicable"):
+        return "n/a"
+    return v
+
+
 def _resolve_factor(kb, f_label):
     # The factor convention is "reference by exact label", but models often copy the
     # "NEW:<label>" convention used for positions/datasets. Strip it so a decorated label
@@ -296,8 +333,24 @@ def merge_delta(kb, delta):
             return True
         if ident and paper_ident(s) == ident:
             return True
-        return bool(t_norm) and len(t_norm) >= 10 and norm(s.get("title")) == t_norm and \
-            str(s.get("year") or "") == yr
+        if bool(t_norm) and len(t_norm) >= 10 and norm(s.get("title")) == t_norm and \
+                str(s.get("year") or "") == yr:
+            return True
+        # same paper under publisher-vs-mirror links (DOI on one, PMCID on the other) often shows
+        # a title truncation/variant: same year + one normalized title a prefix of the other.
+        # Mirrors curate.dedupe_sources so the duplicate is refused at the door, not cleaned later.
+        s_norm = norm(s.get("title"))
+        if bool(t_norm) and bool(s_norm) and yr and str(s.get("year") or "") == yr and \
+                min(len(t_norm), len(s_norm)) >= 25 and \
+                (t_norm.startswith(s_norm) or s_norm.startswith(t_norm)):
+            return True
+        # print-vs-online year drift: a mirror often lists the NEXT year (Nature 2018 print vs
+        # PMC 2019 online). For an EXACT long title match, tolerate a 1-year difference.
+        try:
+            close_year = yr and s.get("year") and abs(int(yr) - int(s["year"])) <= 1
+        except (TypeError, ValueError):
+            close_year = False
+        return bool(t_norm) and len(t_norm) >= 25 and s_norm == t_norm and close_year
     if any(_dup(s) for s in kb["sources"]):
         report["duplicate"] = True
         return report
@@ -321,6 +374,10 @@ def merge_delta(kb, delta):
                 rests_on.append("src:" + tid)
             else:
                 report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB
+            continue
+        tid = _dataset_is_source_ref(kb, d)     # a source reference missing its SRC: prefix
+        if tid:
+            rests_on.append("src:" + tid)
             continue
         did, created = _resolve_dataset(kb, d)
         if created:
@@ -354,7 +411,7 @@ def merge_delta(kb, delta):
         fid, created = _resolve_factor(kb, fw.get("factorLabel") or fw.get("factor"))
         (report["newFactors"] if created else report["updatedFactors"]).append(fid)
         factor = next(f for f in kb["factors"] if f["id"] == fid)
-        factor["weights"][pos_id] = fw["weight"]
+        factor["weights"][pos_id] = _snap_weight(fw["weight"])
         if fw.get("rationale") and not factor.get("rationale"):
             factor["rationale"] = fw["rationale"]
         factor.setdefault("provenance", []).append(

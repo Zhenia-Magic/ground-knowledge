@@ -24,7 +24,7 @@ is real and runnable from the repo root.
   export GEMINI_API_KEY=...  OPENROUTER_API_KEY=...
   # export EPISTEMIC_SEARCH_PROVIDER=... EPISTEMIC_LABEL_PROVIDER=...  # pin a phase's provider
   # export EPISTEMIC_SEARCH_MODEL=...  EPISTEMIC_LABEL_MODEL=...       # pin a phase's model
-  # export EPISTEMIC_LABEL_MODELS=z-ai/glm-5.2,deepseek-ai/deepseek-v4-pro,openai/gpt-oss-120b  # ensemble
+  # export EPISTEMIC_LABEL_MODELS=z-ai/glm-5.2,openai/gpt-oss-120b,mistralai/mistral-nemotron  # ensemble
   # export EPISTEMIC_RATE_LIMIT_RPM=40   # cap req/min for the free provider (ensemble pacing)
   # export EPISTEMIC_MODEL=...   # legacy global override (single-provider setups only)
   # export EPISTEMIC_PORTAL=https://groundknowledge.org   # for pull/push

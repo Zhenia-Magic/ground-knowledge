@@ -66,6 +66,34 @@ def _same_stance(a, b):
     return bool(a) and bool(b) and (a <= b or b <= a)
 
 
+# generic dataset-name filler that shouldn't drive edge clustering ("cohort" alone is not identity)
+_DS_GENERIC = {"ds", "dataset", "data", "cohort", "cohorts", "study", "studies", "sample",
+               "samples", "trial", "trials", "longitudinal", "experiment", "experimental",
+               "intervention", "meta", "analysis", "new"}
+
+
+def _edge_tokens(label):
+    """Distinguishing tokens of a proposed dataset edge (camelCase-split, normalized, generic
+    filler dropped) — the identity signal for clustering two models' names for the SAME cohort."""
+    p = re.sub(r"\([^)]*\)", " ", str(label or ""))
+    if p.lower().startswith("new:"):
+        p = p[4:]
+    p = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", p)
+    return {t for t in _norm(p).split() if t not in _DS_GENERIC}
+
+
+def _same_edge(a, b):
+    """Two dataset-edge proposals name the same underlying cohort: distinguishing-token Jaccard
+    >= 0.4 or subset. ('GTA V vs Sims 3 ... cohort' ~ 'GTA V ... 2018' clusters; 'ds_a' vs 'ds_b'
+    or two genuinely different cohorts do not.)"""
+    if not a or not b:
+        return False
+    if a <= b or b <= a:
+        return True
+    inter = len(a & b)
+    return inter / len(a | b) >= 0.4
+
+
 def _mode(values):
     """Most common non-empty value; ties broken by first-seen order (stable). Preserves the
     original raw form (casing/prefix) rather than the normalized key."""
@@ -168,15 +196,49 @@ def combine_one(deltas):
         if len({_norm(s.get(field)) for s in rs if s.get(field)}) > 1:
             disagreed.append(field)
 
-    # restsOn: keep an edge >= half the models proposed (normalized), preserve a raw form
-    edge_count, raw_form = Counter(), OrderedDict()
+    # restsOn: models routinely name the SAME underlying cohort differently, so cluster edge
+    # proposals across models BEFORE voting — otherwise a 2-model ensemble unions both names and
+    # the merge mints twin datasets, double-counting one study's data as two independent roots.
+    # src:-edges reference known ids, so they vote by exact normalized key. Dataset edges cluster
+    # by distinguishing-token overlap, plus a structural rule: if every model proposed at most ONE
+    # dataset for this source, they are all naming the study's one evidence base — one cluster —
+    # even when the names share no tokens ("Przybylski2019 dataset" vs "UK adolescent cohort").
+    winner_edges = {_norm(x) for x in (wsrc.get("restsOn") or []) if x}
+    src_count, src_form = Counter(), OrderedDict()
+    ds_lists = []                                    # per model: [(norm, raw, tokens), ...]
     for s in rs:
-        for e in dict.fromkeys(_norm(x) for x in (s.get("restsOn") or []) if x):
-            edge_count[e] += 1
+        seen_src, ds_row = set(), []
         for x in (s.get("restsOn") or []):
-            if x:
-                raw_form.setdefault(_norm(x), x)
-    out["restsOn"] = [raw_form[e] for e, cnt in edge_count.items() if cnt >= m / 2.0]
+            if not x:
+                continue
+            if str(x).lower().startswith(("src:", "new-src:")):
+                k = _norm(x)
+                if k not in seen_src:
+                    seen_src.add(k)
+                    src_count[k] += 1
+                    src_form.setdefault(k, x)
+            else:
+                ds_row.append((_norm(x), x, _edge_tokens(x)))
+        ds_lists.append(ds_row)
+    clusters = []                                    # {"tokens", "forms":[(norm,raw)], "votes"}
+    all_single = all(len(row) <= 1 for row in ds_lists)
+    for row in ds_lists:
+        for k, raw, tk in row:
+            for c in clusters:
+                if all_single or _same_edge(tk, c["tokens"]):
+                    c["forms"].append((k, raw))
+                    c["tokens"] |= tk
+                    c["votes"] += 1
+                    break
+            else:
+                clusters.append({"tokens": set(tk), "forms": [(k, raw)], "votes": 1})
+    rests = [src_form[k] for k, cnt in src_count.items() if cnt >= m / 2.0]
+    for c in clusters:
+        if c["votes"] >= m / 2.0:
+            # representative form: the winning model's wording when it contributed, else first
+            rests.append(next((raw for k, raw in c["forms"] if k in winner_edges),
+                              c["forms"][0][1]))
+    out["restsOn"] = rests
 
     # factorWeights: keep a factor >= half propose; weight = mode
     fw_by = OrderedDict()
