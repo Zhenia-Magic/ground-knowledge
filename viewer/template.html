@@ -436,23 +436,35 @@ function quoteWarnHtml(pq, textDepth){
 // a warning is never a bespoke banner maintained in two places with two different wordings.
 // strip labeller decorations off a proposed-position vote key for display
 function voteLabel(k){return String(k||"").replace(/^new:\s*/i,"").replace(/^pos[_ ]/,"").replace(/_/g," ");}
-function warningsHtml(warnings, showLink){
+// mode: "compact" — the front page: one short line per warning + a jump button.
+//       "detailed" — the Independence & bias tab: full detail; model-disagreement additionally
+//                    lists each contested source with every model's vote.
+function warningsHtml(warnings, mode){
   const kicker={concentration:"Apparent consensus is correlated",
     "method-monoculture":"Potential shared-method bias", quote:"Unverified quote",
     "low-confidence":"Weak quote grounding", "model-disagreement":"Labelling models disagreed"};
+  const detailed = mode==="detailed";
   return (warnings||[]).map(w=>{
-    // model-disagreement carries its sources: list each with the models' split vote
-    const srcs=(w.sources||[]).map(s=>{
+    if(!detailed && w.kind==="model-disagreement"){
+      // concise front-page version: the fact that matters (they're still counted) + a pointer
+      return `<div class="method-alert">
+        <div class="risk-kicker">${esc(kicker[w.kind])}</div>
+        <div>${esc(w.headline)} The highest-confidence model's label was used, and they <b>remain
+        in every count</b> under that label (⚖ in the table below). Check them before weighing.</div>
+        <button class="risk-link" data-view="independence">See the split votes</button>
+      </div>`;
+    }
+    const srcs=detailed?(w.sources||[]).map(s=>{
       const vote=Object.entries(s.vote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · ");
       return `<div class="warn-src"><b>${esc(shortLabel(s.title,80))}</b><br>
         <span style="color:var(--muted)">model votes: ${esc(vote||"—")}</span></div>`;
-    }).join("");
+    }).join(""):"";
     const dest=(w.kind==="concentration"||w.kind==="method-monoculture")?"independence":"coverage";
     const btn={independence:"See the evidence bases",coverage:"Open these sources"}[dest];
     return `<div class="method-alert">
       <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
       <div>${esc(w.detail)}</div>${srcs}
-      ${showLink?`<button class="risk-link" data-view="${dest}">${btn}</button>`:""}
+      ${!detailed?`<button class="risk-link" data-view="${dest}">${btn}</button>`:""}
     </div>`;
   }).join("");
 }
@@ -574,7 +586,7 @@ function headline(c){
       ? `<div class="takeaway">Weighted by independence, <b>${esc(big.label)}</b> drops from <b>${big.rawPct}%</b> of sources to <b>${big.wPct}%</b> of the independent evidence — its support rests on fewer distinct datasets than the headcount implies.</div>`
       : `<div class="takeaway">The two views largely agree here — each position's evidence is about as independent as it is numerous.</div>`;
   }
-  const warnHtml=warningsHtml(a.warnings, true);
+  const warnHtml=warningsHtml(a.warnings, "compact");
   const legend=a.distribution.map(d=>{
     const badges=(warningBadges[d.id]||[]).map(w=>`<span class="riskbadge">${esc(w.badge)}</span>`).join("");
     return `<button class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${badges}</button>`;
@@ -820,7 +832,7 @@ function renderIndependenceView(){
         ${sec}${circ}${method}
       </div>`;
   }).join("");
-  const flag=(a.warnings&&a.warnings.length) ? warningsHtml(a.warnings, false)
+  const flag=(a.warnings&&a.warnings.length) ? warningsHtml(a.warnings, "detailed")
     : `<div class="flagbox"><span>No single dataset dominates a position — and review echo / circular citation are already collapsed below, so the bases shown are genuinely distinct.</span></div>`;
   el("main").innerHTML=`<h1>Independence & bias</h1><div class="mmeta">is the consensus real, or the same evidence counted twice?</div>
     <div class="panel">

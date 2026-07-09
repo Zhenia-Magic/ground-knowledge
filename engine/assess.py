@@ -579,8 +579,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
                 n, "" if n == 1 else "s"),
             "detail": ('When several models label a source independently, they usually agree; on '
                        'these they split on which POSITION the source supports, and the '
-                       'highest-confidence model\'s label was used. Each is listed with every '
-                       'model\'s proposal — read the source itself to adjudicate.'),
+                       'highest-confidence model\'s label was used. These sources ARE included in '
+                       'every count under that label — the flag marks them for a curator\'s '
+                       're-check (re-label or remove via curation), not an exclusion. Each is '
+                       'listed with every model\'s proposal — read the source itself to '
+                       'adjudicate.'),
             "sources": [{"id": s["id"], "title": s.get("title") or s["id"],
                          "position": s["position"],
                          "vote": (s.get("modelAgreement") or {}).get("positionVote") or {},
