@@ -53,18 +53,22 @@ def _admin_delete_source(qid, sid):
     return {"ok": True, "version": v}
 
 
-def _admin_review_resolve(qid, pr_id, action, position=None):
-    """Resolve one queued ensemble disagreement ON THE PORTAL (admin moderation): merge the parked
-    source with the admin's chosen position, or drop it. Pushed KBs carry their pendingReview
-    queue here, so an admin can fix contested labels on the spot instead of round-tripping through
-    the console. Same engine logic as everywhere else (engine/review.py)."""
+def _admin_review_resolve(qid, item_id, kind, action, position=None):
+    """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
+    (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
+    flagged source (kind='flagged') gets its position re-decided in place, kept, or dropped.
+    Pushed KBs carry both, so an admin can fix contested labels on the spot instead of
+    round-tripping through the console. Same engine logic as everywhere else (engine/review.py)."""
     from engine import review
     q = store.get_question(qid, with_kb=True)
     if not q:
         return {"error": "no such question"}
     kb = q["kb"]
     try:
-        rep = review.resolve_review(kb, pr_id, action, position)
+        if kind == "flagged":
+            rep = review.resolve_flagged_source(kb, item_id, action, position)
+        else:
+            rep = review.resolve_review(kb, item_id, action, position)
     except ValueError as e:
         return {"error": str(e)}
     try:
@@ -316,8 +320,9 @@ class Handler(BaseHTTPRequestHandler):
             if p[2] == "delete-source":
                 return self._send(200, _admin_delete_source(body.get("id"), body.get("sourceId")))
             if p[2] == "review-resolve":
-                return self._send(200, _admin_review_resolve(body.get("id"), body.get("prId"),
-                                                             body.get("action"), body.get("position")))
+                return self._send(200, _admin_review_resolve(
+                    body.get("id"), body.get("itemId") or body.get("prId"),
+                    body.get("kind", "pending"), body.get("action"), body.get("position")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()

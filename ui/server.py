@@ -158,32 +158,38 @@ def list_cases():
             continue
         # id is the FILENAME (so _case_path round-trips) — NOT kb.meta.id, which can differ for
         # pulled portal cases (file is named by portal id, but meta.id keeps the original slug).
+        from engine import review as _review
         cid = os.path.basename(p)[:-len(".kb.json")]
         out.append({"id": cid, "question": kb["meta"].get("question", ""),
                     "version": kb["meta"].get("version", 0), "sources": len(kb.get("sources", [])),
-                    "pending": len(kb.get("pendingReview", []))})
+                    "review": _review.review_count(kb)})
     return out
 
 
 def review_list_op(cid):
-    """The case's queued model-disagreement items + the existing positions to resolve onto."""
+    """Everything awaiting a human position decision (queue items + already-merged flagged
+    sources) + the existing positions to resolve onto."""
+    from engine import review
     kb = _read(_case_path(cid))
-    return {"pending": kb.get("pendingReview", []),
+    return {"items": review.review_items(kb),
             "positions": [{"id": p["id"], "label": p["label"]} for p in kb["positions"]]}
 
 
-def review_resolve_op(cid, pr_id, action, position=None):
-    """Apply a human decision (pick a position / drop) to one queued item, then report back."""
+def review_resolve_op(cid, item_id, kind, action, position=None):
+    """Apply a human decision to one review item — a queued delta (kind='pending') or an
+    already-merged flagged source (kind='flagged') — then report back the refreshed queue."""
     from engine import review
     path = _case_path(cid)
     kb = _read(path)
-    before = assess(kb) if action == "position" else None
-    rep = review.resolve_review(kb, pr_id, action, position)
-    if rep.get("addedSource"):
+    before = assess(kb)
+    if kind == "flagged":
+        rep = review.resolve_flagged_source(kb, item_id, action, position)
+    else:
+        rep = review.resolve_review(kb, item_id, action, position)
+    if kb.get("log"):
         kb["log"][-1]["diff"] = diff_assessments(before, assess(kb))
-        log("review: merged as {} — {}".format(position, rep["addedSource"]))
-    elif rep.get("dropped"):
-        log("review: dropped {}".format(rep.get("title", pr_id)))
+    log("review: {}".format(rep.get("dropped") and "dropped" or rep.get("kept") and "kept label"
+                            or "resolved to " + str(rep.get("position") or position)))
     _write(path, kb)
     try:
         build_all()
@@ -767,7 +773,8 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/review":
                 return self._send(200, review_list_op(body.get("id")))
             if self.path == "/api/review/resolve":
-                return self._send(200, review_resolve_op(body.get("id"), body.get("prId"),
+                return self._send(200, review_resolve_op(body.get("id"), body.get("itemId") or body.get("prId"),
+                                                         body.get("kind", "pending"),
                                                          body.get("action"), body.get("position")))
             if self.path == "/api/portal/list":
                 return self._send(200, portal_list_op(body.get("url")))

@@ -433,38 +433,56 @@ def manage_html(qid, get_question):
         : '<div class="empty">No sources yet.</div>';
     }
     const posName=k=>{const s=String(k||'').replace(/^NEW:\\s*/i,'').replace(/^pos[_ ]/,'').replace(/_/g,' ');return s.charAt(0).toUpperCase()+s.slice(1);};
+    function reviewItems(kb){
+      const pend=(kb.pendingReview||[]).map(e=>({kind:'pending',id:e.id,title:e.title,url:e.url,year:e.year,
+        abstract:e.abstract,proposals:e.proposals||[]}));
+      const flagged=(kb.sources||[]).filter(s=>(s.modelAgreement||{}).flagged).map(s=>{
+        const ma=s.modelAgreement||{};
+        const props=ma.proposals||Object.entries(ma.positionVote||{}).map(([k,v])=>({position:k,votes:v,quote:''}));
+        return {kind:'flagged',id:s.id,title:s.title,url:s.url,year:s.year,abstract:'',
+          current:s.position,proposals:props};
+      });
+      return pend.concat(flagged);
+    }
     function renderReview(kb){
-      const pend=kb.pendingReview||[], panel=document.getElementById('revpanel');
-      if(!pend.length){panel.style.display='none';return;}
+      const items=reviewItems(kb), panel=document.getElementById('revpanel');
+      if(!items.length){panel.style.display='none';return;}
       panel.style.display='';
-      document.getElementById('revn').textContent='('+pend.length+')';
+      document.getElementById('revn').textContent='('+items.length+')';
       const posOpts=(kb.positions||[]).map(p=>`<option value="${E(p.id)}">${E(p.label)}</option>`).join('');
-      document.getElementById('revs').innerHTML=pend.map(e=>`
-        <div class="cand" style="flex-direction:column;align-items:stretch">
-          <div><b>${E(e.title)}</b> <span class="why">${E(e.year||'')}</span>
+      document.getElementById('revs').innerHTML=items.map(e=>{
+        const merged=e.kind==='flagged';
+        const status=merged
+          ? '<span class="why" style="color:#8a6510">· imported with a guess — re-decide</span>'
+          : '<span class="why">· not imported yet</span>';
+        return `<div class="cand" style="flex-direction:column;align-items:stretch">
+          <div><b>${E(e.title)}</b> <span class="why">${E(e.year||'')}</span> ${status}
             ${e.url?` · <a href="${E(e.url)}" target="_blank" rel="noopener">source ↗</a>`:''}</div>
+          ${merged?`<div class="why">currently counted as <b>${E(posName(e.current))}</b></div>`:''}
           ${e.abstract?`<details style="margin:6px 0"><summary class="why">Abstract / what the models read</summary>
             <div class="why" style="white-space:pre-wrap;margin-top:5px">${E(e.abstract)}</div></details>`:''}
           ${(e.proposals||[]).map(p=>`
             <div style="display:flex;gap:8px;align-items:center;margin:5px 0">
               <div style="flex:1"><b>${E(posName(p.position))}</b> <span class="why">(${p.votes} vote${p.votes===1?'':'s'})</span>
                 ${p.quote?`<br><span class="why">“${E(String(p.quote).slice(0,200))}”</span>`:''}</div>
-              <button class="btn" onclick="resolveRev('${E(e.id)}','position','${E(String(p.position).replace(/'/g,''))}',this)">Use this</button>
+              <button class="btn" onclick="resolveRev('${E(e.id)}','${e.kind}','position','${E(String(p.position).replace(/'/g,''))}',this)">Use this</button>
             </div>`).join('')}
-          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
-            <select id="sel_${E(e.id)}" style="flex:1">${posOpts}</select>
-            <button class="btn ghost" onclick="resolveRev('${E(e.id)}','existing','',this)">Use selected</button>
-            <button class="btn ghost" style="color:#B4502E;border-color:#B4502E" onclick="resolveRev('${E(e.id)}','drop','',this)">Drop paper</button>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap">
+            <select id="sel_${E(e.id)}" style="flex:1;min-width:160px">${posOpts}</select>
+            <button class="btn ghost" onclick="resolveRev('${E(e.id)}','${e.kind}','existing','',this)">Use selected</button>
+            ${merged?`<button class="btn ghost" onclick="resolveRev('${E(e.id)}','${e.kind}','accept','',this)">Keep the guess</button>`:''}
+            <button class="btn ghost" style="color:#B4502E;border-color:#B4502E" onclick="resolveRev('${E(e.id)}','${e.kind}','drop','',this)">Drop ${merged?'source':'paper'}</button>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
-    async function resolveRev(prId,act,pos,btn){
-      let action='position', position=pos;
-      if(act==='drop'){ if(!confirm('Drop this paper? It will not be added.'))return; action='drop'; position=''; }
-      if(act==='existing'){ position=document.getElementById('sel_'+prId).value; }
+    async function resolveRev(itemId,kind,act,pos,btn){
+      let action=act, position=pos;
+      if(act==='drop'){ if(!confirm('Drop this source? It will not be in the knowledge base.'))return; position=''; }
+      if(act==='existing'){ action='position'; position=document.getElementById('sel_'+itemId).value; }
       btn.disabled=true;
       const r=await fetch('/api/admin/review-resolve',{method:'POST',headers:H(),
-        body:JSON.stringify({id:QID,prId,action,position})});
+        body:JSON.stringify({id:QID,itemId,kind,action,position})});
       const j=await r.json();
       if(j.error){alert(j.error);btn.disabled=false;return;}
       render();
