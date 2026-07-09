@@ -565,16 +565,27 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
                            w["label"], w["low"], w["classed"]),
         })
 
-    # multi-model ensemble: sources where the models had NO majority position (ingest/ensemble.py)
+    # multi-model ensemble: sources where the models had NO majority position (ingest/ensemble.py).
+    # The warning CARRIES the flagged sources and each one's vote breakdown, so a reader sees
+    # exactly which sources are contested and what each model proposed — not just a count.
     dis = [s for s in kb["sources"] if (s.get("modelAgreement") or {}).get("flagged")]
     if dis:
+        n = len(dis)
         out.append({
-            "kind": "model-disagreement", "positionId": None, "label": "labelling ensemble",
+            "kind": "model-disagreement", "positionId": None,
+            "label": "{} source{} to review".format(n, "" if n == 1 else "s"),
             "hue": "#8a6510", "badge": "model disagreement",
-            "headline": "Models disagreed on some labels.",
-            "detail": ('{} source(s) had no majority position across the labelling ensemble; the '
-                       'highest-confidence model\'s label was used and flagged. Worth a curator\'s '
-                       'check.').format(len(dis)),
+            "headline": "The labelling models disagreed on {} source{}.".format(
+                n, "" if n == 1 else "s"),
+            "detail": ('When several models label a source independently, they usually agree; on '
+                       'these they split on which POSITION the source supports, and the '
+                       'highest-confidence model\'s label was used. Each is listed with every '
+                       'model\'s proposal — read the source itself to adjudicate.'),
+            "sources": [{"id": s["id"], "title": s.get("title") or s["id"],
+                         "position": s["position"],
+                         "vote": (s.get("modelAgreement") or {}).get("positionVote") or {},
+                         "fields": (s.get("modelAgreement") or {}).get("disagreedFields") or []}
+                        for s in dis],
         })
     return out
 

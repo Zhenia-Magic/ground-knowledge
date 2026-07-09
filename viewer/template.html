@@ -134,6 +134,8 @@
   .risk-link{appearance:none;border:1px solid #D5B873;background:#fff;color:var(--ochre);
     border-radius:6px;padding:5px 9px;margin-top:9px;font:inherit;font-size:12px;cursor:pointer;}
   .risk-link:hover{background:#FFF8E8;}
+  .warn-src{background:#fff;border:1px solid #E3CD99;border-radius:7px;padding:7px 10px;
+    margin:7px 0 0;font-size:12.5px;line-height:1.45;}
   .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--muted);}
   .legend .key{display:inline-flex;flex-wrap:wrap;align-items:center;gap:7px;cursor:pointer;
     transition:color .12s;border:0;background:transparent;font:inherit;padding:0;
@@ -432,15 +434,27 @@ function quoteWarnHtml(pq, textDepth){
 // ONE renderer for every warning kind (concentration / method-monoculture / quote /
 // low-confidence) -- see engine/assess.py::warnings. Used in both Coverage and Independence so
 // a warning is never a bespoke banner maintained in two places with two different wordings.
+// strip labeller decorations off a proposed-position vote key for display
+function voteLabel(k){return String(k||"").replace(/^new:\s*/i,"").replace(/^pos[_ ]/,"").replace(/_/g," ");}
 function warningsHtml(warnings, showLink){
   const kicker={concentration:"Apparent consensus is correlated",
     "method-monoculture":"Potential shared-method bias", quote:"Unverified quote",
-    "low-confidence":"Weak quote grounding"};
-  return (warnings||[]).map(w=>`<div class="method-alert">
+    "low-confidence":"Weak quote grounding", "model-disagreement":"Labelling models disagreed"};
+  return (warnings||[]).map(w=>{
+    // model-disagreement carries its sources: list each with the models' split vote
+    const srcs=(w.sources||[]).map(s=>{
+      const vote=Object.entries(s.vote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · ");
+      return `<div class="warn-src"><b>${esc(shortLabel(s.title,80))}</b><br>
+        <span style="color:var(--muted)">model votes: ${esc(vote||"—")}</span></div>`;
+    }).join("");
+    const dest=(w.kind==="concentration"||w.kind==="method-monoculture")?"independence":"coverage";
+    const btn={independence:"See the evidence bases",coverage:"Open these sources"}[dest];
+    return `<div class="method-alert">
       <div class="risk-kicker">${esc(kicker[w.kind]||w.badge)}</div>
-      <div>${esc(w.detail)}</div>
-      ${showLink&&w.kind!=="quote"&&w.kind!=="low-confidence"?'<button class="risk-link" data-view="independence">See the evidence bases</button>':""}
-    </div>`).join("");
+      <div>${esc(w.detail)}</div>${srcs}
+      ${showLink?`<button class="risk-link" data-view="${dest}">${btn}</button>`:""}
+    </div>`;
+  }).join("");
 }
 
 function caseLabel(c){
@@ -499,7 +513,7 @@ function renderChrome(){
   if(!empty && a.warnings && a.warnings.length){
     warnEl.style.display="";
     el("warnList").innerHTML=a.warnings.map(w=>
-      `<div class="warnmini" data-jump="${w.kind==="quote"||w.kind==="low-confidence"?"coverage":"independence"}"><b>${esc(w.badge)}</b>${esc(w.label)}</div>`).join("");
+      `<div class="warnmini" data-jump="${w.kind==="concentration"||w.kind==="method-monoculture"?"independence":"coverage"}"><b>${esc(w.badge)}</b>${esc(w.label)}</div>`).join("");
   } else warnEl.style.display="none";
 
   const caseSec=el("caseSec");
@@ -621,7 +635,11 @@ function renderCoverageView(){
       const dsLabel=rests.length?esc(rests[0])+(rests.length>1?" +"+(rests.length-1):""):"—";
       const pq=((s.provenance||{}).position)||{};
       const missing=pq.verifiedQuote==="missing"&&s.textDepth==="full";
-      const icon=missing?'<i class="flagicon" title="quote not found in fetched text">⚠</i>':(s.textDepth==="full"?'<span class="okicon" title="full text">✓</span>':'<span class="okicon">·</span>');
+      const modelSplit=(s.modelAgreement||{}).flagged;
+      const splitTip=modelSplit?Object.entries(s.modelAgreement.positionVote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · "):"";
+      const icon=missing?'<i class="flagicon" title="quote not found in fetched text">⚠</i>'
+        :modelSplit?`<i class="flagicon" title="labelling models disagreed — votes: ${esc(splitTip)}">⚖</i>`
+        :(s.textDepth==="full"?'<span class="okicon" title="full text">✓</span>':'<span class="okicon">·</span>');
       let detail="";
       if(open){
         const quote=cleanQuote(pq.quote,s.title);
@@ -636,6 +654,7 @@ function renderCoverageView(){
             <div class="metarow">${venueBits.length?venueBits.join(" · ")+" · ":""}${esc(s.funding||"Undisclosed")} · conf: ${esc(s.confidence)}${depthLabel?" · "+esc(depthLabel):""}${pip}
               ${s.retracted?' <span class="tag retr">⚠ RETRACTED</span>':""}${isNew?` <span class="tag new">added v${s.addedIn}</span>`:""}</div>
             ${quote?`<div class="q">“${esc(quote)}”</div>${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}`:""}
+            ${modelSplit?`<div style="color:var(--ochre)">⚖ labelling models disagreed — votes: ${esc(splitTip)}; the highest-confidence model's label is shown.</div>`:""}
             ${rests.length?`<div>rests on: ${rests.map(esc).join(", ")}</div>`:""}
           </td></tr>`;
       }

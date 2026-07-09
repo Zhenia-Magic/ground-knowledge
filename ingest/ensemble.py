@@ -94,6 +94,27 @@ def _same_edge(a, b):
     return inter / len(a | b) >= 0.4
 
 
+def _factor_tokens(label):
+    """Content tokens of a proposed factor label (camelCase-split, normalized, de-pluralled,
+    connectives dropped) — the identity signal for clustering two models' names for one crux."""
+    p = re.sub(r"\([^)]*\)", " ", str(label or ""))
+    p = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", p)
+    return {t[:-1] if len(t) > 4 and t.endswith("s") else t
+            for t in _norm(p).split() if t not in _POS_STOP}
+
+
+def _same_factor(a, b):
+    """Two factor proposals name the same crux: token subset (a qualifier variant — 'Publication
+    bias' ⊆ 'Publication bias concerns') or Jaccard >= 0.6. The higher bar than datasets keeps
+    genuinely different axes sharing words apart ('Effect size magnitude' vs 'Effect size
+    heterogeneity' is 0.5 — distinct)."""
+    if not a or not b:
+        return False
+    if a <= b or b <= a:
+        return True
+    return len(a & b) / len(a | b) >= 0.6
+
+
 def _mode(values):
     """Most common non-empty value; ties broken by first-seen order (stable). Preserves the
     original raw form (casing/prefix) rather than the normalized key."""
@@ -240,18 +261,33 @@ def combine_one(deltas):
                               c["forms"][0][1]))
     out["restsOn"] = rests
 
-    # factorWeights: keep a factor >= half propose; weight = mode
-    fw_by = OrderedDict()
+    # factorWeights: models phrase the same crux differently ("Publication bias" vs
+    # "publication-bias concerns"), so cluster proposals by label tokens BEFORE the >=-half vote —
+    # exact-label voting silently discarded most factors (46 sources yielded only 2). Weight is
+    # the cluster's mode; the winning model's wording (and its quote/rationale) is preferred.
+    fclusters = []
     for d in rd:
+        seen = set()
         for fw in (d.get("factorWeights") or []):
             lab = fw.get("factor") or fw.get("factorLabel")
-            if lab:
-                fw_by.setdefault(_norm(lab), []).append(fw)
+            if not lab or _norm(lab) in seen:
+                continue
+            seen.add(_norm(lab))
+            tk = _factor_tokens(lab)
+            for c in fclusters:
+                if _same_factor(tk, c["tokens"]):
+                    c["items"].append((d is winner, fw))
+                    c["tokens"] |= tk
+                    c["votes"] += 1
+                    break
+            else:
+                fclusters.append({"tokens": set(tk), "items": [(d is winner, fw)], "votes": 1})
     fws = []
-    for _key, items in fw_by.items():
-        if len(items) >= m / 2.0:
-            base = dict(items[0])
-            base["weight"] = _mode([it.get("weight") for it in items]) or base.get("weight")
+    for c in fclusters:
+        if c["votes"] >= m / 2.0:
+            rep = next((fw for is_w, fw in c["items"] if is_w), c["items"][0][1])
+            base = dict(rep)
+            base["weight"] = _mode([fw.get("weight") for _w, fw in c["items"]]) or base.get("weight")
             fws.append(base)
 
     rep = {"models": n, "positionAgreement": round(pos_agree, 2), "flagged": flagged,

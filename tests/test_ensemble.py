@@ -348,3 +348,54 @@ class MergeGuardTests(unittest.TestCase):
             "year": 2013, "url": "https://ex.org/later", "position": "NEW:Increases",
             "evidence": "Meta-analysis", "restsOn": []}})
         self.assertFalse(rep["duplicate"])
+
+
+class FactorClusteringTests(unittest.TestCase):
+    """Factor votes must cluster paraphrased labels — exact-label voting silently discarded most
+    factors (a 46-source run kept only 2)."""
+
+    def _one(self, deltas):
+        return ensemble.combine_one(deltas)
+
+    def _f(self, lab, w="high"):
+        return {"factor": lab, "weight": w, "quote": "q " + lab, "rationale": "r"}
+
+    def test_paraphrased_factor_labels_cluster_and_survive(self):
+        c, _ = self._one([_d("NEW:X", factors=[self._f("Publication bias")]),
+                          _d("NEW:X", factors=[self._f("publication-bias concerns", "med")])])
+        self.assertEqual(len(c["factorWeights"]), 1)
+        self.assertEqual(c["factorWeights"][0]["weight"], "high")   # mode ties -> first-seen
+
+    def test_camelcase_and_plural_variants_cluster(self):
+        c, _ = self._one([_d("NEW:X", factors=[self._f("Researcher expectancy effects")]),
+                          _d("NEW:X", factors=[self._f("ResearcherExpectancyEffect")])])
+        self.assertEqual(len(c["factorWeights"]), 1)
+
+    def test_distinct_axes_sharing_words_stay_distinct(self):
+        # Jaccard 0.5 — below the 0.6 factor bar, and neither is a subset
+        c, _ = self._one([_d("NEW:X", factors=[self._f("Effect size magnitude"),
+                                               self._f("Effect size heterogeneity")]),
+                          _d("NEW:X", factors=[self._f("Effect size magnitude"),
+                                               self._f("Effect size heterogeneity")])])
+        self.assertEqual(len(c["factorWeights"]), 2)
+
+    def test_winner_wording_preferred_for_factor_label(self):
+        c, _ = self._one([_d("NEW:X", conf=0.9, factors=[self._f("Publication bias")]),
+                          _d("NEW:X", conf=0.5, factors=[self._f("Publication bias in meta-analyses")])])
+        self.assertEqual(c["factorWeights"][0]["factor"], "Publication bias")
+
+
+class FactorMergeGuardTests(unittest.TestCase):
+    def test_factor_paraphrase_folds_into_existing(self):
+        from engine.schema import empty_kb
+        from engine.merge import merge_delta
+        kb = empty_kb("t", "q")
+        d = lambda t, fl: {"source": {"title": t, "year": 2020, "url": "https://ex.org/" + t,
+                                      "position": "NEW:Increases", "evidence": "Observational",
+                                      "restsOn": []},
+                           "factorWeights": [{"factor": fl, "weight": "high"}]}
+        merge_delta(kb, d("a", "Publication bias"))
+        merge_delta(kb, d("b", "Publication bias concerns"))
+        merge_delta(kb, d("c", "Effect size magnitude"))
+        self.assertEqual(len(kb["factors"]), 2)
+        self.assertEqual(kb["factors"][0]["label"], "Publication bias")

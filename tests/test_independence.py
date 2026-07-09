@@ -350,6 +350,19 @@ class WarningsTests(unittest.TestCase):
         self.assertEqual(weak[0]["positionId"], "X")
         self.assertIn("weak quote", weak[0]["badge"])
 
+
+    def test_model_disagreement_warning_carries_sources_and_votes(self):
+        kb = _kb([_s("a", "X", "Observational", ["D1"])])
+        kb["sources"][0]["title"] = "Contested paper"
+        kb["sources"][0]["modelAgreement"] = {
+            "models": 2, "flagged": True, "disagreedFields": ["position"],
+            "positionVote": {"NEW:Increases": 1, "NEW:No effect": 1}}
+        w = [x for x in warnings(kb) if x["kind"] == "model-disagreement"][0]
+        self.assertEqual(w["label"], "1 source to review")
+        self.assertEqual(len(w["sources"]), 1)
+        self.assertEqual(w["sources"][0]["title"], "Contested paper")
+        self.assertIn("NEW:Increases", w["sources"][0]["vote"])
+
     def test_precomputed_audits_can_be_passed_in_without_recomputing(self):
         from engine.assess import confidence_audit
         srcs = [_s("p%d" % i, "X", "Observational", ["D"]) for i in range(8)]

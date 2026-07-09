@@ -313,6 +313,14 @@ def _resolve_factor(kb, f_label):
     for f in kb["factors"]:
         if norm(f["label"]) == probe:
             return f["id"], False
+    # near-duplicate guard, same subset discipline as positions: a qualifier/paraphrase variant
+    # ("Publication bias concerns") folds into the existing crux instead of minting a parallel one.
+    probe_t = _pos_tokens(label)
+    for f in kb["factors"]:
+        ft = _pos_tokens(f["label"])
+        if probe_t and ft and (probe_t <= ft or ft <= probe_t) \
+                and min(len(probe_t), len(ft)) >= 2:
+            return f["id"], False
     nice = prettify_label(label)
     cid = _unique_id("f_", slug(nice),
                      lambda x: any(f["id"] == x for f in kb["factors"]))
