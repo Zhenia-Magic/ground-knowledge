@@ -338,6 +338,16 @@
     <div class="results" id="results"></div>
   </div>
 
+  <!-- Review: ensemble disagreements waiting on a human -->
+  <div class="card attention" id="sec-review" style="display:none">
+    <div class="step">Needs your review</div>
+    <h2>The labelling models disagreed <span id="revCount" class="pill"></span></h2>
+    <p class="desc">These sources were <b>not</b> imported: the ensemble split on which position each
+    supports. Read the abstract, then pick a position (or type your own) — or drop the paper.</p>
+    <div class="toast" id="revToast"></div>
+    <div id="revList" class="results"></div>
+  </div>
+
   <!-- Gaps -->
   <div class="card" id="sec-gaps">
     <div class="step">Deepen</div>
@@ -481,10 +491,65 @@ function activeCase(){return CASES.find(x=>x.id===ACTIVE);}
 function renderActiveCase(){
   const c=activeCase();
   $("#caseBtnLabel").textContent = c ? (c.question||c.id) : "Select a question…";
-  $("#casePill").textContent = c ? `v${c.version} · ${c.sources} src` : "";
+  $("#casePill").textContent = c ? `v${c.version} · ${c.sources} src${c.pending?` · ⏸${c.pending}`:""}` : "";
   $("#caseInfo").innerHTML = c
-    ? `<span class="pill">${esc(c.id)}</span> <span class="pill">v${c.version}</span> ${c.sources} source(s)<br><span class="muted">${esc(c.question)}</span>`
+    ? `<span class="pill">${esc(c.id)}</span> <span class="pill">v${c.version}</span> ${c.sources} source(s)${c.pending?` · <span class="pill" style="background:var(--warnbg);color:var(--warn)">${c.pending} awaiting review</span>`:""}<br><span class="muted">${esc(c.question)}</span>`
     : `<span class="muted">No case selected. Create one below, or pull from a portal.</span>`;
+  loadReview();
+}
+
+// ---- review queue: ensemble position disagreements waiting on the human ----
+async function loadReview(){
+  const c=activeCase();
+  const card=$("#sec-review");
+  if(!c||!c.pending){card.style.display="none";$("#revList").innerHTML="";return;}
+  try{
+    const r=await api("/api/review",{id:c.id});
+    renderReview(r);
+  }catch(e){card.style.display="none";}
+}
+function renderReview(r){
+  const pend=r.pending||[];
+  const card=$("#sec-review");
+  if(!pend.length){card.style.display="none";return;}
+  card.style.display="block";
+  $("#revCount").textContent=pend.length;
+  const posOpts=(r.positions||[]).map(p=>`<option value="${esc(p.id)}">${esc(p.label)}</option>`).join("");
+  $("#revList").innerHTML=pend.map(e=>{
+    const props=(e.proposals||[]).map((p,i)=>`
+      <div class="cand" style="align-items:center">
+        <div class="cm"><div class="ct">${esc(voteLabelUi(p.position))} <span class="hint">(${p.votes} vote${p.votes===1?"":"s"})</span></div>
+          ${p.quote?`<div class="cw">“${esc(p.quote.slice(0,220))}”</div>`:""}</div>
+        <button class="sm" data-rev="${esc(e.id)}" data-act="position" data-pos="${esc(p.position)}">Use this</button>
+      </div>`).join("");
+    return `<div class="res" style="border-left-color:var(--warn)">
+      <div class="t">${esc(e.title)}${e.year?` <span class="tag">(${e.year})</span>`:""}</div>
+      ${e.url?`<div class="hint"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.url)}</a></div>`:""}
+      ${e.abstract?`<details style="margin:8px 0"><summary>Abstract / what the models read</summary>
+        <div class="hint" style="white-space:pre-wrap;margin-top:6px">${esc(e.abstract)}</div></details>`:""}
+      ${props}
+      <div class="row" style="margin-top:8px">
+        <div class="src"><label>…or an existing position</label><select data-sel="${esc(e.id)}">${posOpts}</select></div>
+        <button class="ghost auto" data-rev="${esc(e.id)}" data-act="existing">Use selected</button>
+        <button class="ghost auto" style="color:var(--err);border-color:var(--err)" data-rev="${esc(e.id)}" data-act="drop">Drop paper</button>
+      </div>
+    </div>`;
+  }).join("");
+  $("#revList").querySelectorAll("[data-rev]").forEach(b=>b.addEventListener("click",()=>resolveReview(b)));
+}
+function voteLabelUi(k){const s=String(k||"").replace(/^NEW:\s*/i,"").replace(/^pos[_ ]/,"").replace(/_/g," ");return s.charAt(0).toUpperCase()+s.slice(1);}
+async function resolveReview(btn){
+  const prId=btn.dataset.rev, act=btn.dataset.act;
+  let action="position", position=btn.dataset.pos||"";
+  if(act==="drop"){action="drop";position="";}
+  if(act==="existing"){position=document.querySelector(`[data-sel="${prId}"]`).value;}
+  if(action==="drop"&&!confirm("Drop this paper? It will not be added to the knowledge base."))return;
+  btn.disabled=true;
+  try{
+    const r=await api("/api/review/resolve",{id:caseId(),prId,action,position});
+    toast($("#revToast"),action==="drop"?"Dropped.":"Merged with your chosen position.","ok");
+    await loadCases(caseId());        // refreshes counts + re-renders the queue
+  }catch(e){btn.disabled=false;toast($("#revToast"),e.message,"warn");}
 }
 
 // ---- searchable case switcher (command palette) ----

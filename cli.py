@@ -148,7 +148,61 @@ def cmd_gaps(args):
 
 
 # ---------------------------------------------------------------- add
+def _review_prompt(kb_path, delta):
+    """Interactive resolution of an ensemble position disagreement — the models split, so the
+    person running the ingestion decides: shows the abstract and each model's proposal, then asks
+    to pick a position or drop the paper. Non-interactive runs queue it for the console instead.
+    Returns the delta to merge (position resolved), or None when dropped/queued."""
+    import sys as _sys
+    from engine import review
+    src = delta.get("source") or {}
+    ma = src.get("modelAgreement") or {}
+    if not _sys.stdin.isatty():                       # no human present -> queue for the console
+        kb = read_json(kb_path)
+        if review.queue_for_review(kb, delta):
+            write_json(kb_path, kb)
+        print("⏸ models disagreed — queued for review (resolve in the console: cli.py ui): "
+              + (src.get("title") or "")[:70])
+        return None
+    print("\n" + "=" * 72)
+    print("MODELS DISAGREED on the position of:\n  {} ({})".format(
+        src.get("title") or "(untitled)", src.get("year") or "?"))
+    if src.get("url"):
+        print("  " + src["url"])
+    abstract = (delta.get("reviewText") or "").strip()
+    if abstract:
+        print("\nABSTRACT / LEAD (what the models read):\n" + abstract[:900])
+    props = ma.get("proposals") or []
+    print("\nPROPOSALS:")
+    for i, p in enumerate(props, 1):
+        print("  [{}] {}  ({} vote{})".format(
+            i, p.get("position"), p.get("votes"), "" if p.get("votes") == 1 else "s"))
+        if p.get("quote"):
+            print('       "{}"'.format(p["quote"][:160]))
+    print("  [d] drop this paper    [other] type any position label to use instead")
+    while True:
+        ans = input("your call> ").strip()
+        if not ans:
+            continue
+        if ans.lower() == "d":
+            print("dropped.")
+            return None
+        chosen = (props[int(ans) - 1]["position"]
+                  if ans.isdigit() and 1 <= int(ans) <= len(props) else ans)
+        src["position"] = chosen
+        ma["flagged"] = False
+        ma["resolvedBy"] = "human"
+        ma["resolvedTo"] = chosen
+        delta.pop("reviewText", None)
+        return delta
+
+
 def _apply_delta(kb_path, delta):
+    from engine import review
+    if review.needs_review(delta):
+        delta = _review_prompt(kb_path, delta)
+        if delta is None:
+            return False
     kb = read_json(kb_path)
     before = assess(kb)
     report = merge_delta(kb, delta)

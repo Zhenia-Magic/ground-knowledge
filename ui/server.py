@@ -160,8 +160,36 @@ def list_cases():
         # pulled portal cases (file is named by portal id, but meta.id keeps the original slug).
         cid = os.path.basename(p)[:-len(".kb.json")]
         out.append({"id": cid, "question": kb["meta"].get("question", ""),
-                    "version": kb["meta"].get("version", 0), "sources": len(kb.get("sources", []))})
+                    "version": kb["meta"].get("version", 0), "sources": len(kb.get("sources", [])),
+                    "pending": len(kb.get("pendingReview", []))})
     return out
+
+
+def review_list_op(cid):
+    """The case's queued model-disagreement items + the existing positions to resolve onto."""
+    kb = _read(_case_path(cid))
+    return {"pending": kb.get("pendingReview", []),
+            "positions": [{"id": p["id"], "label": p["label"]} for p in kb["positions"]]}
+
+
+def review_resolve_op(cid, pr_id, action, position=None):
+    """Apply a human decision (pick a position / drop) to one queued item, then report back."""
+    from engine import review
+    path = _case_path(cid)
+    kb = _read(path)
+    before = assess(kb) if action == "position" else None
+    rep = review.resolve_review(kb, pr_id, action, position)
+    if rep.get("addedSource"):
+        kb["log"][-1]["diff"] = diff_assessments(before, assess(kb))
+        log("review: merged as {} — {}".format(position, rep["addedSource"]))
+    elif rep.get("dropped"):
+        log("review: dropped {}".format(rep.get("title", pr_id)))
+    _write(path, kb)
+    try:
+        build_all()
+    except Exception:
+        pass
+    return {"report": rep, **review_list_op(cid)}
 
 
 def init_case(cid, question):
@@ -189,13 +217,24 @@ def research_prompt(cid, k):
 
 def _merge_list(cid, deltas):
     """Merge a list of deltas one at a time. Returns per-source result dicts with recomputed
-    diff lines — never raises; per-item errors are reported in the result."""
+    diff lines — never raises; per-item errors are reported in the result. A delta whose
+    ensemble labelling had NO majority position is NOT merged: it is queued for the human's
+    review (engine/review.py) and reported as 'needs-review'."""
+    from engine import review
     path = _case_path(cid)
     results = []
     for d in deltas:
         title = (d.get("source") or {}).get("title") if isinstance(d, dict) else None
         try:
             kb = _read(path)
+            if review.needs_review(d):
+                entry = review.queue_for_review(kb, d)
+                if entry is not None:
+                    _write(path, kb)
+                    log("  ⏸ needs your review (models disagreed): {}".format(
+                        (title or "")[:70]))
+                results.append({"status": "needs-review", "title": title})
+                continue
             before = assess(kb)
             rep = merge_delta(kb, d)
             if rep.get("offTopic"):
@@ -293,8 +332,10 @@ def extract_op(cid, urls, apply, batch=None, max_text=None):
     urls = [clean_url(u) for u in (urls or []) if u]
     if not urls:
         raise ValueError("No source URLs to fetch.")
+    from engine import review
     path = _case_path(cid)
-    existing = {source_key(s) for s in _read(path)["sources"]}
+    kb0 = _read(path)
+    existing = {source_key(s) for s in kb0["sources"]} | review.pending_keys(kb0)
     todo, already = [], 0
     for u in urls:
         if ("u:" + norm(u)) in existing:
@@ -723,6 +764,11 @@ class Handler(BaseHTTPRequestHandler):
             if self.path == "/api/config":
                 return self._send(200, config_op(body.get("searchProvider"), body.get("searchModel"),
                                                  body.get("labelProvider"), body.get("labelModel")))
+            if self.path == "/api/review":
+                return self._send(200, review_list_op(body.get("id")))
+            if self.path == "/api/review/resolve":
+                return self._send(200, review_resolve_op(body.get("id"), body.get("prId"),
+                                                         body.get("action"), body.get("position")))
             if self.path == "/api/portal/list":
                 return self._send(200, portal_list_op(body.get("url")))
             if self.path == "/api/portal/pull":

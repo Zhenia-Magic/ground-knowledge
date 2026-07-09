@@ -477,6 +477,10 @@ def _carry_meta(delta, doc, verify_text=None):
     for fw in delta.get("factorWeights", []):
         if fw.get("quote"):
             fw["verifiedQuote"] = match_quote(fw["quote"], text)
+    # ensemble disagreement -> this delta will be routed to HUMAN review (engine/review.py);
+    # carry the abstract/lead of what the models actually read, so the reviewer sees it too.
+    if (src.get("modelAgreement") or {}).get("flagged"):
+        delta["reviewText"] = text[:1500]
 
 
 def ingest_source(target, kb, dry_run=False):

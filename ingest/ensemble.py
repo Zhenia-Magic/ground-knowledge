@@ -202,10 +202,19 @@ def combine_one(deltas):
             winner = max(rd, key=_conf)
         pos_agree = top_n / m
         pos_vote = {c["label"]: len(c["deltas"]) for c in clusters}
+        # per-stance PROPOSALS, for a human resolving the disagreement: each cluster's label,
+        # vote count, and its best-confidence model's quote — the evidence behind each reading.
+        proposals = []
+        for c in clusters:
+            best = max(c["deltas"], key=_conf)
+            bprov = (_src(best).get("provenance") or {}).get("position") or {}
+            proposals.append({"position": c["label"], "votes": len(c["deltas"]),
+                              "quote": bprov.get("quote") or "", "confidence": _conf(best)})
     else:
         winner = max(rd, key=_conf)
         pos_agree = 0.0
         pos_vote = {}
+        proposals = []
     wsrc = _src(winner)
 
     out = dict(wsrc)                                             # keep winner's quote/positionShort
@@ -292,6 +301,6 @@ def combine_one(deltas):
 
     rep = {"models": n, "positionAgreement": round(pos_agree, 2), "flagged": flagged,
            "disagreedFields": sorted(set(disagreed)),
-           "positionVote": pos_vote}
+           "positionVote": pos_vote, "proposals": proposals}
     out["modelAgreement"] = rep
     return {"source": out, "factorWeights": fws}, rep

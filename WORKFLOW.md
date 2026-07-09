@@ -134,6 +134,11 @@ python cli.py ingest cases/eggs.kb.json ./paper.pdf --dry-run   # prints the ext
 python cli.py add cases/eggs.kb.json delta.json --build
 ```
 
+**If the labelling ensemble disagrees** on a source's position, the source is NOT merged: in a
+terminal you are asked right there (abstract + each model's proposal — pick a position or drop
+it); in the console (or a non-interactive run) it lands in a **Needs your review** panel, and
+the case chip shows a ⏸ count until you resolve it. Pending sources count in no metric.
+
 Either way the terminal prints **WHAT CHANGED** (which metrics moved), and it's appended to the
 viewer's **Changes** tab. Duplicate sources (same url, or title+year) are refused automatically.
 
