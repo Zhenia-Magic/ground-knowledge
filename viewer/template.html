@@ -639,8 +639,9 @@ function renderCoverageView(){
   const maxVer=kb.meta.version;
   let body;
   if(state.display==="table"){
-    const COLS=[["t","Title"],["y","Year"],["p","Position"],["ev","Evidence"],["ds","Datasets"],["flag","Flag"]];
-    const thead=COLS.map(([k,l])=>`<th data-sort="${k}">${esc(l)}${state.sort.key===k?(state.sort.dir<0?" ↓":" ↑"):""}</th>`).join("");
+    const COLS=[["t","Title"],["y","Year"],["p","Position"],["ev","Evidence"],["ds","Datasets"],["flag","Check"]];
+    const HEADINFO={flag:"Per-source checks (empty = nothing to flag). ✓ full text was fetched, so the quote is verifiable. ⚠ the source's quote was NOT found in the fetched full text — a real red flag. ⚖ the labelling models disagreed on this source's position (resolve it under “Needs review”). Blank means abstract-only: there was no full text to check the quote against."};
+    const thead=COLS.map(([k,l])=>`<th data-sort="${k}">${esc(l)}${HEADINFO[k]?` <span class="infoicon" title="${esc(HEADINFO[k])}">?</span>`:""}${state.sort.key===k?(state.sort.dir<0?" ↓":" ↑"):""}</th>`).join("");
     const trs=visible.map(s=>{
       const p=pos[s.position], open=state.expanded.has(s.id);
       const rests=(s.restsOn||[]).map(id=>restLabel(kb,id));
@@ -649,9 +650,9 @@ function renderCoverageView(){
       const missing=pq.verifiedQuote==="missing"&&s.textDepth==="full";
       const modelSplit=(s.modelAgreement||{}).flagged;
       const splitTip=modelSplit?Object.entries(s.modelAgreement.positionVote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · "):"";
-      const icon=missing?'<i class="flagicon" title="quote not found in fetched text">⚠</i>'
-        :modelSplit?`<i class="flagicon" title="labelling models disagreed — votes: ${esc(splitTip)}">⚖</i>`
-        :(s.textDepth==="full"?'<span class="okicon" title="full text">✓</span>':'<span class="okicon">·</span>');
+      const icon=missing?'<i class="flagicon" title="quote not found in the fetched full text — a red flag">⚠</i>'
+        :modelSplit?`<i class="flagicon" title="labelling models disagreed on the position — votes: ${esc(splitTip)} (resolve under Needs review)">⚖</i>`
+        :(s.textDepth==="full"?'<span class="okicon" title="full text fetched — quote is verifiable">✓</span>':'');
       let detail="";
       if(open){
         const quote=cleanQuote(pq.quote,s.title);
@@ -676,7 +677,7 @@ function renderCoverageView(){
           <td style="color:var(--muted);">${esc(s.evidence)}</td><td style="color:var(--muted);">${dsLabel}</td><td>${icon}</td>
         </tr>${detail}`;
     }).join("")||`<tr><td colspan="6" class="empty">No sources match these filters.</td></tr>`;
-    const colgroup=`<colgroup><col style="width:35%"><col style="width:7%"><col style="width:15%"><col style="width:14%"><col style="width:21%"><col style="width:8%"></colgroup>`;
+    const colgroup=`<colgroup><col style="width:34%"><col style="width:7%"><col style="width:15%"><col style="width:14%"><col style="width:19%"><col style="width:11%"></colgroup>`;
     body=`<div class="tbl-wrap"><table>${colgroup}<thead><tr>${thead}</tr></thead><tbody>${trs}</tbody></table></div>`;
   } else {
     body=`<div class="cards">${visible.map(s=>{
