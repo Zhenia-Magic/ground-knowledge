@@ -51,7 +51,8 @@ Independence is a property of *roots*, counted *per position*.
 
 ## 3. What we record when we label a source
 
-For every source, the labeller (human or LLM) records:
+For every source, the labeller (human, a single LLM, or a multi-model **ensemble** whose per-field
+majority vote is combined deterministically — `ingest/ensemble.py`) records:
 
 1. **Position** — the single stance it argues. (Already in the schema.)
 2. **Evidence type** — from the case's controlled vocabulary. This determines the **tier**:
@@ -268,7 +269,11 @@ gate. Named in §8 rather than hidden behind the invariant.
 1. **Tier mislabelling.** The whole "primary vs secondary" floor depends on the evidence type
    being right. If a contributor (or model) calls opinion "Observational," it earns a root it
    shouldn't. *Partial defenses exist; not airtight.* This is the single biggest lever and the
-   first place to attack the system.
+   first place to attack the system. Since first draft, labelling can run as a **multi-model
+   ensemble** whose field-level vote out-votes a single model's mislabel, and a genuine split on
+   the position is **escalated to a human** (`engine/review.py`: pick a position or drop the paper)
+   rather than merged under a guess — but a blind spot *shared* across models, or a deliberately
+   mislabelled submission, still gets through.
 2. **Roots asserted only by secondary sources.** We may credit a dataset that no primary source in
    the KB actually instantiates (edge case 5/12). v1 may over-count these.
 3. **Citation data is self-reported.** We only know A rests on B because the labeller said so.

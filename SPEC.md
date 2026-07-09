@@ -99,9 +99,14 @@ parts (which datasets, which positions, counts, metrics) never depend on model t
 metrics, and viewer are deterministic and offline. The precise claim: **everything downstream of
 the labels is reproducible regardless of which model — or no model — produced them.** The labels
 themselves can vary between models (position, tier, and `restsOn` assignments are judgment calls),
-and that variance is measurable — run several models over the same source set and report per-field
-agreement — but is not yet measured; labelling is the one load-bearing AI step, and this is the
-system's honestly-stated biggest lever (MECHANISM.md §8.1), not something determinism erases.
+and that variance is now **measured and acted on**: labelling can run as an **ensemble** of several
+models over the same source, combined by a deterministic field-level majority vote
+(`ingest/ensemble.py`), with per-field agreement recorded on each source. A `restsOn` edge survives
+only if ≥ half the models proposed it; a genuine split on the *position* is **not** merged under a
+guessed label — it is queued in the KB for a human to resolve (pick a position or drop the paper;
+`engine/review.py`), and pending items count toward no metric. Labelling stays the one load-bearing
+AI step and the system's honestly-stated biggest lever (MECHANISM.md §8.1); the ensemble narrows it,
+it does not erase a blind spot shared across models.
 
 ---
 
@@ -299,7 +304,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   on the roadmap.
 - *Tier mislabelling* — the primary/secondary floor depends on the evidence type being right; calling
   opinion "Observational" mints a root it shouldn't. Partial defences (controlled vocab, relevance
-  gate, funding-defaults-to-Undisclosed) exist; not airtight.
+  gate, funding-defaults-to-Undisclosed, and — new — an **ensemble vote plus human review of genuine
+  disagreements**, which out-votes or escalates a single model's mislabel) exist; not airtight against
+  a blind spot shared across models or a deliberately mislabelled submission.
 - *Curated factor weights* — positions' factor weightings are a human/LLM summary, not mechanical;
   they are the softest input. The *mechanical* parts (counts, datasets, funding category, the
   independence resolution) are what resist gaming.
@@ -329,7 +336,9 @@ evidence base are real and runnable.
 | `engine/merge.py` | deterministic merge + entity resolution + duplicate / alias / off-topic defences + source→source edges |
 | `engine/curate.py` | curation ops — merge / rename / tidy duplicates + duplicate suggester |
 | `ingest/extract.py` | fetch text by identifier (OpenAlex / arXiv / Semantic Scholar / Europe PMC); full open-access PDF when available |
-| `ingest/llm.py` | model-agnostic LLM access — Anthropic / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter |
+| `ingest/llm.py` | model-agnostic LLM access — Anthropic / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter; single-model or a multi-model **ensemble** |
+| `ingest/ensemble.py` | deterministic field-level majority vote combining several models' labels into one delta + a per-source agreement report |
+| `engine/review.py` | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB for a human to resolve (pick a position / drop the paper), counted in no metric |
 | `ingest/search.py` + `prompts/` | keyless OpenAlex fallback search; the labelling / discovery / research prompts |
 | `cli.py` | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · ui · pull · push · questions · import-citations · export` |
 | `app/` | the deployed keyless **portal** ([groundknowledge.org](https://groundknowledge.org)) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |

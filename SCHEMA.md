@@ -35,7 +35,13 @@ data changes, never the code.
                    "provenance": { field: {quote, extractionConfidence, verifiedQuote?} },
                                 //   verifiedQuote: exact | fuzzy | missing -- read together with
                                 //   textDepth, never alone (see problem 3 below)
+                   "modelAgreement"?: { models, positionAgreement, flagged,   // multi-model ensemble
+                                        disagreedFields, positionVote, proposals },  //   report (ingest/ensemble.py)
                    "addedIn": version } ],                    // powers the diff
+  "pendingReview": [ { "id", "title", "url", "year", "abstract",  // ensemble-disagreement queue:
+                       "proposals": [{position, votes, quote, confidence}],  //   sources NOT yet
+                       "delta", "ts" } ],                     //   merged, awaiting a human decision
+                                //   (engine/review.py) -- counted in NO metric until resolved
   "log":       [ { "version", "action", "source", "ts", ... } ]  // audit trail
 }
 ```
@@ -136,6 +142,24 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    resolves it. Evidence **tier** (primary makes evidence; secondary — reviews, meta-analyses,
    commentary — only talks about it) drives the echo collapse; `population` carries the non-human
    marker (`Mice` / `Rats` / `In vitro`) that down-weights animal evidence on a clinical question.
+
+## Label trust: the ensemble report and the review queue
+
+Labelling is the one load-bearing AI step, so the schema records *how much the models agreed*, not
+just the winning label. When labelling runs as a **multi-model ensemble** (`ingest/ensemble.py`),
+the fused delta carries a `modelAgreement` report on the source: how many models ran, the position
+agreement fraction, which fields split (`disagreedFields`), the per-label `positionVote` tally, and
+each camp's best-confidence `proposals` (label + votes + quote). A `restsOn` edge is kept only if
+≥ half the models proposed it, so one model's spurious dataset/citation edge never survives the vote.
+
+A `modelAgreement.flagged` source *did* merge (a majority formed, or the highest-confidence model
+broke a mild tie) but is surfaced for a second look. A **genuine** split — no majority on the
+position — does **not** merge at all: `engine/review.py` parks the whole delta in the top-level
+`pendingReview` queue for a human to resolve (pick one of the `proposals`' positions, pick any
+existing position, or drop the paper). The queue lives in the KB file, so it persists, travels with
+the case on push/pull, and resumes; **pending items are not sources and count toward no metric**
+until resolved. Both surfaces (local console review panel, portal admin *manage* view) read and
+resolve the same queue.
 
 ## Why cold-start and update are the same path
 

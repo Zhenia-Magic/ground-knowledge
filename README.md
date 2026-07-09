@@ -40,8 +40,10 @@ by construction: flooding a position with echo can neither inflate it **nor** ta
 | `ingest/pipeline.py` · `prompts/` | **Ingestion** | discovery + one-source labelling (link / PDF / docx / txt); tells the model what's already in the KB so it finds *new* sources |
 | `ingest/extract.py` | Ingestion | fetch text by identifier — OpenAlex / arXiv / Semantic Scholar / Europe PMC; uses the **full open-access PDF** when available (+ Crossref funder lookup); no scraping |
 | `ingest/search.py` | Ingestion | keyless scholarly search via OpenAlex (the *fallback* discovery engine) |
-| `ingest/llm.py` | Ingestion | model-agnostic LLM access — **Anthropic / NVIDIA (free) / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter**; used only to *label*; `--dry-run` needs no key |
+| `ingest/llm.py` | Ingestion | model-agnostic LLM access — **Anthropic / NVIDIA (free) / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter**; used only to *label* (single model or a multi-model **ensemble**); `--dry-run` needs no key |
+| `ingest/ensemble.py` | Ingestion | deterministic field-level majority vote fusing several models' labels into one delta + a per-source agreement report |
 | `engine/merge.py` | **Structure** | deterministic merge + entity resolution (LLM proposes ids, code disposes); duplicate / alias / off-topic defences; resolves source→source citation edges |
+| `engine/review.py` | Structure | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB (counted in no metric) for a human to resolve — pick a position, or drop the paper |
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
 | `engine/curate.py` | Structure | curation ops: merge / rename / tidy duplicate entities |
@@ -185,7 +187,10 @@ or `pull` them locally (`python cli.py pull <id>`):
   and fetch are keyless; only labelling uses your key, on your machine. Works with Anthropic, NVIDIA
   (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter — and search vs.
   labelling pick a provider independently, so an Anthropic + NVIDIA pair does Claude web search with
-  free NVIDIA labelling.
+  free NVIDIA labelling. Set `EPISTEMIC_LABEL_MODELS` to a comma-separated list to label with a
+  multi-model **ensemble**: the labels are fused by a deterministic vote, and a genuine
+  disagreement on a source's position surfaces in a **Needs-your-review** panel to resolve (pick a
+  position or drop it) before it enters any metric.
 
 Both write the same portable `cases/<id>.kb.json` through the same merge. Labelling reads the **full
 open-access PDF** when one exists (richer positions, named datasets from the methods, and the
@@ -211,7 +216,9 @@ knowledge base that holds up under motivated reading and gets better as more peo
   stated plainly in [`MECHANISM.md`](MECHANISM.md) §8 rather than papered over.
 - **Tier classification** (primary vs secondary evidence) leans on the evidence label being right;
   a mislabel can mint or deny an independent base. Partial defenses exist (controlled vocab,
-  relevance gate, funding-defaults-to-Undisclosed); not airtight.
+  relevance gate, funding-defaults-to-Undisclosed, and a multi-model **ensemble vote** that
+  escalates genuine label disagreements to a human review queue rather than guessing); not airtight
+  against a blind spot shared across models.
 - Entity resolution is normalized-string + alias matching — robust to casing/aliases, not to
   paraphrase. The `dups`/`merge` curation tools + a token-overlap suggester mitigate; embedding-match
   with human confirmation is the next step.

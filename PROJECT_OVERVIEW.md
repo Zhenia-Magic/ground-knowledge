@@ -96,9 +96,14 @@ Three sub-steps, and only the last needs an AI model:
   where the funding statement and methods live. No web scraping, so no bot-walls. Not every
   source yields full text (some APIs only ever return an abstract) — the tool records honestly
   which it got (`textDepth`: full / abstract / partial) instead of claiming more than it fetched.
-- **Label** the fetched text with an AI model: which position does it take, what kind of evidence
+- **Label** the fetched text with an AI model — or an **ensemble** of several models, combined by a
+  deterministic field-level majority vote: which position does it take, what kind of evidence
   is it, who funded it, which datasets does it rest on, which factors does it weigh. This is the
-  *only* step that uses an AI. Every extracted provenance quote is then spot-checked against the
+  *only* step that uses an AI. Running several models and voting means a label no longer hinges on
+  one model's quirk, and the per-field agreement is recorded. When the models genuinely **disagree
+  on the position**, the source isn't merged under a guessed label — it's parked in a *needs-review*
+  queue (inside the KB itself) for a human to resolve: pick a position, or drop the paper. Pending
+  items count toward no metric. Every extracted provenance quote is also spot-checked against the
   text that was actually fetched — a quote that doesn't match is flagged, but only counted as a
   real warning on a full-text source; the same check on an abstract-only source is expected
   noise, not an accusation (see §8).
@@ -194,8 +199,11 @@ A guiding principle throughout: **finding and reading sources are free and keyle
   which datasets, which counts, every metric — are computed by deterministic code that never
   depends on AI randomness. The precise claim: everything *downstream of the labels* is
   reproducible regardless of which AI (or no AI) produced them. The labels themselves can vary
-  between models — that variance is measurable (label-agreement across models on the same
-  sources) and is an acknowledged open item, not something determinism erases.
+  between models — and that variance is now *measured and acted on*, not just acknowledged: an
+  **ensemble** of several models labels each source, a deterministic field-level vote combines them
+  (recording per-field agreement), and a real disagreement on the position is escalated to a human
+  review queue rather than averaged into a guess. Determinism doesn't erase model variance; the
+  ensemble measures it and the review queue handles the cases where it matters.
 
 - **The server holds no API key and does no AI work.** Because merging is deterministic, the
   hosted portal is cheap, safe, and has no abuse surface for expensive AI calls.
@@ -307,9 +315,11 @@ anti-false-balance independence audit is the central bet.
   portable JSON inside.
 - **Hosting:** the portal runs on Railway with a Postgres database.
 - **AI:** provider-agnostic — works with Claude, OpenAI, and several others, and is used *only*
-  to label fetched text. Discovery, fetching, merging, metrics, and the viewer involve no AI at
+  to label fetched text (one model, or a multi-model ensemble with a deterministic vote).
+  Discovery, fetching, merging, metrics, and the viewer involve no AI at
   all ("provider-agnostic" means any model can do the labelling — not that different models
-  produce identical labels; see §8 on what is and isn't deterministic).
+  produce identical labels, which is exactly why the ensemble and the review queue exist; see §8
+  on what is and isn't deterministic).
 
 ---
 

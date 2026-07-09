@@ -175,6 +175,13 @@ Refresh `viewer/index.html` and check the **Changes** tab — your source is now
 > A duplicate source (same url, or same title + year) is refused automatically — that's the
 > anti-flooding guard, not an error.
 
+> **Labelling with an ensemble?** Set `EPISTEMIC_LABEL_MODELS=modelA,modelB[,modelC]` to label each
+> source with several models and fuse them by a deterministic vote. If they genuinely **disagree on
+> the position**, the source is *not* merged under a guess: a terminal run asks you right there
+> (abstract + each model's pick → choose a position or drop it), and a console / non-interactive run
+> drops it into a **Needs-your-review** panel (the case chip shows a ⏸ count). Pending items count in
+> no metric until you resolve them.
+
 ---
 
 ## C. Clean up a report (merge duplicates, tidy labels)
