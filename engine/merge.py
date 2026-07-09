@@ -38,15 +38,29 @@ _SIZE_CLAUSE = re.compile(
     re.I)
 
 
+def _split_camel_token(tok):
+    """Split a heavily-camelCased token ('AngryBirdsMeta' → 'Angry Birds Meta') while leaving
+    ordinary proper nouns alone: only tokens with 2+ interior case transitions are split, so
+    'McGill' / 'McDonald' (one transition) pass through unchanged."""
+    if len(re.findall(r"[a-z][A-Z]", tok)) >= 2:
+        return re.sub(r"(?<=[a-z])(?=[A-Z])", " ", tok)
+    return tok
+
+
 def prettify_label(s):
-    """Turn an id-like label into something readable for the website: underscores → spaces, and
-    strip a trailing sample-size clause (e.g. 'Finnish_cohort_Knekt_1996_4697_women' →
-    'Finnish cohort Knekt 1996'). Clean labels pass through unchanged."""
+    """Turn an id-like label into something readable for the website: underscores → spaces,
+    heavy camelCase split, a space before a trailing year ('Ferguson2015' → 'Ferguson 2015'),
+    a capitalized first letter, and a trailing sample-size clause stripped
+    ('Finnish_cohort_Knekt_1996_4697_women' → 'Finnish cohort Knekt 1996').
+    Clean labels pass through (apart from the capital)."""
     s = (s or "").strip()
     if "_" in s:
         s = s.replace("_", " ")
+    s = " ".join(_split_camel_token(t) for t in s.split(" "))
+    s = re.sub(r"(?<=[A-Za-z])(?=\d{4}\b)", " ", s)     # Ferguson2015 -> Ferguson 2015
     s = _SIZE_CLAUSE.sub("", s)
-    return re.sub(r"\s+", " ", s).strip() or (s or "")
+    s = re.sub(r"\s+", " ", s).strip() or (s or "")
+    return (s[:1].upper() + s[1:]) if s[:1].islower() else s
 
 
 def _resolve_funding(kb, value):

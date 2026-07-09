@@ -219,6 +219,11 @@
     margin-bottom:10px;opacity:1;}
   .factor.shared{opacity:1;}
   .factor .fh{display:flex;align-items:baseline;gap:8px;margin-bottom:3px;flex-wrap:wrap;}
+  /* expanded factor row: per-camp source quotes */
+  .fpgroup{margin:9px 0 0;padding:8px 11px;background:#F8F9FA;border:1px solid var(--line);border-radius:8px;}
+  .fpg-h{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin-bottom:4px;}
+  .fpq{margin:7px 0 0;padding-left:15px;}
+  .fpq-src{font-size:12.5px;color:var(--muted);}
   .factor .flabel{font-size:13px;font-weight:500;color:var(--muted);}
   .factor.crux .flabel{font-size:13.5px;font-weight:600;color:var(--ink);}
   .cruxbadge{font-family:var(--mono);font-size:9.5px;background:var(--chrome);color:#fff;
@@ -345,8 +350,41 @@ function rgba(hex,a){const n=parseInt(hex.slice(1),16);return `rgba(${(n>>16)&25
 function pct(x){return Math.round(x*100)+"%";}
 function cur(){return DATA.cases[state.caseId];}
 function maps(kb){
-  const pos={},ds={}; kb.positions.forEach(p=>pos[p.id]=p); kb.datasets.forEach(d=>ds[d.id]=d);
-  return {pos,ds};
+  const pos={},ds={},src={}; kb.positions.forEach(p=>pos[p.id]=p); kb.datasets.forEach(d=>ds[d.id]=d);
+  kb.sources.forEach(s=>src[s.id]=s);
+  return {pos,ds,src};
+}
+// Expanded factor row: the factor's rationale, then — per position — the sources that actually
+// weighed this factor, each with its verbatim quote and quote-verification badge. This is the
+// crux layer "showing its work": the disagreement in each camp's own words, auditable per edge.
+function factorDetailHtml(kb, f, activePos){
+  const {src}=maps(kb);
+  const vq=v=>v==="exact"?'<span class="okicon" title="quote verified in fetched text">✓</span>'
+    :v==="fuzzy"?'<span class="okicon" title="quote verified (fuzzy match in fetched text)">≈</span>':"";
+  const groups=activePos.map(p=>{
+    const rows=(f.provenance||[]).filter(pr=>pr.pos===p.id&&(pr.quote||src[pr.source]));
+    if(!rows.length) return "";
+    const items=rows.map(pr=>{
+      const s=src[pr.source]||{};
+      const title=s.title?shortLabel(s.title,72)+(s.year?" ("+s.year+")":""):(pr.source||"");
+      return `<div class="fpq"><div class="fpq-src">${esc(title)} ${vq(pr.verifiedQuote)}</div>`+
+        (pr.quote?`<div class="q" style="margin:2px 0 0">“${esc(pr.quote)}”</div>`:"")+`</div>`;
+    }).join("");
+    return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(p.shortLabel||shortLabel(p.label))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
+  }).join("");
+  const rat=f.rationale?`<div style="margin-bottom:8px;">${esc(f.rationale)}</div>`:"";
+  return rat+(groups||'<span style="color:var(--faint)">No per-source quotes recorded for this factor yet — they accrue as sources are ingested.</span>');
+}
+// Human label for one restsOn entry: a dataset's label, or — for a src:<id> derivation edge —
+// the cited source's title (never the raw id).
+function restLabel(kb, id){
+  const {ds,src}=maps(kb);
+  const s=String(id||"");
+  if(s.toLowerCase().startsWith("src:")){
+    const t=src[s.slice(4)];
+    return "cites: "+shortLabel(t?t.title:s.slice(4), 60);
+  }
+  return ds[s]?ds[s].label:s;
 }
 
 // Fallback for KBs without a stored shortLabel: plain word-boundary truncation.
@@ -579,7 +617,7 @@ function renderCoverageView(){
     const thead=COLS.map(([k,l])=>`<th data-sort="${k}">${esc(l)}${state.sort.key===k?(state.sort.dir<0?" ↓":" ↑"):""}</th>`).join("");
     const trs=visible.map(s=>{
       const p=pos[s.position], open=state.expanded.has(s.id);
-      const rests=(s.restsOn||[]).map(id=>ds[id]?ds[id].label:id);
+      const rests=(s.restsOn||[]).map(id=>restLabel(kb,id));
       const dsLabel=rests.length?esc(rests[0])+(rests.length>1?" +"+(rests.length-1):""):"—";
       const pq=((s.provenance||{}).position)||{};
       const missing=pq.verifiedQuote==="missing"&&s.textDepth==="full";
@@ -612,7 +650,7 @@ function renderCoverageView(){
   } else {
     body=`<div class="cards">${visible.map(s=>{
       const p=pos[s.position];
-      const rests=(s.restsOn||[]).map(id=>`<span class="tag rests">↳ ${esc(ds[id]?ds[id].label:id)}</span>`).join("");
+      const rests=(s.restsOn||[]).map(id=>`<span class="tag rests">↳ ${esc(restLabel(kb,id))}</span>`).join("");
       const isNew=s.addedIn&&s.addedIn===maxVer&&maxVer>1;
       const st=strengthTier(s.evidence);
       const pip=st.n?`<span class="strength s${st.n}" title="${st.label} — by study design">${"●".repeat(st.n)}${"○".repeat(3-st.n)}</span>`:"";
@@ -694,7 +732,7 @@ function renderDivergenceView(){
       return `<td style="text-align:center;background:${bg};color:${txt};font-family:var(--mono);font-weight:600;white-space:nowrap;">${w&&w!=="n/a"?esc(WLABEL[w]||w):"—"}</td>`;
     }).join("");
     const open=state.expanded.has("f"+f.id);
-    const detail=open?`<tr class="detailrow"><td colspan="${activePos.length+1}">${esc(f.rationale||"No rationale recorded.")}</td></tr>`:"";
+    const detail=open?`<tr class="detailrow"><td colspan="${activePos.length+1}">${factorDetailHtml(kb,f,activePos)}</td></tr>`:"";
     const tag=cx.isCrux?' <span class="cruxbadge">CRUX</span>':(one?' <span class="onetag">one side only</span>':"");
     return `<tr class="rowmain${one?" onesided":""}" data-fid="${esc(f.id)}">
         <td class="wrap" style="${cx.isCrux?"font-weight:600;":"color:var(--muted);"}">${esc(f.label)}${tag}</td>
@@ -706,7 +744,7 @@ function renderDivergenceView(){
   const nShared=(a.cruxes||[]).length-nCrux-nOne;
   el("main").innerHTML=`<h1>Divergence matrix</h1><div class="mmeta">where the disagreement actually lives</div>
     <div class="panel">
-      <div class="subnote">Each cell is how heavily that camp weighs that factor. A <b>crux</b> (bold row) is a factor the camps weigh very differently — that is where the real disagreement is; dimmed rows are dimensions only one camp engages, not points of disagreement. Click a row for the rationale.</div>
+      <div class="subnote">Each cell is how heavily that camp weighs that factor. A <b>crux</b> (bold row) is a factor the camps weigh very differently — that is where the real disagreement is; dimmed rows are dimensions only one camp engages, not points of disagreement. <b>Click a row</b> for the rationale and the sources behind it — each camp's own words on this factor, quote by quote.</div>
       <div class="wkey">weight: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">med</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
       <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
       <p style="font-size:13px;color:var(--muted);margin:14px 0 0"><b>${nCrux} crux${nCrux===1?"":"es"}</b> of ${kb.factors.length} factors · ${nShared} shared · ${nOne} raised by one side.</p>

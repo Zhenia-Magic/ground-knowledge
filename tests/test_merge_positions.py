@@ -92,3 +92,17 @@ class NonScholarlyFilterTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PrettifyLabelTests(unittest.TestCase):
+    def test_capitalizes_and_splits_ugly_labels(self):
+        from engine.merge import prettify_label as p
+        self.assertEqual(p("researcher-expectancy effects"), "Researcher-expectancy effects")
+        self.assertEqual(p("AngryBirdsMeta Ferguson2015"), "Angry Birds Meta Ferguson 2015")
+        self.assertEqual(p("Przybylski2019 adolescent dataset"), "Przybylski 2019 adolescent dataset")
+
+    def test_leaves_proper_nouns_and_acronyms_alone(self):
+        from engine.merge import prettify_label as p
+        self.assertEqual(p("McGill cohort"), "McGill cohort")
+        self.assertEqual(p("UK Biobank"), "UK Biobank")
+        self.assertEqual(p("SARS-CoV-2 wastewater data"), "SARS-CoV-2 wastewater data")
