@@ -92,6 +92,23 @@
   .diff{font-family:var(--mono);font-size:12px;color:var(--muted);margin:6px 0 0;} .diff div{margin:2px 0;} .diff div.warn{color:var(--warn);} .diff div.add{color:var(--accent);}
   .muted{color:var(--muted);} a{color:var(--accent);}
   .pill{font-family:var(--mono);font-size:11px;background:#EEF0F1;color:var(--muted);border-radius:6px;padding:2px 7px;}
+  /* review cards: ensemble disagreements to resolve */
+  .rev{border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin:12px 0;background:var(--surface);}
+  .rev-h{font-weight:600;font-size:14.5px;line-height:1.4;}
+  .rev-h .yr{font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:400;}
+  .rev-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.03em;padding:2px 7px;border-radius:5px;white-space:nowrap;vertical-align:middle;}
+  .rev-badge.merged{background:var(--warnbg);color:var(--warn);} .rev-badge.queued{background:#EEF0F1;color:var(--muted);}
+  .rev-cur{font-size:12.5px;color:var(--muted);margin-top:4px;}
+  .rev-opts{margin:11px 0 0;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+  .rev-opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid var(--line);}
+  .rev-opt:first-child{border-top:0;} .rev-opt:hover{background:#FAFBFB;}
+  .rev-opt .oi{flex:1;min-width:0;} .rev-opt .on{font-weight:600;font-size:13.5px;}
+  .rev-opt .ov{font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .rev-opt .oq{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4;}
+  .rev-opt .usebtn{flex:0 0 auto;padding:6px 13px;font-size:12.5px;}
+  .rev-act{display:flex;gap:8px;align-items:center;margin-top:11px;flex-wrap:wrap;}
+  .rev-act select{flex:1;min-width:160px;}
+  .rev-abs summary{font-size:12.5px;color:var(--muted);cursor:pointer;}
   .cand{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin:7px 0;}
   .cand input{width:auto;margin-top:3px;} .cand .cm{flex:1;min-width:0;} .cand .ct{font-size:13.5px;font-weight:600;word-break:break-word;}
   .cand .cu{font-size:12px;color:var(--accent);word-break:break-all;} .cand .cw{font-size:12px;color:var(--muted);}
@@ -516,27 +533,26 @@ function renderReview(r){
   const posOpts=(r.positions||[]).map(p=>`<option value="${esc(p.id)}">${esc(p.label)}</option>`).join("");
   $("#revList").innerHTML=items.map(e=>{
     const merged=e.kind==="flagged";
-    const props=(e.proposals||[]).map(p=>`
-      <div class="cand" style="align-items:center">
-        <div class="cm"><div class="ct">${esc(voteLabelUi(p.position))} <span class="hint">(${p.votes} vote${p.votes===1?"":"s"})</span></div>
-          ${p.quote?`<div class="cw">“${esc(p.quote.slice(0,220))}”</div>`:""}</div>
-        <button class="sm" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="position" data-pos="${esc(p.position)}">Use this</button>
+    const opts=(e.proposals||[]).map(p=>`
+      <div class="rev-opt">
+        <div class="oi"><span class="on">${esc(voteLabelUi(p.position))}</span> <span class="ov">· ${p.votes} vote${p.votes===1?"":"s"}</span>
+          ${p.quote?`<div class="oq">“${esc(p.quote.slice(0,180))}”</div>`:""}</div>
+        <button class="usebtn" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="position" data-pos="${esc(p.position)}">Use this</button>
       </div>`).join("");
-    const status=merged
-      ? `<span class="tag" style="background:var(--warnbg);color:var(--warn)">imported with a guess — re-decide</span>`
-      : `<span class="tag">not imported yet</span>`;
-    return `<div class="res" style="border-left-color:var(--warn)">
-      <div class="t">${esc(e.title)}${e.year?` <span class="tag">(${e.year})</span>`:""} ${status}</div>
-      ${e.url?`<div class="hint"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.url)}</a></div>`:""}
-      ${merged?`<div class="hint">currently counted as <b>${esc(voteLabelUi(e.currentPosition))}</b></div>`:""}
-      ${e.abstract?`<details style="margin:8px 0"><summary>Abstract / what the models read</summary>
+    const badge=merged
+      ? `<span class="rev-badge merged">imported with a guess</span>`
+      : `<span class="rev-badge queued">not imported yet</span>`;
+    return `<div class="rev">
+      <div class="rev-h">${esc(e.title)} <span class="yr">${esc(e.year||"")}</span> ${badge}${e.url?` &nbsp;<a href="${esc(e.url)}" target="_blank" rel="noopener" style="font-size:12.5px">source ↗</a>`:""}</div>
+      ${merged?`<div class="rev-cur">Currently counted as <b>${esc(voteLabelUi(e.currentPosition))}</b> — pick a camp, keep it, or drop it.</div>`:""}
+      ${e.abstract?`<details class="rev-abs" style="margin:8px 0"><summary>Abstract / what the models read</summary>
         <div class="hint" style="white-space:pre-wrap;margin-top:6px">${esc(e.abstract)}</div></details>`:""}
-      ${props}
-      <div class="row" style="margin-top:8px">
-        <div class="src"><label>…or an existing position</label><select data-sel="${esc(e.id)}">${posOpts}</select></div>
-        <button class="ghost auto" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="existing">Use selected</button>
-        ${merged?`<button class="ghost auto" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="accept">Keep the guess</button>`:""}
-        <button class="ghost auto" style="color:var(--err);border-color:var(--err)" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="drop">Drop ${merged?"source":"paper"}</button>
+      <div class="rev-opts">${opts}</div>
+      <div class="rev-act">
+        <select data-sel="${esc(e.id)}">${posOpts}</select>
+        <button class="ghost sm" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="existing">Use selected</button>
+        ${merged?`<button class="ghost sm" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="accept">Keep the guess</button>`:""}
+        <button class="ghost sm" style="color:var(--err);border-color:#e0c2b8" data-rev="${esc(e.id)}" data-kind="${e.kind}" data-act="drop">Drop ${merged?"source":"paper"}</button>
       </div>
     </div>`;
   }).join("");

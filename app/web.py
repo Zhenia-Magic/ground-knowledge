@@ -48,6 +48,26 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .panel{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--surface);margin:16px 0;}
 .panel h2{font-size:17px;margin:0 0 4px;} .panel .desc{color:var(--muted);font-size:14px;margin:0 0 14px;}
 .step{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+.btn.sm{padding:6px 13px;border-radius:8px;font-size:13px;}
+/* review cards: ensemble disagreements to resolve */
+.rev{border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin:12px 0;background:var(--surface);}
+.rev-h{font-weight:600;font-size:15px;line-height:1.4;}
+.rev-h .yr{font-family:var(--mono);font-size:12px;color:var(--faint);font-weight:400;}
+.rev-h a{font-size:12.5px;}
+.rev-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.03em;padding:2px 7px;border-radius:5px;white-space:nowrap;vertical-align:middle;}
+.rev-badge.merged{background:#F5ECD6;color:#8a6510;} .rev-badge.queued{background:#EEF0F1;color:var(--muted);}
+.rev-cur{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.rev-opts{margin:11px 0 0;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.rev-opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid var(--line);}
+.rev-opt:first-child{border-top:0;} .rev-opt:hover{background:#fafbfc;}
+.rev-opt .oi{flex:1;min-width:0;}
+.rev-opt .on{font-weight:600;font-size:13.5px;}
+.rev-opt .ov{font-family:var(--mono);font-size:11px;color:var(--faint);}
+.rev-opt .oq{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.rev-act{display:flex;gap:8px;align-items:center;margin-top:11px;flex-wrap:wrap;}
+.rev-act select{flex:1;min-width:160px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
+.rev-act .btn{padding:7px 12px;font-size:13px;}
+.rev-abs{margin:8px 0 0;} .rev-abs summary{font-size:12.5px;color:var(--muted);cursor:pointer;}
 .cand{display:flex;gap:9px;align-items:flex-start;padding:8px 6px;border-top:1px solid var(--line);border-radius:6px;transition:background .12s;}
 .cand:hover{background:#fafbfc;}
 .cand label{font-size:14px;cursor:pointer;} .cand .why{color:var(--faint);font-size:12px;font-family:var(--mono);}
@@ -452,26 +472,27 @@ def manage_html(qid, get_question):
       const posOpts=(kb.positions||[]).map(p=>`<option value="${E(p.id)}">${E(p.label)}</option>`).join('');
       document.getElementById('revs').innerHTML=items.map(e=>{
         const merged=e.kind==='flagged';
-        const status=merged
-          ? '<span class="why" style="color:#8a6510">· imported with a guess — re-decide</span>'
-          : '<span class="why">· not imported yet</span>';
-        return `<div class="cand" style="flex-direction:column;align-items:stretch">
-          <div><b>${E(e.title)}</b> <span class="why">${E(e.year||'')}</span> ${status}
-            ${e.url?` · <a href="${E(e.url)}" target="_blank" rel="noopener">source ↗</a>`:''}</div>
-          ${merged?`<div class="why">currently counted as <b>${E(posName(e.current))}</b></div>`:''}
-          ${e.abstract?`<details style="margin:6px 0"><summary class="why">Abstract / what the models read</summary>
-            <div class="why" style="white-space:pre-wrap;margin-top:5px">${E(e.abstract)}</div></details>`:''}
-          ${(e.proposals||[]).map(p=>`
-            <div style="display:flex;gap:8px;align-items:center;margin:5px 0">
-              <div style="flex:1"><b>${E(posName(p.position))}</b> <span class="why">(${p.votes} vote${p.votes===1?'':'s'})</span>
-                ${p.quote?`<br><span class="why">“${E(String(p.quote).slice(0,200))}”</span>`:''}</div>
-              <button class="btn" onclick="resolveRev('${E(e.id)}','${e.kind}','position','${E(String(p.position).replace(/'/g,''))}',this)">Use this</button>
-            </div>`).join('')}
-          <div style="display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap">
-            <select id="sel_${E(e.id)}" style="flex:1;min-width:160px">${posOpts}</select>
-            <button class="btn ghost" onclick="resolveRev('${E(e.id)}','${e.kind}','existing','',this)">Use selected</button>
-            ${merged?`<button class="btn ghost" onclick="resolveRev('${E(e.id)}','${e.kind}','accept','',this)">Keep the guess</button>`:''}
-            <button class="btn ghost" style="color:#B4502E;border-color:#B4502E" onclick="resolveRev('${E(e.id)}','${e.kind}','drop','',this)">Drop ${merged?'source':'paper'}</button>
+        const badge=merged
+          ? '<span class="rev-badge merged">imported with a guess</span>'
+          : '<span class="rev-badge queued">not imported yet</span>';
+        const opts=(e.proposals||[]).map(p=>`
+          <div class="rev-opt">
+            <div class="oi"><span class="on">${E(posName(p.position))}</span> <span class="ov">· ${p.votes} vote${p.votes===1?'':'s'}</span>
+              ${p.quote?`<div class="oq">“${E(String(p.quote).slice(0,180))}”</div>`:''}</div>
+            <button class="btn sm" onclick="resolveRev('${E(e.id)}','${e.kind}','position','${E(String(p.position).replace(/'/g,''))}',this)">Use this</button>
+          </div>`).join('');
+        return `<div class="rev">
+          <div class="rev-h">${E(e.title)} <span class="yr">${E(e.year||'')}</span> ${badge}
+            ${e.url?` &nbsp;<a href="${E(e.url)}" target="_blank" rel="noopener">source ↗</a>`:''}</div>
+          ${merged?`<div class="rev-cur">Currently counted as <b>${E(posName(e.current))}</b> — pick a camp, keep it, or drop it.</div>`:''}
+          ${e.abstract?`<details class="rev-abs"><summary>Abstract / what the models read</summary>
+            <div class="why" style="white-space:pre-wrap;margin-top:6px">${E(e.abstract)}</div></details>`:''}
+          <div class="rev-opts">${opts}</div>
+          <div class="rev-act">
+            <select id="sel_${E(e.id)}">${posOpts}</select>
+            <button class="btn ghost sm" onclick="resolveRev('${E(e.id)}','${e.kind}','existing','',this)">Use selected</button>
+            ${merged?`<button class="btn ghost sm" onclick="resolveRev('${E(e.id)}','${e.kind}','accept','',this)">Keep the guess</button>`:''}
+            <button class="btn ghost sm" style="color:#B4502E;border-color:#e0c2b8" onclick="resolveRev('${E(e.id)}','${e.kind}','drop','',this)">Drop ${merged?'source':'paper'}</button>
           </div>
         </div>`;
       }).join('');
