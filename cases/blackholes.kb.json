@@ -3,7 +3,12 @@
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
     "version": 12,
-    "updated": "2026-07-10T16:23:37.738307+00:00"
+    "updated": "2026-07-10T16:23:37.738307+00:00",
+    "portal": {
+      "id": "c6c6ad01ec11",
+      "baseVersion": 12,
+      "url": "https://groundknowledge.org"
+    }
   },
   "positions": [
     {

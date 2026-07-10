@@ -3,7 +3,12 @@
     "id": "eggs",
     "question": "Do eggs increase cardiovascular disease risk?",
     "version": 11,
-    "updated": "2026-07-10T16:25:06.029018+00:00"
+    "updated": "2026-07-10T16:25:06.029018+00:00",
+    "portal": {
+      "id": "04329878656c",
+      "baseVersion": 11,
+      "url": "https://groundknowledge.org"
+    }
   },
   "positions": [
     {

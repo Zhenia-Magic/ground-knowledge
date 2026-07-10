@@ -3,7 +3,12 @@
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
     "version": 16,
-    "updated": "2026-07-10T16:21:08.729763+00:00"
+    "updated": "2026-07-10T16:21:08.729763+00:00",
+    "portal": {
+      "id": "ac81b4cae8d0",
+      "baseVersion": 16,
+      "url": "https://groundknowledge.org"
+    }
   },
   "positions": [
     {
