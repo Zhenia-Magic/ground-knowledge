@@ -2,8 +2,8 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 12,
-    "updated": "2026-07-10T16:23:37.738307+00:00",
+    "version": 20,
+    "updated": "2026-07-10T16:52:27.826317+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
       "baseVersion": 12,
@@ -42,6 +42,11 @@
       "id": "ds_argument_reliability_analysis_probability_th",
       "label": "Argument-reliability analysis (probability the safety argument itself is flawed)",
       "aliases": []
+    },
+    {
+      "id": "ds_metastable_black_hole_accretion_scenario",
+      "label": "Metastable-black-hole accretion scenario",
+      "aliases": []
     }
   ],
   "factors": [
@@ -71,6 +76,12 @@
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
           "verifiedQuote": null
+        },
+        {
+          "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
+          "pos": "pos_no_risk_lhc_collisions_are_safe",
+          "quote": "cosmic-ray collisions at energies far above those of any accelerator",
+          "verifiedQuote": null
         }
       ]
     },
@@ -78,7 +89,8 @@
       "id": "f_whether_hawking_radiation_is_guaranteed_blac",
       "label": "Whether Hawking radiation is guaranteed (black-hole evaporation)",
       "weights": {
-        "pos_no_risk_lhc_collisions_are_safe": "high"
+        "pos_no_risk_lhc_collisions_are_safe": "high",
+        "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
       "rationale": "Deliberately builds a safety argument that does not depend on Hawking evaporation.",
       "provenance": [
@@ -92,6 +104,12 @@
           "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "microscopic black holes would decay almost instantly by Hawking radiation",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
+          "pos": "pos_residual_concern_the_safety_argument_has_wea",
+          "quote": "a metastable black hole could grow rather than evaporate",
           "verifiedQuote": null
         }
       ]
@@ -114,6 +132,12 @@
           "source": "src_calogero_might_a_laboratory_experiment_destr_2000",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "reassurances may be motivated more by the wish to proceed",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
+          "pos": "pos_residual_concern_the_safety_argument_has_wea",
+          "quote": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
           "verifiedQuote": null
         }
       ]
@@ -446,6 +470,215 @@
       },
       "addedIn": 12,
       "textDepth": "unknown"
+    },
+    {
+      "id": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
+      "title": "Hut & Rees — How stable is our vacuum? (cosmic rays as a natural experiment)",
+      "year": 1983,
+      "url": "https://www.nature.com/articles/302508a0",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "high",
+      "restsOn": [
+        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "cosmic-ray collisions at energies far above those of any accelerator have been occurring throughout the history of the universe without catastrophe",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 13,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_tegmark_bostrom_is_a_doomsday_catastrophe_li_2005",
+      "title": "Tegmark & Bostrom — Is a doomsday catastrophe likely?",
+      "year": 2005,
+      "url": "https://www.nature.com/articles/438754a",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the fact that our planet has survived for billions of years places an empirical upper bound on the rate of such catastrophes",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 14,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
+      "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
+      "year": 2003,
+      "url": "https://cds.cern.ch/record/613175",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Evidence-synthesis",
+      "funding": "Government/public",
+      "population": "—",
+      "confidence": "high",
+      "restsOn": [
+        "ds_strangelet_stability_calculations_rhic",
+        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "we find no basis for any conceivable threat from heavy-ion collisions at the LHC",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 15,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
+      "title": "Casadio, Fabi & Harms — On the catastrophic black hole growth scenario at the LHC",
+      "year": 2010,
+      "url": "https://arxiv.org/abs/0901.2948",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_giddings_mangano_astrophysical_implications__2008"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the accretion time for any black hole produced at the LHC is far longer than the age of the universe",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 16,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_cavagli_particle_accelerators_as_black_hole__2010",
+      "title": "Cavaglià — Particle accelerators as black hole factories?",
+      "year": 2010,
+      "url": "https://arxiv.org/abs/1004.4058",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Evidence-synthesis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_hawking_radiation_black_hole_evaporation"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "any microscopic black hole would evaporate almost instantaneously via Hawking radiation",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 17,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
+      "title": "Plaga — On the potential catastrophic risk from metastable quantum black holes produced at colliders",
+      "year": 2008,
+      "url": "https://arxiv.org/abs/0808.1415",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_residual_concern_the_safety_argument_has_wea",
+      "evidence": "Theoretical analysis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "ds_metastable_black_hole_accretion_scenario"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "under certain assumptions a metastable black hole could grow rather than evaporate, a scenario not excluded by the safety reports",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 18,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_giddings_mangano_comments_on_claimed_risk_fr_2008",
+      "title": "Giddings & Mangano — Comments on claimed risk from metastable black holes (response to Plaga)",
+      "year": 2008,
+      "url": "https://arxiv.org/abs/0808.4087",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_giddings_mangano_astrophysical_implications__2008"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the scenario proposed is inconsistent with the empirical constraints from white dwarfs and neutron stars",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 19,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_kent_a_critical_look_at_risk_assessments_for_2004",
+      "title": "Kent — A critical look at risk assessments for global catastrophes",
+      "year": 2004,
+      "url": "https://arxiv.org/abs/hep-ph/0009204",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_residual_concern_the_safety_argument_has_wea",
+      "evidence": "Theoretical analysis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_argument_reliability_analysis_probability_th"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the probability bounds quoted in safety reports do not adequately account for the probability that the underlying arguments are themselves mistaken",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 20,
+      "textDepth": "unknown"
     }
   ],
   "vocab": {
@@ -689,6 +922,115 @@
       "diff": [
         "distribution: No risk — LHC collisions are safe 7 → 8",
         "concentration: No risk — LHC collisions are safe 63% → 61% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))"
+      ]
+    },
+    {
+      "version": 13,
+      "action": "add-source",
+      "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
+      "title": "Hut & Rees — How stable is our vacuum? (cosmic rays as a natural experiment)",
+      "ts": "2026-07-10T16:52:27.804806+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 8 → 9",
+        "concentration: No risk — LHC collisions are safe 61% → 64% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))",
+        "most-reused case-wide: Cosmic-ray empirical bound (white-dwarf & neutron-star survival)/src:src_giddings_mangano_astrophysical_implications__2008/Hawking radiation (black-hole evaporation) 3 → Cosmic-ray empirical bound (white-dwarf & neutron-star survival) 4/13"
+      ]
+    },
+    {
+      "version": 14,
+      "action": "add-source",
+      "source": "src_tegmark_bostrom_is_a_doomsday_catastrophe_li_2005",
+      "title": "Tegmark & Bostrom — Is a doomsday catastrophe likely?",
+      "ts": "2026-07-10T16:52:27.808203+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 9 → 10",
+        "concentration: No risk — LHC collisions are safe 64% → 67% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))",
+        "most-reused case-wide: Cosmic-ray empirical bound (white-dwarf & neutron-star survival) 4 → Cosmic-ray empirical bound (white-dwarf & neutron-star survival) 5/14"
+      ]
+    },
+    {
+      "version": 15,
+      "action": "add-source",
+      "source": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
+      "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
+      "ts": "2026-07-10T16:52:27.810598+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 10 → 11",
+        "most-reused case-wide: Cosmic-ray empirical bound (white-dwarf & neutron-star survival) 5 → Cosmic-ray empirical bound (white-dwarf & neutron-star survival) 6/15"
+      ]
+    },
+    {
+      "version": 16,
+      "action": "add-source",
+      "source": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
+      "title": "Casadio, Fabi & Harms — On the catastrophic black hole growth scenario at the LHC",
+      "ts": "2026-07-10T16:52:27.813654+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 11 → 12",
+        "concentration: No risk — LHC collisions are safe 67% → 69% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))"
+      ]
+    },
+    {
+      "version": 17,
+      "action": "add-source",
+      "source": "src_cavagli_particle_accelerators_as_black_hole__2010",
+      "title": "Cavaglià — Particle accelerators as black hole factories?",
+      "ts": "2026-07-10T16:52:27.816626+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 12 → 13",
+        "concentration: No risk — LHC collisions are safe 69% → 65% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))"
+      ]
+    },
+    {
+      "version": 18,
+      "action": "add-source",
+      "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
+      "title": "Plaga — On the potential catastrophic risk from metastable quantum black holes produced at colliders",
+      "ts": "2026-07-10T16:52:27.819546+00:00",
+      "newDatasets": [
+        "ds_metastable_black_hole_accretion_scenario"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Residual concern — the safety argument has weak or speculative links 4 → 5",
+        "concentration: Residual concern — the safety argument has weak or speculative links 67% → 50% (top: Argument-reliability analysis (probability the safety argument itself is flawed))",
+        "blindspot opened: No risk — LHC collisions are safe missing \"Theoretical analysis\""
+      ]
+    },
+    {
+      "version": 19,
+      "action": "add-source",
+      "source": "src_giddings_mangano_comments_on_claimed_risk_fr_2008",
+      "title": "Giddings & Mangano — Comments on claimed risk from metastable black holes (response to Plaga)",
+      "ts": "2026-07-10T16:52:27.822561+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 13 → 14",
+        "concentration: No risk — LHC collisions are safe 65% → 67% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))"
+      ]
+    },
+    {
+      "version": 20,
+      "action": "add-source",
+      "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
+      "title": "Kent — A critical look at risk assessments for global catastrophes",
+      "ts": "2026-07-10T16:52:27.826317+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Residual concern — the safety argument has weak or speculative links 5 → 6",
+        "concentration: Residual concern — the safety argument has weak or speculative links 50% → 60% (top: Argument-reliability analysis (probability the safety argument itself is flawed))"
       ]
     }
   ]

@@ -2,8 +2,8 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 16,
-    "updated": "2026-07-10T16:21:08.729763+00:00",
+    "version": 28,
+    "updated": "2026-07-10T16:51:20.995135+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
       "baseVersion": 16,
@@ -47,6 +47,21 @@
       "id": "ds_defuse_grant_proposal_document_2018",
       "label": "DEFUSE grant proposal document (2018)",
       "aliases": []
+    },
+    {
+      "id": "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+      "label": "Bat sarbecovirus reservoir (RaTG13, BANAL-52, Yunnan/Laos)",
+      "aliases": []
+    },
+    {
+      "id": "ds_deleted_early_wuhan_sequence_dataset",
+      "label": "Deleted early Wuhan sequence dataset",
+      "aliases": []
+    },
+    {
+      "id": "ds_mojiang_miners_ratg13_provenance",
+      "label": "Mojiang miners / RaTG13 provenance",
+      "aliases": []
     }
   ],
   "factors": [
@@ -71,7 +86,8 @@
       "label": "Ascertainment / reporting bias in early Wuhan case data",
       "weights": {
         "pos_zoonotic_spillover_at_the_huanan_market": "low",
-        "pos_laboratory_associated_origin": "high"
+        "pos_laboratory_associated_origin": "high",
+        "pos_undetermined_unresolved": "high"
       },
       "rationale": "Argues the market centering is not merely a surveillance artifact.",
       "provenance": [
@@ -85,6 +101,12 @@
           "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
           "pos": "pos_laboratory_associated_origin",
           "quote": "early case data reflects where testing was concentrated, not where infection began",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
+          "pos": "pos_undetermined_unresolved",
+          "quote": "not fully representative of the viruses in Wuhan early in the epidemic",
           "verifiedQuote": null
         }
       ]
@@ -131,6 +153,12 @@
           "pos": "pos_laboratory_associated_origin",
           "quote": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
           "verifiedQuote": null
+        },
+        {
+          "source": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "not consistent with laboratory engineering",
+          "verifiedQuote": null
         }
       ]
     },
@@ -154,6 +182,12 @@
           "pos": "pos_undetermined_unresolved",
           "quote": "a laboratory-associated origin remains plausible",
           "verifiedQuote": null
+        },
+        {
+          "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "collected from the Mojiang mine and passaged in the laboratory",
+          "verifiedQuote": null
         }
       ]
     },
@@ -175,6 +209,34 @@
           "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
           "pos": "pos_laboratory_associated_origin",
           "quote": "70 to 1 in favor of a lab origin",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "greater than 99%",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_existence_of_a_close_natural_bat_virus_ances",
+      "label": "Existence of a close natural bat-virus ancestor",
+      "weights": {
+        "pos_zoonotic_spillover_at_the_huanan_market": "high"
+      },
+      "rationale": "A near relative in bats supports a natural reservoir.",
+      "provenance": [
+        {
+          "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "96.2% identical to a bat coronavirus, RaTG13",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "can bind to ACE2 and use it to enter human cells",
           "verifiedQuote": null
         }
       ]
@@ -597,6 +659,314 @@
       },
       "addedIn": 16,
       "textDepth": "unknown"
+    },
+    {
+      "id": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
+      "title": "Zhou et al. — A pneumonia outbreak associated with a new coronavirus of probable bat origin (RaTG13)",
+      "year": 2020,
+      "url": "https://www.nature.com/articles/s41586-020-2012-7",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "Bat coronaviruses",
+      "confidence": "high",
+      "restsOn": [
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "SARS-CoV-2 is 96.2% identical at the whole-genome level to a bat coronavirus, RaTG13",
+          "extractionConfidence": 0.9
+        }
+      },
+      "addedIn": 17,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
+      "title": "Temmam et al. — Bat coronaviruses related to SARS-CoV-2 and infectious for human cells (BANAL-52, Laos)",
+      "year": 2022,
+      "url": "https://www.nature.com/articles/s41586-022-04532-4",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Bat coronaviruses",
+      "confidence": "high",
+      "restsOn": [
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "BANAL-52 shares 96.8% of its genome with SARS-CoV-2 and its receptor-binding domain can use human ACE2",
+          "extractionConfidence": 0.9
+        }
+      },
+      "addedIn": 18,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_boni_et_al_evolutionary_origins_of_the_sars__2020",
+      "title": "Boni et al. — Evolutionary origins of the SARS-CoV-2 sarbecovirus lineage (Nature Microbiology)",
+      "year": 2020,
+      "url": "https://www.nature.com/articles/s41564-020-0771-4",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Sarbecovirus genomes",
+      "confidence": "high",
+      "restsOn": [
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the receptor binding motif of SARS-CoV-2 appears to be an ancestral trait shared with bat viruses, not one acquired recently",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 19,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_lytras_et_al_exploring_the_natural_origins_o_2022",
+      "title": "Lytras et al. — Exploring the natural origins of SARS-CoV-2",
+      "year": 2022,
+      "url": "https://academic.oup.com/gbe/article/14/2/evac018/6523391",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Evidence-synthesis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the features of SARS-CoV-2 are consistent with a natural origin in the sarbecovirus reservoir",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 20,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
+      "title": "Garry — SARS-CoV-2 furin cleavage site was not engineered",
+      "year": 2022,
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2211107119",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "SARS-CoV-2 genome",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the sequence and structure of the SARS-CoV-2 furin cleavage site are not consistent with laboratory engineering",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 21,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_liu_gao_et_al_surveillance_of_sars_cov_2_at__2023",
+      "title": "Liu, Gao et al. — Surveillance of SARS-CoV-2 at the Huanan Seafood Market (Chinese CDC)",
+      "year": 2023,
+      "url": "https://www.nature.com/articles/s41586-023-06043-2",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "Huanan market environmental samples",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_huanan_market_environmental_samples_early_ca"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "environmental samples positive for SARS-CoV-2 were found in the market, co-located with wildlife stalls",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 22,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
+      "title": "Bloom — Recovery of deleted deep sequencing data sheds light on the early Wuhan epidemic",
+      "year": 2021,
+      "url": "https://academic.oup.com/mbe/article/38/12/5211/6353034",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Early SARS-CoV-2 sequences",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_deleted_early_wuhan_sequence_dataset"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the Huanan market sequences that are the focus of the WHO-China report are not fully representative of the viruses in Wuhan early in the epidemic",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 23,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_harrison_sachs_a_call_for_an_independent_inq_2022",
+      "title": "Harrison & Sachs — A call for an independent inquiry into the origin of SARS-CoV-2 (PNAS)",
+      "year": 2022,
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2202769119",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "the origin of SARS-CoV-2 remains uncertain and a research-related origin has not been ruled out",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 24,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_relman_to_stop_the_next_pandemic_we_need_to__2020",
+      "title": "Relman — To stop the next pandemic, we need to unravel the origins of COVID-19 (PNAS)",
+      "year": 2020,
+      "url": "https://www.pnas.org/doi/10.1073/pnas.2021133117",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "we must remain open to the possibility of a laboratory origin until a thorough, objective investigation is completed",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 25,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
+      "title": "Quay — Bayesian analysis of SARS-CoV-2 origin (lab, high probability)",
+      "year": 2021,
+      "url": "https://zenodo.org/record/4477081",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Advocacy",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "a Bayesian analysis estimates the probability of a laboratory origin at greater than 99%",
+          "extractionConfidence": 0.6
+        }
+      },
+      "addedIn": 26,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_courtier_orgogozo_de_ribera_sars_cov_2_infec_2022",
+      "title": "Courtier-Orgogozo & de Ribera — SARS-CoV-2 infection at the Wuhan market: a Bayesian analysis",
+      "year": 2022,
+      "url": "https://hal.science/hal-03264773",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the market association is compatible with a human introduction and does not by itself establish a zoonotic origin",
+          "extractionConfidence": 0.6
+        }
+      },
+      "addedIn": 27,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
+      "title": "Latham & Wilson — The Mojiang Miners Passage hypothesis for the origin of SARS-CoV-2",
+      "year": 2020,
+      "url": "https://www.independentsciencenews.org/commentaries/the-case-is-building-that-covid-19-had-a-lab-origin/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Advocacy",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "ds_mojiang_miners_ratg13_provenance"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "SARS-CoV-2 may have originated from a virus collected from the Mojiang mine and passaged in the laboratory",
+          "extractionConfidence": 0.55
+        }
+      },
+      "addedIn": 28,
+      "textDepth": "unknown"
     }
   ],
   "vocab": {
@@ -645,6 +1015,18 @@
       },
       {
         "label": "Huanan market environmental samples",
+        "aliases": []
+      },
+      {
+        "label": "Bat coronaviruses",
+        "aliases": []
+      },
+      {
+        "label": "Sarbecovirus genomes",
+        "aliases": []
+      },
+      {
+        "label": "Early SARS-CoV-2 sequences",
         "aliases": []
       }
     ],
@@ -909,6 +1291,176 @@
       "diff": [
         "distribution: Zoonotic spillover at the Huanan market 8 → 9",
         "concentration: Zoonotic spillover at the Huanan market 40% → 38% (top: Huanan market environmental samples & early-case geolocation data)"
+      ]
+    },
+    {
+      "version": 17,
+      "action": "add-source",
+      "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
+      "title": "Zhou et al. — A pneumonia outbreak associated with a new coronavirus of probable bat origin (RaTG13)",
+      "ts": "2026-07-10T16:51:20.928711+00:00",
+      "newDatasets": [
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 9 → 10",
+        "concentration: Zoonotic spillover at the Huanan market 38% → 36% (top: Huanan market environmental samples & early-case geolocation data)"
+      ]
+    },
+    {
+      "version": 18,
+      "action": "add-source",
+      "source": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
+      "title": "Temmam et al. — Bat coronaviruses related to SARS-CoV-2 and infectious for human cells (BANAL-52, Laos)",
+      "ts": "2026-07-10T16:51:20.934384+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 10 → 11",
+        "concentration: Zoonotic spillover at the Huanan market 36% → 33% (top: Huanan market environmental samples & early-case geolocation data)",
+        "blindspot opened: Laboratory-associated origin missing \"Bat coronaviruses\"",
+        "blindspot opened: Undetermined / unresolved missing \"Bat coronaviruses\""
+      ]
+    },
+    {
+      "version": 19,
+      "action": "add-source",
+      "source": "src_boni_et_al_evolutionary_origins_of_the_sars__2020",
+      "title": "Boni et al. — Evolutionary origins of the SARS-CoV-2 sarbecovirus lineage (Nature Microbiology)",
+      "ts": "2026-07-10T16:51:20.959779+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 11 → 12",
+        "concentration: Zoonotic spillover at the Huanan market 33% → 31% (top: Huanan market environmental samples & early-case geolocation data)"
+      ]
+    },
+    {
+      "version": 20,
+      "action": "add-source",
+      "source": "src_lytras_et_al_exploring_the_natural_origins_o_2022",
+      "title": "Lytras et al. — Exploring the natural origins of SARS-CoV-2",
+      "ts": "2026-07-10T16:51:20.963162+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 12 → 13",
+        "concentration: Zoonotic spillover at the Huanan market 31% → 29% (top: Huanan market environmental samples & early-case geolocation data)",
+        "most-reused case-wide: SARS-CoV-2 genome structure & furin cleavage site/src:src_segreto_deigin_the_genetic_structure_of_sars_2021 4 → SARS-CoV-2 genome structure & furin cleavage site/src:src_segreto_deigin_the_genetic_structure_of_sars_2021/Bat sarbecovirus reservoir (RaTG13, BANAL-52, Yunnan/Laos) 4/20",
+        "blindspot opened: Laboratory-associated origin missing \"Evidence-synthesis\"",
+        "blindspot opened: Undetermined / unresolved missing \"Evidence-synthesis\""
+      ]
+    },
+    {
+      "version": 21,
+      "action": "add-source",
+      "source": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
+      "title": "Garry — SARS-CoV-2 furin cleavage site was not engineered",
+      "ts": "2026-07-10T16:51:20.966955+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 13 → 14",
+        "concentration: Zoonotic spillover at the Huanan market 29% → 33% (top: SARS-CoV-2 genome structure & furin cleavage site)",
+        "most-reused case-wide: SARS-CoV-2 genome structure & furin cleavage site/src:src_segreto_deigin_the_genetic_structure_of_sars_2021/Bat sarbecovirus reservoir (RaTG13, BANAL-52, Yunnan/Laos) 4 → SARS-CoV-2 genome structure & furin cleavage site 5/21"
+      ]
+    },
+    {
+      "version": 22,
+      "action": "add-source",
+      "source": "src_liu_gao_et_al_surveillance_of_sars_cov_2_at__2023",
+      "title": "Liu, Gao et al. — Surveillance of SARS-CoV-2 at the Huanan Seafood Market (Chinese CDC)",
+      "ts": "2026-07-10T16:51:20.970439+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 14 → 15",
+        "concentration: Zoonotic spillover at the Huanan market 33% → 32% (top: Huanan market environmental samples & early-case geolocation data)",
+        "blindspot opened: Laboratory-associated origin missing \"Huanan market environmental samples\"",
+        "blindspot opened: Undetermined / unresolved missing \"Huanan market environmental samples\""
+      ]
+    },
+    {
+      "version": 23,
+      "action": "add-source",
+      "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
+      "title": "Bloom — Recovery of deleted deep sequencing data sheds light on the early Wuhan epidemic",
+      "ts": "2026-07-10T16:51:20.974156+00:00",
+      "newDatasets": [
+        "ds_deleted_early_wuhan_sequence_dataset"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 2 → 3",
+        "concentration: Undetermined / unresolved 100% → 50% (top: —)",
+        "blindspot closed: Undetermined / unresolved now covers \"Observational\""
+      ]
+    },
+    {
+      "version": 24,
+      "action": "add-source",
+      "source": "src_harrison_sachs_a_call_for_an_independent_inq_2022",
+      "title": "Harrison & Sachs — A call for an independent inquiry into the origin of SARS-CoV-2 (PNAS)",
+      "ts": "2026-07-10T16:51:20.978360+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 3 → 4"
+      ]
+    },
+    {
+      "version": 25,
+      "action": "add-source",
+      "source": "src_relman_to_stop_the_next_pandemic_we_need_to__2020",
+      "title": "Relman — To stop the next pandemic, we need to unravel the origins of COVID-19 (PNAS)",
+      "ts": "2026-07-10T16:51:20.982318+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 4 → 5"
+      ]
+    },
+    {
+      "version": 26,
+      "action": "add-source",
+      "source": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
+      "title": "Quay — Bayesian analysis of SARS-CoV-2 origin (lab, high probability)",
+      "ts": "2026-07-10T16:51:20.986462+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 5 → 6",
+        "concentration: Laboratory-associated origin 57% → 62% (top: SARS-CoV-2 genome structure & furin cleavage site)",
+        "most-reused case-wide: SARS-CoV-2 genome structure & furin cleavage site 5 → SARS-CoV-2 genome structure & furin cleavage site/src:src_segreto_deigin_the_genetic_structure_of_sars_2021 5/26"
+      ]
+    },
+    {
+      "version": 27,
+      "action": "add-source",
+      "source": "src_courtier_orgogozo_de_ribera_sars_cov_2_infec_2022",
+      "title": "Courtier-Orgogozo & de Ribera — SARS-CoV-2 infection at the Wuhan market: a Bayesian analysis",
+      "ts": "2026-07-10T16:51:20.990229+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 6 → 7",
+        "concentration: Laboratory-associated origin 62% → 56% (top: SARS-CoV-2 genome structure & furin cleavage site)"
+      ]
+    },
+    {
+      "version": 28,
+      "action": "add-source",
+      "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
+      "title": "Latham & Wilson — The Mojiang Miners Passage hypothesis for the origin of SARS-CoV-2",
+      "ts": "2026-07-10T16:51:20.995135+00:00",
+      "newDatasets": [
+        "ds_mojiang_miners_ratg13_provenance"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 7 → 8",
+        "concentration: Laboratory-associated origin 56% → 53% (top: SARS-CoV-2 genome structure & furin cleavage site)"
       ]
     }
   ]
