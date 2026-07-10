@@ -2,420 +2,733 @@
   "meta": {
     "id": "eggs",
     "question": "Do eggs increase cardiovascular disease risk?",
-    "version": 1,
-    "updated": "2026-06-12T00:00:00.000Z",
-    "note": "REAL, sourced evidence base (compiled June 2026). Every source carries a citable url, its actual funding disclosure, and the underlying dataset(s) it rests on. `evidence` and `population` use a small controlled vocabulary (so blindspots compute meaningfully); exact sample sizes and study identity live in the title, provenance, and url. Positions and factor weights are the curators' faithful summary of each camp. Verify any entry via its url. See README for how this maps to `discover` + `ingest`."
+    "version": 11,
+    "updated": "2026-07-10T16:25:06.029018+00:00"
   },
   "positions": [
     {
-      "id": "pos_raises",
+      "id": "pos_increases_risk",
       "label": "Increases risk",
+      "hue": "#2E8B6F"
+    },
+    {
+      "id": "pos_no_association",
+      "label": "No association",
       "hue": "#B4502E"
     },
     {
-      "id": "pos_none",
-      "label": "No association",
+      "id": "pos_context_dependent_depends_on_the_person",
+      "label": "Context-dependent (depends on the person)",
       "hue": "#586A7A"
-    },
-    {
-      "id": "pos_context",
-      "label": "Context-dependent",
-      "hue": "#2E8B6F"
     }
   ],
   "datasets": [
     {
-      "id": "ds_lrpp",
-      "label": "Lifetime Risk Pooling Project (6 US cohorts)",
-      "aliases": [
-        "LRPP"
-      ]
+      "id": "ds_pooled_us_cohorts_lifetime_risk_pooling_proj",
+      "label": "Pooled US cohorts (Lifetime Risk Pooling Project)",
+      "aliases": []
     },
     {
-      "id": "ds_nhs",
-      "label": "Nurses' Health Study (NHS)",
-      "aliases": [
-        "NHS"
-      ]
+      "id": "ds_nih_aarp_diet_and_health_study",
+      "label": "NIH-AARP Diet and Health Study",
+      "aliases": []
     },
     {
-      "id": "ds_nhs2",
-      "label": "Nurses' Health Study II",
-      "aliases": [
-        "NHS II",
-        "NHSII"
-      ]
+      "id": "ds_nurses_health_study_health_professionals_fol",
+      "label": "Nurses' Health Study & Health Professionals Follow-up Study",
+      "aliases": []
     },
     {
-      "id": "ds_hpfs",
-      "label": "Health Professionals Follow-up Study (HPFS)",
-      "aliases": [
-        "HPFS"
-      ]
+      "id": "ds_prospective_urban_rural_epidemiology_pure_st",
+      "label": "Prospective Urban Rural Epidemiology (PURE) study",
+      "aliases": []
     },
     {
-      "id": "ds_pure",
-      "label": "PURE / ONTARGET / TRANSCEND cohorts",
-      "aliases": [
-        "PURE"
-      ]
-    },
-    {
-      "id": "ds_ckb",
+      "id": "ds_china_kadoorie_biobank",
       "label": "China Kadoorie Biobank",
-      "aliases": [
-        "CKB"
-      ]
+      "aliases": []
     },
     {
-      "id": "ds_diabegg",
-      "label": "DIABEGG randomized controlled trial",
-      "aliases": [
-        "DIABEGG"
-      ]
+      "id": "ds_diabegg_randomized_trial",
+      "label": "DIABEGG randomized trial",
+      "aliases": []
     },
     {
-      "id": "ds_feeding",
-      "label": "Controlled cholesterol-feeding trials",
+      "id": "ds_egg_feeding_trial_metabolic_syndrome",
+      "label": "Egg feeding trial (metabolic syndrome)",
       "aliases": []
     }
   ],
   "factors": [
     {
-      "id": "f_chol_ldl",
-      "label": "Dietary cholesterol raises serum LDL",
-      "weights": {
-        "pos_raises": "high",
-        "pos_none": "low",
-        "pos_context": "med"
-      },
-      "rationale": "Controlled-feeding trials and the AHA advisory hold that dietary cholesterol raises LDL; the 'no association' cohorts treat this biomarker effect as not translating into hard events.",
-      "provenance": []
-    },
-    {
-      "id": "f_endpoint",
+      "id": "f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve",
       "label": "Judge eggs on biomarkers (LDL) vs hard CVD events",
       "weights": {
-        "pos_raises": "high",
-        "pos_none": "low",
-        "pos_context": "med"
+        "pos_increases_risk": "high",
+        "pos_context_dependent_depends_on_the_person": "low"
       },
-      "rationale": "The 'increases risk' camp weights LDL and mortality endpoints (Zhong, Zhuang, Barnard); the 'no association' cohorts find null hard-event associations and weight those.",
-      "provenance": []
+      "rationale": "Weights hard clinical endpoints from large pooled cohorts.",
+      "provenance": [
+        {
+          "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
+          "pos": "pos_increases_risk",
+          "quote": "higher risk of incident cardiovascular disease and all-cause mortality",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "did not adversely affect the lipid profile",
+          "verifiedQuote": null
+        }
+      ]
     },
     {
-      "id": "f_confound",
-      "label": "Discount cohorts for healthy-user / residual confounding",
+      "id": "f_discount_for_healthy_user_dietary_pattern_co",
+      "label": "Discount for healthy-user / dietary-pattern confounding",
       "weights": {
-        "pos_raises": "low",
-        "pos_none": "low",
-        "pos_context": "high"
+        "pos_increases_risk": "low",
+        "pos_no_association": "high"
       },
-      "rationale": "The RCT/feeding camp distrusts observational cohorts (egg-eaters differ in lifestyle); both cohort camps discount little.",
-      "provenance": []
+      "rationale": "Claims the association survives confounding adjustment.",
+      "provenance": [
+        {
+          "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
+          "pos": "pos_increases_risk",
+          "quote": "associations were not modified by adjustment for dietary quality",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+          "pos": "pos_no_association",
+          "quote": "associations were not significant after adjustment for lifestyle and dietary factors",
+          "verifiedQuote": null
+        }
+      ]
     },
     {
-      "id": "f_subgroup",
-      "label": "Subgroup effects (diabetics, hyper-responders)",
+      "id": "f_population_context_dependence_who_is_eating_",
+      "label": "Population/context dependence (who is eating eggs)",
       "weights": {
-        "pos_raises": "med",
-        "pos_none": "med",
-        "pos_context": "med"
+        "pos_no_association": "high",
+        "pos_context_dependent_depends_on_the_person": "high"
       },
-      "rationale": "Hu 1999 flagged elevated risk in diabetics; DIABEGG tested diabetics directly; all camps now concede subgroups differ — a rare convergence hinting the headline question ('are eggs healthy?') is mis-posed.",
-      "provenance": []
+      "rationale": "A different population and background diet flips the direction of association.",
+      "provenance": [
+        {
+          "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
+          "pos": "pos_no_association",
+          "quote": "in this Chinese population, moderate egg consumption",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "within a heart-healthy dietary pattern",
+          "verifiedQuote": null
+        }
+      ]
     },
     {
-      "id": "f_funding",
-      "label": "Weight given to industry funding / conflicts of interest",
+      "id": "f_subgroups_diabetics_hyper_responders_differ",
+      "label": "Subgroups (diabetics / hyper-responders) differ",
       "weights": {
-        "pos_raises": "high",
-        "pos_none": "low",
-        "pos_context": "low"
+        "pos_no_association": "high"
       },
-      "rationale": "Barnard's review weights sponsorship bias heavily (49% of industry-funded studies reported conclusions discordant with their own results, vs 13% of independent ones); industry-backed studies downweight it.",
-      "provenance": []
+      "rationale": "Overall null hides a diabetic subgroup signal — the crux of 'depends on who'.",
+      "provenance": [
+        {
+          "source": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "pos": "pos_no_association",
+          "quote": "among diabetic subjects, egg consumption was associated with increased risk",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+          "pos": "pos_no_association",
+          "quote": "a subgroup analysis showed higher risk of coronary heart disease among diabetic patients",
+          "verifiedQuote": null
+        }
+      ]
     },
     {
-      "id": "f_pattern",
-      "label": "Dietary-pattern context (what eggs replace)",
+      "id": "f_discount_for_industry_funding",
+      "label": "Discount for industry funding",
       "weights": {
-        "pos_raises": "low",
-        "pos_none": "med",
-        "pos_context": "high"
+        "pos_context_dependent_depends_on_the_person": "low",
+        "pos_increases_risk": "high"
       },
-      "rationale": "The AHA advisory and substitution analyses stress that eggs' effect depends on what they replace (egg whites, refined carbs, processed meat) and the overall diet.",
-      "provenance": []
+      "rationale": "Industry-funded RCT concluding eggs are safe for diabetics.",
+      "provenance": [
+        {
+          "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "funded by the Australian Egg Corporation",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "supported by the Egg Nutrition Center",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_barnard_et_al_industry_funding_and_cholester_2020",
+          "pos": "pos_increases_risk",
+          "quote": "industry-funded studies were far more likely to report favorable conclusions",
+          "verifiedQuote": null
+        }
+      ]
     }
   ],
   "sources": [
     {
-      "id": "src_zhong_2019",
-      "title": "Zhong et al. — Dietary cholesterol/egg & incident CVD and mortality (6 pooled US cohorts, n=29,615)",
+      "id": "src_zhong_et_al_associations_of_dietary_choleste_2019",
+      "title": "Zhong et al. — Associations of dietary cholesterol/egg consumption with CVD and mortality (JAMA)",
       "year": 2019,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/30874756/",
-      "position": "pos_raises",
+      "url": "https://jamanetwork.com/journals/jama/fullarticle/2728487",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
       "evidence": "Observational",
-      "funding": "independent",
-      "population": "General adults",
+      "funding": "Government/public",
+      "population": "US pooled cohorts",
       "confidence": "moderate",
       "restsOn": [
-        "ds_lrpp"
+        "ds_pooled_us_cohorts_lifetime_risk_pooling_proj"
       ],
       "provenance": {
         "position": {
-          "quote": "higher consumption of dietary cholesterol or eggs was significantly associated with higher risk of incident CVD and all-cause mortality",
-          "source": "JAMA 2019;321(11):1081-1095"
-        }
-      },
-      "addedIn": 1
-    },
-    {
-      "id": "src_barnard_2020",
-      "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review (153 feeding studies, 1950–2019)",
-      "year": 2020,
-      "url": "https://journals.sagepub.com/doi/10.1177/1559827619892198",
-      "position": "pos_raises",
-      "evidence": "Evidence-synthesis",
-      "funding": "independent",
-      "population": "Healthy adults",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_feeding"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "49% of industry-funded intervention studies reported conclusions that were discordant with study results (net cholesterol increases described as favorable), vs 13% of non-industry-funded studies",
-          "source": "Am J Lifestyle Med"
+          "quote": "each additional 300 mg of dietary cholesterol per day was significantly associated with higher risk of incident CVD and all-cause mortality; each half an egg per day was associated with higher risk",
+          "extractionConfidence": 0.9
         }
       },
       "addedIn": 1,
-      "venue": "American Journal of Lifestyle Medicine",
-      "citations": 9,
-      "retracted": false,
-      "authors": [
-        "Neal D. Barnard",
-        "Meixiao Long",
-        "Jennifer M. Ferguson",
-        "Rosendo Flores",
-        "Hana Kahleová"
-      ]
+      "textDepth": "unknown"
     },
     {
-      "id": "src_hu_1999",
-      "title": "Hu et al. — Prospective study of egg consumption and CVD in men and women (NHS + HPFS, n~118,000)",
-      "year": 1999,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/10217054/",
-      "position": "pos_none",
+      "id": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021",
+      "title": "Zhuang et al. — Egg & cholesterol consumption and mortality (NIH-AARP, PLOS Medicine)",
+      "year": 2021,
+      "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
       "evidence": "Observational",
-      "funding": "independent",
-      "population": "General adults",
+      "funding": "Government/public",
+      "population": "US older adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_nhs",
-        "ds_hpfs"
+        "ds_nih_aarp_diet_and_health_study"
       ],
       "provenance": {
         "position": {
-          "quote": "consumption of up to 1 egg per day is unlikely to have substantial overall impact on the risk of CHD or stroke among healthy men and women",
-          "source": "JAMA 1999;281(15):1387-1394"
-        },
-        "subgroup": {
-          "quote": "increased risk of CHD with higher egg consumption among diabetic subjects"
+          "quote": "each additional half a whole egg per day was associated with a 7% higher risk of all-cause mortality; each 300 mg/day of dietary cholesterol with a 19% higher risk",
+          "extractionConfidence": 0.9
         }
       },
-      "addedIn": 1
+      "addedIn": 2,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_drouin_2020",
-      "title": "Drouin-Chartier et al. — Egg consumption & CVD: three US cohorts + updated meta-analysis (n=215,618; meta 1.72M)",
+      "id": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+      "title": "Drouin-Chartier et al. — Egg consumption and risk of cardiovascular disease: three cohorts + meta-analysis (BMJ)",
       "year": 2020,
       "url": "https://www.bmj.com/content/368/bmj.m513",
-      "position": "pos_none",
-      "evidence": "Meta-analysis",
-      "funding": "independent",
-      "population": "General adults",
-      "confidence": "moderate",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "US health professionals",
+      "confidence": "high",
       "restsOn": [
-        "ds_nhs",
-        "ds_nhs2",
-        "ds_hpfs"
+        "ds_nurses_health_study_health_professionals_fol"
       ],
       "provenance": {
         "position": {
           "quote": "moderate egg consumption (up to one egg per day) was not associated with cardiovascular disease risk overall",
-          "source": "BMJ 2020;368:m513"
-        },
-        "restsOn": {
-          "quote": "Nurses' Health Study (1980-2012), NHS II (1991-2013), and Health Professionals' Follow-Up Study (1986-2012)"
+          "extractionConfidence": 0.9
         }
       },
-      "addedIn": 1
+      "addedIn": 3,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_dehghan_2020",
-      "title": "Dehghan et al. — Egg intake, lipids, CVD & mortality in 50 countries (PURE, n~177,000)",
+      "id": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020",
+      "title": "Dehghan et al. — Egg consumption and CVD/mortality in 50 countries (PURE)",
       "year": 2020,
-      "url": "https://doi.org/10.1093/ajcn/nqz348",
-      "position": "pos_none",
+      "url": "https://academic.oup.com/ajcn/article/111/4/795/5735848",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
       "evidence": "Observational",
-      "funding": "independent",
-      "population": "Multi-country",
+      "funding": "Academic/institutional",
+      "population": "Global (50 countries)",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pure"
+        "ds_prospective_urban_rural_epidemiology_pure_st"
       ],
       "provenance": {
         "position": {
-          "quote": "no significant associations were found between egg intake and blood lipids, mortality, or major CVD events",
-          "source": "Am J Clin Nutr 2020;111(4):795-803"
+          "quote": "egg intake was not significantly associated with blood lipids, mortality, or major cardiovascular disease events",
+          "extractionConfidence": 0.85
         }
       },
-      "addedIn": 1,
-      "venue": "American Journal of Clinical Nutrition",
-      "citations": 101,
-      "retracted": false,
-      "authors": [
-        "Mahshid Dehghan",
-        "Andrew Mente",
-        "Sumathy Rangarajan",
-        "Viswanathan Mohan",
-        "Scott A. Lear",
-        "Sumathi Swaminathan",
-        "Andreas Wielgosz",
-        "Pamela Serón",
-        "Álvaro Avezum",
-        "Patricio López‐Jaramillo"
-      ]
+      "addedIn": 4,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_qin_2018",
-      "title": "Qin et al. — Egg consumption & CVD in 0.5M Chinese adults (China Kadoorie Biobank, n=416,213)",
+      "id": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
+      "title": "Qin et al. — Egg consumption and cardiovascular disease (China Kadoorie Biobank)",
       "year": 2018,
-      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6107805/",
-      "position": "pos_none",
+      "url": "https://heart.bmj.com/content/104/21/1756",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
       "evidence": "Observational",
-      "funding": "independent",
+      "funding": "Government/public",
       "population": "Chinese adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_ckb"
+        "ds_china_kadoorie_biobank"
       ],
       "provenance": {
         "position": {
           "quote": "daily egg consumption was associated with a lower risk of cardiovascular disease",
-          "source": "Heart 2018;104:1756-1763"
+          "extractionConfidence": 0.8
         }
       },
-      "addedIn": 1
+      "addedIn": 5,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_fuller_2018",
-      "title": "Fuller et al. — High-egg diet in type 2 diabetes (DIABEGG, 12-month RCT, n=128)",
-      "year": 2018,
-      "url": "https://doi.org/10.1093/ajcn/nqy048",
-      "position": "pos_context",
-      "evidence": "Experimental (RCT)",
-      "funding": "industry",
-      "population": "Type 2 diabetes",
-      "confidence": "high",
+      "id": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+      "title": "Hu et al. — A prospective study of egg consumption and risk of cardiovascular disease (JAMA)",
+      "year": 1999,
+      "url": "https://jamanetwork.com/journals/jama/fullarticle/189529",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "US health professionals",
+      "confidence": "moderate",
       "restsOn": [
-        "ds_diabegg"
+        "ds_nurses_health_study_health_professionals_fol"
       ],
       "provenance": {
         "position": {
-          "quote": "a high-egg diet did not have an adverse effect on the lipid profile of people with type 2 diabetes",
-          "source": "Am J Clin Nutr 2018;107(6):921-931"
-        },
-        "funding": {
-          "quote": "supported by a research grant from the Australian Egg Corporation",
-          "extractionConfidence": 1.0
+          "quote": "consumption of up to one egg per day is unlikely to have substantial overall impact on the risk of CHD... among diabetic subjects, egg consumption was associated with increased risk",
+          "extractionConfidence": 0.85
         }
       },
-      "addedIn": 1,
-      "venue": "American Journal of Clinical Nutrition",
-      "citations": 38,
-      "retracted": false,
-      "authors": [
-        "Nicholas R Fuller",
-        "Amanda Sainsbury",
-        "Ian D. Caterson",
-        "Gareth Denyer",
-        "Mackenzie Fong",
-        "James Gerofi",
-        "Chloris Leung",
-        "Namson S. Lau",
-        "Kathryn Williams",
-        "Andrzej S. Januszewski"
-      ]
+      "addedIn": 6,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_blesso_2013",
-      "title": "Blesso/Fernandez et al. — Whole egg vs egg substitute & lipoprotein profiles in metabolic syndrome (RCT, n=37)",
+      "id": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+      "title": "Rong et al. — Egg consumption and risk of CHD and stroke: dose-response meta-analysis (BMJ)",
+      "year": 2013,
+      "url": "https://www.bmj.com/content/346/bmj.e8539",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Meta-analysis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "higher consumption of eggs was not associated with increased risk of coronary heart disease or stroke",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 7,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+      "title": "Fuller et al. (DIABEGG) — High vs low egg diet in type 2 diabetes: randomized trial",
+      "year": 2018,
+      "url": "https://academic.oup.com/ajcn/article/107/6/921/5016058",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_context_dependent_depends_on_the_person",
+      "evidence": "Experimental (RCT)",
+      "funding": "Industry",
+      "population": "Adults with type 2 diabetes / prediabetes",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_diabegg_randomized_trial"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "a high-egg diet did not adversely affect the lipid profile of people with type 2 diabetes... eggs can be included in the diet",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 8,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
+      "title": "Blesso & Fernandez — Whole egg consumption improves lipoprotein profiles (feeding trial)",
       "year": 2013,
       "url": "https://pubmed.ncbi.nlm.nih.gov/23021013/",
-      "position": "pos_context",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_context_dependent_depends_on_the_person",
       "evidence": "Experimental (RCT)",
-      "funding": "industry",
-      "population": "Metabolic syndrome",
+      "funding": "Industry",
+      "population": "Adults with metabolic syndrome",
       "confidence": "low",
       "restsOn": [
-        "ds_feeding"
+        "ds_egg_feeding_trial_metabolic_syndrome"
       ],
       "provenance": {
         "position": {
-          "quote": "whole egg consumption improves lipoprotein profiles and insulin sensitivity to a greater extent than yolk-free egg substitute",
-          "source": "Metabolism 2013;62(3):400-410"
-        },
-        "funding": {
-          "quote": "supported by the Egg Nutrition Center",
-          "extractionConfidence": 0.9
+          "quote": "whole egg consumption led to increases in HDL cholesterol and improvements in the lipoprotein profile",
+          "extractionConfidence": 0.75
         }
       },
-      "addedIn": 1
+      "addedIn": 9,
+      "textDepth": "unknown"
     },
     {
-      "id": "src_carson_aha_2020",
-      "title": "Carson et al. — Dietary Cholesterol and CVD Risk: AHA Science Advisory",
+      "id": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
+      "title": "Carson et al. — Dietary cholesterol and cardiovascular risk: an AHA science advisory",
       "year": 2020,
       "url": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000743",
-      "position": "pos_context",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_context_dependent_depends_on_the_person",
       "evidence": "Expert advisory",
-      "funding": "independent",
+      "funding": "Nonprofit/charity",
       "population": "—",
-      "confidence": "high",
-      "restsOn": [
-        "ds_feeding"
-      ],
+      "confidence": "moderate",
+      "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "dietary guidance should focus on healthy dietary patterns... most meta-analyses of intervention studies associate cholesterol intakes exceeding current levels with elevated LDL",
-          "source": "Circulation 2020;141(3):e39-e53"
+          "quote": "healthy individuals can include up to one egg per day within a heart-healthy dietary pattern",
+          "extractionConfidence": 0.8
         }
       },
-      "addedIn": 1,
-      "venue": "Circulation",
-      "citations": 324,
+      "addedIn": 10,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_barnard_et_al_industry_funding_and_cholester_2020",
+      "title": "Barnard et al. — Industry funding and cholesterol research on eggs",
+      "year": 2020,
+      "url": "https://www.ahajournals.org/doi/10.1161/JAHA.119.014868",
+      "authors": [],
+      "venue": "",
+      "citations": null,
       "retracted": false,
-      "authors": [
-        "Jo Ann S. Carson",
-        "Alice H. Lichtenstein",
-        "Cheryl A.M. Anderson",
-        "Lawrence J. Appel",
-        "Penny M. Kris‐Etherton",
-        "Katie A. Meyer",
-        "Kristina H. Petersen",
-        "Tamar S. Polonsky",
-        "Linda Van Horn"
-      ]
+      "position": "pos_increases_risk",
+      "evidence": "Evidence-synthesis",
+      "funding": "Advocacy",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "industry-funded studies were far more likely to report conclusions favorable to egg consumption than their own data supported",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 11,
+      "textDepth": "unknown"
     }
   ],
+  "vocab": {
+    "evidence": [
+      {
+        "label": "Observational",
+        "aliases": []
+      },
+      {
+        "label": "Experimental (RCT)",
+        "aliases": []
+      },
+      {
+        "label": "Meta-analysis",
+        "aliases": []
+      },
+      {
+        "label": "Evidence-synthesis",
+        "aliases": []
+      },
+      {
+        "label": "Mechanistic",
+        "aliases": []
+      },
+      {
+        "label": "Expert advisory",
+        "aliases": []
+      },
+      {
+        "label": "Narrative/Commentary",
+        "aliases": []
+      }
+    ],
+    "population": [
+      {
+        "label": "US pooled cohorts",
+        "aliases": []
+      },
+      {
+        "label": "US older adults",
+        "aliases": []
+      },
+      {
+        "label": "US health professionals",
+        "aliases": []
+      },
+      {
+        "label": "Global (50 countries)",
+        "aliases": []
+      },
+      {
+        "label": "Chinese adults",
+        "aliases": []
+      },
+      {
+        "label": "Adults with type 2 diabetes / prediabetes",
+        "aliases": []
+      },
+      {
+        "label": "Adults with metabolic syndrome",
+        "aliases": []
+      }
+    ],
+    "funding": [
+      {
+        "label": "Government/public",
+        "aliases": []
+      },
+      {
+        "label": "Nonprofit/charity",
+        "aliases": []
+      },
+      {
+        "label": "Academic/institutional",
+        "aliases": []
+      },
+      {
+        "label": "Industry",
+        "aliases": []
+      },
+      {
+        "label": "Advocacy",
+        "aliases": []
+      },
+      {
+        "label": "Undisclosed",
+        "aliases": []
+      }
+    ]
+  },
   "log": [
     {
       "version": 1,
-      "action": "seed",
-      "ts": "2026-06-12T00:00:00.000Z",
-      "sources": 9
+      "action": "add-source",
+      "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
+      "title": "Zhong et al. — Associations of dietary cholesterol/egg consumption with CVD and mortality (JAMA)",
+      "ts": "2026-07-10T16:25:06.017341+00:00",
+      "newDatasets": [
+        "ds_pooled_us_cohorts_lifetime_risk_pooling_proj"
+      ],
+      "newPositions": [
+        "pos_increases_risk"
+      ],
+      "diff": [
+        "distribution: Increases risk 0 → 1",
+        "+ new position: Increases risk",
+        "most-reused case-wide: — → Pooled US cohorts (Lifetime Risk Pooling Project) 1/1"
+      ]
+    },
+    {
+      "version": 2,
+      "action": "add-source",
+      "source": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021",
+      "title": "Zhuang et al. — Egg & cholesterol consumption and mortality (NIH-AARP, PLOS Medicine)",
+      "ts": "2026-07-10T16:25:06.018112+00:00",
+      "newDatasets": [
+        "ds_nih_aarp_diet_and_health_study"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 1 → 2",
+        "concentration: Increases risk 100% → 50% (top: Pooled US cohorts (Lifetime Risk Pooling Project))",
+        "most-reused case-wide: Pooled US cohorts (Lifetime Risk Pooling Project) 1 → Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study 1/2"
+      ]
+    },
+    {
+      "version": 3,
+      "action": "add-source",
+      "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+      "title": "Drouin-Chartier et al. — Egg consumption and risk of cardiovascular disease: three cohorts + meta-analysis (BMJ)",
+      "ts": "2026-07-10T16:25:06.018880+00:00",
+      "newDatasets": [
+        "ds_nurses_health_study_health_professionals_fol"
+      ],
+      "newPositions": [
+        "pos_no_association"
+      ],
+      "diff": [
+        "distribution: No association 0 → 1",
+        "+ new position: No association",
+        "most-reused case-wide: Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study 1 → Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study 1/3",
+        "+ new crux: Discount for healthy-user / dietary-pattern confounding"
+      ]
+    },
+    {
+      "version": 4,
+      "action": "add-source",
+      "source": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020",
+      "title": "Dehghan et al. — Egg consumption and CVD/mortality in 50 countries (PURE)",
+      "ts": "2026-07-10T16:25:06.020219+00:00",
+      "newDatasets": [
+        "ds_prospective_urban_rural_epidemiology_pure_st"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No association 1 → 2",
+        "concentration: No association 100% → 50% (top: Nurses' Health Study & Health Professionals Follow-up Study)",
+        "most-reused case-wide: Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study 1 → Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study/Prospective Urban Rural Epidemiology (PURE) study 1/4"
+      ]
+    },
+    {
+      "version": 5,
+      "action": "add-source",
+      "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
+      "title": "Qin et al. — Egg consumption and cardiovascular disease (China Kadoorie Biobank)",
+      "ts": "2026-07-10T16:25:06.021044+00:00",
+      "newDatasets": [
+        "ds_china_kadoorie_biobank"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No association 2 → 3",
+        "concentration: No association 50% → 33% (top: Nurses' Health Study & Health Professionals Follow-up Study)",
+        "most-reused case-wide: Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study/Prospective Urban Rural Epidemiology (PURE) study 1 → Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study/Prospective Urban Rural Epidemiology (PURE) study/China Kadoorie Biobank 1/5"
+      ]
+    },
+    {
+      "version": 6,
+      "action": "add-source",
+      "source": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+      "title": "Hu et al. — A prospective study of egg consumption and risk of cardiovascular disease (JAMA)",
+      "ts": "2026-07-10T16:25:06.022213+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No association 3 → 4",
+        "concentration: No association 33% → 50% (top: Nurses' Health Study & Health Professionals Follow-up Study)",
+        "⚠ No association crossed into CONCENTRATED",
+        "most-reused case-wide: Pooled US cohorts (Lifetime Risk Pooling Project)/NIH-AARP Diet and Health Study/Nurses' Health Study & Health Professionals Follow-up Study/Prospective Urban Rural Epidemiology (PURE) study/China Kadoorie Biobank 1 → Nurses' Health Study & Health Professionals Follow-up Study 2/6",
+        "blindspot opened: Increases risk missing \"US health professionals\""
+      ]
+    },
+    {
+      "version": 7,
+      "action": "add-source",
+      "source": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+      "title": "Rong et al. — Egg consumption and risk of CHD and stroke: dose-response meta-analysis (BMJ)",
+      "ts": "2026-07-10T16:25:06.023239+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No association 4 → 5",
+        "concentration: No association 50% → 60% (top: Nurses' Health Study & Health Professionals Follow-up Study)"
+      ]
+    },
+    {
+      "version": 8,
+      "action": "add-source",
+      "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+      "title": "Fuller et al. (DIABEGG) — High vs low egg diet in type 2 diabetes: randomized trial",
+      "ts": "2026-07-10T16:25:06.024509+00:00",
+      "newDatasets": [
+        "ds_diabegg_randomized_trial"
+      ],
+      "newPositions": [
+        "pos_context_dependent_depends_on_the_person"
+      ],
+      "diff": [
+        "distribution: Context-dependent (depends on the person) 0 → 1",
+        "+ new position: Context-dependent (depends on the person)",
+        "+ new crux: Judge eggs on biomarkers (LDL) vs hard CVD events"
+      ]
+    },
+    {
+      "version": 9,
+      "action": "add-source",
+      "source": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
+      "title": "Blesso & Fernandez — Whole egg consumption improves lipoprotein profiles (feeding trial)",
+      "ts": "2026-07-10T16:25:06.025771+00:00",
+      "newDatasets": [
+        "ds_egg_feeding_trial_metabolic_syndrome"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Context-dependent (depends on the person) 1 → 2",
+        "concentration: Context-dependent (depends on the person) 100% → 50% (top: DIABEGG randomized trial)",
+        "blindspot opened: Increases risk missing \"Experimental (RCT)\"",
+        "blindspot opened: No association missing \"Experimental (RCT)\""
+      ]
+    },
+    {
+      "version": 10,
+      "action": "add-source",
+      "source": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
+      "title": "Carson et al. — Dietary cholesterol and cardiovascular risk: an AHA science advisory",
+      "ts": "2026-07-10T16:25:06.027150+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Context-dependent (depends on the person) 2 → 3",
+        "concentration: Context-dependent (depends on the person) 50% → 33% (top: DIABEGG randomized trial)"
+      ]
+    },
+    {
+      "version": 11,
+      "action": "add-source",
+      "source": "src_barnard_et_al_industry_funding_and_cholester_2020",
+      "title": "Barnard et al. — Industry funding and cholesterol research on eggs",
+      "ts": "2026-07-10T16:25:06.029018+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 2 → 3",
+        "concentration: Increases risk 50% → 33% (top: Pooled US cohorts (Lifetime Risk Pooling Project))",
+        "+ new crux: Discount for industry funding"
+      ]
     }
   ]
 }

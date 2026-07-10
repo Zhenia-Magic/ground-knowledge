@@ -1,0 +1,910 @@
+{
+  "meta": {
+    "id": "covid",
+    "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
+    "version": 16,
+    "updated": "2026-07-10T16:21:08.729763+00:00"
+  },
+  "positions": [
+    {
+      "id": "pos_zoonotic_spillover_at_the_huanan_market",
+      "label": "Zoonotic spillover at the Huanan market",
+      "hue": "#2E8B6F"
+    },
+    {
+      "id": "pos_laboratory_associated_origin",
+      "label": "Laboratory-associated origin",
+      "hue": "#B4502E"
+    },
+    {
+      "id": "pos_undetermined_unresolved",
+      "label": "Undetermined / unresolved",
+      "hue": "#586A7A"
+    }
+  ],
+  "datasets": [
+    {
+      "id": "ds_huanan_market_environmental_samples_early_ca",
+      "label": "Huanan market environmental samples & early-case geolocation data",
+      "aliases": []
+    },
+    {
+      "id": "ds_early_sars_cov_2_genomic_sequences_lineages_",
+      "label": "Early SARS-CoV-2 genomic sequences (lineages A and B)",
+      "aliases": []
+    },
+    {
+      "id": "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+      "label": "SARS-CoV-2 genome structure & furin cleavage site",
+      "aliases": []
+    },
+    {
+      "id": "ds_defuse_grant_proposal_document_2018",
+      "label": "DEFUSE grant proposal document (2018)",
+      "aliases": []
+    }
+  ],
+  "factors": [
+    {
+      "id": "f_epidemiological_proximity_of_the_earliest_ca",
+      "label": "Epidemiological proximity of the earliest cases to the market",
+      "weights": {
+        "pos_zoonotic_spillover_at_the_huanan_market": "high"
+      },
+      "rationale": "Spatial clustering of early cases and positive samples at the market is the load-bearing zoonotic argument.",
+      "provenance": [
+        {
+          "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "the earliest known COVID-19 cases were geographically centered on this market",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_ascertainment_reporting_bias_in_early_wuhan_",
+      "label": "Ascertainment / reporting bias in early Wuhan case data",
+      "weights": {
+        "pos_zoonotic_spillover_at_the_huanan_market": "low",
+        "pos_laboratory_associated_origin": "high"
+      },
+      "rationale": "Argues the market centering is not merely a surveillance artifact.",
+      "provenance": [
+        {
+          "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "cases with no known link to the market were nonetheless geographically distributed near it",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "early case data reflects where testing was concentrated, not where infection began",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_number_of_introductions_single_seeding_vs_mu",
+      "label": "Number of introductions (single seeding vs multiple spillovers)",
+      "weights": {
+        "pos_zoonotic_spillover_at_the_huanan_market": "high"
+      },
+      "rationale": "Two independent introductions are hard to reconcile with a single lab escape.",
+      "provenance": [
+        {
+          "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "two separate introductions of lineages A and B into humans",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_furin_cleavage_site_as_evidence_of_laborator",
+      "label": "Furin cleavage site as evidence of laboratory engineering",
+      "weights": {
+        "pos_zoonotic_spillover_at_the_huanan_market": "low",
+        "pos_laboratory_associated_origin": "high"
+      },
+      "rationale": "Reads the genome features as consistent with natural evolution.",
+      "provenance": [
+        {
+          "source": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "the acquisition of both the polybasic cleavage site and predicted O-linked glycans argues against manipulation",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "can be explained by natural evolutionary mechanisms",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_prior_probability_of_a_research_related_acci",
+      "label": "Prior probability of a research-related accident in Wuhan",
+      "weights": {
+        "pos_laboratory_associated_origin": "high",
+        "pos_undetermined_unresolved": "med"
+      },
+      "rationale": "Documented intent to engineer a furin site raises the lab prior.",
+      "provenance": [
+        {
+          "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "proposed exactly the kind of engineering that would produce a virus like SARS-CoV-2",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
+          "pos": "pos_undetermined_unresolved",
+          "quote": "a laboratory-associated origin remains plausible",
+          "verifiedQuote": null
+        }
+      ]
+    },
+    {
+      "id": "f_reliability_of_bayesian_priors_and_likelihoo",
+      "label": "Reliability of Bayesian priors and likelihood estimates",
+      "weights": {
+        "pos_laboratory_associated_origin": "high"
+      },
+      "rationale": "The whole conclusion is driven by chosen priors/likelihoods over shared evidence.",
+      "provenance": [
+        {
+          "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "combining the likelihoods across independent lines of evidence",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "70 to 1 in favor of a lab origin",
+          "verifiedQuote": null
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+      "title": "Worobey et al. — The Huanan market was the early epicenter of the COVID-19 pandemic",
+      "year": 2022,
+      "url": "https://www.science.org/doi/10.1126/science.abp8715",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Wuhan early COVID-19 cases (Dec 2019)",
+      "confidence": "high",
+      "restsOn": [
+        "ds_huanan_market_environmental_samples_early_ca"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the earliest known COVID-19 cases from December 2019 were geographically centered on this market; SARS-CoV-2-positive environmental samples were spatially associated with vendors selling live mammals",
+          "extractionConfidence": 0.9
+        }
+      },
+      "addedIn": 1,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+      "title": "Pekar et al. — The molecular epidemiology of multiple zoonotic origins of SARS-CoV-2",
+      "year": 2022,
+      "url": "https://www.science.org/doi/10.1126/science.abp8337",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Early SARS-CoV-2 genomes",
+      "confidence": "high",
+      "restsOn": [
+        "ds_early_sars_cov_2_genomic_sequences_lineages_"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the analyses provide support for two separate introductions of lineages A and B into humans, both circulating in non-human mammals prior to their introduction",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 2,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
+      "title": "Andersen, Rambaut, Lipkin, Holmes, Garry — The proximal origin of SARS-CoV-2",
+      "year": 2020,
+      "url": "https://www.nature.com/articles/s41591-020-0820-9",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "SARS-CoV-2 genome",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "our analyses clearly show that SARS-CoV-2 is not a laboratory construct or a purposefully manipulated virus",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 3,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_crits_christoph_et_al_genetic_tracing_of_mar_2024",
+      "title": "Crits-Christoph et al. — Genetic tracing of market wildlife and viruses at the epicenter of the pandemic",
+      "year": 2024,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37745602/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Academic/institutional",
+      "population": "Huanan market environmental samples",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_huanan_market_environmental_samples_early_ca"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "SARS-CoV-2-positive samples were significantly enriched for genetic material of susceptible wildlife species, including raccoon dogs",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 4,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_holmes_et_al_the_origins_of_sars_cov_2_a_cri_2021",
+      "title": "Holmes et al. — The origins of SARS-CoV-2: A critical review",
+      "year": 2021,
+      "url": "https://www.cell.com/cell/fulltext/S0092-8674(21",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Evidence-synthesis",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "high",
+      "restsOn": [
+        "ds_huanan_market_environmental_samples_early_ca",
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "there is currently no evidence that SARS-CoV-2 has a laboratory origin",
+          "extractionConfidence": 0.85
+        }
+      },
+      "addedIn": 5,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
+      "title": "Emergence of the Spike Furin Cleavage Site in SARS-CoV-2 — a natural-evolution account",
+      "year": 2022,
+      "url": "https://academic.oup.com/mbe/article/39/1/msab327/6426085",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "SARS-CoV-2 genome",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the furin cleavage site can be explained by natural evolutionary mechanisms without invoking laboratory manipulation",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 6,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
+      "title": "Segreto & Deigin — The genetic structure of SARS-CoV-2 does not rule out a laboratory origin",
+      "year": 2021,
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/bies.202000240",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Mechanistic",
+      "funding": "Academic/institutional",
+      "population": "SARS-CoV-2 genome",
+      "confidence": "moderate",
+      "restsOn": [
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the SARS-CoV-2 chimeric structure and furin cleavage site might be the result of laboratory manipulation",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 7,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
+      "title": "Analysis of the DEFUSE proposal (EcoHealth / WIV / DARPA, 2018)",
+      "year": 2023,
+      "url": "https://usrtk.org/covid-19-origins/defuse-documents/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Observational",
+      "funding": "Advocacy",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "ds_defuse_grant_proposal_document_2018"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the DEFUSE proposal described inserting a furin cleavage site into a SARS-related bat coronavirus",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 8,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+      "title": "Rootclaim (Saar Wilf) — Bayesian analysis of COVID-19 origins (lab leak)",
+      "year": 2024,
+      "url": "https://blog.rootclaim.com/rootclaims-covid-19-origins-debate-results/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Advocacy",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+        "src:src_analysis_of_the_defuse_proposal_ecohealth_wi_2023"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "our Bayesian analysis concludes a laboratory origin is substantially more likely than a market spillover",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 9,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_weissman_an_inconvenient_probability_bayesia_2024",
+      "title": "Weissman — An Inconvenient Probability: Bayesian analysis of COVID origins (lab ~70:1)",
+      "year": 2024,
+      "url": "https://michaelweissman.substack.com/p/an-inconvenient-probability-v50",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Academic/institutional",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "a likelihood of about 70 to 1 in favor of a lab origin, and probably no less than 28 to 1",
+          "extractionConfidence": 0.8
+        }
+      },
+      "addedIn": 10,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_peter_miller_the_case_for_zoonosis_covid_ori_2024",
+      "title": "Peter Miller — The case for zoonosis (COVID origins debate)",
+      "year": 2024,
+      "url": "https://ermsta.com/covid_debate/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Narrative/Commentary",
+      "funding": "Undisclosed",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+        "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the epidemiological proximity of the earliest cases to the market outweighs the genetic anomalies",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 11,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_who_china_joint_study_on_the_origins_of_sars_2021",
+      "title": "WHO-China Joint Study on the origins of SARS-CoV-2",
+      "year": 2021,
+      "url": "https://www.who.int/publications/i/item/who-convened-global-study-of-origins-of-sars-cov-2-china-part",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Government/public",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "introduction through a laboratory incident was assessed to be an extremely unlikely pathway",
+          "extractionConfidence": 0.6
+        }
+      },
+      "addedIn": 12,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
+      "title": "US ODNI — Updated Assessment on COVID-19 Origins",
+      "year": 2023,
+      "url": "https://www.dni.gov/files/ODNI/documents/assessments/Declassified-Assessment-on-COVID-19-Origins.pdf",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Government/public",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "the IC remains divided; all agencies assess that both a natural and laboratory-associated origin remain plausible",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 13,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
+      "title": "Wade — The origin of COVID: Did people or nature open Pandora's box at Wuhan?",
+      "year": 2021,
+      "url": "https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Narrative/Commentary",
+      "funding": "Nonprofit/charity",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "the furin cleavage site and the lack of an identified intermediate host point toward a laboratory escape",
+          "extractionConfidence": 0.6
+        }
+      },
+      "addedIn": 14,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_response_to_segreto_deigin_there_is_still_no_2021",
+      "title": "Response to Segreto & Deigin — There is still no evidence of SARS-CoV-2 laboratory origin",
+      "year": 2021,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8646886/",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Narrative/Commentary",
+      "funding": "Academic/institutional",
+      "population": "SARS-CoV-2 genome",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "neither the furin cleavage site nor the genome structure constitutes evidence of laboratory manipulation",
+          "extractionConfidence": 0.75
+        }
+      },
+      "addedIn": 15,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
+      "title": "Scott Alexander — I watched 15 hours of COVID origins arguments so you don't have to",
+      "year": 2024,
+      "url": "https://www.astralcodexten.com/p/practically-a-book-review-rootclaim",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Narrative/Commentary",
+      "funding": "Undisclosed",
+      "population": "—",
+      "confidence": "low",
+      "restsOn": [
+        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+        "src:src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "both judges decided in favor of Peter; I found the evidence in favor of zoonotic origin to be strong though not insurmountable",
+          "extractionConfidence": 0.7
+        }
+      },
+      "addedIn": 16,
+      "textDepth": "unknown"
+    }
+  ],
+  "vocab": {
+    "evidence": [
+      {
+        "label": "Observational",
+        "aliases": []
+      },
+      {
+        "label": "Experimental (RCT)",
+        "aliases": []
+      },
+      {
+        "label": "Meta-analysis",
+        "aliases": []
+      },
+      {
+        "label": "Evidence-synthesis",
+        "aliases": []
+      },
+      {
+        "label": "Mechanistic",
+        "aliases": []
+      },
+      {
+        "label": "Expert advisory",
+        "aliases": []
+      },
+      {
+        "label": "Narrative/Commentary",
+        "aliases": []
+      }
+    ],
+    "population": [
+      {
+        "label": "Wuhan early COVID-19 cases (Dec 2019)",
+        "aliases": []
+      },
+      {
+        "label": "Early SARS-CoV-2 genomes",
+        "aliases": []
+      },
+      {
+        "label": "SARS-CoV-2 genome",
+        "aliases": []
+      },
+      {
+        "label": "Huanan market environmental samples",
+        "aliases": []
+      }
+    ],
+    "funding": [
+      {
+        "label": "Government/public",
+        "aliases": []
+      },
+      {
+        "label": "Nonprofit/charity",
+        "aliases": []
+      },
+      {
+        "label": "Academic/institutional",
+        "aliases": []
+      },
+      {
+        "label": "Industry",
+        "aliases": []
+      },
+      {
+        "label": "Advocacy",
+        "aliases": []
+      },
+      {
+        "label": "Undisclosed",
+        "aliases": []
+      }
+    ]
+  },
+  "log": [
+    {
+      "version": 1,
+      "action": "add-source",
+      "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+      "title": "Worobey et al. — The Huanan market was the early epicenter of the COVID-19 pandemic",
+      "ts": "2026-07-10T16:20:20.235312+00:00",
+      "newDatasets": [
+        "ds_huanan_market_environmental_samples_early_ca"
+      ],
+      "newPositions": [
+        "pos_zoonotic_spillover_at_the_huanan_market"
+      ],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 0 → 1",
+        "+ new position: Zoonotic spillover at the Huanan market",
+        "most-reused case-wide: — → Huanan market environmental samples & early-case geolocation data 1/1"
+      ]
+    },
+    {
+      "version": 2,
+      "action": "add-source",
+      "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+      "title": "Pekar et al. — The molecular epidemiology of multiple zoonotic origins of SARS-CoV-2",
+      "ts": "2026-07-10T16:20:20.236237+00:00",
+      "newDatasets": [
+        "ds_early_sars_cov_2_genomic_sequences_lineages_"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 1 → 2",
+        "concentration: Zoonotic spillover at the Huanan market 100% → 50% (top: Huanan market environmental samples & early-case geolocation data)",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data 1 → Huanan market environmental samples & early-case geolocation data/Early SARS-CoV-2 genomic sequences (lineages A and B) 1/2"
+      ]
+    },
+    {
+      "version": 3,
+      "action": "add-source",
+      "source": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
+      "title": "Andersen, Rambaut, Lipkin, Holmes, Garry — The proximal origin of SARS-CoV-2",
+      "ts": "2026-07-10T16:20:20.237220+00:00",
+      "newDatasets": [
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 2 → 3",
+        "concentration: Zoonotic spillover at the Huanan market 50% → 33% (top: Huanan market environmental samples & early-case geolocation data)",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data/Early SARS-CoV-2 genomic sequences (lineages A and B) 1 → Huanan market environmental samples & early-case geolocation data/Early SARS-CoV-2 genomic sequences (lineages A and B)/SARS-CoV-2 genome structure & furin cleavage site 1/3"
+      ]
+    },
+    {
+      "version": 4,
+      "action": "add-source",
+      "source": "src_crits_christoph_et_al_genetic_tracing_of_mar_2024",
+      "title": "Crits-Christoph et al. — Genetic tracing of market wildlife and viruses at the epicenter of the pandemic",
+      "ts": "2026-07-10T16:20:20.238892+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 3 → 4",
+        "concentration: Zoonotic spillover at the Huanan market 33% → 50% (top: Huanan market environmental samples & early-case geolocation data)",
+        "⚠ Zoonotic spillover at the Huanan market crossed into CONCENTRATED",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data/Early SARS-CoV-2 genomic sequences (lineages A and B)/SARS-CoV-2 genome structure & furin cleavage site 1 → Huanan market environmental samples & early-case geolocation data 2/4"
+      ]
+    },
+    {
+      "version": 5,
+      "action": "add-source",
+      "source": "src_holmes_et_al_the_origins_of_sars_cov_2_a_cri_2021",
+      "title": "Holmes et al. — The origins of SARS-CoV-2: A critical review",
+      "ts": "2026-07-10T16:20:20.240393+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 4 → 5",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data 2 → Huanan market environmental samples & early-case geolocation data 3/5"
+      ]
+    },
+    {
+      "version": 6,
+      "action": "add-source",
+      "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
+      "title": "Emergence of the Spike Furin Cleavage Site in SARS-CoV-2 — a natural-evolution account",
+      "ts": "2026-07-10T16:20:20.241592+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 5 → 6",
+        "concentration: Zoonotic spillover at the Huanan market 50% → 43% (top: Huanan market environmental samples & early-case geolocation data)",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data 3 → Huanan market environmental samples & early-case geolocation data/SARS-CoV-2 genome structure & furin cleavage site 3/6"
+      ]
+    },
+    {
+      "version": 7,
+      "action": "add-source",
+      "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
+      "title": "Segreto & Deigin — The genetic structure of SARS-CoV-2 does not rule out a laboratory origin",
+      "ts": "2026-07-10T16:20:20.242725+00:00",
+      "newDatasets": [],
+      "newPositions": [
+        "pos_laboratory_associated_origin"
+      ],
+      "diff": [
+        "distribution: Laboratory-associated origin 0 → 1",
+        "+ new position: Laboratory-associated origin",
+        "most-reused case-wide: Huanan market environmental samples & early-case geolocation data/SARS-CoV-2 genome structure & furin cleavage site 3 → SARS-CoV-2 genome structure & furin cleavage site 4/7",
+        "+ new crux: Furin cleavage site as evidence of laboratory engineering"
+      ]
+    },
+    {
+      "version": 8,
+      "action": "add-source",
+      "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
+      "title": "Analysis of the DEFUSE proposal (EcoHealth / WIV / DARPA, 2018)",
+      "ts": "2026-07-10T16:20:20.244035+00:00",
+      "newDatasets": [
+        "ds_defuse_grant_proposal_document_2018"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 1 → 2",
+        "concentration: Laboratory-associated origin 100% → 50% (top: SARS-CoV-2 genome structure & furin cleavage site)",
+        "blindspot closed: Laboratory-associated origin now covers \"Observational\""
+      ]
+    },
+    {
+      "version": 9,
+      "action": "add-source",
+      "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+      "title": "Rootclaim (Saar Wilf) — Bayesian analysis of COVID-19 origins (lab leak)",
+      "ts": "2026-07-10T16:20:20.245375+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 2 → 3",
+        "⚠ Laboratory-associated origin crossed into CONCENTRATED",
+        "+ new crux: Ascertainment / reporting bias in early Wuhan case data"
+      ]
+    },
+    {
+      "version": 10,
+      "action": "add-source",
+      "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
+      "title": "Weissman — An Inconvenient Probability: Bayesian analysis of COVID origins (lab ~70:1)",
+      "ts": "2026-07-10T16:20:20.246865+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 3 → 4",
+        "blindspot opened: Zoonotic spillover at the Huanan market missing \"Narrative/Commentary\""
+      ]
+    },
+    {
+      "version": 11,
+      "action": "add-source",
+      "source": "src_peter_miller_the_case_for_zoonosis_covid_ori_2024",
+      "title": "Peter Miller — The case for zoonosis (COVID origins debate)",
+      "ts": "2026-07-10T16:20:20.248427+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 6 → 7",
+        "concentration: Zoonotic spillover at the Huanan market 43% → 44% (top: Huanan market environmental samples & early-case geolocation data)",
+        "blindspot closed: Zoonotic spillover at the Huanan market now covers \"Narrative/Commentary\""
+      ]
+    },
+    {
+      "version": 12,
+      "action": "add-source",
+      "source": "src_who_china_joint_study_on_the_origins_of_sars_2021",
+      "title": "WHO-China Joint Study on the origins of SARS-CoV-2",
+      "ts": "2026-07-10T16:20:20.250876+00:00",
+      "newDatasets": [],
+      "newPositions": [
+        "pos_undetermined_unresolved"
+      ],
+      "diff": [
+        "distribution: Undetermined / unresolved 0 → 1",
+        "+ new position: Undetermined / unresolved"
+      ]
+    },
+    {
+      "version": 13,
+      "action": "add-source",
+      "source": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
+      "title": "US ODNI — Updated Assessment on COVID-19 Origins",
+      "ts": "2026-07-10T16:20:20.252677+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 1 → 2",
+        "blindspot opened: Zoonotic spillover at the Huanan market missing \"Expert advisory\"",
+        "blindspot opened: Laboratory-associated origin missing \"Expert advisory\""
+      ]
+    },
+    {
+      "version": 14,
+      "action": "add-source",
+      "source": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
+      "title": "Wade — The origin of COVID: Did people or nature open Pandora's box at Wuhan?",
+      "ts": "2026-07-10T16:20:20.254800+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 4 → 5",
+        "concentration: Laboratory-associated origin 50% → 57% (top: SARS-CoV-2 genome structure & furin cleavage site)"
+      ]
+    },
+    {
+      "version": 15,
+      "action": "add-source",
+      "source": "src_response_to_segreto_deigin_there_is_still_no_2021",
+      "title": "Response to Segreto & Deigin — There is still no evidence of SARS-CoV-2 laboratory origin",
+      "ts": "2026-07-10T16:20:20.257141+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 7 → 8",
+        "concentration: Zoonotic spillover at the Huanan market 44% → 40% (top: Huanan market environmental samples & early-case geolocation data)",
+        "most-reused case-wide: SARS-CoV-2 genome structure & furin cleavage site 4 → SARS-CoV-2 genome structure & furin cleavage site/src:src_segreto_deigin_the_genetic_structure_of_sars_2021 4/15"
+      ]
+    },
+    {
+      "version": 16,
+      "action": "add-source",
+      "source": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
+      "title": "Scott Alexander — I watched 15 hours of COVID origins arguments so you don't have to",
+      "ts": "2026-07-10T16:21:08.729763+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover at the Huanan market 8 → 9",
+        "concentration: Zoonotic spillover at the Huanan market 40% → 38% (top: Huanan market environmental samples & early-case geolocation data)"
+      ]
+    }
+  ]
+}

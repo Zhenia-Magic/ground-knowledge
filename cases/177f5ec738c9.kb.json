@@ -1,0 +1,3114 @@
+{
+ "meta": {
+  "id": "177f5ec738c9",
+  "question": "Does violent video game exposure increase aggression?",
+  "version": 49,
+  "updated": "2026-07-10T02:37:54Z",
+  "portal": {
+   "id": "eed18ed9f0d7",
+   "baseVersion": 48,
+   "url": "https://groundknowledge.org"
+  }
+ },
+ "positions": [
+  {
+   "id": "pos_increases_aggression",
+   "label": "Increases aggression",
+   "hue": "#2E8B6F",
+   "shortLabel": "Increases risk"
+  },
+  {
+   "id": "pos_no_clear_effect",
+   "label": "No clear effect",
+   "hue": "#B4502E",
+   "shortLabel": "No clear effect"
+  }
+ ],
+ "datasets": [
+  {
+   "id": "ds_ferguson_and_kilburn_2009_meta_analysis",
+   "label": "Ferguson and Kilburn (2009) meta-analysis",
+   "aliases": []
+  },
+  {
+   "id": "ds_przybylski_and_weinstein_2019_registered_rep",
+   "label": "Przybylski and Weinstein 2019 registered report cohort",
+   "aliases": []
+  },
+  {
+   "id": "ds_m_ller_and_krah_german_adolescent_cohort",
+   "label": "Möller and Krahé German adolescent cohort",
+   "aliases": []
+  },
+  {
+   "id": "ds_german_adolescent_cohort_2010",
+   "label": "German Adolescent Cohort 2010",
+   "aliases": []
+  },
+  {
+   "id": "ds_canadian_high_school_longitudinal_video_game",
+   "label": "Canadian high school longitudinal video game cohort",
+   "aliases": []
+  },
+  {
+   "id": "ds_us_national_video_game_sales_and_crime_datab",
+   "label": "US national video game sales and crime database",
+   "aliases": []
+  },
+  {
+   "id": "ds_k_hn_et_al_2_month_gta_v_rct",
+   "label": "Kühn et al. 2-month GTA V RCT",
+   "aliases": []
+  },
+  {
+   "id": "ds_greitemeyer_mturk_longitudinal_egocentric_ne",
+   "label": "Greitemeyer MTurk longitudinal egocentric network cohort",
+   "aliases": []
+  },
+  {
+   "id": "ds_delhove_and_greitemeyer_2023_aggression_cont",
+   "label": "Delhove and Greitemeyer 2023 aggression contagion RCT",
+   "aliases": []
+  },
+  {
+   "id": "ds_elson_and_ferguson_2013",
+   "label": "Elson and Ferguson 2013",
+   "aliases": []
+  },
+  {
+   "id": "ds_angrybirdsmeta_ferguson2015",
+   "label": "Angry Birds Meta Ferguson 2015",
+   "aliases": [
+    "AngryBirdsMeta Ferguson2015"
+   ]
+  },
+  {
+   "id": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+   "label": "Anderson et al. (2010) meta-analysis of violent video game effects",
+   "aliases": []
+  },
+  {
+   "id": "ds_sherry_2001_violent_video_game_meta_analysis",
+   "label": "Sherry (2001) violent video game meta-analysis",
+   "aliases": []
+  },
+  {
+   "id": "ds_hostile_expectation_bias_experiment",
+   "label": "Hostile expectation bias experiment",
+   "aliases": []
+  },
+  {
+   "id": "ds_ferguson_2008_two_study_report",
+   "label": "Ferguson 2008 two‑study report",
+   "aliases": []
+  },
+  {
+   "id": "ds_prescott_sargent_hull_2018_longitudinal_meta",
+   "label": "Prescott Sargent Hull 2018 longitudinal meta-analysis",
+   "aliases": []
+  },
+  {
+   "id": "ds_lengersdorff_et_al_2023_gta_v_empathy_rct",
+   "label": "Lengersdorff et al. 2023 GTA V empathy RCT",
+   "aliases": []
+  },
+  {
+   "id": "ds_ds_american_psychological_association_2015_t",
+   "label": "Ds american psychological association 2015 task force meta analysis",
+   "aliases": [
+    "ds american psychological association 2015 task force meta analysis"
+   ]
+  },
+  {
+   "id": "ds_pubmed_database_analysis_of_1980_2013_public",
+   "label": "PubMed database analysis of 1980-2013 publications",
+   "aliases": []
+  },
+  {
+   "id": "ds_riskglorifying_longitudinal",
+   "label": "Risk-glorifying video games & behavioral deviance (longitudinal study)",
+   "aliases": []
+  },
+  {
+   "id": "ds_anderson_dill_vvg",
+   "label": "Anderson & Dill video-game aggression studies (lab + field)",
+   "aliases": []
+  }
+ ],
+ "factors": [
+  {
+   "id": "f_researcher_expectancy_effects",
+   "label": "Researcher-expectancy effects",
+   "weights": {
+    "pos_no_clear_effect": "high",
+    "pos_increases_aggression": "low"
+   },
+   "rationale": "The authors argue that methodological bias from expectancy effects inflates reported effects, a point contested by critics.",
+   "provenance": [
+    {
+     "source": "src_reexamining_the_findings_of_the_american_psy_2020",
+     "pos": "pos_no_clear_effect",
+     "quote": "Effect sizes appeared to be elevated because of non‑best‑practices and researcher‑expectancy effects, particularly for experimental studies.",
+     "verifiedQuote": "fuzzy"
+    },
+    {
+     "source": "src_violent_video_game_effects_on_aggression_emp_2010",
+     "pos": "pos_increases_aggression",
+     "quote": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
+     "verifiedQuote": "missing"
+    },
+    {
+     "source": "src_much_ado_about_nothing_the_misestimation_and_2010",
+     "pos": "pos_no_clear_effect",
+     "quote": "Included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
+     "verifiedQuote": "exact"
+    },
+    {
+     "source": "src_twenty_five_years_of_research_on_violence_in_2013",
+     "pos": "pos_no_clear_effect",
+     "quote": "better empirical research and more conservative and careful statements by scholars",
+     "verifiedQuote": "exact"
+    },
+    {
+     "source": "src_overstated_evidence_for_short_term_effects_o_2017",
+     "pos": "pos_no_clear_effect",
+     "quote": "experiments meeting the original authors' criteria for methodological quality do not yield larger adjusted effects than other experiments, but instead yield larger indications of bias",
+     "verifiedQuote": "exact"
+    },
+    {
+     "source": "src_violent_video_game_effects_remain_a_societal_2017",
+     "pos": "pos_increases_aggression",
+     "quote": "",
+     "verifiedQuote": null
+    },
+    {
+     "source": "src_neuroimaging_and_behavioral_evidence_that_vi_2023",
+     "pos": "pos_no_clear_effect",
+     "quote": "While experimental studies cannot fully capture the experiences of real-world gamers, the findings by Lengersdorff et al. represent a step towards resolving the scientific controversy surrounding the effects of violent games.",
+     "verifiedQuote": "exact"
+    },
+    {
+     "source": "src_possible_biases_of_researchers_attitudes_tow_2016",
+     "pos": "pos_no_clear_effect",
+     "quote": "Such biases have been suggested in the literature concerning video games, which might cause a disconnect between the studies’ findings and their interpretations in the public and professional literatures.",
+     "verifiedQuote": "fuzzy"
+    }
+   ]
+  },
+  {
+   "id": "f_effect_size_magnitude",
+   "label": "Effect size magnitude",
+   "weights": {
+    "pos_increases_aggression": "high",
+    "pos_no_clear_effect": "med"
+   },
+   "rationale": "The practical importance of the observed increase is debated across camps.",
+   "provenance": [
+    {
+     "source": "src_finding_common_ground_in_meta_analysis_wars__2019",
+     "pos": "pos_increases_aggression",
+     "quote": "effects ... are almost always quite small.",
+     "verifiedQuote": "fuzzy"
+    },
+    {
+     "source": "src_neuroimaging_and_behavioral_evidence_that_vi_2023",
+     "pos": "pos_no_clear_effect",
+     "quote": "Our results provide conclusive evidence on the question whether VVGs can desensitize humans to the plight of others or not, within our carefully balanced experimental model.",
+     "verifiedQuote": "fuzzy"
+    },
+    {
+     "source": "src_apa_task_force_report_on_violent_video_games_2020",
+     "pos": "pos_increases_aggression",
+     "quote": "The small and reliable relationship ... the effect sizes reported ... were interpreted by the author as “minimal” but not null effects.",
+     "verifiedQuote": "fuzzy"
+    },
+    {
+     "source": "src_possible_biases_of_researchers_attitudes_tow_2016",
+     "pos": "pos_no_clear_effect",
+     "quote": "The positive linear trend of positive-attitude publications.",
+     "verifiedQuote": "exact"
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "src_nailing_the_coffin_shut_on_doubts_that_viole_2010",
+   "title": "Nailing the Coffin Shut on Doubts that Violent Video Games Stimulate Aggression ∼Comment on Anderson et al. (2010)",
+   "year": 2010,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2848956/",
+   "authors": [
+    "Huesmann, L. R."
+   ],
+   "venue": "Psychol Bull",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Narrative/Commentary",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "high",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "The current meta-analysis by Anderson and his colleagues is the best yet in proving beyond a reasonable doubt that exposure to video game violence increases the risk that the observer will behave more aggressively and violently in the future.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "See the article \" Violent video game effects on aggression, empathy, and prosocial behavior in eastern and western countries: a meta-analytic review.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 1,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "evidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "NEW:Increases aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_technical_report_on_the_review_of_the_violen_2015",
+   "title": "Technical Report on the Review of the Violent Video Game Literature",
+   "year": 2015,
+   "url": "https://www.apa.org/pi/families/review-video-games.pdf",
+   "authors": [
+    "Appelbaum, M.",
+    "Calvert, S.",
+    "Dodge, K.",
+    "Graham, S.",
+    "Hall, G. N.",
+    "Hamby, S.",
+    "Hedges, L."
+   ],
+   "venue": "American Psychological Association",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_ferguson_and_kilburn_2009_meta_analysis"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "The research demonstrates a consistent relation between violent video game use and increases in aggressive behavior, aggressive cognitions, and aggressive affect and decreases in prosocial behavior, empathy, and sensitivity to aggression.",
+     "extractionConfidence": 1.0,
+     "verifiedQuote": "fuzzy"
+    },
+    "restsOn": {
+     "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 2,
+   "textDepth": "full",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_game_engagement_is_not_associa_2019",
+   "title": "Violent video game engagement is not associated with adolescents' aggressive behaviour: evidence from a registered report",
+   "year": 2019,
+   "url": "https://doi.org/10.1098/rsos.171474",
+   "authors": [
+    "Przybylski, A. K.",
+    "Weinstein, N."
+   ],
+   "venue": "Royal Society Open Science",
+   "citations": 213,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Observational",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_przybylski_and_weinstein_2019_registered_rep"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Results did not support this prediction, nor did they support the idea that the relationship between these factors follows a nonlinear parabolic function.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 3,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "NEW:No clear effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_the_question_of_violent_video_games_and_aggr_2025",
+   "title": "The Question of Violent Video Games and Aggression: Testing Statistical and Methodological Issues of Null Effects Using Data From an Open‐Access Case Study",
+   "year": 2025,
+   "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/ab.70042",
+   "authors": [
+    "Miles‐Novello, A.",
+    "Anderson, C. A."
+   ],
+   "venue": "Aggressive Behavior",
+   "citations": 0,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_przybylski_and_weinstein_2019_registered_rep"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Overall, results demonstrate that conceptual misunderstandings of aggression, poor measures regarding both aggression and video game violence exposure, and inappropriate statistical procedures contributed to the initially reported null results.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "One recent failure to replicate established violent video game effects (Przybylski and Weinstein 2019) has made its data set publicly available, thereby offering a unique opportunity to examine the hypothesis that methodological and statistical problems underlie some replication failures.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 4,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_exposure_to_violent_video_games_and_aggressi_2008",
+   "title": "Exposure to violent video games and aggression in German adolescents: a longitudinal analysis",
+   "year": 2008,
+   "url": "https://onlinelibrary.wiley.com/doi/10.1002/ab.20290",
+   "authors": [
+    "Möller, I.",
+    "Krahé, B."
+   ],
+   "venue": "Aggressive Behavior",
+   "citations": 274,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_m_ller_and_krah_german_adolescent_cohort"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Longitudinal analyses using path analysis showed that violence exposure at T1 predicted physical (but not indirect/relational) aggression 30 months later, whereas aggression at T1 was unrelated to later video game use.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "A total of 295 German adolescents completed the measures of violent video game usage, endorsement of aggressive norms, hostile attribution bias, and physical as well as indirect/relational aggression cross-sectionally, and a subsample of N=143 was measured again 30 months later.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 5,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_longitudinal_effects_of_media_violence_on_ag_2010",
+   "title": "Longitudinal effects of media violence on aggression and empathy among German adolescents",
+   "year": 2010,
+   "url": "https://www.sciencedirect.com/science/article/abs/pii/S0193397310000833",
+   "authors": [],
+   "venue": "",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Government/public",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_german_adolescent_cohort_2010"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Self-reports of habitual violent media usage were related to self-reports of physical and relational aggression and empathy over a period of twelve months.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "The longitudinal design of the study also enabled us to examine the “selection hypothesis”, postulating that the more aggressive individuals selectively develop a preference for violent media.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 6,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_a_longitudinal_study_of_the_association_betw_2011",
+   "title": "A longitudinal study of the association between violent video game play and aggression among adolescents.",
+   "year": 2011,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/22040315/",
+   "authors": [
+    "Willoughby, T.",
+    "Adachi, P. J. C.",
+    "Good, M."
+   ],
+   "venue": "Developmental Psychology",
+   "citations": 173,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_canadian_high_school_longitudinal_video_game"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Sustained violent video game play was significantly related to steeper increases in adolescents' trajectory of aggressive behavior over time.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Adolescents (N = 1,492, 50.8% female) were surveyed annually from Grade 9 to Grade 12 about their video game play and aggressive behaviors.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 7,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_pdf_violent_video_games_and_real_world_viole_2014",
+   "title": "[PDF] Violent video games and real-world violence: Rhetoric versus data.",
+   "year": 2014,
+   "url": "https://www.semanticscholar.org/paper/Violent-video-games-and-real-world-violence%3A-versus-Markey-Markey/12a2177f6f623387c2b8877878bf6433ce6bc50b",
+   "authors": [
+    "Markey",
+    "Patrick M.",
+    "Markey",
+    "Charlotte N.",
+    "French",
+    "Juliana E."
+   ],
+   "venue": "Psychology of popular media culture",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Evidence-synthesis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Laboratory and correlational studies often find a link between violent video games and minor or benign forms of aggressive behaviors, but this does not necessarily imply a link between violent video games and violent criminal behavior.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "fuzzy"
+    }
+   },
+   "addedIn": 8,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_games_and_violent_crime_2016",
+   "title": "Violent Video Games and Violent Crime",
+   "year": 2016,
+   "url": "https://onlinelibrary.wiley.com/doi/abs/10.1002/soej.12139",
+   "authors": [
+    "Cunningham, S. W.",
+    "Engelstätter, B.",
+    "Ward, M. R."
+   ],
+   "venue": "Southern Economic Journal",
+   "citations": 87,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "—",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_us_national_video_game_sales_and_crime_datab"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "We find no evidence of an increase in crime associated with video games and perhaps a decrease.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Our study uses a quasi-experimental methodology to identify the short-run and medium-run effects of violent game sales on violent crime using time variation in retail unit sales data of the top 30 selling video games and violent criminal offenses from both the Uniform Crime Report and the National Incident-Based Reporting System from 2005 to 2011.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 9,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "funding"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_do_longitudinal_studies_support_long_term_re_2020",
+   "title": "Do longitudinal studies support long-term relationships between aggressive game play and youth aggressive behaviour? A meta-analytic examination",
+   "year": 2020,
+   "url": "https://doi.org/10.1098/rsos.200373",
+   "authors": [
+    "Drummond, A.",
+    "Sauer, J. D.",
+    "Ferguson, C. J."
+   ],
+   "venue": "Royal Society Open Science",
+   "citations": 96,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Government/public",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Overall, longitudinal studies do not appear to support substantive long-term links between aggressive game content and youth aggression.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 10,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_a_longitudinal_study_of_risk_glorifying_vide_2014",
+   "title": "A longitudinal study of risk-glorifying video games and behavioral deviance.",
+   "year": 2014,
+   "url": "https://psycnet.apa.org/record/2014-30504-001",
+   "authors": [
+    "Hull, J. G.",
+    "Brunelle, T. J.",
+    "Prescott, A. T.",
+    "Sargent, J. D."
+   ],
+   "venue": "Journal of Personality and Social Psychology",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Government/public",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_riskglorifying_longitudinal"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Among those who play video games, playing MRRG games was associated with increases in all measures of behavioral deviance.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 12,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_does_playing_violent_video_games_cause_aggre_2019",
+   "title": "Does playing violent video games cause aggression? A longitudinal intervention study",
+   "year": 2019,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6756088/",
+   "authors": [
+    "Kühn, S.",
+    "Kugler, D. T.",
+    "Schmalen, K.",
+    "Weichenberger, M.",
+    "Witt, C.",
+    "Gallinat, J."
+   ],
+   "venue": "Molecular Psychiatry",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Experimental (RCT)",
+   "funding": "Government/public",
+   "population": "Adults",
+   "confidence": "high",
+   "restsOn": [
+    "ds_k_hn_et_al_2_month_gta_v_rct"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "In fact, only three tests of the 208 statistical tests performed showed a significant interaction pattern that would be in line with this hypothesis.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Our participants played the violent video game Grand Theft Auto V, the non-violent video game The Sims 3 or no game at all for 2 months on a daily basis.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 13,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_the_contagious_impact_of_playing_violent_vid_2019",
+   "title": "The contagious impact of playing violent video games on aggression: Longitudinal evidence - PMC",
+   "year": 2019,
+   "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6790614/",
+   "authors": [
+    "Greitemeyer, T."
+   ],
+   "venue": "Aggressive Behavior",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Academic/institutional",
+   "population": "Adults",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_greitemeyer_mturk_longitudinal_egocentric_ne"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Mediation analyses showed that friends’ aggression at Time 1 accounted for the impact of friends’ amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "At Time 1, there were 2,502 participants (1,376 females, 1,126 males; mean age = 35.7 years, SD = 11.8).",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 14,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_the_social_contagious_effects_of_violent_vid_2023",
+   "title": "The social contagious effects of violent video game play: retaliatory, displaced, and the mere observation of aggression",
+   "year": 2023,
+   "url": "https://www.tandfonline.com/doi/full/10.1080/15534510.2023.2277476",
+   "authors": [
+    "Delhove, M.",
+    "Greitemeyer, T."
+   ],
+   "venue": "Social Influence",
+   "citations": 1,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Experimental (RCT)",
+   "funding": "Government/public",
+   "population": "Adults",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_delhove_and_greitemeyer_2023_aggression_cont"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player’s aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player’s aggression are aggressive toward a neutral person.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "The present experimental study aims to test whether exposure to violent video games increases aggression levels in players and whether this increased aggression spreads among their social network.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 15,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_reexamining_the_findings_of_the_american_psy_2020",
+   "title": "Reexamining the Findings of the American Psychological Association’s 2015 Task Force on Violent Media: A Meta-Analysis",
+   "year": 2020,
+   "url": "https://journals.sagepub.com/doi/abs/10.1177/1745691620927666",
+   "authors": [
+    "Ferguson, C. J.",
+    "Copenhaver, A.",
+    "Markey, P. M."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 92,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "—",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "The current analysis revealed negligible relationships between violent games and aggressive or prosocial behavior, small relationships with aggressive affect and cognitions, and stronger relationships with desensitization.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In the current article, we attempt a reevaluation of the 2015 technical report meta-analysis.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 16,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_video_games_do_affect_social_outcomes_2014",
+   "title": "Video Games Do Affect Social Outcomes",
+   "year": 2014,
+   "url": "https://journals.sagepub.com/doi/full/10.1177/0146167213520459",
+   "authors": [
+    "Greitemeyer, T.",
+    "Mügge, D. O."
+   ],
+   "venue": "Personality and Social Psychology Bulletin",
+   "citations": 633,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "—",
+   "confidence": "high",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Whereas violent video games increase aggression and aggression-related variables and decrease prosocial outcomes, prosocial video games have the opposite effects.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Data from 98 independent studies with 36,965 participants revealed that for both violent video games and prosocial video games, there was a significant association with social outcomes.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 17,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_restoring_the_spirit_of_fair_play_in_the_deb_2013",
+   "title": "Restoring the Spirit of Fair Play in the Debate About Violent Video Games",
+   "year": 2013,
+   "url": "https://econtent.hogrefe.com/doi/10.1027/1016-9040/a000165",
+   "authors": [
+    "Krahé, Barbara"
+   ],
+   "venue": "European Psychologist",
+   "citations": 26,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "—",
+   "confidence": "unstated",
+   "restsOn": [
+    "ds_elson_and_ferguson_2013"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "there is no systematic evidence for a link between violent video game play and aggression.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "",
+     "extractionConfidence": 0.0
+    }
+   },
+   "addedIn": 18,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.5,
+    "flagged": true,
+    "disagreedFields": [
+     "confidence",
+     "position"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 1,
+     "pos_no_clear_effect": 1
+    }
+   }
+  },
+  {
+   "id": "src_apples_oranges_and_the_burden_of_proof_putti_2013",
+   "title": "Apples, Oranges, and the Burden of Proof – Putting Media Violence Findings Into Context",
+   "year": 2013,
+   "url": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000166",
+   "authors": [
+    "Warburton, W."
+   ],
+   "venue": "European Psychologist",
+   "citations": 24,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_elson_and_ferguson_2013"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "However it is argued, in contrast to Elson and Ferguson, that violent media generally (and violent video games specifically) can and do increase the likelihood of aggressive behavior and desensitization to violence, and are linked to increases in aggressive attitudes and beliefs.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In this comment on Elson and Ferguson (2013) , areas of agreement are noted in terms of the need to thoroughly and scientifically document the boundary conditions under which violent video games most impact players.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 19,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_pay_no_attention_to_that_data_behind_the_cur_2015",
+   "title": "Pay No Attention to That Data Behind the Curtain",
+   "year": 2015,
+   "url": "https://doi.org/10.1177/1745691615593353",
+   "authors": [
+    "Ferguson, C. J."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 42,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_angrybirdsmeta_ferguson2015"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Further evidence is also provided to support the contention that publication bias remains problematic in video game literature.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "This article responds to five comments on my \"Angry Birds\" meta-analysis of video game influences on children (Ferguson, 2015, this issue).",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 20,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.67,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2,
+     "pos_increases_aggression": 1
+    }
+   }
+  },
+  {
+   "id": "src_video_games_do_indeed_influence_children_and_2015",
+   "title": "Video Games Do Indeed Influence Children and Adolescents’ Aggression, Prosocial Behavior, and Academic Performance",
+   "year": 2015,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/26386004/",
+   "authors": [
+    "Boxer, P.",
+    "Groves, C. L.",
+    "Docherty, M."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 66,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Despite a variety of methodological weaknesses in his meta-analysis, Ferguson (2015, this issue) presents evidence to support the positive association between violent media consumption and a number of poor developmental outcomes.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "This has included significant interest in the role played by media in children's development with a good deal of emphasis on how violent media spark and shape aggressive behavior in children and adolescents.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 21,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_much_ado_about_something_violent_video_game__2010",
+   "title": "Much ado about something: Violent video game effects and a school of red herring: Reply to Ferguson and Kilburn (2010).",
+   "year": 2010,
+   "url": "https://doi.org/10.1037/a0018718",
+   "authors": [
+    "Bushman, B. J.",
+    "Rothstein, H. R.",
+    "Anderson, C. A."
+   ],
+   "venue": "Psychological Bulletin",
+   "citations": 101,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Evidence-synthesis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "high",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Although C. J. Ferguson and J. Kilburn believe that the effects we obtained are trivial in size, they are larger than many effects that are deemed sufficiently large to warrant action in medical and violence domains.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In this article we reply to C. J. Ferguson and J. Kilburn’s (2010) critique of our meta-analysis on violent video game effects (C. A. Anderson et al., 2010).",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 22,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_the_effects_of_violent_video_games_on_aggres_2001",
+   "title": "The effects of violent video games on aggression..",
+   "year": 2001,
+   "url": "https://doi.org/10.1111/j.1468-2958.2001.tb00787.x",
+   "authors": [
+    "Sherry, J. L."
+   ],
+   "venue": "Human Communication Research",
+   "citations": 358,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "unstated",
+   "restsOn": [
+    "ds_sherry_2001_violent_video_game_meta_analysis"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Results suggest there is a smaller effect of violent video games on aggression than has been found with television violence on aggression.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "This study cumulates findings across existing empirical research on the effects of violent video games to estimate overall effect size and discern important trends and moderating variables.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 23,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_games_and_hostile_expectations_2002",
+   "title": "Violent Video Games and Hostile Expectations: A Test of the General Aggression Model",
+   "year": 2002,
+   "url": "https://doi.org/10.1177/014616702237649",
+   "authors": [
+    "Bushman, B. J.",
+    "Anderson, C. A."
+   ],
+   "venue": "Personality and Social Psychology Bulletin",
+   "citations": 617,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Experimental (RCT)",
+   "funding": "Undisclosed",
+   "population": "Adults",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_hostile_expectation_bias_experiment"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "People who played a violent video game described the main character as behaving more aggressively, thinking more aggressive thoughts, and feeling more angry than did people who played a nonviolent video game.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "",
+     "extractionConfidence": 0.0
+    }
+   },
+   "addedIn": 24,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_games_and_aggression_2008",
+   "title": "Violent Video Games and Aggression",
+   "year": 2008,
+   "url": "https://doi.org/10.1177/0093854807311719",
+   "authors": [
+    "Ferguson, C. J.",
+    "Rueda, S. M.",
+    "Cruz, A. M.",
+    "Ferguson, D. E.",
+    "Fritz, S.",
+    "Smith, S."
+   ],
+   "venue": "Criminal Justice and Behavior",
+   "citations": 341,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Adults",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_ferguson_2008_two_study_report"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "These results question the common belief that violent-video-game exposure causes violent acts.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "",
+     "extractionConfidence": 0.0
+    }
+   },
+   "addedIn": 25,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_effects_of_violent_video_games_on_aggressive_2001",
+   "title": "Effects of Violent Video Games on Aggressive Behavior, Aggressive Cognition, Aggressive Affect, Physiological Arousal, and Prosocial Behavior: A Meta-Analytic Review of the Scientific Literature",
+   "year": 2001,
+   "url": "https://journals.sagepub.com/doi/10.1111/1467-9280.00366",
+   "authors": [
+    "Anderson, C. A.",
+    "Bushman, B. J."
+   ],
+   "venue": "Psychological Science",
+   "citations": 2213,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "unstated",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "A metaanalytic review of the video-game research literature reveals that violent video games increase aggressive behavior in children and young adults.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Analyses also reveal that exposure to violent video games increases physiological arousal and aggression-related thoughts and feelings.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 26,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_video_games_and_aggressive_thoughts_feelings_2000",
+   "title": "Video games and aggressive thoughts, feelings, and behavior in the laboratory and in life.",
+   "year": 2000,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/10794380/",
+   "authors": [
+    "Anderson, C. A.",
+    "Dill, K. E."
+   ],
+   "venue": "Journal of Personality and Social Psychology",
+   "citations": 1335,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Adults",
+   "confidence": "high",
+   "restsOn": [
+    "ds_anderson_dill_vvg"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Study 1 found that real-life violent video game play was positively related to aggressive behavior and delinquency.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In Study 2, laboratory exposure to a graphically violent video game increased aggressive thoughts and behavior.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 27,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_game_effects_on_aggression_emp_2010",
+   "title": "Violent video game effects on aggression, empathy, and prosocial behavior in Eastern and Western countries: A meta-analytic review.",
+   "year": 2010,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/20192553/",
+   "authors": [
+    "Anderson, C. A.",
+    "Shibuya, A.",
+    "Ihori, N.",
+    "Swing, E. L.",
+    "Bushman, B. J.",
+    "Sakamoto, A.",
+    "Rothstein, H. R.",
+    "Saleem, M."
+   ],
+   "venue": "Psychological Bulletin",
+   "citations": 2012,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "high",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "The evidence strongly suggests that exposure to violent video games is a causal risk factor for increased aggressive behavior, aggressive cognition, and aggressive affect and for decreased empathy and prosocial behavior.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Meta-analytic procedures were used to test the effects of violent video games on aggressive behavior, aggressive cognition, aggressive affect, physiological arousal, empathy/desensitization, and prosocial behavior.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 28,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_much_ado_about_nothing_the_misestimation_and_2010",
+   "title": "Much ado about nothing: The misestimation and overinterpretation of violent video game effects in Eastern and Western nations: Comment on Anderson et al. (2010).",
+   "year": 2010,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/20192554/",
+   "authors": [
+    "Ferguson, C. J.",
+    "Kilburn, J. C."
+   ],
+   "venue": "Psychological Bulletin",
+   "citations": 309,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In a new meta-analysis, C. A. Anderson et al. (2010) questioned these findings.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 29,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_the_public_health_risks_of_media_violence_a__2009",
+   "title": "The public health risks of media violence: a meta-analytic review.",
+   "year": 2009,
+   "url": "https://doi.org/10.1016/j.jpeds.2008.11.033",
+   "authors": [
+    "Ferguson, C. J.",
+    "Kilburn, J."
+   ],
+   "venue": "The Journal of pediatrics",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_ferguson_and_kilburn_2009_meta_analysis"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Results from the current analysis do not support the conclusion that media violence leads to aggressive behavior.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Once corrected for publication bias, studies of media violence effects provided little support for the hypothesis that media violence is associated with higher aggression.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 30,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_do_angry_birds_make_for_angry_children_a_met_2015",
+   "title": "Do Angry Birds Make for Angry Children? A Meta-Analysis of Video Game Influences on Children’s and Adolescents’ Aggression, Mental Health, Prosocial Behavior, and Academic Performance",
+   "year": 2015,
+   "url": "https://doi.org/10.1177/1745691615592234",
+   "authors": [
+    "Ferguson, C. J."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 524,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "high",
+   "restsOn": [
+    "ds_angrybirdsmeta_ferguson2015"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Overall, results from 101 studies suggest that video game influences on increased aggression (r = .06), reduced prosocial behavior (r = .04), reduced academic performance (r = -.01), depressive symptoms (r = .04), and attention deficit symptoms (r = .03) are minimal.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "In the current analysis, I sought to address this gap by focusing on studies of video game influences on child and adolescent samples.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 31,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.67,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2,
+     "pos_increases_aggression": 1
+    }
+   }
+  },
+  {
+   "id": "src_angry_birds_angry_children_and_angry_meta_an_2016",
+   "title": "Angry Birds, Angry Children, and Angry Meta-Analysts",
+   "year": 2016,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/27217253/",
+   "authors": [
+    "Furuya-Kanamori, L.",
+    "Doi, S. A. R."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 86,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_angrybirdsmeta_ferguson2015"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "There was a significant yet very small effect on aggressive behavior of exposure to both general, rp = 0.062, 95% CI [0.012, 0.112], and violent, rp = 0.055, 95% CI [0.019, 0.091], video games.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "we decided to reanalyze the data and discuss two major misconceptions about meta-analysis.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 32,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.67,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 2,
+     "pos_no_clear_effect": 1
+    }
+   }
+  },
+  {
+   "id": "src_finding_the_middle_ground_in_violent_video_g_2015",
+   "title": "Finding the Middle Ground in Violent Video Game Research",
+   "year": 2015,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/26386003/",
+   "authors": [
+    "Markey, P. M."
+   ],
+   "venue": "Perspectives on Psychological Science",
+   "citations": 20,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "unstated",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Ferguson's comprehensive meta-analysis provides convincing data that violent video games have almost no effect on children's aggression.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Ferguson's comprehensive meta-analysis provides convincing data that violent video games have almost no effect on children's aggression.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 33,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_twenty_five_years_of_research_on_violence_in_2013",
+   "title": "Twenty-Five Years of Research on Violence in Digital Games and Aggression",
+   "year": 2013,
+   "url": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000147",
+   "authors": [
+    "Elson, M.",
+    "Ferguson, C. J."
+   ],
+   "venue": "European Psychologist",
+   "citations": 235,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Evidence-synthesis",
+   "funding": "Undisclosed",
+   "population": "—",
+   "confidence": "moderate",
+   "restsOn": [
+    "src:src_restoring_the_spirit_of_fair_play_in_the_deb_2013"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Empirical evidence regarding the impact of violent digital games on player aggression is, at best, mixed and cannot support unambiguous claims that such games are harmful or represent a public health crisis.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "We review 25 years of experimental, cross-sectional, longitudinal, and meta-analytical research in this field.",
+     "extractionConfidence": 0.4,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 34,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2
+    }
+   }
+  },
+  {
+   "id": "src_overstated_evidence_for_short_term_effects_o_2017",
+   "title": "Overstated evidence for short-term effects of violent games on affect and behavior: A reanalysis of Anderson et al. (2010).",
+   "year": 2017,
+   "url": "https://doi.org/10.1037/bul0000074",
+   "authors": [
+    "Hilgard, J.",
+    "Engelhardt, C. R.",
+    "Rouder, J. N."
+   ],
+   "venue": "Psychological Bulletin",
+   "citations": 165,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Government/public",
+   "population": "Adults",
+   "confidence": "high",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "after adjustment for bias, the effects of violent games on aggressive behavior in experimental research are estimated as being very small, and estimates of effects on aggressive affect are much reduced.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "we reexamine their meta-analysis using a wider array of techniques for detecting bias and adjusting effect sizes.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 35,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_game_effects_remain_a_societal_2017",
+   "title": "Violent video game effects remain a societal concern: Reply to Hilgard, Engelhardt, and Rouder (2017).",
+   "year": 2017,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/28639811/",
+   "authors": [
+    "Kepes, S.",
+    "Bushman, B. J.",
+    "Anderson, C. A."
+   ],
+   "venue": "Psychological Bulletin",
+   "citations": 44,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Adults",
+   "confidence": "high",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "We therefore conclude that violent video game effects should remain a societal concern.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "we used a comprehensive sensitivity analysis battery to examine the influence of publication bias and outliers on the experimental effects reported by Anderson et al.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 36,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 2
+    }
+   }
+  },
+  {
+   "id": "src_metaanalysis_of_the_relationship_between_vio_2018",
+   "title": "Metaanalysis of the relationship between violent video game play and physical aggression over time",
+   "year": 2018,
+   "url": "https://www.pnas.org/doi/10.1073/pnas.1611617114",
+   "authors": [
+    "Prescott, A. T.",
+    "Sargent, J. D.",
+    "Hull, J. G."
+   ],
+   "venue": "Proceedings of the National Academy of Sciences",
+   "citations": 295,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "high",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "On the basis of this metaanalysis, we conclude that playing violent video games is associated with greater levels of overt physical aggression over time, after accounting for prior aggression.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "missing"
+    },
+    "restsOn": {
+     "quote": "The search strategy identified 24 studies with over 17,000 participants and time lags ranging from 3 months to 4 years.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 37,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_a_meta_analysis_on_the_longitudinal_age_depe_2021",
+   "title": "A Meta-Analysis on the Longitudinal, Age-Dependent Effects of Violent Video Games on Aggression",
+   "year": 2021,
+   "url": "https://doi.org/10.1080/15213269.2021.1980729",
+   "authors": [
+    "Burkhardt, J.",
+    "Lenhard, W."
+   ],
+   "venue": "Media Psychology",
+   "citations": 82,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Consequently, we confirm the results of other meta-analyses, with the added finding of a peak of effect sizes in early adolescence.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "A random-effects meta-analysis with 30 effect sizes from 21 studies (N = 15,836) yielded a significant and relevant positive effect of VVG on subsequent physically aggressive behavior (r = .21).",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 38,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 3
+    }
+   }
+  },
+  {
+   "id": "src_finding_common_ground_in_meta_analysis_wars__2019",
+   "title": "Finding Common Ground in Meta-Analysis “Wars” on Violent Video Games - PMC",
+   "year": 2019,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
+   "authors": [
+    "Mathur, M. B.",
+    "VanderWeele, T. J."
+   ],
+   "venue": "Perspect Psychol Sci",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Evidence-synthesis",
+   "funding": "Government/public",
+   "population": "Children and adolescents",
+   "confidence": "unstated",
+   "restsOn": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent",
+    "ds_angrybirdsmeta_ferguson2015",
+    "ds_prescott_sargent_hull_2018_longitudinal_meta"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Despite seemingly conflicting results for the statistical significance of the pooled estimates in different meta-analyses of video-game studies, all of the meta-analyses do in fact point to the conclusion that, in the vast majority of settings, violent video games do increase aggressive behavior but that these effects are almost always quite small.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "For three prominent meta-analyses on violent video games ( Anderson et al., 2010 ; Ferguson, 2015 ; Prescott et al., 2018 ), we meta-analytically estimated 1 the percentage of effects that surpass standardized effect-size thresholds of q = 0, 0.10, and 0.20",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 39,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 2
+    }
+   }
+  },
+  {
+   "id": "src_violent_video_games_and_real_world_violence__2014",
+   "title": "Violent video games and real-world violence: Rhetoric versus data.",
+   "year": 2014,
+   "url": "https://www.semanticscholar.org/paper/Violent-video-games-and-real-world-violence:-versus-Markey-Markey/12a2177f6f623387c2b8877878bf6433ce6bc50b",
+   "authors": [
+    "Markey, P.",
+    "Markey, C. N.",
+    "French, J. E."
+   ],
+   "venue": "Psychology of popular media culture",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Observational",
+   "funding": "Undisclosed",
+   "population": "Adults",
+   "confidence": "low",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "Laboratory and correlational studies often find a link between violent video games and minor or benign forms of aggressive behaviors (e.g., exposing an opponent to an unpleasant noise).",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Based on national violent crime rates and video game sales data, little correlation exists between video game sales and violent crime.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "missing"
+    }
+   },
+   "addedIn": 40,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.67,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2,
+     "pos_increases_aggression": 1
+    }
+   }
+  },
+  {
+   "id": "src_neuroimaging_and_behavioral_evidence_that_vi_2023",
+   "title": "Neuroimaging and behavioral evidence that violent video games exert no negative effect on human empathy for pain and emotional reactivity to violence",
+   "year": 2023,
+   "url": "https://elifesciences.org/articles/84951",
+   "authors": [
+    "Lengersdorff, L. L.",
+    "Wagner, I. C.",
+    "Mittmann, G.",
+    "Sastre-Yagüe, D.",
+    "Lüttig, A.",
+    "Olsson, A.",
+    "Petrovic, P.",
+    "Lamm, C."
+   ],
+   "venue": "eLife",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Experimental (RCT)",
+   "funding": "Nonprofit/charity",
+   "population": "Adults",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_lengersdorff_et_al_2023_gta_v_empathy_rct"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "These results imply that short and controlled exposure to VVGs does not numb empathy nor the responses to real-world violence.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "We recruited 89 male participants without prior VVG experience.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 41,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2
+    }
+   }
+  },
+  {
+   "id": "src_evidence_for_publication_bias_in_video_game__2007",
+   "title": "Evidence for publication bias in video game violence effects literature: A meta-analytic review",
+   "year": 2007,
+   "url": "https://www.sciencedirect.com/science/article/abs/pii/S1359178907000055",
+   "authors": [
+    "Ferguson, C. J."
+   ],
+   "venue": "Aggression and Violent Behavior",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Meta-analysis",
+   "funding": "Undisclosed",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_ds_american_psychological_association_2015_t"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "Results of this analysis indicate some concerns for the extant literature on video game violence effects. Publication bias issues emerge for both experimental and non-experimental studies of aggressive behaviors.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "Results indicated that publication bias does exist for experimental studies of aggressive behavior, as well as for non-experimental studies of aggressive behavior and aggressive thoughts.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 42,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.67,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 2,
+     "pos_increases_aggression": 1
+    }
+   }
+  },
+  {
+   "id": "src_research_on_the_effects_of_violent_video_gam_2009",
+   "title": "Research on the Effects of Violent Video Games: A Critical Analysis",
+   "year": 2009,
+   "url": "https://doi.org/10.1111/j.1751-9004.2009.00175.x",
+   "authors": [
+    "Ferguson, C. J."
+   ],
+   "venue": "Social and Personality Psychology Compass",
+   "citations": 9,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Undisclosed",
+   "population": "General population",
+   "confidence": "unstated",
+   "restsOn": [],
+   "provenance": {
+    "position": {
+     "quote": "It is concluded that the extreme focus on general aggression effects is not supported by the current literature, and that social science's focus on general aggression effects distracts from research on specific at‐risk populations, and potential positive uses of some violent video games.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {}
+   },
+   "addedIn": 43,
+   "textDepth": "abstract",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "population"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 3
+    }
+   }
+  },
+  {
+   "id": "src_apa_task_force_report_on_violent_video_games_2020",
+   "title": "APA Task Force Report on Violent Video Games",
+   "year": 2020,
+   "url": "https://www.apa.org/about/policy/violent-video-games.pdf",
+   "authors": [
+    "Suls, J.",
+    "Dess, N.",
+    "Iguchi, M.",
+    "Howell, B.",
+    "Mobley, M.",
+    "Widaman, K."
+   ],
+   "venue": "American Psychological Association",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_increases_aggression",
+   "evidence": "Evidence-synthesis",
+   "funding": "Academic/institutional",
+   "population": "Children and adolescents",
+   "confidence": "moderate",
+   "restsOn": [
+    "src:src_technical_report_on_the_review_of_the_violen_2015",
+    "ds_prescott_sargent_hull_2018_longitudinal_meta",
+    "ds_angrybirdsmeta_ferguson2015"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "The Task Force's general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
+     "extractionConfidence": 0.95,
+     "verifiedQuote": "fuzzy"
+    },
+    "restsOn": {
+     "quote": "three meta-analyses, published between January 2014 and April 2019 (Ferguson, 2015a; Greitemeyer & Mügge, 2014; Prescott, Sargent, & Hull, 2018), provide further evidence for a small, reliable effect of exposure to violent video games on aggressive outcomes in laboratory experiments and cross-sectional and longitudinal studies.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 44,
+   "textDepth": "full",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [
+     "confidence",
+     "funding",
+     "population"
+    ],
+    "positionVote": {
+     "pos_increases_aggression": 2
+    }
+   }
+  },
+  {
+   "id": "src_selling_violent_video_game_solutions_a_look__2017",
+   "title": "Selling violent video game solutions: A look inside the APA's internal notes leading to the creation of the APA's 2005 resolution on violence in video games and interactive media",
+   "year": 2017,
+   "url": "https://www.sciencedirect.com/science/article/abs/pii/S0160252717301450",
+   "authors": [
+    "Ferguson, C."
+   ],
+   "venue": "Aggression and Violent Behavior",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Narrative/Commentary",
+   "funding": "Academic/institutional",
+   "population": "—",
+   "confidence": "unstated",
+   "restsOn": [
+    "src:src_technical_report_on_the_review_of_the_violen_2015"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "This has been both because the courts have concluded the research is unable to support the contention that violent video games cause aggression as well as",
+     "extractionConfidence": 0.55,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "The result of the Task Force's efforts was an August 13, 2015, press release “confirming” the link between violent video games",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    }
+   },
+   "addedIn": 45,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 2,
+    "positionAgreement": 1.0,
+    "flagged": false,
+    "disagreedFields": [],
+    "positionVote": {
+     "pos_no_clear_effect": 1
+    }
+   }
+  },
+  {
+   "id": "src_possible_biases_of_researchers_attitudes_tow_2016",
+   "title": "Possible Biases of Researchers’ Attitudes Toward Video Games: Publication Trends Analysis of the Medical Literature (1980–2013)",
+   "year": 2016,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4969552/",
+   "authors": [
+    "Segev, A.",
+    "Rovner, M.",
+    "Appel, D. I.",
+    "Abrams, A. W.",
+    "Rotem, M.",
+    "Bloch, Y."
+   ],
+   "venue": "Journal of Medical Internet Research",
+   "citations": null,
+   "retracted": false,
+   "position": "pos_no_clear_effect",
+   "evidence": "Evidence-synthesis",
+   "funding": "Undisclosed",
+   "population": "General population",
+   "confidence": "moderate",
+   "restsOn": [
+    "ds_pubmed_database_analysis_of_1980_2013_public"
+   ],
+   "provenance": {
+    "position": {
+     "quote": "These dichotomous views of video games may drive professionals to choose a dichotomous stance, either positive or negative, on video games.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
+    },
+    "restsOn": {
+     "quote": "",
+     "extractionConfidence": 0
+    }
+   },
+   "addedIn": 46,
+   "textDepth": "partial",
+   "modelAgreement": {
+    "models": 3,
+    "positionAgreement": 0.5,
+    "flagged": true,
+    "disagreedFields": [
+     "confidence",
+     "evidence",
+     "population",
+     "position"
+    ],
+    "positionVote": {
+     "pos_no_clear_effect": 1,
+     "NEW:No clear direction on direct causal link but highlights researcher biases": 1
+    }
+   }
+  }
+ ],
+ "vocab": {
+  "evidence": [
+   {
+    "label": "Observational",
+    "aliases": []
+   },
+   {
+    "label": "Experimental (RCT)",
+    "aliases": []
+   },
+   {
+    "label": "Meta-analysis",
+    "aliases": []
+   },
+   {
+    "label": "Evidence-synthesis",
+    "aliases": []
+   },
+   {
+    "label": "Mechanistic",
+    "aliases": []
+   },
+   {
+    "label": "Expert advisory",
+    "aliases": []
+   },
+   {
+    "label": "Narrative/Commentary",
+    "aliases": []
+   }
+  ],
+  "population": [
+   {
+    "label": "Children and adolescents",
+    "aliases": []
+   },
+   {
+    "label": "Adults",
+    "aliases": []
+   },
+   {
+    "label": "General population",
+    "aliases": []
+   }
+  ],
+  "funding": [
+   {
+    "label": "Government/public",
+    "aliases": []
+   },
+   {
+    "label": "Nonprofit/charity",
+    "aliases": []
+   },
+   {
+    "label": "Academic/institutional",
+    "aliases": []
+   },
+   {
+    "label": "Industry",
+    "aliases": []
+   },
+   {
+    "label": "Advocacy",
+    "aliases": []
+   },
+   {
+    "label": "Undisclosed",
+    "aliases": []
+   }
+  ]
+ },
+ "log": [
+  {
+   "version": 1,
+   "action": "add-source",
+   "source": "src_nailing_the_coffin_shut_on_doubts_that_viole_2010",
+   "title": "Nailing the Coffin Shut on Doubts that Violent Video Games Stimulate Aggression ∼Comment on Anderson et al. (2010)",
+   "ts": "2026-07-09T01:00:36.384814+00:00",
+   "newDatasets": [],
+   "newPositions": [
+    "pos_increases_aggression"
+   ],
+   "diff": [
+    "distribution: Increases aggression 0 → 1",
+    "+ new position: Increases aggression"
+   ]
+  },
+  {
+   "version": 2,
+   "action": "add-source",
+   "source": "src_technical_report_on_the_review_of_the_violen_2015",
+   "title": "Technical Report on the Review of the Violent Video Game Literature",
+   "ts": "2026-07-09T01:01:49.713079+00:00",
+   "newDatasets": [
+    "ds_ferguson_and_kilburn_2009_meta_analysis"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 1 → 2",
+    "concentration: Increases aggression 100% → 67% (top: —)",
+    "most-reused case-wide: — → Ferguson and Kilburn (2009) meta-analysis 1/2"
+   ]
+  },
+  {
+   "version": 3,
+   "action": "add-source",
+   "source": "src_violent_video_game_engagement_is_not_associa_2019",
+   "title": "Violent video game engagement is not associated with adolescents' aggressive behaviour: evidence from a registered report",
+   "ts": "2026-07-09T01:15:05.211509+00:00",
+   "newDatasets": [
+    "ds_przybylski_and_weinstein_2019_registered_rep"
+   ],
+   "newPositions": [
+    "pos_no_clear_effect"
+   ],
+   "diff": [
+    "distribution: No clear effect 0 → 1",
+    "+ new position: No clear effect",
+    "most-reused case-wide: Ferguson and Kilburn (2009) meta-analysis 1 → Ferguson and Kilburn (2009) meta-analysis/Przybylski and Weinstein 2019 registered report cohort 1/3"
+   ]
+  },
+  {
+   "version": 4,
+   "action": "add-source",
+   "source": "src_the_question_of_violent_video_games_and_aggr_2025",
+   "title": "The Question of Violent Video Games and Aggression: Testing Statistical and Methodological Issues of Null Effects Using Data From an Open‐Access Case Study",
+   "ts": "2026-07-09T01:15:05.215352+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 2 → 3",
+    "concentration: Increases aggression 67% → 40% (top: —)",
+    "most-reused case-wide: Ferguson and Kilburn (2009) meta-analysis/Przybylski and Weinstein 2019 registered report cohort 1 → Przybylski and Weinstein 2019 registered report cohort 2/4"
+   ]
+  },
+  {
+   "version": 5,
+   "action": "add-source",
+   "source": "src_exposure_to_violent_video_games_and_aggressi_2008",
+   "title": "Exposure to violent video games and aggression in German adolescents: a longitudinal analysis",
+   "ts": "2026-07-09T01:15:05.219763+00:00",
+   "newDatasets": [
+    "ds_m_ller_and_krah_german_adolescent_cohort"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 3 → 4",
+    "concentration: Increases aggression 40% → 29% (top: —)"
+   ]
+  },
+  {
+   "version": 6,
+   "action": "add-source",
+   "source": "src_longitudinal_effects_of_media_violence_on_ag_2010",
+   "title": "Longitudinal effects of media violence on aggression and empathy among German adolescents",
+   "ts": "2026-07-09T01:17:07.302690+00:00",
+   "newDatasets": [
+    "ds_german_adolescent_cohort_2010"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 4 → 5",
+    "concentration: Increases aggression 29% → 22% (top: —)"
+   ]
+  },
+  {
+   "version": 7,
+   "action": "add-source",
+   "source": "src_a_longitudinal_study_of_the_association_betw_2011",
+   "title": "A longitudinal study of the association between violent video game play and aggression among adolescents.",
+   "ts": "2026-07-09T01:17:07.304585+00:00",
+   "newDatasets": [
+    "ds_canadian_high_school_longitudinal_video_game"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 5 → 6",
+    "concentration: Increases aggression 22% → 18% (top: —)"
+   ]
+  },
+  {
+   "version": 8,
+   "action": "add-source",
+   "source": "src_pdf_violent_video_games_and_real_world_viole_2014",
+   "title": "[PDF] Violent video games and real-world violence: Rhetoric versus data.",
+   "ts": "2026-07-09T01:17:07.306091+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 1 → 2",
+    "concentration: No clear effect 100% → 50% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 9,
+   "action": "add-source",
+   "source": "src_violent_video_games_and_violent_crime_2016",
+   "title": "Violent Video Games and Violent Crime",
+   "ts": "2026-07-09T01:17:07.307911+00:00",
+   "newDatasets": [
+    "ds_us_national_video_game_sales_and_crime_datab"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 2 → 3",
+    "concentration: No clear effect 50% → 33% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 10,
+   "action": "add-source",
+   "source": "src_do_longitudinal_studies_support_long_term_re_2020",
+   "title": "Do longitudinal studies support long-term relationships between aggressive game play and youth aggressive behaviour? A meta-analytic examination",
+   "ts": "2026-07-09T01:18:51.243422+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 3 → 4"
+   ]
+  },
+  {
+   "version": 11,
+   "action": "add-source",
+   "source": "src_does_playing_violent_video_games_cause_aggre_2018",
+   "title": "Does playing violent video games cause aggression? A longitudinal intervention study",
+   "ts": "2026-07-09T01:18:51.246425+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 4 → 5",
+    "concentration: No clear effect 33% → 25% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 12,
+   "action": "add-source",
+   "source": "src_a_longitudinal_study_of_risk_glorifying_vide_2014",
+   "title": "A longitudinal study of risk-glorifying video games and behavioral deviance.",
+   "ts": "2026-07-09T01:18:51.250102+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 6 → 7",
+    "concentration: Increases aggression 18% → 15% (top: —)"
+   ]
+  },
+  {
+   "version": 13,
+   "action": "add-source",
+   "source": "src_does_playing_violent_video_games_cause_aggre_2019",
+   "title": "Does playing violent video games cause aggression? A longitudinal intervention study",
+   "ts": "2026-07-09T01:19:24.991154+00:00",
+   "newDatasets": [
+    "ds_k_hn_et_al_2_month_gta_v_rct"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 5 → 6",
+    "concentration: No clear effect 25% → 20% (top: Przybylski and Weinstein 2019 registered report cohort)",
+    "blindspot opened: Increases aggression missing \"Adults\"",
+    "blindspot opened: Increases aggression missing \"Experimental (RCT)\""
+   ]
+  },
+  {
+   "version": 14,
+   "action": "add-source",
+   "source": "src_the_contagious_impact_of_playing_violent_vid_2019",
+   "title": "The contagious impact of playing violent video games on aggression: Longitudinal evidence - PMC",
+   "ts": "2026-07-09T01:21:06.230458+00:00",
+   "newDatasets": [
+    "ds_greitemeyer_mturk_longitudinal_egocentric_ne"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 7 → 8",
+    "concentration: Increases aggression 15% → 13% (top: —)",
+    "blindspot closed: Increases aggression now covers \"Adults\""
+   ]
+  },
+  {
+   "version": 15,
+   "action": "add-source",
+   "source": "src_the_social_contagious_effects_of_violent_vid_2023",
+   "title": "The social contagious effects of violent video game play: retaliatory, displaced, and the mere observation of aggression",
+   "ts": "2026-07-09T01:21:06.233129+00:00",
+   "newDatasets": [
+    "ds_delhove_and_greitemeyer_2023_aggression_cont"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 8 → 9",
+    "concentration: Increases aggression 13% → 12% (top: —)",
+    "blindspot closed: Increases aggression now covers \"Experimental (RCT)\""
+   ]
+  },
+  {
+   "version": 16,
+   "action": "add-source",
+   "source": "src_reexamining_the_findings_of_the_american_psy_2020",
+   "title": "Reexamining the Findings of the American Psychological Association’s 2015 Task Force on Violent Media: A Meta-Analysis",
+   "ts": "2026-07-09T01:24:29.725306+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 6 → 7"
+   ]
+  },
+  {
+   "version": 17,
+   "action": "add-source",
+   "source": "src_video_games_do_affect_social_outcomes_2014",
+   "title": "Video Games Do Affect Social Outcomes",
+   "ts": "2026-07-09T01:24:29.728212+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 9 → 10"
+   ]
+  },
+  {
+   "version": 18,
+   "action": "add-source",
+   "source": "src_restoring_the_spirit_of_fair_play_in_the_deb_2013",
+   "title": "Restoring the Spirit of Fair Play in the Debate About Violent Video Games",
+   "ts": "2026-07-09T01:24:29.730700+00:00",
+   "newDatasets": [
+    "ds_elson_and_ferguson_2013"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 7 → 8",
+    "concentration: No clear effect 20% → 18% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 19,
+   "action": "add-source",
+   "source": "src_apples_oranges_and_the_burden_of_proof_putti_2013",
+   "title": "Apples, Oranges, and the Burden of Proof – Putting Media Violence Findings Into Context",
+   "ts": "2026-07-09T01:26:57.697079+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 10 → 11",
+    "concentration: Increases aggression 12% → 11% (top: —)",
+    "most-reused case-wide: Przybylski and Weinstein 2019 registered report cohort 2 → Przybylski and Weinstein 2019 registered report cohort/Elson and Ferguson 2013 2/19"
+   ]
+  },
+  {
+   "version": 20,
+   "action": "add-source",
+   "source": "src_pay_no_attention_to_that_data_behind_the_cur_2015",
+   "title": "Pay No Attention to That Data Behind the Curtain",
+   "ts": "2026-07-09T01:26:57.706473+00:00",
+   "newDatasets": [
+    "ds_angrybirdsmeta_ferguson2015"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 8 → 9",
+    "concentration: No clear effect 18% → 17% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 21,
+   "action": "add-source",
+   "source": "src_video_games_do_indeed_influence_children_and_2015",
+   "title": "Video Games Do Indeed Influence Children and Adolescents’ Aggression, Prosocial Behavior, and Academic Performance",
+   "ts": "2026-07-09T01:26:57.711611+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 11 → 12"
+   ]
+  },
+  {
+   "version": 22,
+   "action": "add-source",
+   "source": "src_much_ado_about_something_violent_video_game__2010",
+   "title": "Much ado about something: Violent video game effects and a school of red herring: Reply to Ferguson and Kilburn (2010).",
+   "ts": "2026-07-09T01:29:14.712733+00:00",
+   "newDatasets": [
+    "ds_anderson_et_al_2010_meta_analysis_of_violent"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 12 → 13",
+    "concentration: Increases aggression 11% → 11% (top: —)"
+   ]
+  },
+  {
+   "version": 23,
+   "action": "add-source",
+   "source": "src_the_effects_of_violent_video_games_on_aggres_2001",
+   "title": "The effects of violent video games on aggression..",
+   "ts": "2026-07-09T01:29:14.720413+00:00",
+   "newDatasets": [
+    "ds_sherry_2001_violent_video_game_meta_analysis"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 13 → 14",
+    "concentration: Increases aggression 11% → 10% (top: —)"
+   ]
+  },
+  {
+   "version": 24,
+   "action": "add-source",
+   "source": "src_violent_video_games_and_hostile_expectations_2002",
+   "title": "Violent Video Games and Hostile Expectations: A Test of the General Aggression Model",
+   "ts": "2026-07-09T01:31:23.608270+00:00",
+   "newDatasets": [
+    "ds_hostile_expectation_bias_experiment"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 14 → 15",
+    "concentration: Increases aggression 10% → 9% (top: —)"
+   ]
+  },
+  {
+   "version": 25,
+   "action": "add-source",
+   "source": "src_violent_video_games_and_aggression_2008",
+   "title": "Violent Video Games and Aggression",
+   "ts": "2026-07-09T01:31:23.614592+00:00",
+   "newDatasets": [
+    "ds_ferguson_2008_two_study_report"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 9 → 10",
+    "concentration: No clear effect 17% → 14% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 26,
+   "action": "add-source",
+   "source": "src_effects_of_violent_video_games_on_aggressive_2001",
+   "title": "Effects of Violent Video Games on Aggressive Behavior, Aggressive Cognition, Aggressive Affect, Physiological Arousal, and Prosocial Behavior: A Meta-Analytic Review of the Scientific Literature",
+   "ts": "2026-07-09T01:43:01.351385+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 15 → 16",
+    "concentration: Increases aggression 9% → 9% (top: —)",
+    "most-reused case-wide: Przybylski and Weinstein 2019 registered report cohort/Elson and Ferguson 2013 2 → Przybylski and Weinstein 2019 registered report cohort/Elson and Ferguson 2013/Anderson et al. (2010) meta-analysis of violent video game effects 2/26"
+   ]
+  },
+  {
+   "version": 27,
+   "action": "add-source",
+   "source": "src_video_games_and_aggressive_thoughts_feelings_2000",
+   "title": "Video games and aggressive thoughts, feelings, and behavior in the laboratory and in life.",
+   "ts": "2026-07-09T01:43:01.358106+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 16 → 17",
+    "concentration: Increases aggression 9% → 8% (top: —)"
+   ]
+  },
+  {
+   "version": 28,
+   "action": "add-source",
+   "source": "src_violent_video_game_effects_on_aggression_emp_2010",
+   "title": "Violent video game effects on aggression, empathy, and prosocial behavior in Eastern and Western countries: A meta-analytic review.",
+   "ts": "2026-07-09T01:43:01.363140+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 17 → 18",
+    "concentration: Increases aggression 8% → 12% (top: Anderson et al. (2010) meta-analysis of violent video game effects)",
+    "most-reused case-wide: Przybylski and Weinstein 2019 registered report cohort/Elson and Ferguson 2013/Anderson et al. (2010) meta-analysis of violent video game effects 2 → Anderson et al. (2010) meta-analysis of violent video game effects 3/28"
+   ]
+  },
+  {
+   "version": 29,
+   "action": "add-source",
+   "source": "src_much_ado_about_nothing_the_misestimation_and_2010",
+   "title": "Much ado about nothing: The misestimation and overinterpretation of violent video game effects in Eastern and Western nations: Comment on Anderson et al. (2010).",
+   "ts": "2026-07-09T01:43:01.368465+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 10 → 11"
+   ]
+  },
+  {
+   "version": 30,
+   "action": "add-source",
+   "source": "src_the_public_health_risks_of_media_violence_a__2009",
+   "title": "The public health risks of media violence: a meta-analytic review.",
+   "ts": "2026-07-09T01:45:08.731758+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 11 → 12",
+    "concentration: No clear effect 14% → 13% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 31,
+   "action": "add-source",
+   "source": "src_do_angry_birds_make_for_angry_children_a_met_2015",
+   "title": "Do Angry Birds Make for Angry Children? A Meta-Analysis of Video Game Influences on Children’s and Adolescents’ Aggression, Mental Health, Prosocial Behavior, and Academic Performance",
+   "ts": "2026-07-09T01:45:08.736893+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 12 → 13",
+    "concentration: No clear effect 13% → 12% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 32,
+   "action": "add-source",
+   "source": "src_angry_birds_angry_children_and_angry_meta_an_2016",
+   "title": "Angry Birds, Angry Children, and Angry Meta-Analysts",
+   "ts": "2026-07-09T01:45:08.741465+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 18 → 19",
+    "concentration: Increases aggression 12% → 11% (top: Anderson et al. (2010) meta-analysis of violent video game effects)",
+    "most-reused case-wide: Anderson et al. (2010) meta-analysis of violent video game effects 3 → AngryBirdsMeta Ferguson2015/Anderson et al. (2010) meta-analysis of violent video game effects 3/32"
+   ]
+  },
+  {
+   "version": 33,
+   "action": "add-source",
+   "source": "src_finding_the_middle_ground_in_violent_video_g_2015",
+   "title": "Finding the Middle Ground in Violent Video Game Research",
+   "ts": "2026-07-09T01:45:08.746204+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 13 → 14"
+   ]
+  },
+  {
+   "version": 34,
+   "action": "add-source",
+   "source": "src_twenty_five_years_of_research_on_violence_in_2013",
+   "title": "Twenty-Five Years of Research on Violence in Digital Games and Aggression",
+   "ts": "2026-07-09T01:46:47.622607+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 14 → 15",
+    "concentration: No clear effect 12% → 12% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 35,
+   "action": "add-source",
+   "source": "src_overstated_evidence_for_short_term_effects_o_2017",
+   "title": "Overstated evidence for short-term effects of violent games on affect and behavior: A reanalysis of Anderson et al. (2010).",
+   "ts": "2026-07-09T01:46:47.636554+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 15 → 16",
+    "concentration: No clear effect 12% → 11% (top: Przybylski and Weinstein 2019 registered report cohort)",
+    "most-reused case-wide: AngryBirdsMeta Ferguson2015/Anderson et al. (2010) meta-analysis of violent video game effects 3 → Anderson et al. (2010) meta-analysis of violent video game effects 4/35"
+   ]
+  },
+  {
+   "version": 36,
+   "action": "add-source",
+   "source": "src_violent_video_game_effects_remain_a_societal_2017",
+   "title": "Violent video game effects remain a societal concern: Reply to Hilgard, Engelhardt, and Rouder (2017).",
+   "ts": "2026-07-09T01:46:47.644382+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 19 → 20",
+    "concentration: Increases aggression 11% → 14% (top: Anderson et al. (2010) meta-analysis of violent video game effects)",
+    "most-reused case-wide: Anderson et al. (2010) meta-analysis of violent video game effects 4 → Anderson et al. (2010) meta-analysis of violent video game effects 5/36",
+    "+ new crux: researcher-expectancy effects"
+   ]
+  },
+  {
+   "version": 37,
+   "action": "add-source",
+   "source": "src_metaanalysis_of_the_relationship_between_vio_2018",
+   "title": "Metaanalysis of the relationship between violent video game play and physical aggression over time",
+   "ts": "2026-07-09T01:48:43.744627+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 20 → 21"
+   ]
+  },
+  {
+   "version": 38,
+   "action": "add-source",
+   "source": "src_a_meta_analysis_on_the_longitudinal_age_depe_2021",
+   "title": "A Meta-Analysis on the Longitudinal, Age-Dependent Effects of Violent Video Games on Aggression",
+   "ts": "2026-07-09T01:48:43.754955+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 21 → 22"
+   ]
+  },
+  {
+   "version": 39,
+   "action": "add-source",
+   "source": "src_finding_common_ground_in_meta_analysis_wars__2019",
+   "title": "Finding Common Ground in Meta-Analysis “Wars” on Violent Video Games - PMC",
+   "ts": "2026-07-09T01:48:43.761008+00:00",
+   "newDatasets": [
+    "ds_prescott_sargent_hull_2018_longitudinal_meta"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 22 → 23",
+    "concentration: Increases aggression 14% → 16% (top: Anderson et al. (2010) meta-analysis of violent video game effects)",
+    "most-reused case-wide: Anderson et al. (2010) meta-analysis of violent video game effects 5 → Anderson et al. (2010) meta-analysis of violent video game effects 6/39"
+   ]
+  },
+  {
+   "version": 40,
+   "action": "add-source",
+   "source": "src_violent_video_games_and_real_world_violence__2014",
+   "title": "Violent video games and real-world violence: Rhetoric versus data.",
+   "ts": "2026-07-09T01:58:27.318903+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 16 → 17",
+    "concentration: No clear effect 11% → 10% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 41,
+   "action": "add-source",
+   "source": "src_neuroimaging_and_behavioral_evidence_that_vi_2023",
+   "title": "Neuroimaging and behavioral evidence that violent video games exert no negative effect on human empathy for pain and emotional reactivity to violence",
+   "ts": "2026-07-09T02:04:37.285960+00:00",
+   "newDatasets": [
+    "ds_lengersdorff_et_al_2023_gta_v_empathy_rct"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 17 → 18",
+    "concentration: No clear effect 10% → 9% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 42,
+   "action": "add-source",
+   "source": "src_evidence_for_publication_bias_in_video_game__2007",
+   "title": "Evidence for publication bias in video game violence effects literature: A meta-analytic review",
+   "ts": "2026-07-09T02:07:26.715364+00:00",
+   "newDatasets": [
+    "ds_ds_american_psychological_association_2015_t"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 18 → 19",
+    "concentration: No clear effect 9% → 9% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 43,
+   "action": "add-source",
+   "source": "src_research_on_the_effects_of_violent_video_gam_2009",
+   "title": "Research on the Effects of Violent Video Games: A Critical Analysis",
+   "ts": "2026-07-09T02:09:22.607441+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 19 → 20"
+   ]
+  },
+  {
+   "version": 44,
+   "action": "add-source",
+   "source": "src_apa_task_force_report_on_violent_video_games_2020",
+   "title": "APA Task Force Report on Violent Video Games",
+   "ts": "2026-07-09T02:22:08.603685+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: Increases aggression 23 → 24",
+    "concentration: Increases aggression 16% → 15% (top: Anderson et al. (2010) meta-analysis of violent video game effects)"
+   ]
+  },
+  {
+   "version": 45,
+   "action": "add-source",
+   "source": "src_selling_violent_video_game_solutions_a_look__2017",
+   "title": "Selling violent video game solutions: A look inside the APA's internal notes leading to the creation of the APA's 2005 resolution on violence in video games and interactive media",
+   "ts": "2026-07-09T02:22:08.610353+00:00",
+   "newDatasets": [],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 20 → 21",
+    "concentration: No clear effect 9% → 8% (top: Przybylski and Weinstein 2019 registered report cohort)"
+   ]
+  },
+  {
+   "version": 46,
+   "action": "add-source",
+   "source": "src_possible_biases_of_researchers_attitudes_tow_2016",
+   "title": "Possible Biases of Researchers’ Attitudes Toward Video Games: Publication Trends Analysis of the Medical Literature (1980–2013)",
+   "ts": "2026-07-09T02:22:58.447930+00:00",
+   "newDatasets": [
+    "ds_pubmed_database_analysis_of_1980_2013_public"
+   ],
+   "newPositions": [],
+   "diff": [
+    "distribution: No clear effect 21 → 22",
+    "concentration: No clear effect 8% → 8% (top: Przybylski and Weinstein 2019 registered report cohort)",
+    "+ new crux: researcher-expectancy effects",
+    "blindspot opened: Increases aggression missing \"General population\""
+   ]
+  },
+  {
+   "version": 47,
+   "action": "dedupe-sources",
+   "summary": "removed 1 mirror duplicate(s): src_does_playing_violent_video_games_cause_aggre_2018",
+   "ts": "2026-07-09T02:22:58.447930+00:00"
+  },
+  {
+   "version": 48,
+   "action": "tidy",
+   "summary": "tidied 4 label(s)",
+   "ts": "2026-07-09T02:39:59.662266+00:00"
+  },
+  {
+   "version": 48,
+   "action": "review-drop",
+   "title": "Synthetic contested paper (UI test)",
+   "ts": "2026-07-09T13:07:54.245807+00:00",
+   "summary": "dropped after model disagreement: Synthetic contested paper (UI test)"
+  },
+  {
+   "version": 49,
+   "action": "ground-study",
+   "source": "src_a_longitudinal_study_of_risk_glorifying_vide_2014",
+   "ts": "2026-07-10T02:37:54Z",
+   "note": "named this study's own evidence base (ds_riskglorifying_longitudinal) so it keeps a distinct root after the ungrounded-primary pooling change"
+  },
+  {
+   "version": 49,
+   "action": "ground-study",
+   "source": "src_video_games_and_aggressive_thoughts_feelings_2000",
+   "ts": "2026-07-10T02:37:54Z",
+   "note": "named this study's own evidence base (ds_anderson_dill_vvg) so it keeps a distinct root after the ungrounded-primary pooling change"
+  }
+ ],
+ "pendingReview": []
+}
