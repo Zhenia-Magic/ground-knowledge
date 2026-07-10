@@ -207,6 +207,7 @@ def _apply_delta(kb_path, delta):
     before = assess(kb)
     report = merge_delta(kb, delta)
     if report.get("offTopic"):
+        write_json(kb_path, kb)                           # persist the auditable refusal record
         print("Off-topic — not added: {}".format(report.get("reason", "doesn't bear on the question")))
         return False
     if report["duplicate"]:

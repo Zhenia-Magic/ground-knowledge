@@ -69,6 +69,32 @@ class PositionGuardTests(unittest.TestCase):
         self.assertIsNone(_position_dup(self.kb, "Increases aggression"))
 
 
+class OffTopicRefusalTests(unittest.TestCase):
+    def setUp(self):
+        self.kb = empty_kb("t", "Does violent video game exposure increase aggression?")
+
+    def _off(self, title, reason="about a different topic"):
+        d = _delta(title, "NEW:Increases aggression")
+        d["source"]["relevant"] = False
+        d["source"]["offTopicReason"] = reason
+        return d
+
+    def test_off_topic_is_refused_recorded_and_uncounted(self):
+        rep = merge_delta(self.kb, self._off("A rice genome map"))
+        self.assertTrue(rep["offTopic"])
+        self.assertEqual(len(self.kb["sources"]), 0)          # never enters the metrics
+        self.assertEqual(len(self.kb.get("refused", [])), 1)  # but IS recorded, not silently gone
+        self.assertEqual(self.kb["refused"][0]["reason"], "about a different topic")
+        self.assertTrue(any(e.get("action") == "refused-offtopic" for e in self.kb.get("log", [])))
+
+    def test_same_refusal_is_not_double_logged(self):
+        self.kb = empty_kb("t", "q")
+        d = self._off("Duplicate off-topic paper")
+        merge_delta(self.kb, dict(source=dict(d["source"])))
+        merge_delta(self.kb, dict(source=dict(d["source"])))
+        self.assertEqual(len(self.kb["refused"]), 1)          # re-runs don't re-log the same refusal
+
+
 class NonScholarlyFilterTests(unittest.TestCase):
     def test_drops_encyclopedias_news_press_social_courts(self):
         for u in ("https://en.wikipedia.org/wiki/X", "https://www.scotusblog.com/cases/x",

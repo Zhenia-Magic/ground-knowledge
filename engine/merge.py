@@ -338,9 +338,21 @@ def merge_delta(kb, delta):
 
     # The labeller (which saw the real fetched text) can flag a source that doesn't bear on the
     # question; refuse it here, like a duplicate — so off-topic sources never pollute the metrics.
+    # But DON'T drop it silently: a wrongly-refused source is invisible suppression of a possibly
+    # legitimate voice, the inverse of the tool's job. Record it in kb["refused"] + the log so the
+    # decision is auditable and reversible (a curator can re-admit it). No metric reads kb["refused"].
     if src.get("relevant") is False:
+        reason = src.get("offTopicReason") or "not relevant to the question"
         report["offTopic"] = True
-        report["reason"] = src.get("offTopicReason") or "not relevant to the question"
+        report["reason"] = reason
+        already = {source_key(r) for r in kb.get("refused", [])}
+        if source_key(src) not in already:                # don't re-log the same refusal on re-runs
+            kb.setdefault("refused", []).append({
+                "title": src.get("title") or "(untitled)", "url": src.get("url"),
+                "year": src.get("year"), "reason": reason, "ts": now_iso()})
+            kb.setdefault("log", []).append({
+                "version": kb.get("meta", {}).get("version", 0), "action": "refused-offtopic",
+                "source": src.get("title"), "ts": now_iso(), "note": "off-topic: " + reason})
         return report
 
     # Refuse a duplicate by: same source_key (url, or title+year when url-less); same canonical

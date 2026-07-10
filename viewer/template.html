@@ -254,6 +254,16 @@
   .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
   .indkey .warn{color:#b4232f;font-style:normal;font-weight:700;}
   .ind-note{font-size:12px;color:var(--muted);margin:8px 0 0;}
+  .ind-mix{font-size:12px;color:var(--ink);margin:6px 0 2px;padding:5px 9px;background:var(--chip,#f3f5f7);border-radius:6px;display:inline-block;}
+  .ind-mix .mixtypes{color:var(--muted);}
+  .qualnote{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5;}
+  .qualnote .risk-link{font-size:12px;}
+  .refused{margin-top:12px;font-size:12px;border-top:1px solid var(--line,#e5e8ec);padding-top:10px;}
+  .refused summary{cursor:pointer;color:var(--muted);}
+  .refused ul{margin:8px 0 0;padding-left:18px;color:var(--ink);}
+  .refused li{margin:2px 0;}
+  .refused .refnote{margin-top:8px;color:var(--faint);line-height:1.5;}
+  @media(prefers-color-scheme:dark){.ind-mix{background:rgba(255,255,255,.05);}}
   .ind-note.warn{color:var(--ochre);font-weight:500;}
   .flagbox{font-size:13px;color:var(--flag);background:var(--flag-bg);border-radius:8px;
     padding:11px 14px;margin-top:6px;display:flex;gap:9px;align-items:flex-start;line-height:1.5;}
@@ -598,15 +608,26 @@ function headline(c){
     if(f.undisclosed) parts.push(`${f.undisclosed} of ${f.total} source${f.total===1?"":"s"} don't disclose funding`);
     if(parts.length) skewHtml=`<div class="skew"><span>⚠</span><span>${parts.join("; ")} — weigh before counting heads.</span></div>`;
   }
+  // Off-topic refusals, surfaced (not silently dropped): a wrongly-refused source is invisible
+  // suppression, so it's shown and reversible. Excluded from every metric.
+  const refused=(kb.refused||[]);
+  let refusedHtml="";
+  if(refused.length){
+    const items=refused.slice(0,25).map(r=>`<li>${esc(r.title||"(untitled)")}${r.reason?` — <span style="color:var(--muted)">${esc(r.reason)}</span>`:""}</li>`).join("");
+    refusedHtml=`<details class="refused"><summary>${refused.length} source${refused.length===1?"":"s"} fetched but refused as off-topic</summary>
+      <ul>${items}</ul>
+      <div class="refnote">Recorded for transparency and excluded from every metric — a wrongly-dropped source is visible here rather than silently gone. Re-admit one by re-ingesting it or removing it from the case's <code>refused</code> list.</div></details>`;
+  }
   return `<div class="panel">
       <div class="subnote">Two views of the same evidence: by <b>how many sources</b> take each side, then by <b>how much independent evidence</b> each side actually rests on.</div>
       <div class="splitlabel"><span class="num">1</span> By source count <span class="q">— the naïve tally · click a segment to isolate it</span></div>
       <div class="distrib">${bar1}</div>
       ${wd.length?`<div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
       <div class="distrib">${bar2}</div>
-      ${takeaway}`:""}
+      ${takeaway}
+      <div class="qualnote">This weights by <b>independence</b> (how many distinct evidentiary bases), <b>not quality</b> — one decisive trial can outweigh several weak studies. See <button class="risk-link" data-view="independence">Independence &amp; bias</button> for each position's evidence-type mix.</div>`:""}
       ${warnHtml}
-      <div class="legend">${legend}</div>${skewHtml}
+      <div class="legend">${legend}</div>${skewHtml}${refusedHtml}
     </div>`;
 }
 
@@ -809,6 +830,8 @@ function renderIndependenceView(){
         <td style="font-family:var(--mono);text-align:right;">${b.weight}</td><td style="color:var(--faint);">${esc(notes.join(", ")||"—")}</td></tr>`;
     }).join("");
     const more=list.length>6?`<div class="showmore"><button data-more="${p.id}">${state.expandedBases[p.id]?"Show fewer":"Show "+(list.length-6)+" more"}</button></div>`:"";
+    const mixTypes=(p.evidenceMix||[]).slice(0,4).map(m=>`${esc(m.evidence)} ×${m.count}`).join(" · ");
+    const mix=`<div class="ind-mix"><b>${p.primaryCount}</b> primary · <b>${p.secondaryCount}</b> secondary${mixTypes?` <span class="mixtypes">— ${mixTypes}</span>`:""}<span class="infoicon" title="What KIND of evidence backs this position — the independent-bases count above is a count of distinct evidentiary roots, NOT a quality score. One decisive trial (1 base) can outweigh many weak studies (several bases); read this design mix alongside the number, never the number alone.">?</span></div>`;
     const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
     const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence.</div>`:"";
     let method="";
@@ -829,6 +852,7 @@ function renderIndependenceView(){
           <span class="peff">${p.nEff.toFixed(1)} independent base${p.nEff.toFixed(1)==="1.0"?"":"s"} from ${p.raw} source${p.raw===1?"":"s"}
             <span class="infoicon" title="Effective count of distinct evidentiary roots (datasets, own primary observations, one collapsed secondary-review voice, one collapsed circular-citation loop). Each root counts ONCE -- at half weight if only reviews mention it, half again if only animal / in-vitro studies rest on it -- no matter how many sources pile onto it. Sharing a dataset, echoing as a review, or citing in a loop therefore adds nothing; only genuinely new evidence moves this number.">?</span>
           </span></div>
+        ${mix}
         <div class="tbl-wrap"><table><colgroup><col style="width:46%"><col style="width:16%"><col style="width:12%"><col style="width:26%"></colgroup><thead><tr><th class="nosort">Base</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Weight <span class="infoicon" title="How much of this position's sourcing rests on this base: 1 per source, halved (0.5x) if the dataset is only known through a secondary review rather than a primary source citing it directly, and halved again if every source resting on it is an animal or in-vitro study. This drives the concentration warning. The independent-bases count above is different: it counts each base ONCE at its strength, however many sources lean on it.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
         ${sec}${circ}${method}
       </div>`;

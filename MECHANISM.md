@@ -312,10 +312,12 @@ instinct as documenting dataset errors instead of silently fixing them.
 ## 9. Why it is novel
 
 Most tools in this space do one of: (a) count studies; (b) score each study's *internal* quality
-(risk-of-bias, GRADE); or (c) build a citation graph for *influence* (who's cited most). None of
-them measure **how many independent evidentiary roots actually support a claim**, and none treat
-**echo, cohort re-use, and circular citation as one phenomenon** resolved by collapsing a
-derivation graph to its roots. The combination — *tier-aware grounding* + *root-resolution over a
+(risk-of-bias, GRADE); or (c) build a citation graph for *influence* (who's cited most). Counting
+independent data sources rather than papers is **not new** — meta-analysis handles multiple
+estimates from one cohort as a "unit-of-analysis" problem, and systematic reviews distinguish
+"studies vs. reports." What isn't standard is doing it **automatically, as one deterministic metric,
+over an arbitrary dispute, and hardened against an adversary** — treating **echo, cohort re-use, and
+circular citation as one phenomenon** resolved by collapsing a derivation graph to its roots. The combination — *tier-aware grounding* + *root-resolution over a
 derivation graph* + *strongly-connected-component collapse for circular corroboration* + a
 *strength-weighted distinct-root count* with a tested flooding-immunity invariant — is, as far as
 we know, new as a single, deterministic, auditable metric. (The honest lineage: this is the
@@ -327,8 +329,16 @@ domain, generalized to arbitrary disputes, automated, and made adversarially rob
 The mechanism never looks at domain content. It operates on the abstract ontology of §2 —
 source, position, root, derivation, tier. The *vocabulary* (what counts as a dataset, what evidence
 types exist) lives in the per-case KB, not in code. So the identical engine maps a virology dispute,
-a nutrition dispute, and a physics dispute. A new field adds vocabulary, never code. That is what
-lets one renderer and one metric serve every question on the portal.
+a nutrition dispute, and an empirical physics-risk dispute. A new field adds vocabulary, never code.
+That is what lets one renderer and one metric serve every question on the portal.
+
+**Scope, honestly.** This is general across **empirical-causal** disputes — where a position bottoms
+out in data-generating processes and *shared data is a reason to discount, not to add*. It is not a
+universal dispute-mapper: in **law**, authority is partly cumulative (collapsing twenty rulings that
+cite one precedent would be *wrong*); in **mathematics**, validity isn't a counting exercise at all.
+And the primary/secondary tier table + the animal/in-vitro halving are biomedicine-shaped defaults a
+distant empirical field must re-specify — more than a vocabulary swap. "Vocabulary, not code" holds
+inside the empirical-causal family and degrades outside it.
 
 ---
 

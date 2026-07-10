@@ -479,6 +479,18 @@ def independence(kb):
         if top_key and top_key.startswith("ds:"):
             top_ds = {"label": _ds_label(kb, top_key[3:]), "id": top_key[3:],
                       "count": round(top_w, 2)}
+        # evidence-type / tier mix -- so nEff (a COUNT of roots) is never read as evidence QUALITY.
+        # A position with one decisive RCT (nEff 1) and one with seven anecdotes (nEff 7) look very
+        # different here even though the headline count favours the latter; this puts the design mix
+        # next to the number so the reader weighs quality alongside independence.
+        ev_counts = {}
+        prim = 0
+        for s in mine:
+            ev = s.get("evidence") or "—"
+            ev_counts[ev] = ev_counts.get(ev, 0) + 1
+            if _roots.tier_of(kb, s) == "primary":
+                prim += 1
+        ev_mix = sorted(ev_counts.items(), key=lambda kv: -kv[1])
         out.append({
             "id": p["id"], "label": p["label"], "hue": p["hue"],
             "raw": raw, "distinct": len(weights), "nEff": n_eff, "concentration": conc,
@@ -488,6 +500,8 @@ def independence(kb):
             "collapsedSecondary": collapsed_secondary,
             "circular": circ_by_pos.get(p["id"], []),
             "concentrated": top_w >= 2 and conc >= 0.5,
+            "evidenceMix": [{"evidence": e, "count": n} for e, n in ev_mix],
+            "primaryCount": prim, "secondaryCount": len(mine) - prim,
         })
     return out
 

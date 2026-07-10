@@ -42,6 +42,9 @@ data changes, never the code.
                        "proposals": [{position, votes, quote, confidence}],  //   sources NOT yet
                        "delta", "ts" } ],                     //   merged, awaiting a human decision
                                 //   (engine/review.py) -- counted in NO metric until resolved
+  "refused":   [ { "title", "url", "year", "reason", "ts" } ],  // off-topic sources refused at
+                                //   merge -- RECORDED (not silently dropped) so a wrongly-refused
+                                //   source is visible + reversible; counted in NO metric
   "log":       [ { "version", "action", "source", "ts", ... } ]  // audit trail
 }
 ```
