@@ -830,8 +830,8 @@ function renderIndependenceView(){
         <td style="font-family:var(--mono);text-align:right;">${b.weight}</td><td style="color:var(--faint);">${esc(notes.join(", ")||"—")}</td></tr>`;
     }).join("");
     const more=list.length>6?`<div class="showmore"><button data-more="${p.id}">${state.expandedBases[p.id]?"Show fewer":"Show "+(list.length-6)+" more"}</button></div>`:"";
-    const mixTypes=(p.evidenceMix||[]).slice(0,4).map(m=>`${esc(m.evidence)} ×${m.count}`).join(" · ");
-    const mix=`<div class="ind-mix"><b>${p.primaryCount}</b> primary · <b>${p.secondaryCount}</b> secondary${mixTypes?` <span class="mixtypes">— ${mixTypes}</span>`:""}<span class="infoicon" title="What KIND of evidence backs this position — the independent-bases count above is a count of distinct evidentiary roots, NOT a quality score. One decisive trial (1 base) can outweigh many weak studies (several bases); read this design mix alongside the number, never the number alone.">?</span></div>`;
+    const mixTypes=(p.evidenceMix||[]).slice(0,6).map(m=>`${esc(m.evidence)} ×${m.count}`).join(" · ");
+    const mix=`<div class="ind-mix"><b>${p.raw}</b> source${p.raw===1?"":"s"} by type${mixTypes?` <span class="mixtypes">— ${mixTypes}</span>`:""}<span class="infoicon" title="The ${p.raw} sources under this position, broken down by evidence type — a quality signal to read ALONGSIDE the independent-bases count. The bases table below counts distinct evidence roots, not sources: sources sharing a dataset (or echoing as reviews) collapse into one base, so this by-source list is longer than the table. nEff is a count of roots, never a quality score.">?</span></div>`;
     const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
     const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence.</div>`:"";
     let method="";

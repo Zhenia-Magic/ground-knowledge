@@ -2,7 +2,7 @@
  "meta": {
   "id": "51fb332b4e96",
   "question": "Does moderate alcohol consumption reduce cardiovascular risk?",
-  "version": 96,
+  "version": 97,
   "updated": "2026-07-10T02:37:54Z",
   "portal": {
    "id": "e939a9574ad5",
@@ -147,23 +147,8 @@
    "aliases": []
   },
   {
-   "id": "ds_ds_national_epidemiologic_survey_on_alcohol_",
-   "label": "ds national epidemiologic survey on alcohol and",
-   "aliases": []
-  },
-  {
    "id": "ds_marcus_af_case_crossover_study_100_paroxysma",
    "label": "Marcus AF Case-Crossover Study (100 paroxysmal AF patients, ambulatory ECG/transdermal ethanol sensor)",
-   "aliases": []
-  },
-  {
-   "id": "ds_seniors_enrica_cohort_spanish_older_adults_w",
-   "label": "Seniors-ENRICA cohort (Spanish older adults with health-related or socioeconomic risk factors)",
-   "aliases": []
-  },
-  {
-   "id": "ds_pooled_prospective_studies_on_alcohol_and_to",
-   "label": "Pooled prospective studies on alcohol and total mortality (PubMed to December 2005, 34 studies, n=1,015,835)",
    "aliases": []
   },
   {
@@ -252,11 +237,6 @@
    "aliases": []
   },
   {
-   "id": "ds_taiwan_health_screening_cohort",
-   "label": "Taiwan health-screening cohort",
-   "aliases": []
-  },
-  {
    "id": "ds_comprehensive_guideline_literature_search_me",
    "label": "Comprehensive guideline literature search (MEDLINE/PubMed, EMBASE, Cochrane, AHRQ, September 2021–May 2022)",
    "aliases": []
@@ -339,11 +319,6 @@
      "quote": "Epidemiological evidence suggests a J-shaped association between alcohol consumption and cardiovascular mortality, with higher cardiovascular event rates occurring among abstainers and heavy drinkers compared to moderate consumers."
     },
     {
-     "source": "src_alcohol_abstinence_and_mortality_in_a_genera_2021",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Alcohol abstinence and mortality in a general population sample of adults in Germany: A cohort study"
-    },
-    {
      "source": "src_trajectories_of_alcohol_consumption_in_relat_2022",
      "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
      "quote": "Six trajectory groups of alcohol consumption were identified using group‐based trajectory modelling and related to the risk of all‐cause mortality."
@@ -359,24 +334,9 @@
      "quote": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy."
     },
     {
-     "source": "src_alcohol_consumption_patterns_and_mortality_a_2024",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Accepted for Publication: May 30, 2024."
-    },
-    {
-     "source": "src_alcohol_dosing_and_total_mortality_in_men_an_2006",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Consumption of alcohol, up to 4 drinks per day in men and 2 drinks per day in women, was inversely associated with total mortality, maximum protection being 18% in women (99% confidence interval, 13%-22%) and 17% in men (99% confidence interval, 15%-19%)."
-    },
-    {
      "source": "src_why_do_only_some_cohort_studies_find_health__2024",
      "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
      "quote": "Studies not meeting these quality criteria estimated significantly lower risk for low-volume drinkers (RR = 0.84, [0.79, 0.89])."
-    },
-    {
-     "source": "src_moderate_alcohol_consumption_and_lower_total_2019",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "For almost a century, the scientific community is aware of the J-shaped curve between alcohol consumption and all-cause mortality. Moderate drinkers seem to live longer t"
     },
     {
      "source": "src_alcohol_intake_and_risk_of_hypertension_a_sy_2024",
@@ -467,11 +427,6 @@
      "source": "src_alcohol_intake_and_long_term_mortality_risk__2022",
      "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
      "quote": "HRs for all-cause mortality were 0.87 (95% CI, 0.78–0.98), 0.85 (95% CI, 0.75–0.96), and 0.91 (95% CI, 0.79–1.04) for light, moderate, and heavy drinkers, respectively."
-    },
-    {
-     "source": "src_the_effects_of_modest_drinking_on_life_expec_2022",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Drinking distinguished 'modest drinker' (no more than one drink a day) from 'regular drinker'."
     },
     {
      "source": "src_global_burden_of_alcoholic_cardiomyopathy_in_2025",
@@ -595,16 +550,6 @@
      "quote": "The narrative review showed that the use of current abstainers as the reference group leads to systematic bias."
     },
     {
-     "source": "src_review_of_evidence_on_alcohol_and_health_2025",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "The committee will determine whether an existing systematic review can be updated, or a new review is needed."
-    },
-    {
-     "source": "src_alcohol_consumption_and_the_risk_of_all_caus_2024",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "Alcohol consumption and the risk of all-cause and cause-specific mortality—a linear and nonlinear Mendelian randomization study"
-    },
-    {
      "source": "src_alcohol_consumption_and_its_association_with_2024",
      "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
      "quote": "epidemiological studies face limitations due to imprecise exposure measurements and the potential for bias through residual confounding and reverse causation."
@@ -615,34 +560,14 @@
      "quote": "However, this hypothesis has been challenged by more recent studies."
     },
     {
-     "source": "src_alcohol_abstinence_and_mortality_in_a_genera_2021",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Alcohol abstinence and mortality in a general population sample of adults in Germany: A cohort study"
-    },
-    {
      "source": "src_trajectories_of_alcohol_consumption_in_relat_2022",
      "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
      "quote": "Cross‐sectional analyses based only on drinking information at a single time point may produce misleading conclusions about the alcohol–mortality relationship in CVD patients."
     },
     {
-     "source": "src_alcohol_consumption_patterns_and_mortality_a_2024",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "Accepted for Publication: May 30, 2024."
-    },
-    {
-     "source": "src_alcohol_dosing_and_total_mortality_in_men_an_2006",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "When adjusted and unadjusted data were compared, the maximum protection was only reduced from 19% to 16%."
-    },
-    {
      "source": "src_why_do_only_some_cohort_studies_find_health__2024",
      "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
      "quote": "Studies with lifetime selection biases may create misleading positive health associations. These biases pervade the field of alcohol epidemiology and can confuse communications about health risks."
-    },
-    {
-     "source": "src_moderate_alcohol_consumption_and_lower_total_2019",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "For almost a century, the scientific community is aware of the J-shaped curve between alcohol consumption and all-cause mortality. Moderate drinkers seem to live longer t"
     },
     {
      "source": "src_association_of_habitual_alcohol_intake_with__2022",
@@ -733,11 +658,6 @@
      "source": "src_alcohol_intake_and_long_term_mortality_risk__2022",
      "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
      "quote": "These observational findings should be cautiously interpreted in light of the total evidence on alcohol and health."
-    },
-    {
-     "source": "src_the_effects_of_modest_drinking_on_life_expec_2022",
-     "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-     "quote": "The gain of one year by modest drinkers was erased by a two to fourfold increase in oral and esophageal cancer and that drinking beyond modest amount led to a large loss of life expectancy."
     }
    ]
   },
@@ -815,16 +735,6 @@
      "source": "src_alcohol_consumption_and_cardiovascular_disea_2022",
      "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
      "quote": "To date, a long-term RCT providing causal evidence is lacking but urgently needed."
-    },
-    {
-     "source": "src_review_of_evidence_on_alcohol_and_health_2025",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "The committee will carry out an assessment and prioritization process for reviewing the current literature to determine whether the quality and availability of peer-reviewed published evidence is sufficient to conduct a full systematic review."
-    },
-    {
-     "source": "src_association_between_daily_alcohol_intake_and_2023",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "Accepted for Publication: February 17, 2023."
     },
     {
      "source": "src_why_do_only_some_cohort_studies_find_health__2024",
@@ -916,11 +826,6 @@
      "source": "src_moderate_alcohol_use_and_cardiovascular_dise_2013",
      "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
      "quote": "Moderate Alcohol Use and Cardiovascular Disease from Mendelian Randomization."
-    },
-    {
-     "source": "src_alcohol_consumption_and_the_risk_of_all_caus_2024",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "Alcohol consumption and the risk of all-cause and cause-specific mortality—a linear and nonlinear Mendelian randomization study"
     },
     {
      "source": "src_alcohol_consumption_and_its_association_with_2024",
@@ -1169,13 +1074,7 @@
     "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high"
    },
    "rationale": "The Stockwell/Zhao group is the leading proponent of the view that observed protective effects reflect selection bias (sick-quitter effect), making this a central crux.",
-   "provenance": [
-    {
-     "source": "src_association_between_daily_alcohol_intake_and_2023",
-     "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-     "quote": "Accepted for Publication: February 17, 2023."
-    }
-   ]
+   "provenance": []
   }
  ],
  "sources": [
@@ -2560,86 +2459,6 @@
    "addedIn": 44
   },
   {
-   "id": "src_review_of_evidence_on_alcohol_and_health_2025",
-   "title": "Review of Evidence on Alcohol and Health",
-   "year": 2025,
-   "url": "https://nap.nationalacademies.org/catalog/28582/review-of-evidence-on-alcohol-and-health",
-   "authors": [
-    "Calonge, B.N.",
-    "Brown, A.",
-    "Camargo, C.A.",
-    "Cassano, P.",
-    "Catalano, P.M.",
-    "Coakley, K.",
-    "Djousse, L.",
-    "Freudenheim, J.L.",
-    "Hubbard, R.A.",
-    "McGuire, M.K.",
-    "Saldanha, I.J.",
-    "Smith, S.",
-    "Snetselaar, L.G.",
-    "Sullivan, E.V."
-   ],
-   "venue": "National Academies of Sciences, Engineering, and Medicine",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-   "evidence": "Evidence-synthesis",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "unstated",
-   "restsOn": [
-    "ds_pooled_systematic_reviews_on_alcohol_and_cvd"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "The committee will produce a report that summarizes the evidence in conclusion statements that have been graded to indicate the strength of evidence, but will not include dietary guidance statements, recommendations, or advice.",
-     "extractionConfidence": 0.3
-    },
-    "restsOn": {
-     "quote": "The National Academies of Sciences, Engineering, and Medicine will convene a committee of experts to undertake a review of the current scientific evidence on the relationship between consumption of alcohol and health outcomes.",
-     "extractionConfidence": 0.4
-    }
-   },
-   "addedIn": 45
-  },
-  {
-   "id": "src_alcohol_consumption_and_the_risk_of_all_caus_2024",
-   "title": "Alcohol consumption and the risk of all-cause and cause-specific mortality—a linear and nonlinear Mendelian randomization study",
-   "year": 2024,
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10951973/",
-   "authors": [
-    "Kassaw, N.A.",
-    "Zhou, A.",
-    "Mulugeta, A.",
-    "Lee, S.H.",
-    "Burgess, S.",
-    "Hyppönen, E."
-   ],
-   "venue": "International Journal of Epidemiology",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-   "evidence": "Meta-analysis",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_uk_biobank"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Alcohol consumption and the risk of all-cause and cause-specific mortality—a linear and nonlinear Mendelian randomization study",
-     "extractionConfidence": 0.3
-    },
-    "restsOn": {
-     "quote": "Alcohol consumption and the risk of all-cause and cause-specific mortality—a linear and nonlinear Mendelian randomization study",
-     "extractionConfidence": 0.3
-    }
-   },
-   "addedIn": 46
-  },
-  {
    "id": "src_alcohol_consumption_and_its_association_with_2024",
    "title": "Alcohol consumption and its association with cancer, cardiovascular, liver and brain diseases: a systematic review of Mendelian randomization studies",
    "year": 2024,
@@ -2737,40 +2556,6 @@
     }
    },
    "addedIn": 49
-  },
-  {
-   "id": "src_alcohol_abstinence_and_mortality_in_a_genera_2021",
-   "title": "Alcohol abstinence and mortality in a general population sample of adults in Germany: A cohort study",
-   "year": 2021,
-   "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8562854/",
-   "authors": [
-    "John, U.",
-    "Rumpf, H.J.",
-    "Hanke, M.",
-    "Meyer, C."
-   ],
-   "venue": "PLOS Medicine",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Observational",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_german_general_population_cohort_university_"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Alcohol abstinence and mortality in a general population sample of adults in Germany: A cohort study",
-     "extractionConfidence": 0.3
-    },
-    "restsOn": {
-     "quote": "Alcohol abstinence and mortality in a general population sample of adults in Germany: A cohort study",
-     "extractionConfidence": 0.3
-    }
-   },
-   "addedIn": 51
   },
   {
    "id": "src_trajectories_of_alcohol_consumption_in_relat_2022",
@@ -2902,77 +2687,6 @@
    "addedIn": 55
   },
   {
-   "id": "src_alcohol_consumption_and_all_cause_and_cause__2023",
-   "title": "Alcohol consumption and all-cause and cause-specific mortality among US adults: prospective cohort study",
-   "year": 2023,
-   "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10249162/",
-   "authors": [
-    "Tian, Y.",
-    "Liu, J.",
-    "Zhao, Y.",
-    "Jiang, N.",
-    "Liu, X.",
-    "Zhao, G.",
-    "Wang, X."
-   ],
-   "venue": "BMC Medicine",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Observational",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_ds_national_epidemiologic_survey_on_alcohol_"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Alcohol consumption and all-cause and cause-specific mortality among US adults: prospective cohort study.",
-     "extractionConfidence": 0.3
-    },
-    "restsOn": {
-     "quote": "Alcohol consumption and all-cause and cause-specific mortality among US adults: prospective cohort study.",
-     "extractionConfidence": 0.3
-    }
-   },
-   "addedIn": 56
-  },
-  {
-   "id": "src_the_unfinished_debate_on_wine_and_other_alco_2026",
-   "title": "The Unfinished Debate on Wine and Other Alcoholic Beverages: Conflicting Evidence, Public Health Messages and the Missing Trial",
-   "year": 2026,
-   "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12899845/",
-   "authors": [
-    "Alvarez-Mon, M.A.",
-    "Martínez-Urbistondo, D.",
-    "Barbería-Latasa, M.",
-    "Vázquez-Ruiz, Z.",
-    "Ruiz-Canela, M.",
-    "Bes-Rastrollo, M."
-   ],
-   "venue": "Nutrients",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_alcohol_has_complex_bidirectional_immediate_",
-   "evidence": "Narrative/Commentary",
-   "funding": "Undisclosed",
-   "population": "General adults",
-   "confidence": "low",
-   "restsOn": [],
-   "provenance": {
-    "position": {
-     "quote": "The Unfinished Debate on Wine and Other Alcoholic Beverages: Conflicting Evidence, Public Health Messages and the Missing Trial.",
-     "extractionConfidence": 0.28
-    },
-    "restsOn": {
-     "quote": "The Unfinished Debate on Wine and Other Alcoholic Beverages: Conflicting Evidence, Public Health Messages and the Missing Trial.",
-     "extractionConfidence": 0.2
-    }
-   },
-   "addedIn": 57
-  },
-  {
    "id": "src_acute_consumption_of_alcohol_and_discrete_at_2021",
    "title": "Acute Consumption of Alcohol and Discrete Atrial Fibrillation Events",
    "year": 2021,
@@ -3045,108 +2759,6 @@
    "addedIn": 59
   },
   {
-   "id": "src_alcohol_consumption_patterns_and_mortality_a_2024",
-   "title": "Alcohol Consumption Patterns and Mortality Among Older Adults With Health-Related or Socioeconomic Risk Factors",
-   "year": 2024,
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11320169/",
-   "authors": [
-    "Ortolá, R.",
-    "Sotos-Prieto, M.",
-    "García-Esquinas, E.",
-    "Galán, I.",
-    "Rodríguez-Artalejo, F."
-   ],
-   "venue": "JAMA Network Open",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Observational",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_seniors_enrica_cohort_spanish_older_adults_w"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Accepted for Publication: May 30, 2024.",
-     "extractionConfidence": 0.2
-    },
-    "restsOn": {
-     "quote": "Accepted for Publication: May 30, 2024.",
-     "extractionConfidence": 0.2
-    }
-   },
-   "addedIn": 60
-  },
-  {
-   "id": "src_alcohol_dosing_and_total_mortality_in_men_an_2006",
-   "title": "Alcohol Dosing and Total Mortality in Men and Women",
-   "year": 2006,
-   "url": "https://pubmed.ncbi.nlm.nih.gov/17159008/",
-   "authors": [
-    "Di Castelnuovo, A."
-   ],
-   "venue": "Archives of Internal Medicine",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Meta-analysis",
-   "funding": "Undisclosed",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_pooled_prospective_studies_on_alcohol_and_to"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Low levels of alcohol intake (1-2 drinks per day for women and 2-4 drinks per day for men) are inversely associated with total mortality in both men and women.",
-     "extractionConfidence": 0.97
-    },
-    "restsOn": {
-     "quote": "We searched PubMed for articles available until December 2005, supplemented by references from the selected articles. Thirty-four studies on men and women, for a total of 1 015 835 subjects and 94 533 deaths, were selected.",
-     "extractionConfidence": 0.97
-    }
-   },
-   "addedIn": 61
-  },
-  {
-   "id": "src_association_between_daily_alcohol_intake_and_2023",
-   "title": "Association Between Daily Alcohol Intake and Risk of All-Cause Mortality: A Systematic Review and Meta-analyses",
-   "year": 2023,
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10066463/",
-   "authors": [
-    "Zhao, J.",
-    "Stockwell, T.",
-    "Naimi, T.",
-    "Churchill, S.",
-    "Clay, J.",
-    "Sherk, A."
-   ],
-   "venue": "JAMA Network Open",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-   "evidence": "Meta-analysis",
-   "funding": "Government/public",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_pooled_prospective_cohorts_all_cause_mortali"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Accepted for Publication: February 17, 2023.",
-     "extractionConfidence": 0.2
-    },
-    "restsOn": {
-     "quote": "Accepted for Publication: February 17, 2023.",
-     "extractionConfidence": 0.2
-    }
-   },
-   "addedIn": 62
-  },
-  {
    "id": "src_why_do_only_some_cohort_studies_find_health__2024",
    "title": "Why do only some cohort studies find health benefits from low volume alcohol use? A systematic review and meta-analysis of study characteristics that may bias mortality risk estimates",
    "year": 2024,
@@ -3182,40 +2794,6 @@
     }
    },
    "addedIn": 63
-  },
-  {
-   "id": "src_moderate_alcohol_consumption_and_lower_total_2019",
-   "title": "Moderate alcohol consumption and lower total mortality risk: Justified doubts or established facts?",
-   "year": 2019,
-   "url": "https://www.sciencedirect.com/science/article/abs/pii/S0939475319302121",
-   "authors": [
-    "Costanzo, S.",
-    "de Gaetano, G.",
-    "Di Castelnuovo, A.",
-    "Djoussé, L.",
-    "Poli, A.",
-    "van Velden, D.P."
-   ],
-   "venue": "Nutrition, Metabolism and Cardiovascular Diseases",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Narrative/Commentary",
-   "funding": "Undisclosed",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [],
-   "provenance": {
-    "position": {
-     "quote": "For almost a century, the scientific community is aware of the J-shaped curve between alcohol consumption and all-cause mortality. Moderate drinkers seem to live longer t",
-     "extractionConfidence": 0.72
-    },
-    "restsOn": {
-     "quote": "For almost a century, the scientific community is aware of the J-shaped curve between alcohol consumption and all-cause mortality. Moderate drinkers seem to live longer t",
-     "extractionConfidence": 0.6
-    }
-   },
-   "addedIn": 64
   },
   {
    "id": "src_association_of_habitual_alcohol_intake_with__2022",
@@ -4138,35 +3716,6 @@
     }
    },
    "addedIn": 90
-  },
-  {
-   "id": "src_the_effects_of_modest_drinking_on_life_expec_2022",
-   "title": "The effects of modest drinking on life expectancy and mortality risks: a population-based cohort study",
-   "year": 2022,
-   "url": "https://www.nature.com/articles/s41598-022-11427-x",
-   "authors": [],
-   "venue": "Scientific Reports",
-   "citations": null,
-   "retracted": false,
-   "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-   "evidence": "Observational",
-   "funding": "Undisclosed",
-   "population": "General adults",
-   "confidence": "moderate",
-   "restsOn": [
-    "ds_taiwan_health_screening_cohort"
-   ],
-   "provenance": {
-    "position": {
-     "quote": "Nearly one out of 4 males (23%) was a modest drinker, who gained 0.94 year (95% CI 0.65–1.23 year) in life over non-drinker and had 8% reduction in adjusted all-cause mortality (HR 0.92, 95% CI 0.86–0.97).",
-     "extractionConfidence": 0.82
-    },
-    "restsOn": {
-     "quote": "This retrospective cohort study of 430,016 adults recruited from a standard health-screening program since 1994, with 11,031 deaths identified as of 2008.",
-     "extractionConfidence": 0.9
-    }
-   },
-   "addedIn": 91
   },
   {
    "id": "src_2023_aha_acc_accp_aspc_nla_pcna_guideline_fo_2023",

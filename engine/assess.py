@@ -474,11 +474,14 @@ def independence(kb):
              for rk, w in weights.items()), key=lambda b: -b["weight"])
         collapsed_secondary = sum(1 for s in mine
                                   if ("secpool:" + p["id"]) in res["source_roots"].get(s["id"], ()))
-        # back-compat 'topDataset' only when the dominant root is an actual dataset
+        # back-compat 'topDataset' only when the dominant root is an actual dataset. 'count' is the
+        # (possibly fractional) source-weighted incidence that drives concentration; 'sources' is the
+        # plain INTEGER number of this position's sources resting on it (for human-readable copy).
         top_ds = None
         if top_key and top_key.startswith("ds:"):
+            top_src = sum(1 for s in mine if top_key in res["source_roots"].get(s["id"], ()))
             top_ds = {"label": _ds_label(kb, top_key[3:]), "id": top_key[3:],
-                      "count": round(top_w, 2)}
+                      "count": round(top_w, 2), "sources": top_src}
         # evidence-type / tier mix -- so nEff (a COUNT of roots) is never read as evidence QUALITY.
         # A position with one decisive RCT (nEff 1) and one with seven anecdotes (nEff 7) look very
         # different here even though the headline count favours the latter; this puts the design mix
@@ -529,11 +532,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
             "kind": "concentration", "positionId": w["id"], "label": w["label"], "hue": w["hue"],
             "badge": "concentration risk",
             "headline": "Apparent consensus is correlated.",
-            "detail": ('The "{}" position lists {} sources, but {} rest on one dataset — {}. '
-                       'That is closer to {:.1f} independent bases than {}. Counting sources '
+            "detail": ('The "{}" position lists {} sources, but {} of them rest on one dataset — {}. '
+                       'That is closer to {:g} independent bases than {}. Counting sources '
                        'here overstates the weight of evidence.').format(
-                           w["label"], w["raw"], w["topDataset"]["count"], w["topDataset"]["label"],
-                           w["nEff"], w["raw"]),
+                           w["label"], w["raw"], w["topDataset"]["sources"], w["topDataset"]["label"],
+                           round(w["nEff"], 1), w["raw"]),
         })
 
     mcand = [m for m in ma if m["monoculture"]]
