@@ -45,7 +45,7 @@ def _root_incidence(kb, res):
         weights = {}
         for s in src_by_pos.get(p["id"], []):
             for r in res["source_roots"].get(s["id"], ()):
-                if r.startswith("secpool:") or r.startswith("cycle:"):
+                if r.startswith(("secpool:", "primpool:", "cycle:")):
                     weights[r] = 1            # a COLLAPSED voice counts once, no matter how many
                 else:                          #   sources fell into it; real roots accumulate per
                     weights[r] = weights.get(r, 0) + _roots.root_strength(
@@ -58,7 +58,8 @@ def _root_presence(kb, res):
     """Per position, each resolved root's OWN strength, counted exactly once no matter how many
     sources rest on it: {posId: {rootKey: strength}}. Strength is 1.0 for a real root, halved for
     a dataset known only via a secondary source, halved again for a root backed only by animal /
-    in-vitro studies; the collapsed secondary voice and a circular loop each count once at 1.0.
+    in-vitro studies; the collapsed secondary voice, the pooled unnamed-primary voice, and a
+    circular loop each count once at 1.0.
     This idempotent map is the basis for nEff — writing the same key again cannot change it, which
     is what makes the independence number immune to flooding by construction."""
     src_by_pos = _src_by_pos(kb)
@@ -69,7 +70,7 @@ def _root_presence(kb, res):
         pres = {}
         for s in src_by_pos.get(p["id"], []):
             for r in res["source_roots"].get(s["id"], ()):
-                pres[r] = 1 if r.startswith(("secpool:", "cycle:")) else \
+                pres[r] = 1 if r.startswith(("secpool:", "primpool:", "cycle:")) else \
                     _roots.root_strength(r, secondary_only, nonhuman_only)
         per_pos[p["id"]] = pres
     return per_pos
@@ -409,7 +410,9 @@ def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset()):
     suffix = (" — " + ", ".join(notes)) if notes else ""
     if rk.startswith("ds:"):
         return _ds_label(kb, rk[3:]) + suffix
-    if rk.startswith("prim:"):
+    if rk.startswith("primpool:"):
+        return "unnamed first-hand claims (primary sources naming no evidence base, counted as one voice)"
+    if rk.startswith("prim:"):        # legacy own-root from a pre-pooling KB
         sid = rk[5:]
         t = next((s.get("title") for s in kb["sources"] if s["id"] == sid), sid)
         return (t or sid)[:60] + (suffix or " — its own primary observation")

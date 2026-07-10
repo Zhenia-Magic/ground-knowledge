@@ -79,9 +79,10 @@ Walk each source's edges down to the primary evidence it ultimately depends on:
 
 - rests on **root(s)** → those are its roots.
 - rests on **other source(s)** → its roots are the *union* of those sources' root sets (recursive).
-- rests on **nothing**:
-  - **primary tier** → the source *is its own root* (a new observation; benefit of the doubt).
-  - **secondary tier** → it has **no root of its own**. It joins the position's single **ungrounded-secondary pool** — one shared placeholder root per position (the "collapse all echo to one voice" rule).
+- rests on **nothing** (names no evidence base):
+  - **primary tier** → it joins the position's single **ungrounded-primary pool** — one shared "unnamed first-hand voice" per position. A source that claims original data but names none is unverifiable and indistinguishable from an assertion, so many of them collapse to one voice, exactly as reviews do. **You earn a distinct root by naming a distinct evidence base (a dataset/cohort/experiment), not by claiming the primary tier** — a real study names its own trial/sample and keeps full credit. *(An earlier version gave each ungrounded primary its own root "on benefit of the doubt"; that was the flooding hole — see §9, §10.1.)*
+  - **secondary tier** → it joins the position's single **ungrounded-secondary pool** — one shared "review voice" per position (the "collapse all echo to one voice" rule).
+  - an **unrecognised** evidence label is treated as secondary (conservative — a novel or opinion label must not mint a free primary root; a case with a genuinely new primary *design* opts it in via its evidence vocabulary).
 
 ### 6.3 Collapse cycles — circular corroboration
 Following source→source edges can produce a **cycle** (A→B→A, or longer). Compute the **strongly connected components (SCCs)** of the source graph. For each SCC of size > 1:
@@ -99,7 +100,8 @@ nEff = Σ strength(root_i)     over the position's DISTINCT resolved roots
 strength = 1.0   for a real root
          × 0.5   if the root is known only via secondary sources (edge case 5, §8)
          × 0.5   if the root is backed only by weakly-applicable evidence (edge case 6, §8)
-         = 1.0   for the one collapsed secondary voice, or a collapsed circular loop
+         = 1.0   for the one pooled secondary voice, the one pooled unnamed-primary voice,
+                 or a collapsed circular loop (each per position, counted once)
 ```
 
 This is the "effective number of independent looks," as a full-strength-equivalent root count. One root used by everyone → nEff = 1. Ten roots → nEff = 10, whether each is used once or one of them is used a hundred times. **How many sources land on each root is deliberately excluded from this number** — it feeds a separate *concentration* display ("82% of this position's sourcing leans on one root"), which is where a pile-up honestly belongs.
@@ -130,7 +132,7 @@ nEff answers "how many independent looks support this position," **not** "how go
 
 ## 8. Edge cases and how each resolves
 
-1. **Ungrounded primary source** (a real observation, no root tagged) → its own root (benefit of the doubt). *Weak spot:* someone could mislabel an opinion piece as a primary observation to mint a free root. *Partial defenses:* tier comes from controlled vocabulary; a verification pass; a relevance gate; funding defaults to "undisclosed" rather than assumed-independent.
+1. **Ungrounded primary source** (claims original data, names no evidence base) → joins the position's one **unnamed-primary pool**, not its own root. This is the fix for the old "benefit of the doubt" hole: mislabelling ten opinion pieces as primary observations no longer mints ten roots — they collapse to one voice, symmetric with the review pool. A *real* primary study keeps a distinct root by naming its own trial/cohort/sample. *Remaining exposure:* an adversary who **fabricates a named dataset** per source (not merely leaves it blank) still mints roots — that is edge fabrication (§9, §10.3), a labelling-integrity problem the arithmetic can't see, defended by quote verification, the controlled vocabulary, the ensemble vote, and human review, not by the count.
 2. **Synthesis pieces (e.g., meta-analyses)** — secondary or primary? If a synthesis produces a genuinely new pooled dataset (re-analyzing raw data), it is primary and that pooled dataset is its root. If it only narrates others' conclusions, it is secondary. The `restsOn` tag decides, not the label "synthesis."
 3. **Self-citing group** → shared underlying resource → collapses to 1. Alias resolution stops the same resource being smuggled in under many names.
 4. **Long / transitive chains** → resolve to the terminal root.
@@ -156,12 +158,13 @@ nEff answers "how many independent looks support this position," **not** "how go
 | Pile junk "support" onto a **rival's** biggest root | Poison by agreement: skew their shares, tank their score | Same — presence, not tallies. The rival's nEff holds; the pile-up surfaces as *their concentration rising*, labelled as a correlation warning, not a lower independence count |
 | Re-submit one underlying resource under many names | Fake many independent datasets | Normalized + alias root resolution; concentration *rises*, not falls |
 | Mutual citation ring (A↔B↔C↔A) | Manufacture corroboration from nothing | Strongly-connected-component collapse to one root + explicit flag |
-| Mislabel opinion as a primary observation | Mint a free independent root | Tier from controlled vocabulary; verification pass; relevance gate |
+| Mislabel opinion as a primary observation (empty `restsOn`) | Mint a free independent root | Ungrounded primaries **pool to one voice per position** (like reviews) — a distinct root requires *naming* a distinct evidence base, not claiming the tier; an unrecognised label defaults to secondary; plus verification pass + relevance gate |
+| Label a flood of rehashes "primary", each *naming a fabricated dataset* | Mint many roots past the pool | **Not fully defended** (edge fabrication) — raises the bar (each fake dataset is a checkable, alias-collidable, quote-verified claim) but relies on labelling integrity, not the count; named openly in §10.3 |
 | Single summary asserting broad support | Fake breadth | "Root present only via secondary source" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same URL, or same title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge time |
 
-The deep property, stated precisely and enforced by a randomized monotonicity test: **adding a source never lowers any position's nEff, and raises it only by introducing a new root or upgrading an existing root's strength** — both of which *should* raise it. Correlated, derivative, and circular evidence lands on roots already counted, so it moves nEff nowhere; a first wave of ungrounded echo adds at most the one collapsed secondary voice, once. (Not covered by this arithmetic: a source that *fabricates* a root outright — claiming an underlying resource that doesn't actually back it. That is edge fabrication, the dual of the edge omission in §10.3 — a labelling-integrity problem partially caught by per-edge provenance quotes and quote verification, named there rather than hidden behind the invariant.)
+The deep property, stated precisely and enforced by a randomized monotonicity test: **adding a source never lowers any position's nEff, and raises it only by introducing a new root or upgrading an existing root's strength** — both of which *should* raise it. Correlated, derivative, and circular evidence lands on roots already counted, so it moves nEff nowhere; a first wave of ungrounded echo adds at most the two pooled voices (one primary, one secondary), once each. *(Scope of the invariant: it is a theorem about the counting step with entity identity held fixed. The pipeline's entity-resolution can, on a source that teaches a new alias, retroactively **merge** two previously-distinct roots and so lower nEff — a curation event, not evidence loss; the invariant covers the arithmetic, not that step.)* (Not covered by this arithmetic: a source that *fabricates* a root outright — claiming an underlying resource that doesn't actually back it. That is edge fabrication, the dual of the edge omission in §10.3 — a labelling-integrity problem partially caught by per-edge provenance quotes and quote verification, named there rather than hidden behind the invariant.)
 
 ---
 

@@ -32,8 +32,15 @@ class TierTests(unittest.TestCase):
         self.assertEqual(tier_of(kb, {"evidence": "Experimental (RCT)"}), "primary")
         self.assertEqual(tier_of(kb, {"evidence": "Observational"}), "primary")
 
-    def test_unknown_type_defaults_primary(self):
-        self.assertEqual(tier_of(_kb([]), {"evidence": "Cliodynamic field survey"}), "primary")
+    def test_unknown_type_defaults_secondary(self):
+        # conservative: an unrecognised / coined evidence label must NOT mint a free primary root.
+        # A case with a genuinely new primary DESIGN opts in via vocab tier="primary".
+        self.assertEqual(tier_of(_kb([]), {"evidence": "Cliodynamic field survey"}), "secondary")
+
+    def test_recognised_primary_design_synonyms_classify(self):
+        for ev in ("Cohort study", "Case-control", "Cross-sectional",
+                   "Randomized controlled trial", "Clinical trial"):
+            self.assertEqual(tier_of(_kb([]), {"evidence": ev}), "primary", ev)
 
     def test_meta_analysis_is_secondary(self):
         # an untagged meta-analysis is echo, not an independent primary look
@@ -98,8 +105,17 @@ class ResolutionTests(unittest.TestCase):
 
     def test_self_loop_is_ignored(self):
         kb = _kb([_s("a", "X", "Observational", ["src:a"])])
-        res = resolve(kb)          # rests only on itself -> ungrounded primary -> own root
-        self.assertEqual(_roots(res, "a"), ["prim:a"])
+        res = resolve(kb)   # rests only on itself -> ungrounded primary naming no data -> pooled voice
+        self.assertEqual(_roots(res, "a"), ["primpool:X"])
+
+    def test_ungrounded_primary_pools_named_primary_keeps_its_root(self):
+        # THE echo-as-primary fix: a primary that names NO evidence base collapses to one 'unnamed
+        # first-hand voice' per position; a primary that NAMES its data keeps a distinct root.
+        kb = _kb([_s("anon", "X", "Observational", []),           # names nothing -> pooled
+                  _s("named", "X", "Observational", ["D"])])       # names its dataset -> ds:D
+        res = resolve(kb)
+        self.assertEqual(_roots(res, "anon"), ["primpool:X"])
+        self.assertEqual(_roots(res, "named"), ["ds:D"])
 
     def test_uppercase_src_prefix_is_still_a_source_edge_not_a_fake_dataset(self):
         # merge.py always stores restsOn edges lowercase, but a hand-authored/seed KB (SCHEMA.md)
@@ -131,6 +147,28 @@ class MetricTests(unittest.TestCase):
         ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
         self.assertAlmostEqual(ind["nEff"], 2.0, places=6)
         self.assertEqual(ind["collapsedSecondary"], 50)
+
+    def test_echo_as_primary_flood_cannot_inflate_independence(self):
+        # THE echo-as-primary attack: label a flood of ungrounded rehashes 'Observational' (primary)
+        # with empty restsOn, trying to mint one distinct root each. They must all collapse to ONE
+        # 'unnamed first-hand voice' -- one real grounded study + 50 anonymous primaries = 2 bases.
+        srcs = [_s("study", "X", "Observational", ["D"])]
+        srcs += [_s("r%d" % i, "X", "Observational", []) for i in range(50)]
+        ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(ind["nEff"], 2.0, places=6)   # NOT 51
+
+    def test_named_primaries_each_earn_a_distinct_root(self):
+        # the honest counterpart: real studies that each NAME their own evidence base keep full,
+        # distinct credit -- three named datasets -> nEff 3 (naming, not the tier claim, buys a root)
+        srcs = [_s("a", "X", "Observational", ["Da"]),
+                _s("b", "X", "Experimental (RCT)", ["Db"]),
+                _s("c", "X", "Cohort study", ["Dc"])]
+        self.assertAlmostEqual(self._neff(srcs), 3.0, places=6)
+
+    def test_unrecognized_label_flood_pools_as_secondary(self):
+        # a coined evidence label can't mint roots either: ungrounded 'NEW:'-style types -> one voice
+        srcs = [_s("q%d" % i, "X", "Cliodynamic survey", []) for i in range(30)]
+        self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)
 
     def test_grounded_echo_flood_cannot_inflate_independence(self):
         # THE attack the count-weighted formula failed: 10 sources on D1 + 1 on D2 reads as ~2

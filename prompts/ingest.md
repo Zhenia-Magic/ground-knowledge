@@ -57,14 +57,22 @@ multiplying via paraphrase as a case grows):
   Don't split one stance into several positions by its CONDITIONS (e.g. two "conditionally safe"
   camps) — use ONE "it depends" position and make each condition a FACTOR. If a new label would
   share its stance word with an existing position, reuse that position.
-- restsOn: the underlying PRIMARY evidence — named cohorts / trials / biobanks. A review or
-  meta-analysis restsOn the cohorts it POOLS, NOT "the literature" / "studies through <year>" /
-  a label describing the paper itself. Same cohort across sources => SAME label. If the cohorts
-  aren't named, list the few largest you can identify, else leave restsOn empty.
+- restsOn: the underlying PRIMARY evidence — named cohorts / trials / biobanks. Same cohort across
+  sources => SAME label (the audit collapses shared data to one root).
+  * If THIS source is itself a primary study (an RCT, a cohort/case-control/cross-sectional study,
+    an original experiment or observation), it MUST name its OWN evidence base — the trial, cohort,
+    sample, or dataset it collected. Use the study's own name ("NEW:MACH15 trial", "NEW:the 2019
+    Anderson laboratory experiment", "NEW:<cohort name> (<n>, <place/years>)"). A primary study that
+    names NO evidence base is treated as an unverifiable assertion and collapses into the position's
+    one 'unnamed first-hand voice' — so DON'T leave restsOn empty for a real study; name its data.
+  * A review or meta-analysis restsOn the cohorts it POOLS, NOT "the literature" / "studies through
+    <year>" / a label describing the paper itself. If the pooled cohorts aren't named, list the few
+    largest you can identify, else leave restsOn empty (it will count as one secondary voice).
   restsOn may also reference ANOTHER SOURCE when this source's case IS that source (a commentary on
   one paper; two pieces citing each other). Write "SRC:<existing source id>" or "NEW-SRC:<title>".
   This is how the independence audit detects echo and circular corroboration — name the source
-  rather than fabricating a dataset for it.
+  rather than fabricating a dataset for it. Leave restsOn empty ONLY for pure opinion/commentary
+  that grounds in nothing checkable.
 - funding: inspect funding statement, affiliations, and COI disclosures; classify into ONE of:
   Industry, Advocacy, Government/public, Nonprofit/charity, Academic/institutional. Use
   "Undisclosed" if the text states no funding/COI — do NOT assume independence when it is silent.

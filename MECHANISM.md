@@ -96,10 +96,16 @@ Walk each source's edges down to the primary evidence it ultimately depends on:
 - rests on **other source(s)** → its roots are the *union of those sources' root sets*
   (follow the chain recursively).
 - rests on **nothing**:
-  - **primary** tier → the source *is its own root* (a new observation; benefit of the doubt).
+  - **primary** tier, but names **no** evidence base → the position's single **ungrounded-primary
+    pool** (`primpool:<pos>`), one shared "unnamed first-hand voice" per position. A primary that
+    *names* its own trial/cohort/sample keeps a distinct root; one that names nothing is an
+    unverifiable assertion and pools, symmetric with reviews. *(Earlier this minted a per-source
+    root "on benefit of the doubt" — the echo-as-primary flooding hole; see §7, §8.1.)*
   - **secondary** tier → it has **no root of its own**. It joins this position's single
     **ungrounded-secondary pool** — one shared pseudo-root per position. (This is the
     "collapse all echo to one voice" decision.)
+  - an **unrecognised** evidence label resolves as **secondary** (conservative — a coined/opinion
+    label can't mint a primary root; a new primary *design* is opted in via `kb.vocab` tier).
 
 ### 4.3 Collapse cycles — *circular corroboration*
 While following source→source edges we may hit a **cycle**: A→B→A, or longer. Compute the
@@ -121,10 +127,11 @@ distinct root exactly once, at its strength**:
 ```
 nEff = Σ strength(root_i)     over the position's DISTINCT resolved roots
 
-strength = 1.0   for a real root (dataset, own primary observation)
+strength = 1.0   for a real root (a NAMED dataset / cohort / experiment)
          × 0.5   if the root is known only via secondary sources (§6.5)
          × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
-         = 1.0   for the one collapsed secondary voice, or a collapsed circular loop
+         = 1.0   for the pooled secondary voice, the pooled unnamed-primary voice, or a
+                 collapsed circular loop (one of each per position, counted once)
 ```
 
 This is the "effective number of independent looks," as a full-strength-equivalent root count.
@@ -179,10 +186,13 @@ meta-flag: "this root is read both ways" (contested evidence).
 
 ## 6. Edge cases and how each resolves
 
-1. **Ungrounded primary source** (a real observation, no dataset tagged) → its own root (benefit
-   of the doubt). *Weak spot:* someone could mislabel a commentary as `Observational` to mint a
-   free root. *Defense:* tier comes from the controlled vocab; the verification pass; the relevance
-   gate; funding-defaults-to-Undisclosed. Flagged below as an open risk.
+1. **Ungrounded primary source** (claims original data, names no dataset) → the position's one
+   **unnamed-primary pool**, not a per-source root. Mislabelling a flood of commentaries as
+   `Observational` therefore mints ONE voice, not one root each — the echo-as-primary hole is
+   closed by pooling (symmetric with reviews). A real study keeps its root by *naming* its own
+   data. *Remaining risk:* fabricating a distinct named dataset per source still mints roots (edge
+   fabrication, §8.3) — bounded by quote verification, the vocab, the ensemble + human review, not
+   by the count.
 
 2. **Meta-analysis** — *secondary or primary?* If it produces a **new pooled dataset** (re-analyzes
    raw data), it is primary: tag that pooled dataset as a root and it counts. If it only narrates
@@ -236,11 +246,13 @@ meta-flag: "this root is read both ways" (contested evidence).
 | Attack | What the attacker wants | Defense |
 |---|---|---|
 | Flood with review articles | Inflate independence with echo | Secondary tier collapses to one voice per position |
+| Flood with ungrounded "primary" rehashes (empty `restsOn`) | Mint a root each, bypassing the review collapse | Ungrounded primaries pool to one voice per position too — a distinct root needs a *named* evidence base |
 | Flood echo onto a *minority* root the position already has | Even out the per-root source shares so a share-based index reads "more independent" | nEff counts each distinct root once (§4.4) — share-shuffling is arithmetic on a number the metric doesn't use |
 | Pile junk "support" onto a **rival's** biggest root | Poison by agreement: skew their shares, tank their score | Same — presence, not tallies. The rival's nEff holds; the pile-up surfaces as *their concentration rising*, clearly labelled as a warning about correlation, not a lower independence count |
 | Re-submit one cohort under many names | Fake many independent datasets | Normalized + alias root resolution; concentration *rises*, not falls |
 | Mutual citation ring (A↔B↔C↔A) | Manufacture corroboration from nothing | SCC collapse to one root + `circularCorroboration` flag |
-| Mislabel a commentary as `Observational` | Mint a free independent root | Tier from controlled vocab; verification pass; relevance gate |
+| Mislabel a commentary as `Observational` (empty `restsOn`) | Mint a free independent root | Ungrounded primaries **pool to one voice per position** (like reviews); a distinct root needs a *named* evidence base; unrecognised labels default secondary; + verification pass + relevance gate |
+| Flood rehashes as `Observational`, each *naming a fabricated dataset* | Mint roots past the pool | **Not fully defended** (edge fabrication, §8.3) — bounded by quote verification, vocab, ensemble + human review, not the count |
 | Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
@@ -250,7 +262,10 @@ The deep property, stated precisely (and enforced by a randomized monotonicity t
 only by introducing a new root or upgrading an existing root's strength** (primary grounding for a
 review-only dataset; human evidence for an animal-only root — both of which *should* raise it).
 Correlated, derivative, and circular evidence lands on roots already counted, so it moves nEff
-nowhere; a first wave of ungrounded echo adds at most the one collapsed secondary voice, once.
+nowhere; a first wave of ungrounded echo adds at most the two pooled voices (one unnamed-primary,
+one secondary), once each. (Scope: the invariant is a theorem about the counting step with entity
+identity fixed — the merge step's alias resolution can retroactively fold two roots into one and so
+*lower* nEff, a curation event the arithmetic doesn't cover.)
 An earlier formulation (a Herfindahl index over per-root source tallies) passed the ungrounded
 attacks in this table but failed the two grounded ones — found by adversarially testing the metric
 against its own claims, which is why the grounded rows above exist and why the invariant is now a

@@ -20,6 +20,15 @@ given the inputs.
 import re
 from collections import Counter, OrderedDict
 
+from engine.roots import _TIER as _ROOT_TIER, _norm as _root_norm
+
+
+def _tier_of_label(evidence):
+    """primary | secondary for a raw evidence label, via the engine's default tier map (an
+    unrecognised label -> secondary, matching engine.roots.tier_of). Used only to detect a
+    primary/secondary SPLIT across the ensemble; the case-vocab tier override isn't in scope here."""
+    return _ROOT_TIER.get(_root_norm(evidence), "secondary")
+
 
 def _norm(s):
     return re.sub(r"[^a-z0-9]+", " ", str(s if s is not None else "").lower()).strip()
@@ -226,6 +235,17 @@ def combine_one(deltas):
         if len({_norm(s.get(field)) for s in rs if s.get(field)}) > 1:
             disagreed.append(field)
 
+    # ESCALATE a tier split. Evidence TIER (primary makes evidence, secondary talks about it) is a
+    # bigger nEff lever than the position itself — a source voted 'primary' mints an independent root
+    # that the same source voted 'secondary' would not. So if the models straddle the primary/
+    # secondary boundary, flag for human review even though the field-vote still picked a winner;
+    # a wrong tier silently mints or denies a root (see engine/roots.tier_of, MECHANISM.md §8.1).
+    ev_tiers = {_tier_of_label(s.get("evidence")) for s in rs if s.get("evidence")}
+    if len(ev_tiers) > 1:
+        flagged = True
+        if "evidence" not in disagreed:
+            disagreed.append("evidence")
+
     # restsOn: models routinely name the SAME underlying cohort differently, so cluster edge
     # proposals across models BEFORE voting — otherwise a 2-model ensemble unions both names and
     # the merge mints twin datasets, double-counting one study's data as two independent roots.
@@ -300,6 +320,7 @@ def combine_one(deltas):
             fws.append(base)
 
     rep = {"models": n, "positionAgreement": round(pos_agree, 2), "flagged": flagged,
+           "tierSplit": len(ev_tiers) > 1,
            "disagreedFields": sorted(set(disagreed)),
            "positionVote": pos_vote, "proposals": proposals}
     out["modelAgreement"] = rep

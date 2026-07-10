@@ -6,10 +6,22 @@ Resolves every source to the primary EVIDENTIARY ROOTS it ultimately depends on,
 sources. Pure functions of the KB; deterministic; no side effects.
 
 Root keys produced:
-    ds:<id>          a real dataset / cohort / experiment
-    prim:<sourceId>  an ungrounded PRIMARY source — its own root (benefit of the doubt)
-    secpool:<posId>  the single 'ungrounded secondary' voice for a position (all echo collapses here)
-    cycle:<sourceId> a circular-corroboration loop with no primary grounding (flagged)
+    ds:<id>           a real dataset / cohort / experiment
+    primpool:<posId>  the single 'unnamed first-hand voice' for a position — every ungrounded
+                      PRIMARY source that names NO evidence base collapses here (you earn a
+                      distinct root by NAMING a distinct dataset, not by claiming the primary tier)
+    secpool:<posId>   the single 'ungrounded secondary' voice for a position (all echo collapses here)
+    cycle:<sourceId>  a circular-corroboration loop with no primary grounding (flagged)
+
+Design note (why ungrounded primaries pool): an earlier version gave each ungrounded primary its
+OWN root (prim:<sourceId>, 'benefit of the doubt'). That is the flooding hole — an adversary (or a
+careless labeller) marks ten rehashes 'Observational' with an empty restsOn and mints ten roots,
+bypassing the echo collapse that only fired for the secondary tier. Pooling makes ungrounded
+primaries collapse symmetrically with ungrounded secondaries: a source that claims original data but
+names none is epistemically indistinguishable from an assertion and is worth one pooled voice. A
+REAL primary study keeps full, distinct credit by naming its own trial/cohort/sample in restsOn
+(the labelling prompt requires this). prim:<sourceId> keys from older KBs still resolve for
+back-compat but are no longer produced.
 """
 import re
 
@@ -18,33 +30,45 @@ def _norm(s):
 
 
 # Evidence type -> tier. Only matters for UNGROUNDED sources: a grounded source resolves through its
-# dataset(s) regardless of tier. Unknown types default to PRIMARY (benefit of the doubt). A case can
-# override by putting "tier" on the evidence vocab term. Keys are normalised (see _norm) so that
-# punctuation like "Experimental (RCT)" or "Narrative/Commentary" still matches.
+# dataset(s) regardless of tier. A case can override by putting "tier" on the evidence vocab term.
+# Keys are normalised (see _norm) so that punctuation like "Experimental (RCT)" or
+# "Narrative/Commentary" still matches. An UNRECOGNISED type defaults to SECONDARY (see tier_of):
+# the conservative direction — a novel/opinion label must not mint a free independent root; a case
+# that has a genuinely new primary DESIGN adds it to its vocab with tier="primary".
 _TIER = {_norm(k): v for k, v in {
+    # -- primary: designs that MAKE new evidence (a first-hand data collection) --
     "observational": "primary", "experimental (rct)": "primary", "experimental": "primary",
+    "randomized controlled trial": "primary", "randomised controlled trial": "primary",
+    "rct": "primary", "clinical trial": "primary", "controlled trial": "primary",
+    "cohort": "primary", "cohort study": "primary", "prospective cohort": "primary",
+    "retrospective cohort": "primary", "case-control": "primary", "case control": "primary",
+    "cross-sectional": "primary", "cross sectional": "primary", "longitudinal": "primary",
+    "case series": "primary", "ecological": "primary", "field study": "primary",
     "mechanistic": "primary", "theoretical analysis": "primary",
     "theoretical critique": "primary", "modelling": "primary", "simulation": "primary",
     # A meta-analysis / systematic review is a SYNTHESIS of others' studies, not new primary data.
     # It only counts as independent if it TAGS the trials it pools (then it resolves through them);
     # an untagged one is echo and collapses into the position's one secondary voice (MECHANISM.md §3).
-    "meta-analysis": "secondary", "systematic review": "secondary",
+    "meta-analysis": "secondary", "systematic review": "secondary", "scoping review": "secondary",
+    "umbrella review": "secondary",
     "evidence-synthesis": "secondary", "expert advisory": "secondary", "expert review": "secondary",
     "narrative/commentary": "secondary", "narrative": "secondary", "commentary": "secondary",
-    "institutional statement": "secondary", "editorial": "secondary", "perspective": "secondary",
-    "review": "secondary", "guideline": "secondary",
+    "institutional statement": "secondary", "position statement": "secondary",
+    "consensus statement": "secondary", "editorial": "secondary", "perspective": "secondary",
+    "opinion": "secondary", "letter": "secondary", "review": "secondary", "guideline": "secondary",
 }.items()}
 
 
 def tier_of(kb, source):
-    """primary | secondary for a source, from the case vocab's tier if set, else the default map."""
+    """primary | secondary for a source: the case vocab's tier if set, else the default map, else
+    SECONDARY for an unrecognised label (conservative — an unknown/opinion tier can't mint a root)."""
     ev = _norm(source.get("evidence"))
     for t in (kb.get("vocab", {}).get("evidence") or []):
         if _norm(t.get("label")) == ev or any(_norm(a) == ev for a in t.get("aliases", [])):
             if t.get("tier") in ("primary", "secondary"):
                 return t["tier"]
             break
-    return _TIER.get(ev, "primary")
+    return _TIER.get(ev, "secondary")
 
 
 # population tokens / phrases that mark a NON-human study (animal model or in-vitro). Token match
@@ -160,7 +184,10 @@ def resolve(kb):
                                  "positions": sorted({sources[s]["position"] for s in comp})})
             else:
                 s = sources[comp[0]]
-                roots = {"prim:" + comp[0]} if tier_of(kb, s) == "primary" \
+                # ungrounded, no named evidence base: a primary that names nothing collapses to the
+                # position's one 'unnamed first-hand voice' (primpool), a secondary to its review
+                # voice (secpool). Both pool per position, so flooding either tier adds one voice once.
+                roots = {"primpool:" + s["position"]} if tier_of(kb, s) == "primary" \
                     else {"secpool:" + s["position"]}
         memo[ci] = roots
         return roots
@@ -179,16 +206,18 @@ def resolve(kb):
     # a root is 'non-human only' if EVERY source resting on it is an animal / in-vitro study — it's
     # weaker evidence for a human/clinical question, so it counts at half (like secondary-only).
     human, animal = set(), set()
+    _COLLAPSED = ("secpool:", "primpool:", "cycle:")            # pooled voices: halving n/a
     for s in kb["sources"]:
         target = animal if _is_nonhuman(s) else human
         for r in source_roots[s["id"]]:
-            if not (r.startswith("secpool:") or r.startswith("cycle:")):  # collapsed voices: n/a
+            if not r.startswith(_COLLAPSED):
                 target.add(r)
     nonhuman_only = animal - human
 
     def kind_of(r):
         return {"d": "dataset", "p": "primary", "s": "secondary", "c": "cycle"}[
-            ("d" if r.startswith("ds:") else "p" if r.startswith("prim:")
+            ("d" if r.startswith("ds:")
+             else "p" if r.startswith(("prim:", "primpool:"))     # own-root (legacy) or pooled voice
              else "s" if r.startswith("secpool:") else "c")]
     kinds = {r: kind_of(r) for rs in source_roots.values() for r in rs}
 

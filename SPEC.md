@@ -146,8 +146,11 @@ black-hole case: the three cruxes appeared only when the dissenting source arriv
 position**, not sources. It resolves every source down to the primary evidence it ultimately
 depends on by following its `restsOn` edges (to datasets **and to other sources**), then:
 - **shared datasets** collapse to one root (eight papers off one cohort = one look);
-- **ungrounded secondary sources** — reviews, commentary, *and untagged meta-analyses* — collapse to
-  a single "voice" per position (a pile of reviews can neither inflate a side **nor** tank a rival);
+- **ungrounded sources that name no evidence base** collapse to a single "voice" per position —
+  one for reviews/commentary/untagged meta-analyses, and one for **primaries that name no data**
+  (an original study earns a distinct root only by *naming* its trial/cohort/sample, not by claiming
+  the tier — this closes the "label your echo Observational" flooding hole); an unrecognised evidence
+  label defaults to secondary;
 - **strongly-connected citation cycles** (A→B→A with no primary grounding) collapse to one root and
   raise a **circular-corroboration flag** — the adversarial pattern, surfaced loudly;
 - a dataset known **only via a review**, or a root backed **only by animal / in-vitro** sources,
@@ -270,6 +273,12 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   collapses to **one voice** — so flooding can neither inflate a position **nor** tank a rival
   (collapsing to one voice is symmetric; a count-weighted version would let you attack a side you
   dislike by flooding it). Re-used cohorts collapse the same way.
+- *Echo relabelled "primary".* The same flood dressed as original observations with an empty
+  `restsOn` no longer mints a root each — **ungrounded primaries pool to one voice per position**
+  too, so a distinct root requires *naming* a distinct evidence base, not claiming the tier
+  (`test_echo_as_primary_flood_cannot_inflate_independence`). An unrecognised evidence label
+  defaults to secondary for the same reason. *Not defended:* fabricating a distinct *named* dataset
+  per source (edge fabrication) — bounded by quote verification + ensemble + human review, below.
 - *Circular corroboration.* Two sources whose only support is citing each other — the adversarial
   pattern a reviewer flagged — are detected as a strongly-connected cycle, collapsed to one root,
   and **flagged**, instead of reading as two independent confirmations.

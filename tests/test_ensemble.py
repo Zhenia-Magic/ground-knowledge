@@ -62,6 +62,22 @@ class CombineOneTests(unittest.TestCase):
         self.assertTrue(rep["flagged"])
         self.assertIn("position", rep["disagreedFields"])
 
+    def test_tier_split_escalates_even_when_position_agrees(self):
+        # models agree on the POSITION but split on evidence TIER (primary vs secondary): the bigger
+        # nEff lever, so escalate to human review though the field-vote still picks a winner.
+        c, rep = self._one([_d("NEW:Increases aggression", evidence="Observational"),
+                            _d("NEW:Increases aggression", evidence="Narrative/Commentary")])
+        self.assertTrue(rep["tierSplit"])
+        self.assertTrue(rep["flagged"])
+        self.assertIn("evidence", rep["disagreedFields"])
+
+    def test_same_tier_evidence_variation_is_not_a_tier_split(self):
+        # review vs meta-analysis differ, but both are SECONDARY -> not a tier split, no escalation
+        c, rep = self._one([_d("NEW:Increases aggression", evidence="Systematic review"),
+                            _d("NEW:Increases aggression", evidence="Meta-analysis")])
+        self.assertFalse(rep["tierSplit"])
+        self.assertFalse(rep["flagged"])
+
     def test_winning_models_quote_is_carried(self):
         c, _ = self._one([_d("NEW:Increases aggression", conf=0.6),
                           _d("NEW:Increases aggression", conf=0.9),

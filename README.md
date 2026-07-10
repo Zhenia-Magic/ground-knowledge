@@ -215,10 +215,12 @@ knowledge base that holds up under motivated reading and gets better as more peo
   graphs, so an adversary who *omits* a `src:` edge can still look more independent than they are —
   stated plainly in [`MECHANISM.md`](MECHANISM.md) §8 rather than papered over.
 - **Tier classification** (primary vs secondary evidence) leans on the evidence label being right;
-  a mislabel can mint or deny an independent base. Partial defenses exist (controlled vocab,
-  relevance gate, funding-defaults-to-Undisclosed, and a multi-model **ensemble vote** that
-  escalates genuine label disagreements to a human review queue rather than guessing); not airtight
-  against a blind spot shared across models.
+  a mislabel can mint or deny an independent base. Defenses: **ungrounded primaries pool to one
+  voice per position** (a distinct root needs a *named* evidence base, not a claimed tier — so
+  relabelling echo "Observational" can't inflate), unrecognised labels default to secondary,
+  controlled vocab, relevance gate, funding-defaults-to-Undisclosed, and a multi-model **ensemble
+  vote** that escalates genuine tier/position disagreements to a human review queue. Not airtight
+  against a *fabricated named dataset* per source, or a blind spot shared across models.
 - Entity resolution is normalized-string + alias matching — robust to casing/aliases, not to
   paraphrase. The `dups`/`merge` curation tools + a token-overlap suggester mitigate; embedding-match
   with human confirmation is the next step.

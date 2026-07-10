@@ -154,7 +154,10 @@ And then the metrics computed from these:
   and adding a sixth, sixtieth, or six-hundredth source on that dataset moves the count by exactly
   nothing; the pile-up shows only in the separate *concentration* share. This is the metric that
   refuses to be gamed by volume, in either direction: you can't inflate your own side with
-  correlated sources, and you can't tank a rival by "supporting" it with junk.
+  correlated sources, and you can't tank a rival by "supporting" it with junk. You also can't fake
+  independence by *relabelling* echo as original research: a distinct root requires **naming** a
+  distinct evidence base, so sources that name none — reviews, or "primaries" with nothing tagged —
+  each collapse to a single pooled voice per position.
 - **Cruxes** — from the factor grid: a factor is a "crux" when the camps weigh it very
   differently (spread of ≥2 levels). This localises *where* the disagreement actually is. Cruxes
   **emerge** as the base grows — a factor only becomes a crux once two different camps have
