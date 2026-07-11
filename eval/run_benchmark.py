@@ -52,7 +52,10 @@ def _root_labels(kb):
 
 def structure_recall(name, kb, gold):
     ind = {p["label"]: p for p in assess.independence(kb)}
-    cruxes = {c["label"] for c in assess.cruxes(kb) if c.get("isCrux")}
+    # a gold crux is "surfaced" if the tool flags the factor as doing real work in the dispute —
+    # a headline crux (cross-camp disagreement / shared pivot) OR a one-sided load-bearing / left-
+    # unanswered factor. The headline isCrux count stays tight; this is the "surface what matters" set.
+    cruxes = {c["label"] for c in assess.cruxes(kb) if c.get("loadBearing")}
     roots = _root_labels(kb)
 
     def _hit(expected, have):
@@ -169,6 +172,13 @@ def main(argv=None):
         for k, v in sr.items():
             if v:
                 print("  recall/%-9s %d/%d" % (k, v[0], v[1]))
+
+        cx = assess.cruxes(kb)
+        n_crux = sum(1 for c in cx if c["isCrux"])
+        n_one = sum(1 for c in cx if c["oneSidedLoadBearing"])
+        n_miss = sum(1 for c in cx if c["missingCounterassessment"])
+        print("  crux types: %d headline crux (disagreement/shared pivot) · %d one-sided load-bearing"
+              " · %d left-unanswered  (of %d factors)" % (n_crux, n_one, n_miss, len(cx)))
 
         print("  collapse (raw sources -> distinct independent bases):")
         for label, raw, neff in collapse(kb):

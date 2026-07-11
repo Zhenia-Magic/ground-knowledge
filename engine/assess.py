@@ -397,16 +397,50 @@ def crux_score(factor, positions):
 
 
 def cruxes(kb):
-    """Per factor: the weighting spread, whether it's a crux (spread >= 2), and how many
-    positions actually weighed it (`engaged`). A factor only one position weighed is not a
-    point of divergence at all — it's a dimension one camp raises and the others ignore — so
-    the viewer can separate those out instead of cluttering the matrix with spread-0 rows."""
+    """Per factor: how the camps weigh it, and WHAT KIND of decision-relevant factor it is.
+
+    A single spread>=2 test misses factors that matter for reasons other than a large weight
+    disagreement (the old detector found ~1 of 3 hand-picked cruxes per case). So we surface
+    principled, separately-labelled kinds, over ordinal weights (high=3/med=2/low=1; n/a and
+    un-weighed excluded):
+
+      crossCampCrux            >=2 camps weigh it AND their weights differ by >=2 -- the classic
+                               point of active disagreement.
+      sharedPivot              >=2 camps BOTH rate it 'high' -- both sides agree it is decisive and
+                               it is unresolved; a spread of 0 hides this ("Hawking radiation").
+      oneSidedLoadBearing      exactly ONE camp weighs it and rates it 'high' -- a load-bearing
+                               assumption no other camp has engaged ("the safety argument itself").
+      missingCounterassessment >=2 camps engaged and >=1 rates it 'high', but >=1 position gave it
+                               NO weight -- a decisive point a camp has left unanswered.
+      contestedWeight          >=2 camps weigh it and differ by exactly 1 -- a milder disagreement
+                               (surfaced for the reader, but below the crux bar).
+
+    isCrux (the headline "genuine divergence") stays tight = crossCampCrux OR sharedPivot, so the
+    crux COUNT keeps its discriminating power (it does NOT balloon to every factor). loadBearing =
+    isCrux OR oneSidedLoadBearing OR missingCounterassessment -- "this factor is doing real work in
+    the dispute", which is what 'surface what matters' asks for. Factor label variants are folded at
+    ingestion (engine/merge._resolve_factor), so aliases don't split a crux here."""
+    num_pos = len(kb["positions"])
     out = []
     for f in kb["factors"]:
-        engaged = sum(1 for p in kb["positions"] if WV.get(f["weights"].get(p["id"])))
+        ords = [WV.get(f["weights"].get(p["id"])) for p in kb["positions"]]
+        ords = [v for v in ords if v]                       # drop None (no weight) and 0 (n/a)
+        engaged = len(ords)
+        maxw = max(ords) if ords else 0
+        highs = sum(1 for v in ords if v == 3)
         sp = crux_score(f, kb["positions"])
-        out.append({"id": f["id"], "label": f["label"], "spread": sp,
-                    "isCrux": sp >= 2, "engaged": engaged})
+        unaddressed = 0 < engaged < num_pos
+        cross = engaged >= 2 and sp >= 2
+        shared = highs >= 2
+        one_sided = engaged == 1 and maxw == 3
+        missing = engaged >= 2 and unaddressed and maxw == 3
+        contested = engaged >= 2 and sp == 1
+        is_crux = cross or shared
+        out.append({"id": f["id"], "label": f["label"], "spread": sp, "engaged": engaged,
+                    "isCrux": is_crux, "crossCampCrux": cross, "sharedPivot": shared,
+                    "oneSidedLoadBearing": one_sided, "missingCounterassessment": missing,
+                    "contestedWeight": contested,
+                    "loadBearing": bool(is_crux or one_sided or missing)})
     return out
 
 

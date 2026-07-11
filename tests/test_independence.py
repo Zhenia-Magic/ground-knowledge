@@ -633,3 +633,52 @@ class DedupTests(unittest.TestCase):
         rep = curate.dedupe_sources(kb)
         self.assertEqual(len(rep["removed"]), 1)
         self.assertEqual(len(kb["sources"]), 1)
+
+
+class CruxTaxonomyTests(unittest.TestCase):
+    """The crux detector surfaces WHAT KIND of decision-relevant factor each one is, instead of a
+    single spread>=2 test that missed most hand-picked cruxes. The headline isCrux stays tight so it
+    does not balloon to every factor (see the minor-factor test)."""
+
+    def _kbf(self, positions, factors):
+        hues = ["#111", "#222", "#333"]
+        return {"positions": [{"id": p, "label": p, "hue": hues[i % 3]} for i, p in enumerate(positions)],
+                "datasets": [], "factors": factors, "sources": [], "vocab": {"evidence": []}}
+
+    def _f(self, fid, weights):
+        return {"id": fid, "label": fid, "weights": weights, "rationale": "", "provenance": []}
+
+    def test_cross_camp_disagreement_is_headline_crux(self):
+        from engine.assess import cruxes
+        c = cruxes(self._kbf(["A", "B"], [self._f("f", {"A": "high", "B": "low"})]))[0]
+        self.assertTrue(c["crossCampCrux"])
+        self.assertTrue(c["isCrux"])
+
+    def test_shared_high_is_a_pivot_crux_despite_zero_spread(self):
+        # both camps rate it decisive -> a genuine crux the spread test (0) used to miss
+        from engine.assess import cruxes
+        c = cruxes(self._kbf(["A", "B"], [self._f("f", {"A": "high", "B": "high"})]))[0]
+        self.assertEqual(c["spread"], 0)
+        self.assertTrue(c["sharedPivot"])
+        self.assertTrue(c["isCrux"])
+
+    def test_one_sided_load_bearing_is_flagged_but_not_a_headline_crux(self):
+        from engine.assess import cruxes
+        c = cruxes(self._kbf(["A", "B"], [self._f("f", {"A": "high"})]))[0]
+        self.assertTrue(c["oneSidedLoadBearing"])
+        self.assertFalse(c["isCrux"])              # a lone assumption is not a disagreement
+        self.assertTrue(c["loadBearing"])
+
+    def test_missing_counterassessment_when_a_camp_is_silent_on_a_decisive_factor(self):
+        from engine.assess import cruxes
+        c = cruxes(self._kbf(["A", "B", "C"], [self._f("f", {"A": "high", "B": "med"})]))[0]
+        self.assertTrue(c["missingCounterassessment"])   # C never weighed a factor A calls decisive
+        self.assertTrue(c["loadBearing"])
+
+    def test_minor_factor_both_rate_low_is_not_load_bearing(self):
+        # the anti-"everything is a crux" floor: no camp leans on it, no disagreement -> nothing fires
+        from engine.assess import cruxes
+        c = cruxes(self._kbf(["A", "B"], [self._f("f", {"A": "low", "B": "low"})]))[0]
+        self.assertFalse(c["isCrux"])
+        self.assertFalse(c["loadBearing"])
+        self.assertFalse(c["oneSidedLoadBearing"])

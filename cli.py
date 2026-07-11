@@ -138,14 +138,23 @@ def cmd_show(args):
         L += ["", "WARNINGS"]
         for w in a["warnings"]:
             L.append("  ⚠ {} {}".format(w["headline"], w["detail"]))
-    L += ["", "CRUXES  (● crux = spread ≥2 ; factors only one camp weighs are [1-sided])"]
-    order = sorted(a["cruxes"], key=lambda c: (0 if c["isCrux"] else (1 if c["engaged"] >= 2 else 2),
-                                               -c["spread"]))
+    L += ["", "CRUXES  (● crux = active disagreement or shared pivot ; ◐ one camp leans on it ;"
+          " ! left unanswered by a camp)"]
+    order = sorted(a["cruxes"],
+                   key=lambda c: (0 if c["isCrux"] else 1 if c.get("loadBearing") else 2, -c["spread"]))
     for c in order:
-        one = c["engaged"] < 2
-        mark = "●" if c["isCrux"] else (" " if one else "·")
-        L.append("  " + mark + " " + c["label"] +
-                 "  (spread {}{})".format(c["spread"], "  [1-sided]" if one else ""))
+        mark = "●" if c["isCrux"] else ("◐" if c.get("oneSidedLoadBearing") else
+                                        "!" if c.get("missingCounterassessment") else
+                                        "·" if c.get("contestedWeight") else " ")
+        tags = []
+        if c.get("sharedPivot"):
+            tags.append("both-high")
+        if c.get("oneSidedLoadBearing"):
+            tags.append("one camp only")
+        if c.get("missingCounterassessment"):
+            tags.append("a camp is silent")
+        note = ("  [" + ", ".join(tags) + "]") if tags else ""
+        L.append("  " + mark + " " + c["label"] + "  (spread {}){}".format(c["spread"], note))
     L += ["", "BLINDSPOTS"]
     for p in a["blindspots"]:
         miss = p["missingEvidence"] + p["missingPop"]
@@ -157,6 +166,27 @@ def cmd_show(args):
 # ---------------------------------------------------------------- assess
 def cmd_assess(args):
     print(json.dumps(assess(read_json(args.kb)), indent=2, ensure_ascii=False))
+
+
+def cmd_demo(args):
+    """One-command tour: per-case collapse + headline cruxes, live viewer links, and the full
+    reproducible benchmark (structure recall · collapse · adversarial robustness)."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    links = {"covid": "ac81b4cae8d0", "eggs": "04329878656c", "blackholes": "c6c6ad01ec11"}
+    print("GROUND KNOWLEDGE — demo      live, no setup: https://groundknowledge.org\n")
+    for name in ("covid", "eggs", "blackholes"):
+        kb = read_json(os.path.join(here, "cases", name + ".kb.json"))
+        a = assess(kb)
+        print("### %s — %s" % (name.upper(), kb["meta"]["question"]))
+        for p in a["independence"]:
+            print("   %-42s %2d sources -> %.1f independent bases"
+                  % (p["label"][:42], p["raw"], p["nEff"]))
+        heads = [c["label"] for c in a["cruxes"] if c["isCrux"]]
+        print("   headline cruxes: " + (", ".join(heads) or "—"))
+        print("   view: https://groundknowledge.org/q/%s\n" % links[name])
+    sys.path.insert(0, os.path.join(here, "eval"))    # run the reproducible benchmark inline
+    import run_benchmark
+    return run_benchmark.main([])
 
 
 def cmd_gaps(args):
@@ -823,6 +853,8 @@ def main():
     s.add_argument("--out"); s.set_defaults(fn=cmd_init)
     s = sub.add_parser("show"); s.add_argument("kb"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("assess"); s.add_argument("kb"); s.set_defaults(fn=cmd_assess)
+    s = sub.add_parser("demo", help="one-command tour: per-case collapse + cruxes + full benchmark")
+    s.set_defaults(fn=cmd_demo)
     s = sub.add_parser("validate", help="validate schema v2 plus IDs and cross-references")
     s.add_argument("kb"); s.set_defaults(fn=cmd_validate)
     s = sub.add_parser("migrate", help="additively migrate a v1 KB to schema v2")
