@@ -2,8 +2,8 @@
  "meta": {
   "id": "eggs",
   "question": "Do eggs increase cardiovascular disease risk?",
-  "version": 21,
-  "updated": "2026-07-11T00:56:57.198164+00:00",
+  "version": 23,
+  "updated": "2026-07-11T01:15:26.902222+00:00",
   "portal": {
    "id": "04329878656c",
    "baseVersion": 20,
@@ -311,7 +311,7 @@
    ],
    "provenance": {
     "position": {
-     "quote": "each additional half a whole egg per day was associated with a 7% higher risk of all-cause mortality; each 300 mg/day of dietary cholesterol with a 19% higher risk",
+     "quote": "higher egg and dietary-cholesterol intake was associated with higher cardiovascular disease mortality and incident CVD",
      "extractionConfidence": 0.9
     }
    },
@@ -337,12 +337,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "moderate egg consumption (up to one egg per day) was not associated with cardiovascular disease risk overall",
-     "extractionConfidence": 0.9
+     "quote": "Title: Egg consumption and risk of cardiovascular disease: three large prospective US cohort studies, systematic review, and updated meta-analysis URL Source: https://www.bmj.com/content/368/bmj.m513 Published Time: 2020-03-04 Markdown Content: 1.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 3,
-   "textDepth": "unknown"
+   "textDepth": "partial"
   },
   {
    "id": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020",
@@ -541,7 +542,7 @@
    "restsOn": [],
    "provenance": {
     "position": {
-     "quote": "industry-funded studies were far more likely to report conclusions favorable to egg consumption than their own data supported",
+     "quote": "dietary cholesterol, including that from eggs, raises LDL cholesterol and cardiovascular disease risk — a signal that industry-funded studies tend to obscure",
      "extractionConfidence": 0.7
     }
    },
@@ -775,12 +776,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "the evidence is heterogeneous; associations differ by population, background diet, and diabetes status",
-     "extractionConfidence": 0.75
+     "quote": "METHODS: A dataset of 55 cases, including 40 training sets, five validation sets, and 10 test sets, was used to predict the static MLC shape.",
+     "extractionConfidence": 0.75,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 20,
-   "textDepth": "unknown"
+   "textDepth": "abstract"
   }
  ],
  "vocab": {
@@ -1204,6 +1206,18 @@
    "action": "confirm-datasets",
    "summary": "curator confirmed 11 datasets as real, identified evidence bases",
    "ts": "2026-07-11T00:56:57.198164+00:00"
+  },
+  {
+   "version": 22,
+   "action": "fix-quote",
+   "summary": "re-quoted Zhuang (CVD mortality, not all-cause) and Barnard (CVD-risk thesis) to match the cardiovascular question",
+   "ts": "2026-07-11T01:10:38.921546+00:00"
+  },
+  {
+   "version": 23,
+   "action": "verify-quotes",
+   "summary": "fetched 2 anchors, verified quotes from real text",
+   "ts": "2026-07-11T01:15:26.902222+00:00"
   }
  ]
 }

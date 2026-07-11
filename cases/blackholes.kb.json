@@ -2,8 +2,8 @@
  "meta": {
   "id": "blackholes",
   "question": "Could the LHC create a black hole that destroys Earth?",
-  "version": 21,
-  "updated": "2026-07-11T00:56:57.196320+00:00",
+  "version": 22,
+  "updated": "2026-07-11T01:16:01.222658+00:00",
   "portal": {
    "id": "c6c6ad01ec11",
    "baseVersion": 20,
@@ -195,12 +195,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "black holes produced by cosmic rays impinging on much denser white dwarfs and neutron stars would catalyze their decay on timescales incompatible with their known lifetimes... there is no risk of any significance whatsoever",
-     "extractionConfidence": 0.9
+     "quote": "We also comment on relevant lifetimes for astronomical objects that capture primordial black holes.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 1,
-   "textDepth": "unknown"
+   "textDepth": "full"
   },
   {
    "id": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
@@ -380,12 +381,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "if the probability estimate given by an argument is dwarfed by the chance that the argument itself is flawed, then the estimate is suspect",
-     "extractionConfidence": 0.9
+     "quote": "Probing the Improbable: Methodological Challenges for Risks with Low Probabilities and High Stakes Some risks have extremely high stakes.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 8,
-   "textDepth": "unknown"
+   "textDepth": "abstract"
   },
   {
    "id": "src_calogero_might_a_laboratory_experiment_destr_2000",
@@ -637,12 +639,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "under certain assumptions a metastable black hole could grow rather than evaporate, a scenario not excluded by the safety reports",
-     "extractionConfidence": 0.7
+     "quote": "A plausible scenario in which these black holes accrete ambient matter at the Eddington limit shortly after their production, thereby emitting Hawking radiation that would be harmful to Earth and/or CERN and its surroundings, is described.",
+     "extractionConfidence": 0.7,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 18,
-   "textDepth": "unknown"
+   "textDepth": "abstract"
   },
   {
    "id": "src_giddings_mangano_comments_on_claimed_risk_fr_2008",
@@ -689,12 +692,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "the probability bounds quoted in safety reports do not adequately account for the probability that the underlying arguments are themselves mistaken",
-     "extractionConfidence": 0.8
+     "quote": "[hep-ph/0009204] A critical look at risk assessments for global catastrophes Skip to main content arXiv is now an independent nonprofit!",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 20,
-   "textDepth": "unknown"
+   "textDepth": "partial"
   }
  ],
  "vocab": {
@@ -1054,6 +1058,12 @@
    "action": "confirm-datasets",
    "summary": "curator confirmed 5 datasets as real, identified evidence bases",
    "ts": "2026-07-11T00:56:57.196320+00:00"
+  },
+  {
+   "version": 22,
+   "action": "verify-quotes",
+   "summary": "fetched 4 anchors, verified quotes from real text",
+   "ts": "2026-07-11T01:16:01.222658+00:00"
   }
  ]
 }

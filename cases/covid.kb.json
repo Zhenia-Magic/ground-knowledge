@@ -2,8 +2,8 @@
  "meta": {
   "id": "covid",
   "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-  "version": 29,
-  "updated": "2026-07-11T00:56:57.193743+00:00",
+  "version": 30,
+  "updated": "2026-07-11T01:13:23.923125+00:00",
   "portal": {
    "id": "ac81b4cae8d0",
    "baseVersion": 28,
@@ -286,12 +286,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "the earliest known COVID-19 cases from December 2019 were geographically centered on this market; SARS-CoV-2-positive environmental samples were spatially associated with vendors selling live mammals",
-     "extractionConfidence": 0.9
+     "quote": "The Huanan Seafood Wholesale Market in Wuhan was the early epicenter of the COVID-19 pandemic Understanding how severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) emerged in 2019 is critical to preventing future zoonotic outbreaks before they become the next pandemic.",
+     "extractionConfidence": 0.9,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 1,
-   "textDepth": "unknown"
+   "textDepth": "full"
   },
   {
    "id": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
@@ -312,12 +313,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "the analyses provide support for two separate introductions of lineages A and B into humans, both circulating in non-human mammals prior to their introduction",
-     "extractionConfidence": 0.85
+     "quote": "The first zoonotic transmission likely involved lineage B viruses around 18 November 2019 (23 October to 8 December), and the separate introduction of lineage A likely occurred within weeks of this event.",
+     "extractionConfidence": 0.85,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 2,
-   "textDepth": "unknown"
+   "textDepth": "full"
   },
   {
    "id": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
@@ -364,12 +366,13 @@
    ],
    "provenance": {
     "position": {
-     "quote": "SARS-CoV-2-positive samples were significantly enriched for genetic material of susceptible wildlife species, including raccoon dogs",
-     "extractionConfidence": 0.8
+     "quote": "In the months after declaring the SARS outbreak, closely rela ted viruses were found in masked palm civets (Paguma larvata) , common raccoon dogs (Nyctereutes procyonoides ), and a ferret badger (Melogale moschata) at still-open wet markets(Guan et al.",
+     "extractionConfidence": 0.8,
+     "verifiedQuote": "exact"
     }
    },
    "addedIn": 4,
-   "textDepth": "unknown"
+   "textDepth": "full"
   },
   {
    "id": "src_holmes_et_al_the_origins_of_sars_cov_2_a_cri_2021",
@@ -1492,6 +1495,12 @@
    "action": "confirm-datasets",
    "summary": "curator confirmed 7 datasets as real, identified evidence bases",
    "ts": "2026-07-11T00:56:57.193743+00:00"
+  },
+  {
+   "version": 30,
+   "action": "verify-quotes",
+   "summary": "fetched 3 anchor sources and attached verified quotes from the real text",
+   "ts": "2026-07-11T01:13:23.923125+00:00"
   }
  ]
 }
