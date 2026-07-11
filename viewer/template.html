@@ -259,14 +259,15 @@
   .qualnote{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5;}
   .qualnote .risk-link{font-size:12px;}
   .indeprows{margin:4px 0 2px;}
-  .indrow{display:flex;align-items:center;gap:10px;padding:4px 0;}
+  .indrow{display:flex;align-items:center;gap:12px;padding:5px 0;}
   .indrow.dim{opacity:.4;}
-  .indrow .indlab{flex:0 0 34%;font-size:13px;display:flex;align-items:center;gap:7px;min-width:0;}
+  .indrow .indlab{flex:0 0 30%;font-size:13px;display:flex;align-items:center;gap:7px;min-width:0;}
   .indrow .indlab .dot{width:9px;height:9px;border-radius:2px;flex:0 0 auto;}
-  .indrow .indlab>*:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .indtrack{flex:0 0 auto;height:14px;background:var(--chip,#eef1f4);border-radius:4px;overflow:hidden;max-width:52%;}
+  .indrow .indlab .indlabtxt{min-width:0;line-height:1.3;}
+  .indtrackcol{flex:1 1 auto;min-width:40px;}                 /* the bar column takes the middle space */
+  .indtrack{display:block;height:14px;background:var(--chip,#eef1f4);border-radius:4px;overflow:hidden;} /* width % is of this column */
   .indfill{display:block;height:100%;min-width:2px;border-radius:4px;}
-  .indrow .indval{flex:0 0 auto;font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;margin-left:auto;}
+  .indrow .indval{flex:0 0 auto;font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;text-align:right;}
   .indrow .indval .collapse{color:var(--faint);}
   @media(prefers-color-scheme:dark){.indtrack{background:rgba(255,255,255,.07);}}
   .refused{margin-top:12px;font-size:12px;border-top:1px solid var(--line,#e5e8ec);padding-top:10px;}
@@ -609,8 +610,8 @@ function headline(c){
     const nb=d.weight||0, raw=d.raw||0;
     const trackW=Math.max(6,Math.round(raw/maxRaw*100)), fillPct=raw>0?Math.round(nb/raw*100):0;
     return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
-      <span class="indlab"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)}</span>
-      <span class="indtrack" style="width:${trackW}%" title="${raw} sources collapse to ${nb.toFixed(1)} distinct evidence bases"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span>
+      <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
+      <span class="indtrackcol"><span class="indtrack" style="width:${trackW}%" title="${raw} sources collapse to ${nb.toFixed(1)} distinct evidence bases"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
       <span class="indval"><b>${nb.toFixed(1)}</b> base${nb===1?"":"s"} <span class="collapse">of ${raw} src</span></span>
     </div>`;
   }).join("");
