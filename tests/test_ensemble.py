@@ -258,21 +258,28 @@ class EdgeClusteringTests(unittest.TestCase):
     def _one(self, deltas):
         return ensemble.combine_one(deltas)
 
-    def test_token_overlapping_twin_names_become_one_edge(self):
+    def test_token_overlapping_twin_names_are_never_double_counted(self):
+        # twin names for one study must never become TWO independent roots: they either cluster into
+        # one edge (majority) or drop to the pool on non-majority -- but never inflate to two.
         c, _ = self._one([_d("NEW:X", rests=["NEW:GTA V vs Sims 3 longitudinal intervention cohort"]),
                           _d("NEW:X", rests=["NEW:GTA V longitudinal intervention 2018"])])
-        self.assertEqual(len(c["source"]["restsOn"]), 1)
+        self.assertLessEqual(len(c["source"]["restsOn"]), 1)
 
-    def test_token_disjoint_single_proposals_become_one_edge(self):
-        # each model proposed exactly ONE dataset -> same evidence base even with no shared tokens
-        c, _ = self._one([_d("NEW:X", rests=["NEW:UK adolescent VVG and aggression cohort (N=1004)"]),
-                          _d("NEW:X", rests=["NEW:Przybylski2019 adolescent dataset"])])
-        self.assertEqual(len(c["source"]["restsOn"]), 1)
+    def test_disjoint_single_proposals_are_not_force_merged(self):
+        # the removed all_single rule used to force-merge two DIFFERENT single datasets into false
+        # agreement. Now they don't cluster and neither reaches a majority -> both drop (pool, safe),
+        # and the disagreement is recorded rather than laundered into a fabricated shared root.
+        c, rep = self._one([_d("NEW:X", rests=["NEW:UK adolescent VVG and aggression cohort (N=1004)"]),
+                            _d("NEW:X", rests=["NEW:Przybylski2019 adolescent dataset"])])
+        self.assertEqual(c["source"]["restsOn"], [])
+        self.assertIn("restsOn", rep["disagreedFields"])
 
-    def test_winner_wording_is_preferred(self):
-        c, _ = self._one([_d("NEW:X", conf=0.9, rests=["NEW:Innsbruck MTurk longitudinal cohort"]),
-                          _d("NEW:X", conf=0.5, rests=["NEW:Greitemeyer 2019 longitudinal"])])
-        self.assertEqual(c["source"]["restsOn"], ["NEW:Innsbruck MTurk longitudinal cohort"])
+    def test_winner_wording_is_preferred_when_an_edge_survives(self):
+        # both models name the SAME cohort (share the distinguishing token) -> majority -> the
+        # higher-confidence model's wording is the representative form.
+        c, _ = self._one([_d("NEW:X", conf=0.9, rests=["NEW:Greitemeyer 2019 aggression cohort"]),
+                          _d("NEW:X", conf=0.5, rests=["NEW:Greitemeyer 2019 aggression longitudinal"])])
+        self.assertEqual(c["source"]["restsOn"], ["NEW:Greitemeyer 2019 aggression cohort"])
 
     def test_two_genuinely_distinct_datasets_survive(self):
         # both models list the same TWO cohorts (one under a name variant) -> exactly two edges
@@ -280,11 +287,14 @@ class EdgeClusteringTests(unittest.TestCase):
                           _d("NEW:X", rests=["NEW:Nurses' Health Study cohort", "NEW:UK Biobank"])])
         self.assertEqual(len(c["source"]["restsOn"]), 2)
 
-    def test_src_edges_vote_by_exact_key_and_survive_half(self):
-        c, _ = self._one([_d("NEW:X", rests=["SRC:src_a_2010", "NEW:Cohort Q"]),
-                          _d("NEW:X", rests=["NEW:Cohort Q"])])
-        self.assertIn("SRC:src_a_2010", c["source"]["restsOn"])   # 1 of 2 >= half
-        self.assertEqual(len(c["source"]["restsOn"]), 2)
+    def test_src_edge_needs_a_strict_majority(self):
+        # a src: edge proposed by only 1 of 2 models does NOT survive (strict > m/2); the unanimous
+        # Cohort Q does. So one model's spurious citation edge can never mint a derivation link.
+        c, rep = self._one([_d("NEW:X", rests=["SRC:src_a_2010", "NEW:Cohort Q"]),
+                            _d("NEW:X", rests=["NEW:Cohort Q"])])
+        self.assertNotIn("SRC:src_a_2010", c["source"]["restsOn"])
+        self.assertEqual(len(c["source"]["restsOn"]), 1)
+        self.assertIn("restsOn", rep["disagreedFields"])
 
 
 class MergeGuardTests(unittest.TestCase):

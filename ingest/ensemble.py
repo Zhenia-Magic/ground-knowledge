@@ -246,13 +246,14 @@ def combine_one(deltas):
         if "evidence" not in disagreed:
             disagreed.append("evidence")
 
-    # restsOn: models routinely name the SAME underlying cohort differently, so cluster edge
-    # proposals across models BEFORE voting — otherwise a 2-model ensemble unions both names and
-    # the merge mints twin datasets, double-counting one study's data as two independent roots.
-    # src:-edges reference known ids, so they vote by exact normalized key. Dataset edges cluster
-    # by distinguishing-token overlap, plus a structural rule: if every model proposed at most ONE
-    # dataset for this source, they are all naming the study's one evidence base — one cluster —
-    # even when the names share no tokens ("Przybylski2019 dataset" vs "UK adolescent cohort").
+    # restsOn: an evidentiary edge survives only on a STRICT MAJORITY vote (> m/2), so one model's
+    # spurious dataset/citation edge is never kept (at m=2 an edge needs BOTH models, not one). Models
+    # routinely name the same cohort differently, so edges are clustered by distinguishing-token
+    # overlap BEFORE the vote (so "Przybylski2019 dataset" and "UK adolescent cohort" count as one
+    # edge if both models meant the same study). src:-edges vote by exact normalized key. NOTE: the
+    # old unconditional "if every model proposed <=1 dataset, merge them all" rule is removed — it
+    # over-merged two genuinely different single datasets into false agreement. A dropped edge is now
+    # safe: the source falls to the position's pool (A1), it can't inflate independence.
     winner_edges = {_norm(x) for x in (wsrc.get("restsOn") or []) if x}
     src_count, src_form = Counter(), OrderedDict()
     ds_lists = []                                    # per model: [(norm, raw, tokens), ...]
@@ -271,29 +272,34 @@ def combine_one(deltas):
                 ds_row.append((_norm(x), x, _edge_tokens(x)))
         ds_lists.append(ds_row)
     clusters = []                                    # {"tokens", "forms":[(norm,raw)], "votes"}
-    all_single = all(len(row) <= 1 for row in ds_lists)
     for row in ds_lists:
         for k, raw, tk in row:
             for c in clusters:
-                if all_single or _same_edge(tk, c["tokens"]):
+                if _same_edge(tk, c["tokens"]):
                     c["forms"].append((k, raw))
                     c["tokens"] |= tk
                     c["votes"] += 1
                     break
             else:
                 clusters.append({"tokens": set(tk), "forms": [(k, raw)], "votes": 1})
-    rests = [src_form[k] for k, cnt in src_count.items() if cnt >= m / 2.0]
+    rests, edge_dropped = [], False
+    for k, cnt in src_count.items():
+        (rests.append(src_form[k]) if cnt > m / 2.0 else None)
+        edge_dropped = edge_dropped or (0 < cnt <= m / 2.0)
     for c in clusters:
-        if c["votes"] >= m / 2.0:
+        if c["votes"] > m / 2.0:
             # representative form: the winning model's wording when it contributed, else first
             rests.append(next((raw for k, raw in c["forms"] if k in winner_edges),
                               c["forms"][0][1]))
+        else:
+            edge_dropped = True                       # a proposed edge failed to reach a majority
     out["restsOn"] = rests
+    if edge_dropped and "restsOn" not in disagreed:
+        disagreed.append("restsOn")                   # record edge-vote disagreement
 
     # factorWeights: models phrase the same crux differently ("Publication bias" vs
-    # "publication-bias concerns"), so cluster proposals by label tokens BEFORE the >=-half vote —
-    # exact-label voting silently discarded most factors (46 sources yielded only 2). Weight is
-    # the cluster's mode; the winning model's wording (and its quote/rationale) is preferred.
+    # "publication-bias concerns"), so cluster proposals by label tokens BEFORE a STRICT-majority vote
+    # (> m/2). Weight is the cluster's mode; the winning model's wording (and quote/rationale) wins.
     fclusters = []
     for d in rd:
         seen = set()
@@ -313,7 +319,7 @@ def combine_one(deltas):
                 fclusters.append({"tokens": set(tk), "items": [(d is winner, fw)], "votes": 1})
     fws = []
     for c in fclusters:
-        if c["votes"] >= m / 2.0:
+        if c["votes"] > m / 2.0:
             rep = next((fw for is_w, fw in c["items"] if is_w), c["items"][0][1])
             base = dict(rep)
             base["weight"] = _mode([fw.get("weight") for _w, fw in c["items"]]) or base.get("weight")

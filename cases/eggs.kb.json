@@ -100,8 +100,8 @@
    "id": "f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve",
    "label": "Judge eggs on biomarkers (LDL) vs hard CVD events",
    "weights": {
-    "pos_increases_risk": "med",
-    "pos_context_dependent_depends_on_the_person": "low"
+    "pos_context_dependent_depends_on_the_person": "low",
+    "pos_increases_risk": "med"
    },
    "rationale": "Weights hard clinical endpoints from large pooled cohorts.",
    "provenance": [
@@ -109,19 +109,22 @@
      "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
      "pos": "pos_increases_risk",
      "quote": "higher risk of incident cardiovascular disease and all-cause mortality",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     },
     {
      "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "did not adversely affect the lipid profile",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_spence_jenkins_davignon_egg_yolk_consumption_2010",
      "pos": "pos_increases_risk",
      "quote": "carotid plaque area increased with egg yolk consumption",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     }
    ]
   },
@@ -129,8 +132,8 @@
    "id": "f_discount_for_healthy_user_dietary_pattern_co",
    "label": "Discount for healthy-user / dietary-pattern confounding",
    "weights": {
-    "pos_increases_risk": "low",
-    "pos_no_association": "high"
+    "pos_no_association": "high",
+    "pos_increases_risk": "low"
    },
    "rationale": "Claims the association survives confounding adjustment.",
    "provenance": [
@@ -138,13 +141,15 @@
      "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
      "pos": "pos_increases_risk",
      "quote": "associations were not modified by adjustment for dietary quality",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
      "pos": "pos_no_association",
      "quote": "associations were not significant after adjustment for lifestyle and dietary factors",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -152,8 +157,8 @@
    "id": "f_population_context_dependence_who_is_eating_",
    "label": "Population/context dependence (who is eating eggs)",
    "weights": {
-    "pos_no_association": "high",
-    "pos_context_dependent_depends_on_the_person": "med"
+    "pos_context_dependent_depends_on_the_person": "med",
+    "pos_no_association": "high"
    },
    "rationale": "A different population and background diet flips the direction of association.",
    "provenance": [
@@ -161,19 +166,22 @@
      "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
      "pos": "pos_no_association",
      "quote": "in this Chinese population, moderate egg consumption",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "within a heart-healthy dietary pattern",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     },
     {
      "source": "src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "associated with heart failure risk",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     }
    ]
   },
@@ -181,8 +189,8 @@
    "id": "f_subgroups_diabetics_hyper_responders_differ",
    "label": "Subgroups (diabetics / hyper-responders) differ",
    "weights": {
-    "pos_no_association": "high",
-    "pos_context_dependent_depends_on_the_person": "high"
+    "pos_context_dependent_depends_on_the_person": "high",
+    "pos_no_association": "high"
    },
    "rationale": "Overall null hides a diabetic subgroup signal — the crux of 'depends on who'.",
    "provenance": [
@@ -190,19 +198,22 @@
      "source": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
      "pos": "pos_no_association",
      "quote": "among diabetic subjects, egg consumption was associated with increased risk",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
      "pos": "pos_no_association",
      "quote": "a subgroup analysis showed higher risk of coronary heart disease among diabetic patients",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "associated with higher CVD risk among people with diabetes",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -211,8 +222,8 @@
    "label": "Discount for industry funding",
    "weights": {
     "pos_context_dependent_depends_on_the_person": "low",
-    "pos_increases_risk": "high",
-    "pos_no_association": "low"
+    "pos_no_association": "low",
+    "pos_increases_risk": "high"
    },
    "rationale": "Industry-funded RCT concluding eggs are safe for diabetics.",
    "provenance": [
@@ -220,31 +231,36 @@
      "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "funded by the Australian Egg Corporation",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
      "pos": "pos_context_dependent_depends_on_the_person",
      "quote": "supported by the Egg Nutrition Center",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_barnard_et_al_industry_funding_and_cholester_2020",
      "pos": "pos_increases_risk",
      "quote": "industry-funded studies were far more likely to report favorable conclusions",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_alexander_et_al_meta_analysis_of_egg_consump_2016",
      "pos": "pos_no_association",
      "quote": "supported by the American Egg Board's Egg Nutrition Center",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_tran_et_al_egg_consumption_and_cardiovascula_2014",
      "pos": "pos_no_association",
      "quote": "funded by the Egg Nutrition Center",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     }
    ]
   }

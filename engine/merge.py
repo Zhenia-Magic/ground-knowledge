@@ -15,6 +15,7 @@ Adversarial defences live here:
 import re
 import datetime
 import urllib.parse
+from collections import Counter
 
 HUES = ["#2E8B6F", "#B4502E", "#586A7A", "#8a6510", "#2f6296", "#7a4fa3"]
 
@@ -397,7 +398,7 @@ def merge_delta(kb, delta):
     if pos_new:
         report["newPositions"].append(pos_id)
 
-    rests_on = []
+    rests_on, pending = [], []
     for d in src.get("restsOn", []):
         d = str(d).strip()
         # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
@@ -410,7 +411,8 @@ def merge_delta(kb, delta):
             if tid:
                 rests_on.append("src:" + tid)
             else:
-                report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB
+                report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB YET
+                pending.append(ref)               # a FORWARD ref -- retried in resolve_pending_refs
             continue
         tid = _dataset_is_source_ref(kb, d)     # a source reference missing its SRC: prefix
         if tid:
@@ -442,18 +444,23 @@ def merge_delta(kb, delta):
     })
     if src.get("modelAgreement"):        # multi-model ensemble agreement report (ingest/ensemble.py)
         kb["sources"][-1]["modelAgreement"] = src["modelAgreement"]
+    if pending:                          # forward source-refs to resolve after the batch (two-pass)
+        kb["sources"][-1]["_pendingRefs"] = pending
     report["addedSource"] = sid
 
     for fw in delta.get("factorWeights", []):
         fid, created = _resolve_factor(kb, fw.get("factorLabel") or fw.get("factor"))
         (report["newFactors"] if created else report["updatedFactors"]).append(fid)
         factor = next(f for f in kb["factors"] if f["id"] == fid)
-        factor["weights"][pos_id] = _snap_weight(fw["weight"])
         if fw.get("rationale") and not factor.get("rationale"):
             factor["rationale"] = fw["rationale"]
+        # store THIS source's asserted weight ON its provenance claim, then derive the position cell
+        # from all claims -- not last-writer-wins. So "high then low" no longer silently stores low,
+        # and dropping a source re-derives the cell (recompute_factor_weights).
         factor.setdefault("provenance", []).append(
-            {"source": sid, "pos": pos_id, "quote": fw.get("quote", ""),
-             "verifiedQuote": fw.get("verifiedQuote")})
+            {"source": sid, "pos": pos_id, "weight": _snap_weight(fw["weight"]),
+             "quote": fw.get("quote", ""), "verifiedQuote": fw.get("verifiedQuote")})
+        _recompute_factor_cell(factor, pos_id)
 
     kb["meta"]["version"] = version
     kb["meta"]["updated"] = now_iso()
@@ -463,3 +470,63 @@ def merge_delta(kb, delta):
         "newDatasets": report["newDatasets"], "newPositions": report["newPositions"],
     })
     return report
+
+
+_WEIGHT_ORDER = {"high": 3, "med": 2, "low": 1, "n/a": 0}
+
+
+def _recompute_factor_cell(factor, pos_id):
+    """Derive factor.weights[pos] from the MODE of every provenance claim's asserted weight for that
+    position -- the cell reflects the balance of sources, not whoever wrote last. Order-independent;
+    on a tie the STRONGER weight wins (high > med > low) so a split never silently downgrades."""
+    votes = [pr.get("weight") for pr in factor.get("provenance", [])
+             if pr.get("pos") == pos_id and pr.get("weight")]
+    if not votes:
+        factor.setdefault("weights", {}).pop(pos_id, None)
+        return
+    counts = Counter(votes)
+    top = max(counts.values())
+    factor.setdefault("weights", {})[pos_id] = max(
+        (w for w, c in counts.items() if c == top), key=lambda w: _WEIGHT_ORDER.get(w, 0))
+
+
+def recompute_factor_weights(kb):
+    """Rebuild every factor's position cells from its provenance claims. Call after a source is
+    dropped or repositioned, so a removed source's asserted weight no longer lingers in the grid."""
+    for f in kb.get("factors", []):
+        f["weights"] = {}
+        for pos_id in {pr.get("pos") for pr in f.get("provenance", []) if pr.get("pos")}:
+            _recompute_factor_cell(f, pos_id)
+
+
+def resolve_pending_refs(kb):
+    """Second pass over source->source derivation edges that pointed at a source not yet in the KB
+    when their delta merged (a NEW-SRC FORWARD reference -- e.g. a mutual A<->B citation, or a whole
+    batch where each source cites the next). Without this, merge_delta could only ever build backward
+    edges, so an A<->B citation ring never formed through ordinary ingestion and its circular-
+    corroboration flag never fired. Run after a batch of adds; idempotent. Returns edges resolved."""
+    sources = kb.get("sources", [])
+    resolved = 0
+    changed = True
+    while changed:                        # loop so a chain (A->B->C added out of order) fully settles
+        changed = False
+        for s in sources:
+            pend = s.get("_pendingRefs")
+            if not pend:
+                continue
+            still = []
+            for ref in pend:
+                tid = _resolve_source_ref(kb, ref)
+                if not tid:
+                    still.append(ref)                     # still not in the KB
+                    continue
+                edge = "src:" + tid
+                if tid != s["id"] and edge not in s.get("restsOn", []):
+                    s.setdefault("restsOn", []).append(edge)
+                    resolved += 1
+                changed = True                            # resolved (or self/dup) -> drop from pending
+            if still:
+                s["_pendingRefs"] = still
+            else:
+                s.pop("_pendingRefs", None)
+    return resolved

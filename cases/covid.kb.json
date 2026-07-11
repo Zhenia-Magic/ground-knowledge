@@ -84,7 +84,8 @@
      "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "the earliest known COVID-19 cases were geographically centered on this market",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -102,19 +103,22 @@
      "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "cases with no known link to the market were nonetheless geographically distributed near it",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
      "pos": "pos_laboratory_associated_origin",
      "quote": "early case data reflects where testing was concentrated, not where infection began",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
      "pos": "pos_undetermined_unresolved",
      "quote": "not fully representative of the viruses in Wuhan early in the epidemic",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -130,7 +134,8 @@
      "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "two separate introductions of lineages A and B into humans",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -147,25 +152,29 @@
      "source": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "the acquisition of both the polybasic cleavage site and predicted O-linked glycans argues against manipulation",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "can be explained by natural evolutionary mechanisms",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     },
     {
      "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
      "pos": "pos_laboratory_associated_origin",
      "quote": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "not consistent with laboratory engineering",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "low"
     }
    ]
   },
@@ -182,19 +191,22 @@
      "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
      "pos": "pos_laboratory_associated_origin",
      "quote": "proposed exactly the kind of engineering that would produce a virus like SARS-CoV-2",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
      "pos": "pos_undetermined_unresolved",
      "quote": "a laboratory-associated origin remains plausible",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     },
     {
      "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
      "pos": "pos_laboratory_associated_origin",
      "quote": "collected from the Mojiang mine and passaged in the laboratory",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -210,19 +222,22 @@
      "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
      "pos": "pos_laboratory_associated_origin",
      "quote": "combining the likelihoods across independent lines of evidence",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
      "pos": "pos_laboratory_associated_origin",
      "quote": "70 to 1 in favor of a lab origin",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
      "pos": "pos_laboratory_associated_origin",
      "quote": "greater than 99%",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -238,13 +253,15 @@
      "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "96.2% identical to a bat coronavirus, RaTG13",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
      "pos": "pos_zoonotic_spillover_at_the_huanan_market",
      "quote": "can bind to ACE2 and use it to enter human cells",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   }

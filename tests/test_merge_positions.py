@@ -69,6 +69,55 @@ class PositionGuardTests(unittest.TestCase):
         self.assertIsNone(_position_dup(self.kb, "Increases aggression"))
 
 
+class FactorWeightDerivationTests(unittest.TestCase):
+    """Factor cells are derived from the MODE of source claims, not last-writer-wins."""
+
+    def _fw(self, title, w):
+        return {"source": {"title": title, "year": 2020, "url": "https://x/" + title,
+                           "position": "NEW:P", "evidence": "Observational", "restsOn": []},
+                "factorWeights": [{"factor": "A crux", "weight": w, "quote": "q", "rationale": "r"}]}
+
+    def test_cell_is_mode_not_last_writer(self):
+        kb = empty_kb("t", "q")
+        for t, w in [("a", "high"), ("b", "high"), ("c", "low")]:
+            merge_delta(kb, self._fw(t, w))
+        f, pos = kb["factors"][0], kb["positions"][0]["id"]
+        self.assertEqual(f["weights"][pos], "high")        # mode(high,high,low), NOT last-writer 'low'
+
+    def test_dropping_a_source_re_derives_the_cell(self):
+        from engine.merge import recompute_factor_weights
+        kb = empty_kb("t", "q")
+        for t, w in [("a", "low"), ("b", "low"), ("c", "high")]:
+            merge_delta(kb, self._fw(t, w))
+        f, pos = kb["factors"][0], kb["positions"][0]["id"]
+        self.assertEqual(f["weights"][pos], "low")
+        # remove the two 'low' sources -> only 'high' remains -> cell re-derives to 'high'
+        keep = f["provenance"][-1]["source"]
+        f["provenance"] = [pr for pr in f["provenance"] if pr["source"] == keep]
+        recompute_factor_weights(kb)
+        self.assertEqual(f["weights"][pos], "high")
+
+
+class TwoPassRefTests(unittest.TestCase):
+    """A NEW-SRC forward reference (citing a source not yet merged) used to be dropped, so a mutual
+    A<->B citation ring could never form through ordinary ingestion. resolve_pending_refs closes it."""
+
+    def test_forward_ref_resolves_and_the_cycle_is_flagged(self):
+        from engine.merge import resolve_pending_refs
+        from engine.roots import resolve
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "Paper A", "year": 2020, "url": "https://x/a",
+            "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper B"]}})
+        merge_delta(kb, {"source": {"title": "Paper B", "year": 2021, "url": "https://x/b",
+            "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper A"]}})
+        a = next(s for s in kb["sources"] if s["title"] == "Paper A")
+        self.assertEqual(a["restsOn"], [])                      # forward ref unresolved at merge time
+        self.assertGreaterEqual(resolve_pending_refs(kb), 1)    # second pass wires A->B
+        a = next(s for s in kb["sources"] if s["title"] == "Paper A")
+        self.assertTrue(any(str(e).startswith("src:") for e in a["restsOn"]))
+        self.assertEqual(len(resolve(kb)["circular"]), 1)       # the A<->B ring is now flagged
+
+
 class OffTopicRefusalTests(unittest.TestCase):
     def setUp(self):
         self.kb = empty_kb("t", "Does violent video game exposure increase aggression?")

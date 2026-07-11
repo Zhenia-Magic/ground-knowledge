@@ -42,6 +42,8 @@ def _admin_delete_source(qid, sid):
         return {"error": "source not found"}
     for f in kb.get("factors", []):
         f["provenance"] = [pv for pv in f.get("provenance", []) if pv.get("source") != sid]
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)                      # re-derive cells so the dropped weight is gone
     kb["meta"]["version"] = kb["meta"].get("version", 0) + 1
     kb.setdefault("log", []).append({"version": kb["meta"]["version"],
                                      "action": "admin-remove-source", "source": sid,
@@ -204,6 +206,8 @@ def _apply_delta(qid, q, delta, contributor):
             added += 1
             if kb.get("log"):                       # persist the diff for the Changes tab
                 kb["log"][-1]["diff"] = diff_assessments(before, assess(kb))
+    from engine.merge import resolve_pending_refs
+    resolve_pending_refs(kb)                          # second pass: NEW-SRC forward refs in this batch
     try:
         version = store.save_kb(qid, kb, base)
     except store.Conflict:

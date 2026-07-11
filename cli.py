@@ -229,11 +229,19 @@ def _apply_delta(kb_path, delta):
 
 def _merge_deltas(kb_path, deltas):
     """Merge a list of deltas one at a time (each recomputes + diffs against the prior KB)."""
+    from engine.merge import resolve_pending_refs
     added = 0
     for d in deltas:
         if _apply_delta(kb_path, d):
             added += 1
         print("")
+    # second pass: resolve NEW-SRC forward references now that the whole batch is present (so a
+    # mutual A<->B citation added in one array actually forms the cycle it claims -- see MECHANISM.md)
+    kb = read_json(kb_path)
+    n = resolve_pending_refs(kb)
+    if n:
+        write_json(kb_path, kb)
+        print("resolved {} forward citation edge{} across the batch".format(n, "" if n == 1 else "s"))
     return added
 
 

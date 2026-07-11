@@ -59,8 +59,8 @@
    "id": "f_reliability_of_the_cosmic_ray_safety_analogy",
    "label": "Reliability of the cosmic-ray safety analogy",
    "weights": {
-    "pos_no_risk_lhc_collisions_are_safe": "high",
-    "pos_residual_concern_the_safety_argument_has_wea": "med"
+    "pos_residual_concern_the_safety_argument_has_wea": "med",
+    "pos_no_risk_lhc_collisions_are_safe": "high"
    },
    "rationale": "The entire empirical safety case rests on cosmic-ray-produced black holes not having already destroyed dense stars.",
    "provenance": [
@@ -68,25 +68,29 @@
      "source": "src_giddings_mangano_astrophysical_implications__2008",
      "pos": "pos_no_risk_lhc_collisions_are_safe",
      "quote": "eight observed white dwarf stars... present a form of living evidence that the LHC must be safe",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000",
      "pos": "pos_no_risk_lhc_collisions_are_safe",
      "quote": "cosmic rays have been bombarding astronomical bodies for billions of years",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "med"
     },
     {
      "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
      "pos": "pos_no_risk_lhc_collisions_are_safe",
      "quote": "cosmic-ray collisions at energies far above those of any accelerator",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -94,8 +98,8 @@
    "id": "f_whether_hawking_radiation_is_guaranteed_blac",
    "label": "Whether Hawking radiation is guaranteed (black-hole evaporation)",
    "weights": {
-    "pos_no_risk_lhc_collisions_are_safe": "high",
-    "pos_residual_concern_the_safety_argument_has_wea": "high"
+    "pos_residual_concern_the_safety_argument_has_wea": "high",
+    "pos_no_risk_lhc_collisions_are_safe": "high"
    },
    "rationale": "Deliberately builds a safety argument that does not depend on Hawking evaporation.",
    "provenance": [
@@ -103,19 +107,22 @@
      "source": "src_giddings_mangano_astrophysical_implications__2008",
      "pos": "pos_no_risk_lhc_collisions_are_safe",
      "quote": "even if Hawking radiation does not exist",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
      "pos": "pos_no_risk_lhc_collisions_are_safe",
      "quote": "microscopic black holes would decay almost instantly by Hawking radiation",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "a metastable black hole could grow rather than evaporate",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -131,19 +138,22 @@
      "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "their argument may fail for reasons such as a flaw in the underlying theory, a mistake in modelling, or a calculation error",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_calogero_might_a_laboratory_experiment_destr_2000",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "reassurances may be motivated more by the wish to proceed",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     },
     {
      "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   },
@@ -159,7 +169,8 @@
      "source": "src_johnson_the_black_hole_case_the_injunction_a_2009",
      "pos": "pos_residual_concern_the_safety_argument_has_wea",
      "quote": "safety reviews were conducted by the same institution seeking to run the experiment",
-     "verifiedQuote": null
+     "verifiedQuote": null,
+     "weight": "high"
     }
    ]
   }
