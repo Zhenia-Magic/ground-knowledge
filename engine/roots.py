@@ -161,36 +161,54 @@ def resolve(kb):
     sccs, comp_of = _tarjan(adj)
 
     circular = []
-    memo = {}
 
-    def comp_roots(ci):
-        if ci in memo:
-            return memo[ci]
-        memo[ci] = set()                      # guard against accidental re-entry
-        comp = sccs[ci]
-        roots = set()
-        for sid in comp:                      # dataset roots from any member
-            for d in _edges(sources[sid])[0]:
-                roots.add("ds:" + d)
-        for sid in comp:                      # external source edges -> other components' roots
+    # component -> the OTHER components it draws roots from (via external source->source edges). The
+    # SCC collapse guarantees this component graph is a DAG, so roots resolve by an ITERATIVE
+    # post-order over it — recursion here used to raise RecursionError on a long derivation chain.
+    comp_deps = {}
+    for ci in range(len(sccs)):
+        deps = set()
+        for sid in sccs[ci]:
             for t in _edges(sources[sid])[1]:
                 if t in comp_of and comp_of[t] != ci:
-                    roots |= comp_roots(comp_of[t])
-        is_cycle = len(comp) > 1
-        if not roots:                         # ungrounded component
-            if is_cycle:                      # circular corroboration with no grounding -> flag
-                roots = {"cycle:" + min(comp)}
-                circular.append({"sources": sorted(comp),
-                                 "positions": sorted({sources[s]["position"] for s in comp})})
-            else:
-                s = sources[comp[0]]
-                # ungrounded, no named evidence base: a primary that names nothing collapses to the
-                # position's one 'unnamed first-hand voice' (primpool), a secondary to its review
-                # voice (secpool). Both pool per position, so flooding either tier adds one voice once.
-                roots = {"primpool:" + s["position"]} if tier_of(kb, s) == "primary" \
-                    else {"secpool:" + s["position"]}
-        memo[ci] = roots
-        return roots
+                    deps.add(comp_of[t])
+        comp_deps[ci] = deps
+
+    memo = {}
+
+    def comp_roots(ci0):
+        stack = [ci0]
+        while stack:
+            ci = stack[-1]
+            if ci in memo:
+                stack.pop()
+                continue
+            pending = [d for d in comp_deps[ci] if d not in memo]
+            if pending:                       # resolve dependencies first (post-order)
+                stack.extend(pending)
+                continue
+            comp = sccs[ci]
+            roots = set()
+            for sid in comp:                  # dataset roots from any member
+                for d in _edges(sources[sid])[0]:
+                    roots.add("ds:" + d)
+            for d in comp_deps[ci]:           # roots inherited from depended-on components
+                roots |= memo[d]
+            if not roots:                     # ungrounded component
+                if len(comp) > 1:             # circular corroboration with no grounding -> flag
+                    roots = {"cycle:" + min(comp)}
+                    circular.append({"sources": sorted(comp),
+                                     "positions": sorted({sources[s]["position"] for s in comp})})
+                else:
+                    s = sources[comp[0]]
+                    # ungrounded, no named evidence base: a primary that names nothing collapses to
+                    # the position's one 'unnamed first-hand voice' (primpool), a secondary to its
+                    # review voice (secpool). Both pool per position (flooding adds one voice once).
+                    roots = {"primpool:" + s["position"]} if tier_of(kb, s) == "primary" \
+                        else {"secpool:" + s["position"]}
+            memo[ci] = roots
+            stack.pop()
+        return memo[ci0]
 
     source_roots = {sid: comp_roots(comp_of[sid]) for sid in sources}
 
@@ -214,6 +232,20 @@ def resolve(kb):
                 target.add(r)
     nonhuman_only = animal - human
 
+    # ROOT ADMISSION: a dataset root is 'provisional' (unconfirmed) until the KB actually verifies it.
+    # It confirms when EITHER a curator marks the dataset {"confirmed": true} OR at least one source
+    # that was really FETCHED (textDepth full/abstract/partial -- not a paste-back 'unknown') rests on
+    # it. A brand-new root asserted only by unverified/public input therefore counts at HALF, so a
+    # contributor can't mint full-strength independent roots by fabricating datasets on the paste-back
+    # path (the edge-fabrication attack, MECHANISM.md §8). Confirmed roots keep full strength.
+    _DEPTH_OK = {"full", "abstract", "partial"}
+    confirmed_flag = {"ds:" + d["id"] for d in kb.get("datasets", []) if d.get("confirmed")}
+    fetched_ds = set()
+    for s in kb["sources"]:
+        if s.get("textDepth") in _DEPTH_OK:
+            fetched_ds |= {r for r in source_roots[s["id"]] if r.startswith("ds:")}
+    provisional = all_ds - confirmed_flag - fetched_ds
+
     def kind_of(r):
         return {"d": "dataset", "p": "primary", "s": "secondary", "c": "cycle"}[
             ("d" if r.startswith("ds:")
@@ -222,16 +254,20 @@ def resolve(kb):
     kinds = {r: kind_of(r) for rs in source_roots.values() for r in rs}
 
     return {"source_roots": source_roots, "circular": circular,
-            "secondary_only": secondary_only, "nonhuman_only": nonhuman_only, "kind": kinds}
+            "secondary_only": secondary_only, "nonhuman_only": nonhuman_only,
+            "provisional": provisional, "kind": kinds}
 
 
-def root_strength(root_key, secondary_only, nonhuman_only=frozenset()):
+def root_strength(root_key, secondary_only, nonhuman_only=frozenset(), provisional=frozenset()):
     """Independence weight a root contributes. Halved for a dataset known only through a secondary
-    source (we heard about it, no primary source brought it in) AND halved for a root backed only by
-    animal / in-vitro studies (weak evidence for a human question). See MECHANISM.md §6."""
+    source (we heard about it, no primary source brought it in), halved for a root backed only by
+    animal / in-vitro studies (weak evidence for a human question), and halved for a PROVISIONAL
+    (unconfirmed / unverified) root until a real fetch or a curator confirms it. See MECHANISM.md §6."""
     w = 1.0
     if root_key in secondary_only:
         w *= 0.5
     if root_key in nonhuman_only:
+        w *= 0.5
+    if root_key in provisional:
         w *= 0.5
     return w

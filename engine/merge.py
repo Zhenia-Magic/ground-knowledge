@@ -185,10 +185,13 @@ def _resolve_dataset(kb, proposed):
                 return d["id"], False
     probe = norm(label or proposed)
     for d in kb["datasets"]:
+        # normalized match against the canonical label OR any learned alias. A raw variant that
+        # normalizes to an existing label needs no new alias (normalization already unifies them);
+        # genuinely different surface forms ("NHS" vs "Nurses' Health Study") are learned as aliases
+        # by the explicit curate.merge ops, not here -- ingestion resolution stays purely normalized
+        # so it is deterministic and never silently widens a match. (An earlier inline alias-learning
+        # branch here was dead code: its condition contradicted the match above.)
         if norm(d["label"]) == probe or any(norm(a) == probe for a in d.get("aliases", [])):
-            if label and norm(d["label"]) != probe and \
-                    not any(norm(a) == probe for a in d.get("aliases", [])):
-                d.setdefault("aliases", []).append(label)  # learn the alias
             return d["id"], False
     nice = prettify_label(label or proposed)
     cid = _unique_id("ds_", slug(nice),

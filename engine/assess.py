@@ -40,6 +40,7 @@ def _root_incidence(kb, res):
     src_by_pos = _src_by_pos(kb)
     secondary_only = res["secondary_only"]
     nonhuman_only = res.get("nonhuman_only", frozenset())
+    provisional = res.get("provisional", frozenset())
     per_pos = {}
     for p in kb["positions"]:
         weights = {}
@@ -49,8 +50,8 @@ def _root_incidence(kb, res):
                     weights[r] = 1            # a COLLAPSED voice counts once, no matter how many
                 else:                          #   sources fell into it; real roots accumulate per
                     weights[r] = weights.get(r, 0) + _roots.root_strength(
-                        r, secondary_only, nonhuman_only)   # source (halved for review-only /
-        per_pos[p["id"]] = weights                          # animal roots)
+                        r, secondary_only, nonhuman_only, provisional)   # source (halved for
+        per_pos[p["id"]] = weights                          # review-only / animal / unconfirmed roots)
     return per_pos
 
 
@@ -65,13 +66,14 @@ def _root_presence(kb, res):
     src_by_pos = _src_by_pos(kb)
     secondary_only = res["secondary_only"]
     nonhuman_only = res.get("nonhuman_only", frozenset())
+    provisional = res.get("provisional", frozenset())
     per_pos = {}
     for p in kb["positions"]:
         pres = {}
         for s in src_by_pos.get(p["id"], []):
             for r in res["source_roots"].get(s["id"], ()):
                 pres[r] = 1 if r.startswith(("secpool:", "primpool:", "cycle:")) else \
-                    _roots.root_strength(r, secondary_only, nonhuman_only)
+                    _roots.root_strength(r, secondary_only, nonhuman_only, provisional)
         per_pos[p["id"]] = pres
     return per_pos
 
@@ -98,13 +100,13 @@ def _n_eff(weights):
     return (1 / hhi) if hhi else 0
 
 
-def weighted_distribution(kb):
+def weighted_distribution(kb, res=None):
     """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
     sized not by raw source count but by its effective number of independent evidence ROOTS: each
     distinct resolved root counted once at its strength (MECHANISM.md). Sources sharing a dataset,
     echoing as secondary reviews, or citing each other in a loop all collapse toward one 'look'. A
     position propped up by re-used, derivative, or circular evidence shrinks vs. its raw bar."""
-    res = _roots.resolve(kb)
+    res = _roots.resolve(kb) if res is None else res
     pres = _root_presence(kb, res)
     out, weights = [], []
     for p in kb["positions"]:
@@ -400,13 +402,15 @@ def cruxes(kb):
     return out
 
 
-def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset()):
+def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset(), provisional=frozenset()):
     """Human-readable description of a resolved root for the 'show your work' breakdown."""
     notes = []
     if rk in secondary_only:
         notes.append("cited only via a review")
     if rk in nonhuman:
         notes.append("animal / in-vitro")
+    if rk in provisional:
+        notes.append("unconfirmed — no fetched source")
     suffix = (" — " + ", ".join(notes)) if notes else ""
     if rk.startswith("ds:"):
         return _ds_label(kb, rk[3:]) + suffix
@@ -423,7 +427,7 @@ def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset()):
     return rk
 
 
-def independence(kb):
+def independence(kb, res=None):
     """The anti-false-balance core. Per position, how many INDEPENDENT evidentiary roots actually
     support it — after collapsing shared datasets, secondary echo, and circular citation (see
     MECHANISM.md and engine/roots.py).
@@ -445,11 +449,12 @@ def independence(kb):
     the pile-up is surfaced there. What this cannot see is a source that fabricates a new root
     outright (claiming a dataset that doesn't back it) — that is an edge-fabrication attack,
     caught (partially) by quote verification, not by this arithmetic; see MECHANISM.md §8."""
-    res = _roots.resolve(kb)
+    res = _roots.resolve(kb) if res is None else res
     inc = _root_incidence(kb, res)
     pres = _root_presence(kb, res)
     sec_only = res["secondary_only"]
     nonhuman = res.get("nonhuman_only", frozenset())
+    prov = res.get("provisional", frozenset())
     circ_by_pos = {}
     for c in res["circular"]:
         for pid in c["positions"]:
@@ -468,9 +473,9 @@ def independence(kb):
                 top_key, top_w = rk, w
         conc = (top_w / total_w) if total_w else 0
         bases = sorted(
-            ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman), "kind": res["kind"][rk],
+            ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman, prov), "kind": res["kind"][rk],
               "weight": round(w, 2), "strength": round(strengths[rk], 2),
-              "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman}
+              "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov}
              for rk, w in weights.items()), key=lambda b: -b["weight"])
         collapsed_secondary = sum(1 for s in mine
                                   if ("secpool:" + p["id"]) in res["source_roots"].get(s["id"], ()))
@@ -613,31 +618,38 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
     return out
 
 
-def dominant_dataset(kb):
-    """Case-wide, which single dataset underlies the most sources. The Huanan-market /
-    NHS-HPFS detector. Ties returned together."""
+def dominant_dataset(kb, res=None):
+    """Case-wide, which single dataset ROOT underlies the most sources -- counted over RESOLVED
+    roots (a review that restsOn a study counts toward that study's dataset), not raw restsOn
+    strings, so derivation edges and src: references don't distort it. The Huanan-market / NHS-HPFS
+    detector. Ties returned together."""
+    res = _roots.resolve(kb) if res is None else res
     counts = {}
     for s in kb["sources"]:
-        for d in s.get("restsOn", []):
-            counts[d] = counts.get(d, 0) + 1
+        for r in res["source_roots"].get(s["id"], ()):
+            if r.startswith("ds:"):
+                counts[r] = counts.get(r, 0) + 1
     if not counts:
         return None
     mx = max(counts.values())
     n = len(kb["sources"])
-    return {"labels": [_ds_label(kb, d) for d in counts if counts[d] == mx],
+    return {"labels": [_ds_label(kb, r[3:]) for r in counts if counts[r] == mx],
             "count": mx, "total": n, "share": mx / n if n else 0}
 
 
 def assess(kb):
-    """The whole Assessment artifact -- one dict, diffable across versions."""
-    ind = independence(kb)
+    """The whole Assessment artifact -- one dict, diffable across versions. Resolves the derivation
+    graph ONCE and threads it through every root-based metric (independence, weighted distribution,
+    dominant dataset), instead of each re-resolving -- so one assess() is one resolve()."""
+    res = _roots.resolve(kb)
+    ind = independence(kb, res)
     ma = method_audit(kb)
     qa = quote_audit(kb)
     ca = confidence_audit(kb)
     return {
         "version": kb.get("meta", {}).get("version"),
         "distribution": distribution(kb),
-        "weightedDistribution": weighted_distribution(kb),
+        "weightedDistribution": weighted_distribution(kb, res),
         "fundingSkew": funding_skew(kb),
         "blindspots": blindspots(kb),
         "cruxes": cruxes(kb),
@@ -645,7 +657,7 @@ def assess(kb):
         "methodAudit": ma,
         "quoteAudit": qa,
         "confidenceAudit": ca,
-        "dominantDataset": dominant_dataset(kb),
+        "dominantDataset": dominant_dataset(kb, res),
         "warnings": warnings(kb, ind, ma, qa, ca),
     }
 
@@ -669,6 +681,13 @@ def diff_assessments(before, after):
         if not b:
             lines.append("+ new position: " + p["label"])
             continue
+        # independent bases (nEff) -- the headline number the old diff omitted
+        if abs(p["nEff"] - b["nEff"]) > 0.05:
+            lines.append("independent bases: {} {} → {}".format(
+                p["label"], round(b["nEff"], 1), round(p["nEff"], 1)))
+        elif p["distinct"] != b["distinct"]:
+            lines.append("distinct roots: {} {} → {}".format(
+                p["label"], b["distinct"], p["distinct"]))
         if abs(p["concentration"] - b["concentration"]) > 1e-9:
             top = p["topDataset"]["label"] if p["topDataset"] else "—"
             lines.append("concentration: {} {} → {} (top: {})".format(
@@ -695,4 +714,13 @@ def diff_assessments(before, after):
             lines.append('blindspot closed: {} now covers "{}"'.format(p["label"], x))
         for x in now - was:
             lines.append('blindspot opened: {} missing "{}"'.format(p["label"], x))
+    # warnings appearing / clearing -- so the diff records when a source trips or resolves a flag
+    bw = {(w["kind"], w.get("positionId")): w for w in before.get("warnings", [])}
+    aw = {(w["kind"], w.get("positionId")): w for w in after.get("warnings", [])}
+    for k, w in aw.items():
+        if k not in bw:
+            lines.append("⚠ new warning: {} — {}".format(w.get("badge", w["kind"]), w.get("label", "")))
+    for k, w in bw.items():
+        if k not in aw:
+            lines.append("✓ warning cleared: {} — {}".format(w.get("badge", w["kind"]), w.get("label", "")))
     return lines

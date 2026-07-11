@@ -226,6 +226,17 @@ def rename(kb, kind, ref, new_label):
     return _commit(kb, "rename", "renamed {} “{}” → “{}”".format(kind, old, new_label))
 
 
+def confirm_dataset(kb, ref, confirmed=True):
+    """Curator vouches that a dataset is a REAL, identified evidence base (or un-vouches it).
+    A confirmed dataset root counts at full strength; an unconfirmed one asserted only by
+    unverified/paste-back input counts at half (see engine/roots.root_strength). This is how a
+    human resolves the 'is this a fabricated root?' question the arithmetic can't answer."""
+    d = _resolve(kb["datasets"], ref, "dataset")
+    d["confirmed"] = bool(confirmed)
+    verb = "confirmed" if confirmed else "un-confirmed"
+    return _commit(kb, "confirm-dataset", "{} dataset “{}” as a real evidence base".format(verb, d["label"]))
+
+
 def tidy_labels(kb):
     """Prettify any id-style / slug labels across positions, datasets, and factors (underscores
     → spaces, drop trailing sample-size clauses). For datasets the old label is kept as an alias."""

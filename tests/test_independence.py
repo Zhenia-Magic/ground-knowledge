@@ -16,9 +16,12 @@ def _kb(sources, positions=("X", "Y"), vocab_evidence=None):
             "vocab": {"evidence": vocab_evidence or []}}
 
 
-def _s(sid, pos, evidence, rests):
+def _s(sid, pos, evidence, rests, textDepth="full"):
+    # default textDepth 'full' = a really-fetched source, so its datasets are CONFIRMED roots and
+    # these tests exercise the collapse mechanics at full strength. Provisional (unconfirmed /
+    # unknown-depth) roots are covered separately in ProvisionalRootTests.
     return {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
-            "funding": "Undisclosed", "population": "—", "confidence": "unstated"}
+            "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
 
 
 def _roots(res, sid):
@@ -239,6 +242,38 @@ class MetricTests(unittest.TestCase):
         self.assertEqual(sum(d["pct"] for d in weighted_distribution(kb)), 100)
 
 
+class ProvisionalRootTests(unittest.TestCase):
+    """Root admission: a dataset asserted only by UNVERIFIED input (textDepth unknown / paste-back)
+    is PROVISIONAL and counts at half until a real fetch or a curator confirms it — so a public
+    contributor can't mint full-strength independent roots by fabricating datasets."""
+
+    def _neff(self, srcs, pos="X"):
+        return {p["id"]: p for p in independence(_kb(srcs))}[pos]["nEff"]
+
+    def test_unconfirmed_fabricated_roots_count_half(self):
+        # ten unverified sources each naming a distinct invented dataset -> ten HALF roots, not ten
+        srcs = [_s("f%d" % i, "X", "Observational", ["D%d" % i], textDepth="unknown") for i in range(10)]
+        self.assertAlmostEqual(self._neff(srcs), 5.0, places=6)   # 10 * 0.5, NOT 10
+
+    def test_a_real_fetch_confirms_the_root_to_full_strength(self):
+        srcs = [_s("paste", "X", "Observational", ["D"], textDepth="unknown")]
+        self.assertAlmostEqual(self._neff(srcs), 0.5, places=6)   # provisional
+        srcs.append(_s("fetched", "X", "Observational", ["D"], textDepth="full"))
+        self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)   # a fetched source confirms D
+
+    def test_curator_confirmed_dataset_is_full_strength(self):
+        kb = _kb([_s("paste", "X", "Observational", ["D"], textDepth="unknown")])
+        kb["datasets"] = [{"id": "D", "label": "D", "aliases": [], "confirmed": True}]
+        self.assertAlmostEqual({p["id"]: p for p in independence(kb)}["X"]["nEff"], 1.0, places=6)
+
+    def test_confirming_a_root_never_lowers_neff(self):
+        # confirmation is an UPGRADE (half -> full); it can only raise nEff, preserving monotonicity
+        base = self._neff([_s("a", "X", "Observational", ["D"], textDepth="unknown")])
+        up = self._neff([_s("a", "X", "Observational", ["D"], textDepth="unknown"),
+                         _s("b", "X", "Observational", ["D"], textDepth="full")])
+        self.assertGreaterEqual(up, base)
+
+
 class MonotonicityPropertyTests(unittest.TestCase):
     """Randomized check of the independence invariant: adding a source through the merge path
     (a new node with only OUTGOING restsOn edges — merge_delta can never create incoming edges
@@ -265,6 +300,7 @@ class MonotonicityPropertyTests(unittest.TestCase):
         return {"id": sid, "position": pos, "title": sid,
                 "evidence": rng.choice(self.EVIDENCE),
                 "population": rng.choice(self.POPULATION),
+                "textDepth": rng.choice(["unknown", "abstract", "partial", "full"]),  # confirm/provisional mix
                 "restsOn": rests, "funding": "Undisclosed", "confidence": "unstated"}
 
     def test_adding_a_source_never_lowers_any_positions_neff(self):

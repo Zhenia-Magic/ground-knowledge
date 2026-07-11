@@ -258,6 +258,17 @@
   .ind-mix .mixtypes{color:var(--muted);}
   .qualnote{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.5;}
   .qualnote .risk-link{font-size:12px;}
+  .indeprows{margin:4px 0 2px;}
+  .indrow{display:flex;align-items:center;gap:10px;padding:4px 0;}
+  .indrow.dim{opacity:.4;}
+  .indrow .indlab{flex:0 0 34%;font-size:13px;display:flex;align-items:center;gap:7px;min-width:0;}
+  .indrow .indlab .dot{width:9px;height:9px;border-radius:2px;flex:0 0 auto;}
+  .indrow .indlab>*:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .indtrack{flex:0 0 auto;height:14px;background:var(--chip,#eef1f4);border-radius:4px;overflow:hidden;max-width:52%;}
+  .indfill{display:block;height:100%;min-width:2px;border-radius:4px;}
+  .indrow .indval{flex:0 0 auto;font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;margin-left:auto;}
+  .indrow .indval .collapse{color:var(--faint);}
+  @media(prefers-color-scheme:dark){.indtrack{background:rgba(255,255,255,.07);}}
   .refused{margin-top:12px;font-size:12px;border-top:1px solid var(--line,#e5e8ec);padding-top:10px;}
   .refused summary{cursor:pointer;color:var(--muted);}
   .refused ul{margin:8px 0 0;padding-left:18px;color:var(--ink);}
@@ -585,16 +596,32 @@ function headline(c){
   }).join("");
   const bar1=bar(a.distribution,"pct","count",d=>`${d.label} — ${d.count} sources`);
   const wd=a.weightedDistribution||[];
-  const bar2=bar(wd,"pct","weight",d=>`${d.label} — ${d.raw} sources ≈ ${(d.weight||0).toFixed(1)} independent looks`);
+  // Independence is shown as ABSOLUTE distinct-base counts per position on a shared scale — NOT as a
+  // cross-position 100% share. A normalized share made a position with more (but weaker) argument-
+  // roots look "more supported" than a concentrated consensus, which nEff never claims to measure.
+  // Collapse viz: the faint TRACK is sized by raw source count (shared scale); the coloured FILL is
+  // the fraction that survive as distinct evidence bases. A concentrated consensus shows a long track
+  // with a small fill (many sources, few independent looks) — the thesis, without ever normalizing
+  // nEff into a cross-position share that could imply which side is "winning".
+  const maxRaw=Math.max(1,...wd.map(d=>d.raw||0));
+  const rawById={}; a.distribution.forEach(d=>rawById[d.id]=d);
+  const indepRows=wd.map(d=>{
+    const nb=d.weight||0, raw=d.raw||0;
+    const trackW=Math.max(6,Math.round(raw/maxRaw*100)), fillPct=raw>0?Math.round(nb/raw*100):0;
+    return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
+      <span class="indlab"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)}</span>
+      <span class="indtrack" style="width:${trackW}%" title="${raw} sources collapse to ${nb.toFixed(1)} distinct evidence bases"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span>
+      <span class="indval"><b>${nb.toFixed(1)}</b> base${nb===1?"":"s"} <span class="collapse">of ${raw} src</span></span>
+    </div>`;
+  }).join("");
   let takeaway="";
   if(wd.length){
-    const rawById={}; a.distribution.forEach(d=>rawById[d.id]=d);
     let big=null;
-    wd.forEach(w=>{const r=rawById[w.id]; if(!r)return; const drop=r.pct-w.pct;
-      if(big===null||drop>big.drop) big={label:w.label,rawPct:r.pct,wPct:w.pct,drop};});
-    takeaway = (big && big.drop>=5)
-      ? `<div class="takeaway">Weighted by independence, <b>${esc(big.label)}</b> drops from <b>${big.rawPct}%</b> of sources to <b>${big.wPct}%</b> of the independent evidence — its support rests on fewer distinct datasets than the headcount implies.</div>`
-      : `<div class="takeaway">The two views largely agree here — each position's evidence is about as independent as it is numerous.</div>`;
+    wd.forEach(w=>{if(!w.raw)return; const ratio=w.weight/w.raw;
+      if(big===null||ratio<big.ratio) big={label:w.label,raw:w.raw,nb:w.weight,ratio};});
+    takeaway = (big && big.raw>=3 && big.nb<big.raw*0.6)
+      ? `<div class="takeaway"><b>${esc(big.label)}</b> lists ${big.raw} sources but rests on only <b>${big.nb.toFixed(1)}</b> distinct evidence bases — much of its apparent support is correlated (shared datasets, review echo, or re-analysis of the same evidence).</div>`
+      : `<div class="takeaway">Each position's sources reduce to a similar number of distinct evidence bases — no side's support is dominated by re-used data.</div>`;
   }
   const warnHtml=warningsHtml(a.warnings, "compact");
   const legend=a.distribution.map(d=>{
@@ -619,13 +646,13 @@ function headline(c){
       <div class="refnote">Recorded for transparency and excluded from every metric — a wrongly-dropped source is visible here rather than silently gone. Re-admit one by re-ingesting it or removing it from the case's <code>refused</code> list.</div></details>`;
   }
   return `<div class="panel">
-      <div class="subnote">Two views of the same evidence: by <b>how many sources</b> take each side, then by <b>how much independent evidence</b> each side actually rests on.</div>
+      <div class="subnote">Two views of the same evidence: <b>how many sources</b> take each side, then <b>how many distinct evidence bases</b> each side actually rests on once shared data, echo, and re-analysis collapse.</div>
       <div class="splitlabel"><span class="num">1</span> By source count <span class="q">— the naïve tally · click a segment to isolate it</span></div>
       <div class="distrib">${bar1}</div>
-      ${wd.length?`<div class="splitlabel"><span class="num">2</span> Weighted by independent evidence <span class="q">— sources sharing a dataset collapse into one “look”</span></div>
-      <div class="distrib">${bar2}</div>
+      ${wd.length?`<div class="splitlabel"><span class="num">2</span> Distinct independent evidence bases <span class="q">— each side's sources collapsed to their evidentiary roots</span></div>
+      <div class="indeprows">${indepRows}</div>
       ${takeaway}
-      <div class="qualnote">This weights by <b>independence</b> (how many distinct evidentiary bases), <b>not quality</b> — one decisive trial can outweigh several weak studies. See <button class="risk-link" data-view="independence">Independence &amp; bias</button> for each position's evidence-type mix.</div>`:""}
+      <div class="qualnote">These are <b>absolute counts of distinct evidence bases</b> per position — shown on a shared scale, <b>not</b> as competing shares. This is a <b>diagnostic of how concentrated each side's evidence is, not a score of which side is correct</b>: more distinct bases does not mean better supported — one decisive study can outweigh several weak arguments. See <button class="risk-link" data-view="independence">Independence &amp; bias</button> for each position's evidence mix.</div>`:""}
       ${warnHtml}
       <div class="legend">${legend}</div>${skewHtml}${refusedHtml}
     </div>`;
@@ -826,6 +853,7 @@ function renderIndependenceView(){
       const notes=[];
       if(b.secondaryOnly) notes.push("via review only");
       if(b.nonHuman) notes.push("animal / in-vitro");
+      if(b.provisional) notes.push("unconfirmed (half)");
       return `<tr><td>${esc(b.label)}</td><td style="color:var(--muted);white-space:nowrap;">${esc(k.lab)}</td>
         <td style="font-family:var(--mono);text-align:right;">${b.weight}</td><td style="color:var(--faint);">${esc(notes.join(", ")||"—")}</td></tr>`;
     }).join("");

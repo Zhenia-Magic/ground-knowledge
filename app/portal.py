@@ -53,6 +53,25 @@ def _admin_delete_source(qid, sid):
     return {"ok": True, "version": v}
 
 
+def _admin_confirm_dataset(qid, dataset_ref, confirmed=True):
+    """Curator confirms (or un-confirms) a dataset as a real evidence base — a confirmed root counts
+    at full strength, an unconfirmed/paste-back one at half (engine/roots). Admin moderation."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    try:
+        res = curate.confirm_dataset(kb, dataset_ref, confirmed)
+    except (ValueError, KeyError) as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"])
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v, "summary": res.get("summary")}
+
+
 def _admin_review_resolve(qid, item_id, kind, action, position=None):
     """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
     (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
@@ -126,9 +145,27 @@ def _delta_validation_error(delta):
     for field in ("title", "position"):
         if not str(src.get(field) or "").strip():
             return "delta.source.{} is required".format(field)
+    if len(str(src.get("title"))) > 500:
+        return "delta.source.title is too long (max 500 chars)"
+    # restsOn is the root-admission surface: bound it and type-check it so one public source can't
+    # supply an unbounded or malformed root list. (Novel roots from this path are unverified ->
+    # textDepth is stripped to 'unknown' -> they count at HALF until confirmed; see engine/roots.)
+    rests = src.get("restsOn")
+    if rests is not None:
+        if not isinstance(rests, list):
+            return "delta.source.restsOn must be an array"
+        if len(rests) > 40:
+            return "delta.source.restsOn has too many entries (max 40)"
+        for i, e in enumerate(rests):
+            if not isinstance(e, (str, int, float)):
+                return "delta.source.restsOn[{}] must be a string".format(i)
+            if len(str(e)) > 300:
+                return "delta.source.restsOn[{}] is too long".format(i)
     factor_weights = delta.get("factorWeights", [])
     if not isinstance(factor_weights, list):
         return "delta.factorWeights must be an array"
+    if len(factor_weights) > 40:
+        return "delta.factorWeights has too many entries (max 40)"
     for i, fw in enumerate(factor_weights):
         if not isinstance(fw, dict):
             return "delta.factorWeights[{}] must be an object".format(i)
@@ -323,6 +360,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, _admin_review_resolve(
                     body.get("id"), body.get("itemId") or body.get("prId"),
                     body.get("kind", "pending"), body.get("action"), body.get("position")))
+            if p[2] == "confirm-dataset":
+                return self._send(200, _admin_confirm_dataset(
+                    body.get("id"), body.get("dataset") or body.get("datasetId"),
+                    body.get("confirmed", True)))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()
