@@ -1,0 +1,21 @@
+{
+  "_comment": "Small hand-specified gold fixtures for the benchmark: the positions, key evidentiary roots, and cruxes a correct map of each sub-question should surface. Substring-matched against the tool's output (eval/run_benchmark.py). Deliberately minimal — these are the load-bearing items, not an exhaustive key.",
+  "covid": {
+    "subQuestion": "Did SARS-CoV-2 arise via natural zoonotic spillover or a research-related incident?",
+    "positions": ["Zoonotic", "Laboratory", "Undetermined"],
+    "keyRoots": ["Huanan market", "genomic sequences", "furin", "Bat sarbecovirus"],
+    "cruxes": ["Epidemiological proximity", "Furin cleavage site", "research-related accident"]
+  },
+  "blackholes": {
+    "subQuestion": "Could LHC collisions create a black hole that destroys Earth?",
+    "positions": ["No risk", "Residual concern"],
+    "keyRoots": ["Cosmic-ray empirical bound", "Hawking radiation"],
+    "cruxes": ["cosmic-ray safety analogy", "Hawking radiation", "safety argument itself"]
+  },
+  "eggs": {
+    "subQuestion": "Do eggs increase cardiovascular disease risk?",
+    "positions": ["Increases risk", "No association", "Context-dependent"],
+    "keyRoots": ["Nurses' Health Study", "PURE", "China Kadoorie"],
+    "cruxes": ["industry funding", "Subgroups", "biomarkers"]
+  }
+}
