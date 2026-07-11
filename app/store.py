@@ -110,7 +110,9 @@ def _load(val):
     """A KB/progress column comes back as a dict (psycopg JSONB) or a str (sqlite TEXT)."""
     if val is None:
         return None
-    return val if isinstance(val, (dict, list)) else json.loads(val)
+    from engine.migrate import load_migrated
+    parsed = val if isinstance(val, (dict, list)) else json.loads(val)
+    return load_migrated(parsed)
 
 
 def _row_to_question(row, with_kb=True):

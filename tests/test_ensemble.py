@@ -287,6 +287,16 @@ class EdgeClusteringTests(unittest.TestCase):
                           _d("NEW:X", rests=["NEW:Nurses' Health Study cohort", "NEW:UK Biobank"])])
         self.assertEqual(len(c["source"]["restsOn"]), 2)
 
+    def test_repeated_aliases_from_one_model_are_one_vote(self):
+        # One model cannot manufacture a 2/3 majority by repeating near-aliases for one dataset.
+        c, rep = self._one([
+            _d("NEW:X", rests=["NEW:Nurses Health Study", "NEW:Nurses Health Study cohort"]),
+            _d("NEW:X", rests=[]),
+            _d("NEW:X", rests=[]),
+        ])
+        self.assertEqual(c["source"]["restsOn"], [])
+        self.assertIn("restsOn", rep["disagreedFields"])
+
     def test_src_edge_needs_a_strict_majority(self):
         # a src: edge proposed by only 1 of 2 models does NOT survive (strict > m/2); the unanimous
         # Cohort Q does. So one model's spurious citation edge can never mint a derivation link.

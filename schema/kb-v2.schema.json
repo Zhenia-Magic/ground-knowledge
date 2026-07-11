@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://groundknowledge.org/schema/kb-v2.schema.json",
+  "title": "Ground Knowledge knowledge base v2",
+  "type": "object",
+  "required": ["meta", "positions", "datasets", "factors", "sources", "vocab", "log"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["id", "question", "version", "schemaVersion"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "question": {"type": "string"},
+        "version": {"type": "integer", "minimum": 0},
+        "schemaVersion": {"const": 2},
+        "updated": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "positions": {"type": "array", "items": {"$ref": "#/$defs/position"}},
+    "datasets": {"type": "array", "items": {"$ref": "#/$defs/dataset"}},
+    "factors": {"type": "array", "items": {"$ref": "#/$defs/factor"}},
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/source"}},
+    "vocab": {
+      "type": "object",
+      "required": ["evidence", "population", "funding"],
+      "properties": {
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/vocabTerm"}},
+        "population": {"type": "array", "items": {"$ref": "#/$defs/vocabTerm"}},
+        "funding": {"type": "array", "items": {"$ref": "#/$defs/vocabTerm"}}
+      },
+      "additionalProperties": true
+    },
+    "pendingReview": {"type": "array", "items": {"type": "object"}},
+    "refused": {"type": "array", "items": {"type": "object"}},
+    "log": {"type": "array", "items": {"type": "object"}}
+  },
+  "$defs": {
+    "vocabTerm": {
+      "type": "object", "required": ["label"],
+      "properties": {"label": {"type": "string"}, "aliases": {"type": "array", "items": {"type": "string"}}},
+      "additionalProperties": true
+    },
+    "position": {
+      "type": "object", "required": ["id", "label", "hue"],
+      "properties": {"id": {"type": "string"}, "label": {"type": "string"}, "hue": {"type": "string"}},
+      "additionalProperties": true
+    },
+    "dataset": {
+      "type": "object", "required": ["id", "label", "aliases"],
+      "properties": {
+        "id": {"type": "string"}, "label": {"type": "string"},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "confirmed": {"type": "boolean", "description": "legacy; superseded by confirmation (still read)"},
+        "confirmation": {
+          "type": "object",
+          "description": "auditable admission record for the dataset root",
+          "properties": {
+            "status": {"enum": ["confirmed", "provisional", "disputed"]},
+            "method": {"enum": ["curator", "verified-edge"]},
+            "by": {"type": "string"}, "source": {"type": "string"},
+            "ts": {"type": "string"}, "note": {"type": "string"}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "factor": {
+      "type": "object", "required": ["id", "label", "weights", "provenance"],
+      "properties": {
+        "id": {"type": "string"}, "label": {"type": "string"},
+        "weights": {"type": "object", "additionalProperties": {"enum": ["high", "med", "low", "n/a"]}},
+        "provenance": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    },
+    "source": {
+      "type": "object",
+      "required": ["id", "title", "position", "evidence", "funding", "population", "restsOn", "provenance", "textDepth"],
+      "properties": {
+        "id": {"type": "string"}, "title": {"type": "string"}, "position": {"type": "string"},
+        "evidence": {"type": "string"}, "funding": {"type": "string"}, "population": {"type": "string"},
+        "restsOn": {
+          "type": "array",
+          "description": "each entry is a bare ref string, OR an edge object carrying its own dependency quote",
+          "items": {
+            "oneOf": [
+              {"type": "string"},
+              {
+                "type": "object",
+                "required": ["ref"],
+                "properties": {
+                  "ref": {"type": "string"},
+                  "provenance": {
+                    "type": "object",
+                    "properties": {
+                      "quote": {"type": "string"},
+                      "verifiedQuote": {"enum": ["exact", "fuzzy", "missing"]}
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "provenance": {"type": "object"},
+        "textDepth": {"enum": ["full", "abstract", "partial", "unknown"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

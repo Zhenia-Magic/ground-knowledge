@@ -127,13 +127,12 @@ distinct root exactly once, at its strength**:
 ```
 nEff = Σ strength(root_i)     over the position's DISTINCT resolved roots
 
-strength = 1.0   for a real root (a NAMED dataset / cohort / experiment)
+strength = 0.0   if the root is PROVISIONAL — not yet confirmed by a fetched source whose
+                 `restsOn` quote verified against its text, or by an explicit curator decision.
+                 It remains visible as a proposed base but is quarantined from headline nEff.
+         = 1.0   for a confirmed real root (a NAMED dataset / cohort / experiment)
          × 0.5   if the root is known only via secondary sources (§6.5)
          × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
-         × 0.5   if the root is PROVISIONAL — asserted only by unverified input (textDepth
-                 'unknown' / public paste-back) and not yet confirmed by a real fetch or a
-                 curator. Root ADMISSION: an unconfirmed root counts at half until vouched for,
-                 so a public contributor can't mint full-strength roots by fabricating datasets.
          = 1.0   for the pooled secondary voice, the pooled unnamed-primary voice, or a
                  collapsed circular loop (one of each per position, counted once)
 ```
@@ -194,9 +193,10 @@ meta-flag: "this root is read both ways" (contested evidence).
    **unnamed-primary pool**, not a per-source root. Mislabelling a flood of commentaries as
    `Observational` therefore mints ONE voice, not one root each — the echo-as-primary hole is
    closed by pooling (symmetric with reviews). A real study keeps its root by *naming* its own
-   data. *Remaining risk:* fabricating a distinct named dataset per source still mints roots (edge
-   fabrication, §8.3) — bounded by quote verification, the vocab, the ensemble + human review, not
-   by the count.
+   data. A fabricated named dataset remains visible as a proposed root but contributes zero headline
+   nEff until a fetched dependency quote verifies it or a curator confirms it. *Remaining risk:*
+   false confirmation of that edge
+   (edge fabrication, §8.3) is a semantic-verification problem the count cannot solve.
 
 2. **Meta-analysis** — *secondary or primary?* If it produces a **new pooled dataset** (re-analyzes
    raw data), it is primary: tag that pooled dataset as a root and it counts. If it only narrates
@@ -257,14 +257,15 @@ meta-flag: "this root is read both ways" (contested evidence).
 | Re-submit one cohort under many names | Fake many independent datasets | Normalized + alias root resolution; concentration *rises*, not falls |
 | Mutual citation ring (A↔B↔C↔A) | Manufacture corroboration from nothing | SCC collapse to one root + `circularCorroboration` flag |
 | Mislabel a commentary as `Observational` (empty `restsOn`) | Mint a free independent root | Ungrounded primaries **pool to one voice per position** (like reviews); a distinct root needs a *named* evidence base; unrecognised labels default secondary; + verification pass + relevance gate |
-| Flood rehashes as `Observational`, each *naming a fabricated dataset* | Mint roots past the pool | **Not fully defended** (edge fabrication, §8.3) — bounded by quote verification, vocab, ensemble + human review, not the count |
+| Flood rehashes as `Observational`, each *naming a fabricated dataset* | Mint roots past the pool | Unverified roots remain visible but contribute **zero confirmed nEff**; false curator/fetch confirmation remains the semantic risk (§8.3) |
 | Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
 
 The deep property, stated precisely (and enforced by a randomized monotonicity test in
 `tests/test_independence.py`): **adding a source never lowers any position's nEff, and raises it
-only by introducing a new root or upgrading an existing root's strength** (primary grounding for a
+only by introducing a new **confirmed** root or upgrading an existing root's strength** (confirmation,
+primary grounding for a
 review-only dataset; human evidence for an animal-only root — both of which *should* raise it).
 Correlated, derivative, and circular evidence lands on roots already counted, so it moves nEff
 nowhere; a first wave of ungrounded echo adds at most the two pooled voices (one unnamed-primary,
@@ -276,11 +277,11 @@ attacks in this table but failed the two grounded ones — found by adversariall
 against its own claims, which is why the grounded rows above exist and why the invariant is now a
 tested property rather than a slogan.
 
-What this arithmetic cannot see is a source that **fabricates a root outright** — claiming a
-dataset that doesn't actually back it. That is edge *fabrication*, the dual of the edge *omission*
-in §8.3, and it is a labelling-integrity problem, not a counting problem: the partial defenses are
-the per-`restsOn` provenance quote, quote verification against fetched text, and the relevance
-gate. Named in §8 rather than hidden behind the invariant.
+What this arithmetic cannot see is whether a fetched source or curator **falsely confirms a root**
+that the evidence does not actually support. Unverified roots are quarantined at zero, closing the
+public count-inflation path; false confirmation remains edge *fabrication*, the dual of edge
+*omission* in §8.3. It is a semantic labelling-integrity problem: the defenses are per-`restsOn`
+provenance, verification against fetched text, and review. Named in §8 rather than hidden.
 
 ---
 
@@ -300,9 +301,16 @@ gate. Named in §8 rather than hidden behind the invariant.
    We do not crawl real citation graphs. A truly adversarial actor can *omit* a `SRC:` edge to hide
    a dependency and look more independent than they are — and the dual attack, *fabricating* a
    `restsOn` edge to a dataset that doesn't actually back the source, mints a root the position
-   hasn't earned (§7). The verification pass can catch *false quotes* (including the quote each
-   `restsOn` edge is supposed to carry) but not *missing* edges; crawling an external citation
-   graph (OpenAlex/Crossref) and diffing declared-vs-crawled edges is the known fix for the
+   hasn't earned (§7). Confirmation is now admitted **per edge**: a fetched source confirms a dataset
+   only through the specific `restsOn` edge whose own dependency quote verified against the fetched
+   text (edge objects `{ref, provenance}`), and a citation (`src:`) edge can never confirm the root
+   it inherits. This closes the earlier whitewash where one source-level quote admitted *every*
+   dataset a source touched (a source claiming ten datasets had to verify one quote, not ten) and
+   where a review's quote confirmed the primary study's data by inheritance. Curator confirmation is
+   likewise an **auditable record** (`{status, method, by, source, ts}`), not an opaque boolean — but
+   it is still a human vouch, so a *wrong* confirmation or a *missing* edge remains a semantic risk.
+   The verification pass catches *false quotes* but not *missing* edges; crawling an external
+   citation graph (OpenAlex/Crossref) and diffing declared-vs-crawled edges is the known fix for the
    omission half, not yet built.
 4. **Cross-position cycles** have genuinely ambiguous semantics (edge case 7).
 5. **Alias gaps.** A novel name for an existing cohort counts as new until someone curates it.

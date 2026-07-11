@@ -7,6 +7,7 @@ import json
 import os
 
 from app import store
+from engine.migrate import migrate_kb, validation_errors
 
 
 def seed_from_cases(pattern="cases/*.kb.json"):
@@ -14,7 +15,10 @@ def seed_from_cases(pattern="cases/*.kb.json"):
     existing = {q["question"] for q in store.list_questions(limit=1000)}
     added = []
     for path in sorted(glob.glob(pattern)):
-        kb = json.load(open(path))
+        kb, _ = migrate_kb(json.load(open(path)))
+        errors = validation_errors(kb)
+        if errors:
+            raise ValueError("{} is not a valid KB: {}".format(path, "; ".join(errors)))
         question = kb.get("meta", {}).get("question") or os.path.basename(path)
         if question in existing:
             continue

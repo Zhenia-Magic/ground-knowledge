@@ -1,0 +1,44 @@
+{
+  "covid": {
+    "file": "covid.md",
+    "promptFile": "../covid.prompt.md",
+    "kind": "claude-code-web-research",
+    "independent": true,
+    "product": "Claude Code",
+    "model": "Opus 4.8",
+    "capturedAt": "2026-07-11T15:58:34Z",
+    "sessionId": null,
+    "promptCapture": "exact template confirmed by the operator",
+    "promptSha256": "6e7f60e1b505c1c5c2090e766f9eb0933aa0b81bccbb82bac280af72e94250fa",
+    "outputSha256": "12f26e610aa558c4c53f18e30c55f093d8b12aab074cf86e7753604ce6595961",
+    "portableCitationLinks": true
+  },
+  "blackholes": {
+    "file": "blackholes.md",
+    "promptFile": "../blackholes.prompt.md",
+    "kind": "claude-code-web-research",
+    "independent": true,
+    "product": "Claude Code",
+    "model": "Opus 4.8",
+    "capturedAt": "2026-07-11T15:21:22Z",
+    "sessionId": null,
+    "promptCapture": "exact template confirmed by the operator",
+    "promptSha256": "1e3ab7f42e300bc97bbd853c4db7c0a3291d4910d1dbff2b9832882bb5f49f7a",
+    "outputSha256": "765dd36cb384c6092b2b468603ebe0696152613edc4174aff0da0f6dc9e9c6b9",
+    "portableCitationLinks": true
+  },
+  "eggs": {
+    "file": "eggs.md",
+    "promptFile": "../eggs.prompt.md",
+    "kind": "claude-code-web-research",
+    "independent": true,
+    "product": "Claude Code",
+    "model": "Opus 4.8",
+    "capturedAt": "2026-07-11T15:11:35Z",
+    "sessionId": null,
+    "promptCapture": "exact template confirmed by the operator",
+    "promptSha256": "d9e4489b608e2a3e95c38cdce20e14fadc4b566a99de54b65da61e84e4b16a98",
+    "outputSha256": "e1e9e11050e0db128c1af7cc33229dbdc8664310932ec502c723883bed362bad",
+    "portableCitationLinks": true
+  }
+}

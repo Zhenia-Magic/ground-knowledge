@@ -26,13 +26,14 @@ from engine.assess import assess, diff_assessments
 from engine.merge import merge_delta
 from engine.render import json_for_script
 from engine.schema import empty_kb
+from engine.migrate import load_migrated
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 def read_json(p):
     with open(p, encoding="utf-8") as f:
-        return json.load(f)
+        return load_migrated(json.load(f))
 
 
 def write_json(p, o):
@@ -43,6 +44,36 @@ def write_json(p, o):
 
 def pct(x):
     return str(round(x * 100)) + "%"
+
+
+def cmd_validate(args):
+    from engine.migrate import migrate_kb, validation_errors
+    with open(args.kb, encoding="utf-8") as f:
+        kb, changes = migrate_kb(json.load(f))
+    errors = validation_errors(kb)
+    if errors:
+        for error in errors:
+            print("ERROR:", error)
+        raise SystemExit(1)
+    print("Valid KB schema v{}{}".format(
+        kb["meta"]["schemaVersion"], " (migration available: " + "; ".join(changes) + ")" if changes else ""))
+
+
+def cmd_migrate(args):
+    from engine.migrate import migrate_kb, validation_errors
+    with open(args.kb, encoding="utf-8") as f:
+        kb, changes = migrate_kb(json.load(f))
+    errors = validation_errors(kb)
+    if errors:
+        raise SystemExit("migration produced invalid KB: " + "; ".join(errors))
+    if args.apply:
+        write_json(args.kb, kb)
+        print("Migrated {} in place: {}".format(args.kb, "; ".join(changes) or "already v2"))
+    elif args.out:
+        write_json(args.out, kb)
+        print("Migrated {} -> {}: {}".format(args.kb, args.out, "; ".join(changes) or "already v2"))
+    else:
+        print(json.dumps(kb, indent=2, ensure_ascii=False))
 
 
 def pad(s, n):
@@ -792,6 +823,12 @@ def main():
     s.add_argument("--out"); s.set_defaults(fn=cmd_init)
     s = sub.add_parser("show"); s.add_argument("kb"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("assess"); s.add_argument("kb"); s.set_defaults(fn=cmd_assess)
+    s = sub.add_parser("validate", help="validate schema v2 plus IDs and cross-references")
+    s.add_argument("kb"); s.set_defaults(fn=cmd_validate)
+    s = sub.add_parser("migrate", help="additively migrate a v1 KB to schema v2")
+    s.add_argument("kb"); migration_dest = s.add_mutually_exclusive_group()
+    migration_dest.add_argument("--out"); migration_dest.add_argument("--apply", action="store_true")
+    s.set_defaults(fn=cmd_migrate)
     s = sub.add_parser("gaps", help="show where evidence is thin (steers gap-driven deep search)")
     s.add_argument("kb"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_gaps)
     s = sub.add_parser("deepen", help="gap-driven deep search: find thin spots, search them, repeat")

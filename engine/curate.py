@@ -226,13 +226,31 @@ def rename(kb, kind, ref, new_label):
     return _commit(kb, "rename", "renamed {} “{}” → “{}”".format(kind, old, new_label))
 
 
-def confirm_dataset(kb, ref, confirmed=True):
+def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=None, note=None):
     """Curator vouches that a dataset is a REAL, identified evidence base (or un-vouches it).
     A confirmed dataset root counts at full strength; an unconfirmed one asserted only by
-    unverified/paste-back input counts at half (see engine/roots.root_strength). This is how a
-    human resolves the 'is this a fabricated root?' question the arithmetic can't answer."""
+    unverified/paste-back input is quarantined at zero (see engine/roots.root_strength). This is how
+    a human resolves the 'is this a fabricated root?' question the arithmetic can't answer.
+
+    Writes an AUDITABLE confirmation record — {status, method, by, source, ts, note} — rather than an
+    opaque boolean, so a reader can see HOW and by WHOM a root was admitted (engine/roots
+    ._dataset_confirmation). The legacy `confirmed` flag is removed once the object is written; it is
+    still honored on read for KBs that predate this."""
     d = _resolve(kb["datasets"], ref, "dataset")
-    d["confirmed"] = bool(confirmed)
+    if confirmed:
+        rec = {"status": "confirmed", "method": method, "ts": now_iso()}
+        if by:
+            rec["by"] = by
+        if source:
+            rec["source"] = source
+        if note:
+            rec["note"] = note
+        d["confirmation"] = rec
+    else:
+        d["confirmation"] = {"status": "provisional", "ts": now_iso()}
+        if by:
+            d["confirmation"]["by"] = by
+    d.pop("confirmed", None)                     # replace the legacy boolean with the audit record
     verb = "confirmed" if confirmed else "un-confirmed"
     return _commit(kb, "confirm-dataset", "{} dataset “{}” as a real evidence base".format(verb, d["label"]))
 
@@ -272,6 +290,21 @@ def _similarity(a, b):
     return len(ta & tb) / len(ta | tb)
 
 
+_ACRONYM_STOP = {"a", "an", "and", "of", "the", "for", "in", "on", "cohort", "dataset"}
+
+
+def _acronym(s):
+    words = [w for w in norm(s).split() if w not in _ACRONYM_STOP]
+    return "".join(w[0] for w in words if w) if len(words) >= 2 else ""
+
+
+def _acronym_match(a, b):
+    """Suggest NHS ↔ Nurses' Health Study without silently merging either entity."""
+    ta, tb = _tokens(a), _tokens(b)
+    aa, ab = _acronym(a), _acronym(b)
+    return (len(aa) >= 2 and aa in tb) or (len(ab) >= 2 and ab in ta)
+
+
 def suggest_duplicates(kb, threshold=0.4):
     """Flag entity pairs whose labels look like paraphrases (token-overlap ≥ threshold), so a
     curator doesn't have to hunt. Suggestions only — the merge is always explicit."""
@@ -287,11 +320,13 @@ def suggest_duplicates(kb, threshold=0.4):
         pairs = []
         for i in range(len(items)):
             for j in range(i + 1, len(items)):
-                sim = _similarity(items[i][1], items[j][1])
+                acronym = _acronym_match(items[i][1], items[j][1])
+                sim = 1.0 if acronym else _similarity(items[i][1], items[j][1])
                 if sim >= threshold:
                     pairs.append({"a": {"ref": items[i][0], "label": items[i][1]},
                                   "b": {"ref": items[j][0], "label": items[j][1]},
-                                  "sim": round(sim, 2)})
+                                  "sim": round(sim, 2),
+                                  "reason": "acronym" if acronym else "token-overlap"})
         if pairs:
             out[kind] = sorted(pairs, key=lambda x: -x["sim"])
     return out

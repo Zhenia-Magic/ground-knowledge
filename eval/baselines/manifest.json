@@ -1,0 +1,44 @@
+{
+  "covid": {
+    "file": "covid.md",
+    "promptFile": "covid.prompt.md",
+    "kind": "chatgpt-deep-research",
+    "independent": true,
+    "product": "ChatGPT Deep Research",
+    "model": "default model (not recorded in Markdown export)",
+    "capturedAt": "2026-07-11T14:13:58Z",
+    "conversationUrl": null,
+    "promptCapture": "exact template confirmed by the operator after the run",
+    "promptSha256": "6e7f60e1b505c1c5c2090e766f9eb0933aa0b81bccbb82bac280af72e94250fa",
+    "outputSha256": "8c90304d097d98870da20df3b7401abd92e0167bcea8e9baa19f749ca7b01edc",
+    "portableCitationLinks": false
+  },
+  "blackholes": {
+    "file": "blackholes.md",
+    "promptFile": "blackholes.prompt.md",
+    "kind": "chatgpt-deep-research",
+    "independent": true,
+    "product": "ChatGPT Deep Research",
+    "model": "default model (not recorded in Markdown export)",
+    "capturedAt": "2026-07-11T14:48:33Z",
+    "conversationUrl": null,
+    "promptCapture": "exact template confirmed by the operator after the run",
+    "promptSha256": "1e3ab7f42e300bc97bbd853c4db7c0a3291d4910d1dbff2b9832882bb5f49f7a",
+    "outputSha256": "ff0c668fe9481ead0f28012a84255a14e1da08e455e7a407e91bbc611ac3be00",
+    "portableCitationLinks": false
+  },
+  "eggs": {
+    "file": "eggs.md",
+    "promptFile": "eggs.prompt.md",
+    "kind": "chatgpt-deep-research",
+    "independent": true,
+    "product": "ChatGPT Deep Research",
+    "model": "default model (not recorded in Markdown export)",
+    "capturedAt": "2026-07-11T14:55:55Z",
+    "conversationUrl": null,
+    "promptCapture": "exact template confirmed by the operator after the run",
+    "promptSha256": "d9e4489b608e2a3e95c38cdce20e14fadc4b566a99de54b65da61e84e4b16a98",
+    "outputSha256": "ea061b36e3b148429e787f363cc05add9875bd18b5a37f29eaf2f211064617bf",
+    "portableCitationLinks": false
+  }
+}

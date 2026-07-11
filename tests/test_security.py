@@ -121,6 +121,21 @@ class DeltaValidationTests(unittest.TestCase):
         self.assertIn("position", res.get("error", ""))
         save.assert_not_called()
 
+    def test_batch_assesses_only_before_and_after_transaction(self):
+        kb = empty_kb("abc", "question")
+        q = {"kb": kb, "version": 0}
+        items = [{"source": {"title": "source " + str(i), "position": "NEW:Yes",
+                              "evidence": "Observational", "restsOn": []}}
+                 for i in range(4)]
+        with mock.patch("app.store.save_kb", return_value=4), \
+             mock.patch("engine.assess.assess", wraps=__import__("engine.assess", fromlist=["assess"]).assess) as assess_mock:
+            res = _apply_delta("abc", q, items, "tester")
+        self.assertEqual(res["added"], 4)
+        self.assertEqual(assess_mock.call_count, 2)
+        add_logs = [entry for entry in kb["log"] if entry.get("action") == "add-source"]
+        self.assertEqual(add_logs[-1]["batchSize"], 4)
+        self.assertIn("diff", add_logs[-1])
+
 
 class UntrustedVerificationFieldTests(unittest.TestCase):
     """The keyless paste-back endpoint never fetches text server-side, so textDepth and
@@ -137,6 +152,15 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
         self.assertNotIn("textDepth", d["source"])
         self.assertNotIn("verifiedQuote", d["source"]["provenance"]["position"])
         self.assertNotIn("verifiedQuote", d["factorWeights"][0])
+
+    def test_strips_spoofed_verified_quote_from_restsOn_edge_object(self):
+        # per-edge dependency quotes ride the untrusted paste-back path too: a client must not be
+        # able to self-declare an edge object's quote as verified and mint a confirmed root.
+        d = _norm_delta({"source": {
+            "title": "t", "position": "NEW:Yes",
+            "restsOn": [{"ref": "ds_x", "provenance": {"quote": "fabricated", "verifiedQuote": "exact"}}],
+        }, "factorWeights": []})
+        self.assertNotIn("verifiedQuote", d["source"]["restsOn"][0]["provenance"])
 
     def test_strips_spoofed_fields_from_bare_source_delta(self):
         d = _norm_delta({"title": "t", "position": "NEW:Yes", "textDepth": "full",

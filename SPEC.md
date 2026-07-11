@@ -102,7 +102,8 @@ themselves can vary between models (position, tier, and `restsOn` assignments ar
 and that variance is now **measured and acted on**: labelling can run as an **ensemble** of several
 models over the same source, combined by a deterministic field-level majority vote
 (`ingest/ensemble.py`), with per-field agreement recorded on each source. A `restsOn` edge survives
-only if ≥ half the models proposed it; a genuine split on the *position* is **not** merged under a
+only if a **strict majority** (> half) of distinct models proposed it; a genuine split on the
+*position* is **not** merged under a
 guessed label — it is queued in the KB for a human to resolve (pick a position or drop the paper;
 `engine/review.py`), and pending items count toward no metric. Labelling stays the one load-bearing
 AI step and the system's honestly-stated biggest lever (MECHANISM.md §8.1); the ensemble narrows it,
@@ -315,8 +316,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   on the roadmap.
 - *Tier mislabelling* — the primary/secondary floor depends on the evidence type being right. Calling
   opinion "Observational" no longer *mints a root* on its own (an ungrounded primary now pools, §4),
-  but it can still deny the review-collapse a genuine review deserves, or — paired with a **fabricated
-  named dataset** — mint an unconfirmed root (which counts at half until a fetch/curator confirms it).
+  but it can still deny the review-collapse a genuine review deserves. A **fabricated named dataset**
+  remains visible but contributes zero confirmed nEff until a fetched dependency quote verifies it
+  or a curator confirms it; false confirmation remains a semantic integrity risk.
   Partial defences (controlled vocab, relevance gate, funding-defaults-to-Undisclosed, provisional
   root admission, and an **ensemble vote plus human review** that out-votes or escalates a single
   model's mislabel) exist; not airtight against

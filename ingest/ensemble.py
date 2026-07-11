@@ -272,22 +272,22 @@ def combine_one(deltas):
                 ds_row.append((_norm(x), x, _edge_tokens(x)))
         ds_lists.append(ds_row)
     clusters = []                                    # {"tokens", "forms":[(norm,raw)], "votes"}
-    for row in ds_lists:
+    for model_i, row in enumerate(ds_lists):
         for k, raw, tk in row:
             for c in clusters:
                 if _same_edge(tk, c["tokens"]):
                     c["forms"].append((k, raw))
                     c["tokens"] |= tk
-                    c["votes"] += 1
+                    c["voters"].add(model_i)       # aliases repeated by ONE model are still one vote
                     break
             else:
-                clusters.append({"tokens": set(tk), "forms": [(k, raw)], "votes": 1})
+                clusters.append({"tokens": set(tk), "forms": [(k, raw)], "voters": {model_i}})
     rests, edge_dropped = [], False
     for k, cnt in src_count.items():
         (rests.append(src_form[k]) if cnt > m / 2.0 else None)
         edge_dropped = edge_dropped or (0 < cnt <= m / 2.0)
     for c in clusters:
-        if c["votes"] > m / 2.0:
+        if len(c["voters"]) > m / 2.0:
             # representative form: the winning model's wording when it contributed, else first
             rests.append(next((raw for k, raw in c["forms"] if k in winner_edges),
                               c["forms"][0][1]))

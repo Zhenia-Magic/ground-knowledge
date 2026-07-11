@@ -71,6 +71,28 @@ def tier_of(kb, source):
     return _TIER.get(ev, "secondary")
 
 
+def _dataset_confirmation(d):
+    """An auditable confirmation record for a dataset, or None if it is not curator-confirmed.
+
+    Reads the structured object {status, method, by/source/curator, ts, note} and falls back to the
+    legacy boolean {"confirmed": true}. A structured object whose status is anything other than
+    'confirmed' (e.g. 'provisional', 'disputed') counts as NOT confirmed. This is what replaces the
+    bare boolean: a confirmed root now records HOW it was confirmed and by whom, so a reader can audit
+    the claim instead of trusting an opaque flag (see SCHEMA.md, MECHANISM.md §8)."""
+    c = d.get("confirmation")
+    if isinstance(c, dict):
+        if c.get("status", "confirmed") != "confirmed":
+            return None
+        rec = {"method": c.get("method") or "curator"}
+        for k in ("by", "source", "curator", "ts", "timestamp", "note"):
+            if c.get(k):
+                rec[k] = c[k]
+        return rec
+    if d.get("confirmed"):
+        return {"method": "curator"}
+    return None
+
+
 # population tokens / phrases that mark a NON-human study (animal model or in-vitro). Token match
 # for short words (so "moderate" can't match "rat"); phrase match for the multi-word ones.
 _NONHUMAN_TOKENS = {"mice", "mouse", "murine", "rat", "rats", "rodent", "rodents", "animal",
@@ -88,18 +110,36 @@ def _is_nonhuman(source):
 
 
 def _edges(source):
-    """Split a source's restsOn into (dataset ids, source ids). Source edges are stored as
-    'src:<id>'; everything else is a dataset root. Case-insensitive prefix check: merge.py
-    always normalizes to lowercase, but a hand-authored/seed KB writing "SRC:<id>" should not
-    silently become a fake dataset (see SCHEMA.md on seed data)."""
-    ds, src = [], []
+    """Split a source's restsOn into (dataset ids, source ids, edge_provenance).
+
+    A restsOn entry is EITHER a bare string ref, OR an edge object carrying its own dependency
+    quote: {"ref": "<id>", "provenance": {"quote": "...", "verifiedQuote": "exact"}}. Both are
+    accepted so per-edge verification is auditable without breaking string-only KBs. Source edges
+    are stored as 'src:<id>'; everything else is a dataset root. Case-insensitive prefix check:
+    merge.py always normalizes to lowercase, but a hand-authored/seed KB writing "SRC:<id>" should
+    not silently become a fake dataset (see SCHEMA.md on seed data).
+
+    edge_provenance maps the resolved ref key (dataset id, or 'src:<id>') to that ONE edge's
+    provenance dict — so a verified quote confirms only the edge it actually annotates, never a
+    sibling edge on the same source and never a root reached only by inheritance."""
+    ds, src, edge_prov = [], [], {}
     for e in source.get("restsOn") or []:
-        e = str(e)
-        if e.lower().startswith("src:"):
-            src.append(e[4:])
+        if isinstance(e, dict):
+            ref = str(e.get("ref") or "").strip()
+            prov = e.get("provenance") if isinstance(e.get("provenance"), dict) else None
         else:
-            ds.append(e)
-    return ds, src
+            ref, prov = str(e).strip(), None
+        if not ref:
+            continue
+        if ref.lower().startswith("src:"):
+            key = "src:" + ref[4:]
+            src.append(ref[4:])
+        else:
+            key = ref
+            ds.append(ref)
+        if prov:
+            edge_prov[key] = prov
+    return ds, src, edge_prov
 
 
 def _tarjan(adj):
@@ -232,19 +272,47 @@ def resolve(kb):
                 target.add(r)
     nonhuman_only = animal - human
 
-    # ROOT ADMISSION: a dataset root is 'provisional' (unconfirmed) until the KB actually verifies it.
-    # It confirms when EITHER a curator marks the dataset {"confirmed": true} OR at least one source
-    # that was really FETCHED (textDepth full/abstract/partial -- not a paste-back 'unknown') rests on
-    # it. A brand-new root asserted only by unverified/public input therefore counts at HALF, so a
-    # contributor can't mint full-strength independent roots by fabricating datasets on the paste-back
-    # path (the edge-fabrication attack, MECHANISM.md §8). Confirmed roots keep full strength.
+    # ROOT ADMISSION: a dataset root is 'provisional' (unconfirmed) until the KB verifies it PER EDGE,
+    # one of two auditable ways:
+    #   (1) curator confirmation — the dataset carries a confirmation record (or legacy confirmed:true);
+    #   (2) verified edge — a source that was really FETCHED (textDepth full/abstract/partial) carries a
+    #       dependency quote that matched the fetched text FOR THAT SPECIFIC DATASET EDGE.
+    # Two things are deliberately NOT enough, closing the old whitewash where one source-level quote
+    # admitted every dataset a source touched:
+    #   * an INHERITED root (reached only through a src:<id> citation edge) is never confirmed by the
+    #     citing source's own quote — only a source that DIRECTLY names the dataset can vouch for it;
+    #   * a verified quote on ONE edge does not confirm SIBLING datasets on the same source — a source
+    #     claiming ten datasets must verify ten edges, not one (MECHANISM.md §8).
+    # Text depth alone is insufficient (a model can quote an unrelated real sentence). A brand-new root
+    # asserted only by unverified/public input is QUARANTINED from nEff; it stays visible in the audit
+    # as a proposed base and enters nEff only after confirmation. confirmed_by records HOW each root was
+    # confirmed, so the admission is itself auditable.
     _DEPTH_OK = {"full", "abstract", "partial"}
-    confirmed_flag = {"ds:" + d["id"] for d in kb.get("datasets", []) if d.get("confirmed")}
-    fetched_ds = set()
+    confirmed_by = {}                                          # root_key -> {method, source?/by?/...}
+    for d in kb.get("datasets", []):
+        rec = _dataset_confirmation(d)
+        if rec:
+            confirmed_by["ds:" + d["id"]] = rec
     for s in kb["sources"]:
-        if s.get("textDepth") in _DEPTH_OK:
-            fetched_ds |= {r for r in source_roots[s["id"]] if r.startswith("ds:")}
-    provisional = all_ds - confirmed_flag - fetched_ds
+        if s.get("textDepth") not in _DEPTH_OK:
+            continue
+        d_ids, _src_ids, edge_prov = _edges(s)
+        direct = {"ds:" + d for d in d_ids}                   # this source's DIRECT dataset edges
+        # legacy source-level dependency quote: back-compat only. Applies to the source's direct
+        # dataset edges (never inherited roots). Ambiguous across siblings, so new ingestion should
+        # attach provenance to the specific edge object instead.
+        legacy = (s.get("provenance") or {}).get("restsOn")
+        if isinstance(legacy, dict) and ("verifiedQuote" in legacy or "quote" in legacy) \
+                and legacy.get("verifiedQuote") in {"exact", "fuzzy"}:
+            for rk in direct:
+                confirmed_by.setdefault(rk, {"method": "verified-edge", "source": s["id"]})
+        for ref_key, ep in edge_prov.items():                 # per-edge object provenance
+            if ref_key.startswith("src:"):
+                continue                                       # a citation edge cannot self-confirm
+            rk = "ds:" + ref_key
+            if rk in direct and ep.get("verifiedQuote") in {"exact", "fuzzy"}:
+                confirmed_by.setdefault(rk, {"method": "verified-edge", "source": s["id"]})
+    provisional = {r for r in all_ds if r not in confirmed_by}
 
     def kind_of(r):
         return {"d": "dataset", "p": "primary", "s": "secondary", "c": "cycle"}[
@@ -255,19 +323,21 @@ def resolve(kb):
 
     return {"source_roots": source_roots, "circular": circular,
             "secondary_only": secondary_only, "nonhuman_only": nonhuman_only,
-            "provisional": provisional, "kind": kinds}
+            "provisional": provisional, "confirmed_by": confirmed_by, "kind": kinds}
 
 
 def root_strength(root_key, secondary_only, nonhuman_only=frozenset(), provisional=frozenset()):
     """Independence weight a root contributes. Halved for a dataset known only through a secondary
     source (we heard about it, no primary source brought it in), halved for a root backed only by
     animal / in-vitro studies (weak evidence for a human question), and halved for a PROVISIONAL
-    (unconfirmed / unverified) root until a real fetch or a curator confirms it. See MECHANISM.md §6."""
+    (unconfirmed / unverified) root contributes ZERO until a fetched dependency quote verifies it or
+    a curator explicitly confirms it.
+    See MECHANISM.md §6."""
+    if root_key in provisional:
+        return 0.0
     w = 1.0
     if root_key in secondary_only:
         w *= 0.5
     if root_key in nonhuman_only:
-        w *= 0.5
-    if root_key in provisional:
         w *= 0.5
     return w

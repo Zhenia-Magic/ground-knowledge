@@ -96,8 +96,9 @@ disclosures, and named cohorts (Zhong 2019 JAMA, Drouin-Chartier 2020 BMJ, Dehgh
 2018 China Kadoorie, Zhuang 2021 NIH-AARP, Fuller 2018 DIABEGG, Alexander/Tran industry meta-analyses,
 Carson 2020 AHA, Hu 1999, …). **Verified vs authored:** anchor sources whose full text we could fetch
 carry quotes checked against the real text (`verifiedQuote: exact`, `textDepth: full/partial`); the
-rest are faithful reconstructions with **authored** quotes (`textDepth: unknown`), clearly marked and
-subject to the provisional-root discount until confirmed. Two findings fall out of the data:
+rest are faithful reconstructions with **authored** quotes (`textDepth: unknown`), clearly marked.
+An unverified newly proposed root contributes zero headline nEff unless a fetched dependency quote
+verifies it or an explicit curator confirmation admits it. Two findings fall out of the data:
 
 - **Funding skew (real):** the interested-money studies cluster on one answer — the two industry-funded
   meta-analyses (Alexander → American Egg Board; Tran → Egg Nutrition Center) both back *"No
@@ -206,9 +207,11 @@ knowledge base that holds up under motivated reading and gets better as more peo
 ## Honest limitations
 
 - `cases/eggs.kb.json` is real and sourced (every entry has a citable url + funding + underlying
-  dataset). Provenance quotes and evidence tiers are filled by real ingestion; positions and factor
-  *weights* are a curator's faithful summary of each camp — the mechanical parts (datasets, funding,
-  counts, independence) are what the metrics run on.
+  dataset). Evidence tiers and provenance quotes come from the labelling pipeline, but most sources
+  are abstract/unknown text depth and **dataset confirmation is curator-asserted, not fetch-verified**
+  (no `restsOn` dependency quote has been checked against fetched text in this case yet — see the
+  confirmation caveat below); positions and factor *weights* are a curator's faithful summary of each
+  camp — the mechanical parts (datasets, funding, counts, independence) are what the metrics run on.
 - **Independence depends on self-reported edges.** The mechanism collapses echo and detects circular
   citation, but only sees a dependency if the labeller recorded it. We don't crawl real citation
   graphs, so an adversary who *omits* a `src:` edge can still look more independent than they are —
@@ -218,8 +221,9 @@ knowledge base that holds up under motivated reading and gets better as more peo
   voice per position** (a distinct root needs a *named* evidence base, not a claimed tier — so
   relabelling echo "Observational" can't inflate), unrecognised labels default to secondary,
   controlled vocab, relevance gate, funding-defaults-to-Undisclosed, and a multi-model **ensemble
-  vote** that escalates genuine tier/position disagreements to a human review queue. Not airtight
-  against a *fabricated named dataset* per source, or a blind spot shared across models.
+  vote** that escalates genuine tier/position disagreements to a human review queue. Unverified
+  named datasets add zero confirmed nEff; false confirmation or a blind spot shared across models
+  remains possible.
 - Entity resolution is normalized-string + alias matching — robust to casing/aliases, not to
   paraphrase. The `dups`/`merge` curation tools + a token-overlap suggester mitigate; embedding-match
   with human confirmation is the next step.

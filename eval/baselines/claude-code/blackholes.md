@@ -1,0 +1,131 @@
+I'll research this thoroughly using primary sources (safety reports, physics papers, critiques) and produce an evidence-based report. Let me start by loading web tools.
+
+I've gathered the primary literature, the institutional reviews, the critics' papers, the legal record, and the post-2008 empirical data. Here is the report.
+
+---
+
+# Could LHC Collisions Create a Black Hole That Destroys Earth?
+
+**An evidence-based deep-research report** · July 2026
+
+## TL;DR
+
+No credible evidence supports this risk, and multiple **independent** lines of argument bound it at levels far below everyday background risks. For a black hole to destroy Earth, at least three separate, largely independent pieces of well-established physics would all have to fail simultaneously: (1) gravity would have to become strong at TeV energies (a speculative hypothesis with zero supporting evidence, now directly disfavored by LHC data); (2) Hawking evaporation would have to fail entirely (contradicting an extremely robust theoretical consensus); and (3) accretion by any surviving black hole would have to be fast (contradicted by first-principles calculations *and* by the observed survival of white dwarfs and neutron stars, which are natural "beam dumps" for cosmic-ray-produced black holes). On top of this, the LHC has now run for ~16 years, delivering quadrillions of collisions at up to 13.6 TeV, with no black hole signatures and no catastrophe. The strongest *legitimate* residual critique is methodological, not physical: at claimed risk levels this low, the probability that the safety *argument itself* contains a flaw exceeds the calculated risk — but even that critique implies "the true bound is set by human fallibility," not "the risk is material."
+
+---
+
+## 1. Background: why the question is even askable
+
+In ordinary (four-dimensional) gravity, making a black hole requires concentrating energy near the Planck scale, ~10¹⁹ GeV — about **15 orders of magnitude** beyond LHC collision energies (13.6 TeV = 1.36 × 10⁴ GeV in Run 3). The 1999–2000 RHIC safety review by Jaffe, Busza, Sandweiss and Wilczek called the relevant parameters for collider black-hole production "absurdly small" ([[Rev. Mod. Phys. 72, 1125 (2000)](https://arxiv.org/abs/hep-ph/9910333)](https://arxiv.org/abs/hep-ph/9910333)).
+
+The question became non-trivial only because of a 1998–99 theoretical proposal — **large extra dimensions** (ADD) and warped geometries (Randall–Sundrum) — under which the *true* scale of quantum gravity could be as low as ~1 TeV, in which case colliders could produce microscopic black holes. Crucially: this is a speculative hypothesis invented to solve the hierarchy problem. It has never had any experimental support, and (as covered in §6) LHC data now directly disfavor its most accessible versions.
+
+Standard theory then predicts any such micro black hole would evaporate via **Hawking radiation** in ~10⁻²⁷ seconds — which is precisely why experimentalists *hoped* to produce them: their decay would be a spectacular, detectable signature ([[ATLAS briefing](https://atlas.cern/updates/briefing/continuing-search-extra-dimensions)](https://atlas.cern/updates/briefing/continuing-search-extra-dimensions)).
+
+The danger scenario therefore requires a conjunction: extra dimensions exist **and** Hawking radiation fails **and** the resulting stable black hole gets gravitationally trapped in Earth **and** accretes fast enough to matter.
+
+---
+
+## 2. The main positions
+
+**Position A — Consensus: no meaningful risk.** Held by essentially the entire professional physics community, formalized in CERN's safety reviews and endorsed by external bodies. Risk described as "no basis for any concerns" / "no risk of any significance whatsoever."
+
+**Position B — Physics-based dissent: risk not fully excluded.** A very small number of individuals (Rainer Plaga; Otto Rössler; earlier, Walter Wagner and Luis Sancho) argued specific loopholes: metastable black holes radiating catastrophically (Plaga), exponential growth of stable micro black holes (Rössler), or the inapplicability of the cosmic-ray analogy (Wagner). None of these critiques survived peer scrutiny or achieved peer-reviewed publication.
+
+**Position C — Methodological dissent: the calculated bounds overstate our confidence.** Philosophers and risk analysts (Toby Ord, Rafaela Hillerbrand & Anders Sandberg; Adrian Kent; Eric Johnson from a legal angle) do **not** claim the physics is wrong. They argue that when a calculation outputs a risk of ~10⁻¹⁹ but the historical rate of error in published scientific arguments is ~10⁻⁴–10⁻², the effective credence you should hold is dominated by the chance the argument is flawed — and that the institutional process (CERN reviewing its own facility) was not ideal risk governance.
+
+---
+
+## 3. The load-bearing evidence, position by position
+
+### 3.1 Position A: the safety case
+
+The safety case is a layered structure; each layer independently suffices.
+
+**Layer 1 — Production is probably impossible.** Black hole production requires TeV-scale gravity. There is no evidence for extra dimensions; this is pure hypothesis. *(Primary evidence: absence of any signal in decades of experiments; see §6 for direct LHC limits.)*
+
+**Layer 2 — If produced, black holes evaporate.** Hawking radiation follows from multiple independent derivations (quantum field theory in curved spacetime, black hole thermodynamics, string-theoretic microstate counting). The LSAG report notes that a stable black hole would violate basic principles believed to underlie quantum gravity. *(Status: robust theory, but — an honest crux — never directly observed; see §5.)*
+
+**Layer 3 — Even stable black holes accrete far too slowly, OR are excluded by astrophysics.** This is the technical heart of the modern case: **Giddings & Mangano (2008), "Astrophysical implications of hypothetical stable TeV-scale black holes"** ([[arXiv:0806.3381](https://arxiv.org/abs/0806.3381)](https://arxiv.org/abs/0806.3381), published as [[Phys. Rev. D 78, 035009](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009)](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009)). They deliberately assumed the worst (stability, neutrality, capture) and computed accretion from first principles across the space of extra-dimension scenarios. Result: scenarios split into two classes. In most, Earth-accretion timescales exceed the Sun's remaining lifetime (billions of years) — intrinsically harmless. In the scenarios where accretion *could* be faster, they invoke the **white dwarf / neutron star argument**: ultra-high-energy cosmic rays striking these ultra-dense objects would produce black holes that *stop inside them* (density solves the momentum loophole — see below), and would devour them on timescales far shorter than the billions of years these objects are observed to survive. Observed old white dwarfs (chosen with low magnetic fields to avoid the screening caveat) therefore empirically exclude the dangerous parameter region. *(This is primary research, by one CERN author and one external author, Steven Giddings of UC Santa Barbara, peer-reviewed in a top journal.)*
+
+**Layer 4 — The cosmic-ray argument, done right.** Nature has run the experiment. Cosmic rays exceeding LHC-equivalent energies have struck Earth, the Sun, and everything else for billions of years — LSAG estimates nature has already completed the equivalent of ~**10³¹ LHC experimental programs** across the visible universe, and ~a million LHC-equivalents on Earth alone ([[LSAG report, PDF](https://cern.ch/lsag/LSAG-Report.pdf)](https://cern.ch/lsag/LSAG-Report.pdf); [[CERN safety page](https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc)](https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc)).
+
+An important honest wrinkle, raised by critics and acknowledged by the reviewers: the naive cosmic-ray argument has a **momentum loophole**. A cosmic ray hitting a stationary nucleus produces debris moving at nearly light speed, which would zip through Earth; LHC collisions are head-on, so some products would be nearly at rest and could be captured. The 2000 RHIC review left this partially open; Giddings–Mangano closed it: (a) most hypothetical black holes would be *charged* and would stop even at relativistic speeds, in Earth itself; (b) for the neutral case, white dwarfs and neutron stars are dense enough to stop even relativistic black holes — hence Layer 3. This is a genuine case of the safety literature identifying and repairing a real weakness in its own earlier argument.
+
+**Institutional assessments (secondary, but with review value):**
+- The **2003 LHC Safety Study Group** report (Blaizot, Iliopoulos, Madsen et al.) — first CERN assessment ([[overview](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments)](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments)).
+- The **2008 LSAG report** (Ellis, Giudice, Mangano, Tkachev, Wiedemann) — "Review of the Safety of LHC Collisions" ([[PDF](https://cern.ch/lsag/LSAG-Report.pdf)](https://cern.ch/lsag/LSAG-Report.pdf)), published in *Journal of Physics G*.
+- Review and endorsement by CERN's **Scientific Policy Committee** via a five-member panel including Nobel laureate **Gerard 't Hooft** (also Braun-Munzinger, Cavalli-Sforza, Webber, Zwirner), plus endorsements by the **APS Division of Particles & Fields**, the UK **Institute of Physics**, and Germany's **KET** committee.
+
+### 3.2 Position B: the physics dissenters
+
+- **Rainer Plaga** ([[arXiv:0808.1415](https://arxiv.org/abs/0808.1415)](https://arxiv.org/abs/0808.1415), never journal-published) proposed *metastable* quantum black holes that accrete at the Eddington limit and emit dangerous Hawking radiation, arguing Giddings–Mangano excluded plausible parameter ranges without sufficient reason and that his scenario would be astrophysically invisible. **Giddings & Mangano replied** ([[arXiv:0808.4087](https://arxiv.org/abs/0808.4087)](https://arxiv.org/abs/0808.4087)) that Plaga's scenario is internally inconsistent — it simultaneously assumes properties (a particular radiation rate vastly exceeding what his own assumed parameters give) that contradict each other. Plaga revised his paper claiming the disagreement stemmed from differing initial assumptions; no referee ever validated his scenario. This is the most technically serious dissent, and it ended as an un-refereed preprint versus a peer-reviewed rebuttal.
+- **Otto Rössler** (a biochemist/chaos theorist, not a gravitational physicist) claimed micro black holes could grow exponentially, based on a reinterpretation of general relativity. His argument was formally reviewed at CERN's request by **Hermann Nicolai** (Director, Max Planck Institute for Gravitational Physics) and **Domenico Giulini**, who found it "not valid; the argument is not self-consistent" and said it "would not pass the referee process in a serious journal" ([[summary](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments)](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments)).
+- **Walter Wagner & Luis Sancho** filed the 2008 federal lawsuit ([[Sancho v. U.S. Dept. of Energy, 578 F. Supp. 2d 1258 (D. Haw. 2008)](https://case-law.vlex.com/vid/sancho-v-u-s-887531654)](https://case-law.vlex.com/vid/sancho-v-u-s-887531654)). Note carefully: the case was dismissed on **jurisdictional grounds** (the U.S. doesn't control CERN), not on the physics merits ([[Symmetry](https://www.symmetrymagazine.org/breaking/2010/08/26/lhc-lawsuit-dismissed-by-us-court)](https://www.symmetrymagazine.org/breaking/2010/08/26/lhc-lawsuit-dismissed-by-us-court); final appeal dismissed 2010). Rössler's filings at the European Court of Human Rights (2008) and in German constitutional and administrative courts (2010–2012) were all rejected, the German court noting petitioners "failed to produce plausible evidence."
+
+### 3.3 Position C: the methodologists
+
+- **Ord, Hillerbrand & Sandberg, "Probing the Improbable"** ([[arXiv:0810.5515](https://arxiv.org/abs/0810.5515)](https://arxiv.org/abs/0810.5515); *J. Risk Research* 13:191, 2010). Core claim: a stated probability P(catastrophe) is really P(catastrophe | argument is sound). Using proxies like paper-retraction and calculation-error rates, they estimate the chance a given scientific argument is flawed at roughly 10⁻⁴ to 10⁻², which utterly dwarfs figures like 10⁻¹⁹. Their conclusion is *not* that the LHC is dangerous — it's that safety reports should use multiple independent arguments (which, to be fair, the LHC case does) and that quoted bounds shouldn't be taken at face value below the argument-error floor.
+- **Adrian Kent, "A critical look at risk assessments for global catastrophes"** (*Risk Analysis* 24:157, 2004; [[arXiv:hep-ph/0009204](https://arxiv.org/abs/hep-ph/0009204)](https://arxiv.org/abs/hep-ph/0009204)) criticized the RHIC-era reviews for not framing bounds in standard risk-analysis terms (expected deaths) and for treating bounds like 10⁻⁹/year as self-evidently negligible when the stakes are ~10¹⁰ lives.
+- **Eric E. Johnson, "The Black Hole Case: The Injunction Against the End of the World"** (*Tennessee Law Review* 76:819, 2009; [[arXiv:0912.5480](https://arxiv.org/abs/0912.5480)](https://arxiv.org/abs/0912.5480)) analyzed how a court could adjudicate such a claim, noting that virtually all qualified experts are embedded in the particle-physics community whose flagship project was at stake — an expert-witness structure with built-in incentive problems.
+- **Tegmark & Bostrom, "How unlikely is a doomsday catastrophe?"** (*Nature* 438:754, 2005; [[arXiv:astro-ph/0512204](https://arxiv.org/abs/astro-ph/0512204)](https://arxiv.org/abs/astro-ph/0512204)) made a subtle point cutting *against* one version of the safety argument: "Earth has survived cosmic rays for 4.5 Gyr" suffers from anthropic selection bias (observers only exist on planets that survived). They then repaired the bound using planetary formation-age statistics, deriving a selection-free exogenous catastrophe rate below ~10⁻⁹/year. Note that the white-dwarf/neutron-star argument is largely immune to this critique, since we observe *many other* surviving objects, not just our own lucky planet.
+
+---
+
+## 4. Evidence reuse and the shape of the citation network
+
+A thoughtful reader should notice that the consensus position, while institutionally broad, rests on a **narrower evidentiary core than the number of endorsements suggests**:
+
+- The 2008 **LSAG report's** black-hole section relies principally on **Giddings & Mangano 2008** — and **Mangano is an author of both**. The SPC panel review, the APS/IOP/KET endorsements, popular articles, and CERN's public safety page all chain back to this same primary analysis plus the LSAG synthesis. These are quality-checks of one argument, not independent replications.
+- The cosmic-ray flux data underlying both the RHIC review and the LHC reviews is the same body of ~70 years of cosmic-ray observations; the white-dwarf argument depends on the same astronomical datasets (WD ages, masses, magnetic fields) in every document that invokes it.
+- That said, the safety case is *not* a single argument: production-impossibility (Layer 1), Hawking evaporation (Layer 2), slow accretion (Layer 3a), and dense-star survival (Layer 3b) are genuinely distinct physical arguments with distinct failure modes — exactly the "multiple independent arguments" structure Ord et al. recommend.
+- On the dissent side, the reuse problem is worse: Plaga, Rössler, and Wagner's claims are mutually independent but each is essentially a single-author argument that failed expert review, and popular "LHC doomsday" coverage from 2008 recycled these three sources almost exclusively.
+
+---
+
+## 5. Cruxes and unresolved questions
+
+1. **Does TeV-scale gravity exist?** The master crux. If not (the default expectation), black hole production is impossible at the LHC by ~15 orders of magnitude and everything downstream is moot. Status: no evidence for it; direct LHC searches now exclude semiclassical black holes below ~9–11 TeV masses (§6).
+2. **Is Hawking radiation real?** The strongest *fundamental* uncertainty in the chain. It has never been directly observed (astrophysical black holes are too cold); analogue-gravity experiments (e.g., Steinhauer's Bose–Einstein condensate results) are supportive but not decisive. However, its theoretical basis — multiple independent derivations tied to thermodynamics and quantum field theory — is about as strong as unobserved physics gets, and the safety case deliberately does *not* rest on it (Layers 3–4 assume it fails).
+3. **Does the Giddings–Mangano analysis cover the full parameter space?** Plaga said no (metastable/Eddington scenarios); Giddings–Mangano showed his specific scenario was self-contradictory. Residual corner: hypothetical scenarios engineered to be both invisible astrophysically and slowly dangerous terrestrially. Such scenarios require increasingly contrived stacked assumptions, but "contrived" is a judgment, not a theorem.
+4. **The slow-accretion window.** The least-excluded logical corner is a stable neutral black hole that accretes on multi-decade-to-millennia timescales — too slow to have shown effects yet, too fast to be truly harmless. Giddings–Mangano's white-dwarf bound is precisely aimed at this window; its validity depends on cosmic-ray composition and flux at ultra-high energies (well-measured, e.g., by the Pierre Auger Observatory) and on white-dwarf modeling.
+5. **The meta-crux (Ord et al.):** at what point does a calculated bound stop being meaningful? If you accept the argument-error framing, your all-things-considered risk estimate cannot go much below ~(chance all independent argument layers are simultaneously flawed) — small, but larger than 10⁻¹⁹.
+
+---
+
+## 6. What has happened since 2008 (empirical update)
+
+This is where the 2026 vantage point materially strengthens the case beyond anything available during the 2008 controversy:
+
+- The LHC has operated since 2010 at 7, 8, 13, and now 13.6 TeV, delivering ~160 fb⁻¹ in Run 2 and approaching ~280 fb⁻¹ in Run 3 to ATLAS and CMS ([[CERN accelerator report](https://home.cern/news/news/accelerators/accelerator-report-lhc-run-3-achieves-record-breaking-integrated-luminosity)](https://home.cern/news/news/accelerators/accelerator-report-lhc-run-3-achieves-record-breaking-integrated-luminosity); [[CNRS Run 3 review](https://www.in2p3.cnrs.fr/en/cnrsinfo/lhc-run3-mid-term-review-and-outlook)](https://www.in2p3.cnrs.fr/en/cnrsinfo/lhc-run3-mid-term-review-and-outlook)) — roughly 10¹⁶–10¹⁷ proton–proton collisions. Earth remains extant. This is direct evidence against all *fast*-catastrophe scenarios (Rössler-style exponential growth, Plaga-style prompt radiation). It says less about slow-accretion scenarios, and post-hoc survival evidence carries a mild anthropic caveat — but for slow scenarios the astrophysical bounds were always the operative exclusion anyway.
+- **Dedicated searches found nothing**: ATLAS and CMS searches for microscopic black holes, string balls, and related signatures at 13 TeV show no excess, excluding semiclassical black holes with masses below ~8.4–11.4 TeV depending on model ([[CMS/ATLAS 13 TeV search](https://arxiv.org/abs/2604.10732)](https://arxiv.org/abs/2604.10732); [[ATLAS briefing](https://atlas.cern/updates/briefing/continuing-search-extra-dimensions)](https://atlas.cern/updates/briefing/continuing-search-extra-dimensions)). Null results across the board push the possible quantum-gravity scale upward, shrinking the already-hypothetical production window that the entire risk scenario requires.
+
+---
+
+## 7. Funding, conflict-of-interest, and source-quality flags
+
+**On the consensus side (flags are real but mitigated):**
+- The LSAG authors were four CERN staff plus one Moscow-based physicist; CERN commissioned the review of its own $5–10B flagship. This is a textbook institutional conflict of interest. Mitigations: publication in a peer-reviewed external journal (*J. Phys. G*), review by external scientists including 't Hooft (whose reputation did not depend on the LHC), a genuinely external co-author (Giddings, UCSB) on the core technical paper, and endorsements from professional societies beyond CERN. But Johnson's point stands: nearly every credentialed expert belongs to a community professionally invested in colliders, and no adversarial, fully independent risk review (of the kind done for, say, nuclear reactors) was ever commissioned.
+- The public-communication layer (CERN press pages, popular articles) sometimes stated the conclusion more absolutely ("the LHC is safe") than the technical documents' careful bounded language — a common but noteworthy translation loss.
+
+**On the dissent side (flags are more severe):**
+- None of the physics-based catastrophe claims (Plaga, Rössler, Wagner/Sancho) achieved peer-reviewed publication; the two that received formal expert review (Rössler via Nicolai/Giulini; Plaga via Giddings–Mangano) were found internally inconsistent or invalid. Rössler worked outside his field; Wagner's physics credentials were disputed. The court filings did not survive even procedural scrutiny.
+- The methodological critiques (Ord et al., Kent, Johnson) *are* peer-reviewed and high-quality — but note they come from institutions (Oxford's Future of Humanity Institute) with their own intellectual stake in existential-risk salience. They also explicitly do not claim the LHC is dangerous.
+
+---
+
+## 8. Calibrated conclusion
+
+**The claim "LHC collisions could create a black hole that destroys Earth" is about as close to excluded as an empirical claim about a novel experiment can be, while not being logically impossible.**
+
+To believe in the danger, you must simultaneously accept: (1) that gravity becomes strong at TeV scales despite no evidence and direct null searches; (2) that Hawking radiation — one of the most theoretically robust unobserved predictions in physics — fails completely; (3) that the resulting object is neutral, stable, and captured; (4) that first-principles accretion calculations are wrong in the dangerous direction; **and** (5) that billions of years of cosmic-ray bombardment of white dwarfs and neutron stars somehow left them intact anyway. These failure modes are largely independent, which is what gives the safety case its strength: it is a redundant structure, not a single calculation.
+
+The one intellectually serious residue is the Ord–Hillerbrand–Sandberg point: at the 10⁻¹⁹ level, quoted numbers measure the argument, not the world, and the honest floor on anyone's credence is set by the chance that multiple independent expert arguments are all simultaneously flawed. Taking that fully seriously — and adding 16 years of incident-free operation at design energy plus null black-hole searches — a calibrated reader should treat the probability of an LHC-induced planetary catastrophe as **vastly below the risks of ordinary life** (far below, e.g., the annual chance of a civilization-threatening asteroid impact), while acknowledging it was never, and could never be, proven to be exactly zero. The 2008 public controversy was, in retrospect, a case where the physics consensus was substantively correct, though the episode exposed real weaknesses in how institutions self-review and communicate low-probability/high-stakes risk.
+
+### Key sources
+
+**Primary physics:** [[Giddings & Mangano 2008 (arXiv:0806.3381)](https://arxiv.org/abs/0806.3381)](https://arxiv.org/abs/0806.3381) · [[Phys. Rev. D version](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009)](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009) · [[Jaffe et al., RHIC review (hep-ph/9910333)](https://arxiv.org/abs/hep-ph/9910333)](https://arxiv.org/abs/hep-ph/9910333) · [[ATLAS/CMS 13 TeV black-hole search](https://arxiv.org/abs/2604.10732)](https://arxiv.org/abs/2604.10732)
+**Institutional:** [[LSAG Report (PDF)](https://cern.ch/lsag/LSAG-Report.pdf)](https://cern.ch/lsag/LSAG-Report.pdf) · [[CERN safety page](https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc)](https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc) · [[Ellis colloquium slides](https://indico.cern.ch/event/39099/attachments/782382/1072600/LHCsafe.pdf)](https://indico.cern.ch/event/39099/attachments/782382/1072600/LHCsafe.pdf)
+**Dissent & rebuttal:** [[Plaga (arXiv:0808.1415)](https://arxiv.org/abs/0808.1415)](https://arxiv.org/abs/0808.1415) · [[Giddings & Mangano rebuttal (arXiv:0808.4087)](https://arxiv.org/abs/0808.4087)](https://arxiv.org/abs/0808.4087)
+**Methodological:** [[Ord, Hillerbrand & Sandberg (arXiv:0810.5515)](https://arxiv.org/abs/0810.5515)](https://arxiv.org/abs/0810.5515) · [[Tegmark & Bostrom (astro-ph/0512204)](https://arxiv.org/abs/astro-ph/0512204)](https://arxiv.org/abs/astro-ph/0512204) · [[Johnson, "The Black Hole Case" (arXiv:0912.5480)](https://arxiv.org/abs/0912.5480)](https://arxiv.org/abs/0912.5480)
+**Legal & overview:** [[Sancho v. DOE](https://case-law.vlex.com/vid/sancho-v-u-s-887531654)](https://case-law.vlex.com/vid/sancho-v-u-s-887531654) · [[Symmetry on dismissal](https://www.symmetrymagazine.org/breaking/2010/08/26/lhc-lawsuit-dismissed-by-us-court)](https://www.symmetrymagazine.org/breaking/2010/08/26/lhc-lawsuit-dismissed-by-us-court) · [[Wikipedia: Safety of high-energy particle collision experiments](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments)](https://en.wikipedia.org/wiki/Safety_of_high-energy_particle_collision_experiments) · [[CERN Run 3 luminosity report](https://home.cern/news/news/accelerators/accelerator-report-lhc-run-3-achieves-record-breaking-integrated-luminosity)](https://home.cern/news/news/accelerators/accelerator-report-lhc-run-3-achieves-record-breaking-integrated-luminosity)

@@ -17,11 +17,15 @@ def _kb(sources, positions=("X", "Y"), vocab_evidence=None):
 
 
 def _s(sid, pos, evidence, rests, textDepth="full"):
-    # default textDepth 'full' = a really-fetched source, so its datasets are CONFIRMED roots and
-    # these tests exercise the collapse mechanics at full strength. Provisional (unconfirmed /
-    # unknown-depth) roots are covered separately in ProvisionalRootTests.
-    return {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
-            "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
+    # Default full-text fixtures include a verified dependency quote when they name a root, so these
+    # tests exercise confirmed collapse mechanics. Unknown-depth fixtures remain provisional even if
+    # a quote field is present; explicit missing-edge cases override provenance below.
+    s = {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
+         "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
+    if rests:
+        s["provenance"] = {"restsOn": {"quote": "verified dependency for " + sid,
+                                         "verifiedQuote": "exact"}}
+    return s
 
 
 def _roots(res, sid):
@@ -244,22 +248,33 @@ class MetricTests(unittest.TestCase):
 
 class ProvisionalRootTests(unittest.TestCase):
     """Root admission: a dataset asserted only by UNVERIFIED input (textDepth unknown / paste-back)
-    is PROVISIONAL and counts at half until a real fetch or a curator confirms it — so a public
-    contributor can't mint full-strength independent roots by fabricating datasets."""
+    is PROVISIONAL and excluded from headline nEff until a real fetch or curator confirms it — so a
+    public contributor cannot mint independent support by fabricating datasets."""
 
     def _neff(self, srcs, pos="X"):
         return {p["id"]: p for p in independence(_kb(srcs))}[pos]["nEff"]
 
-    def test_unconfirmed_fabricated_roots_count_half(self):
-        # ten unverified sources each naming a distinct invented dataset -> ten HALF roots, not ten
+    def test_unconfirmed_fabricated_roots_are_quarantined(self):
+        # ten unverified sources each naming a distinct invented dataset -> visible, but zero headline
         srcs = [_s("f%d" % i, "X", "Observational", ["D%d" % i], textDepth="unknown") for i in range(10)]
-        self.assertAlmostEqual(self._neff(srcs), 5.0, places=6)   # 10 * 0.5, NOT 10
+        ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
+        self.assertAlmostEqual(ind["nEff"], 0.0, places=6)
+        self.assertEqual(ind["provisionalCount"], 10)
+        self.assertAlmostEqual(ind["provisionalPotential"], 10.0, places=6)
 
     def test_a_real_fetch_confirms_the_root_to_full_strength(self):
         srcs = [_s("paste", "X", "Observational", ["D"], textDepth="unknown")]
-        self.assertAlmostEqual(self._neff(srcs), 0.5, places=6)   # provisional
-        srcs.append(_s("fetched", "X", "Observational", ["D"], textDepth="full"))
+        self.assertAlmostEqual(self._neff(srcs), 0.0, places=6)   # quarantined
+        fetched = _s("fetched", "X", "Observational", ["D"], textDepth="full")
+        fetched["provenance"] = {"restsOn": {"quote": "we used cohort D",
+                                                "verifiedQuote": "exact"}}
+        srcs.append(fetched)
         self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)   # a fetched source confirms D
+
+    def test_fetch_without_verified_dependency_quote_does_not_confirm_root(self):
+        src = _s("fetched", "X", "Observational", ["D"], textDepth="full")
+        src["provenance"] = {"position": {"quote": "supports X", "verifiedQuote": "exact"}}
+        self.assertAlmostEqual(self._neff([src]), 0.0, places=6)
 
     def test_curator_confirmed_dataset_is_full_strength(self):
         kb = _kb([_s("paste", "X", "Observational", ["D"], textDepth="unknown")])
@@ -267,11 +282,73 @@ class ProvisionalRootTests(unittest.TestCase):
         self.assertAlmostEqual({p["id"]: p for p in independence(kb)}["X"]["nEff"], 1.0, places=6)
 
     def test_confirming_a_root_never_lowers_neff(self):
-        # confirmation is an UPGRADE (half -> full); it can only raise nEff, preserving monotonicity
+        # confirmation is an UPGRADE (zero -> full); it can only raise nEff, preserving monotonicity
         base = self._neff([_s("a", "X", "Observational", ["D"], textDepth="unknown")])
         up = self._neff([_s("a", "X", "Observational", ["D"], textDepth="unknown"),
                          _s("b", "X", "Observational", ["D"], textDepth="full")])
         self.assertGreaterEqual(up, base)
+
+
+class PerEdgeConfirmationTests(unittest.TestCase):
+    """Confirmation is auditable PER EDGE: one verified dependency quote admits only the dataset it
+    annotates — never a sibling on the same source, never a root reached only by a citation edge.
+    This closes the old whitewash where a single source-level verifiedQuote confirmed everything a
+    source touched (the ten-datasets-one-quote / inherited-root holes, MECHANISM.md §8)."""
+
+    def _src(self, sid, pos, rests, depth="full", provenance=None):
+        s = {"id": sid, "position": pos, "evidence": "Observational", "title": sid,
+             "restsOn": rests, "funding": "Undisclosed", "population": "—",
+             "confidence": "unstated", "textDepth": depth}
+        if provenance is not None:
+            s["provenance"] = provenance
+        return s
+
+    def test_edge_object_confirms_only_its_own_dataset(self):
+        # D1 carries a verified per-edge quote; D2 is a bare sibling edge on the SAME fetched source.
+        # Only D1 is admitted; D2 stays provisional — one quote no longer admits ten datasets.
+        s = self._src("a", "X",
+                      [{"ref": "D1", "provenance": {"quote": "we analysed cohort D1",
+                                                     "verifiedQuote": "exact"}},
+                       "D2"])
+        res = resolve(_kb([s]))
+        self.assertNotIn("ds:D1", res["provisional"])
+        self.assertIn("ds:D2", res["provisional"])
+        self.assertEqual(res["confirmed_by"]["ds:D1"]["method"], "verified-edge")
+        self.assertEqual(res["confirmed_by"]["ds:D1"]["source"], "a")
+        ind = {p["id"]: p for p in independence(_kb([s]))}["X"]
+        self.assertAlmostEqual(ind["nEff"], 1.0, places=6)          # D1 only
+
+    def test_inherited_root_not_confirmed_by_citing_source_quote(self):
+        # a review that only CITES the study (src: edge) cannot confirm the study's dataset with its
+        # own quote — only a source that DIRECTLY names the dataset can. Study is unknown-depth, so D
+        # has no direct verified edge and must stay quarantined.
+        study = self._src("study", "X", ["D"], depth="unknown")
+        review = self._src("review", "X",
+                           [{"ref": "src:study", "provenance": {"quote": "as the study showed",
+                                                                 "verifiedQuote": "exact"}}],
+                           depth="full")
+        res = resolve(_kb([study, review]))
+        self.assertIn("ds:D", res["provisional"])                   # NOT confirmed via the citation
+        ind = {p["id"]: p for p in independence(_kb([study, review]))}["X"]
+        self.assertAlmostEqual(ind["nEff"], 0.0, places=6)
+
+    def test_curator_confirmation_object_admits_root_with_method(self):
+        s = self._src("paste", "X", ["D"], depth="unknown")
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D", "label": "D", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator", "by": "ann"}}]
+        ind = {p["id"]: p for p in independence(kb)}["X"]
+        self.assertAlmostEqual(ind["nEff"], 1.0, places=6)
+        self.assertEqual(ind["bases"][0]["confirmedBy"]["method"], "curator")
+        self.assertEqual(ind["bases"][0]["confirmedBy"]["by"], "ann")
+
+    def test_confirmation_object_with_nonconfirmed_status_does_not_admit(self):
+        s = self._src("paste", "X", ["D"], depth="unknown")
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D", "label": "D", "aliases": [],
+                           "confirmation": {"status": "provisional"}}]
+        ind = {p["id"]: p for p in independence(kb)}["X"]
+        self.assertAlmostEqual(ind["nEff"], 0.0, places=6)
 
 
 class MonotonicityPropertyTests(unittest.TestCase):

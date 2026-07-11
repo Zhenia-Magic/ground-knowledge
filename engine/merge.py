@@ -225,6 +225,31 @@ def _pos_tokens(label):
     return set(norm(label).split()) - _POS_STOP
 
 
+_NEGATION = {"no", "not", "none", "without", "lack", "lacks", "lacking", "never"}
+_STANCE_DIRECTIONS = (
+    {"increase", "increases", "increased", "increasing", "higher", "raise", "raises", "harm",
+     "harmful", "unsafe", "causes", "causal"},
+    {"decrease", "decreases", "decreased", "decreasing", "lower", "reduce", "reduces",
+     "protect", "protects", "protective", "benefit", "beneficial", "safe"},
+)
+
+
+def _stance_conflict(a, b):
+    """Conservative polarity check before qualifier/subset folding.
+
+    Subset matching is useful for "No effect" vs "No effect after adjustment", but plain token
+    subset is unsafe for "Increase risk" vs "NO evidence of increase risk". Reject an automatic
+    fold when negation differs or the labels contain opposing directional markers; a curator can
+    still merge an unusual false positive explicitly.
+    """
+    ta, tb = set(norm(a).split()), set(norm(b).split())
+    if bool(ta & _NEGATION) != bool(tb & _NEGATION):
+        return True
+    da = {i for i, words in enumerate(_STANCE_DIRECTIONS) if ta & words}
+    db = {i for i, words in enumerate(_STANCE_DIRECTIONS) if tb & words}
+    return bool(da and db and da.isdisjoint(db))
+
+
 def _position_dup(kb, label):
     """The existing position an incoming label should fold into, or None — the deterministic guard
     against camp-splitting (SCHEMA.md problem 1, positions edition). Two conservative, stance-SAFE
@@ -235,10 +260,13 @@ def _position_dup(kb, label):
          "No clear effect" ⊆ "No clear effect after bias adjustment"), requiring >=2 shared tokens.
     We do NOT use token-overlap (Jaccard) similarity: on long labels it merges OPPOSITE stances
     that differ in one word ("…alcohol increases CV risk" vs "…decreases CV risk" overlap ~0.67).
-    Subset can't do that — opposite stances are never subsets of one another."""
+    A polarity guard runs before the subset rule so negated or directionally opposite labels cannot
+    fold merely because one contains all the other's words."""
     probe_bare = norm(_PAREN_RE.sub("", label))
     probe_tokens = _pos_tokens(label)
     for p in kb["positions"]:
+        if _stance_conflict(p["label"], label):
+            continue
         if norm(_PAREN_RE.sub("", p["label"])) == probe_bare and probe_bare:
             return p
         pt = _pos_tokens(p["label"])
@@ -399,11 +427,21 @@ def merge_delta(kb, delta):
         report["newPositions"].append(pos_id)
 
     rests_on, pending = [], []
-    for d in src.get("restsOn", []):
-        d = str(d).strip()
+    for entry in src.get("restsOn", []):
+        # A restsOn entry is EITHER a bare ref string, OR an edge object that carries its own
+        # dependency quote: {"ref": "...", "provenance": {"quote": "...", "verifiedQuote": "exact"}}.
+        # Per-edge provenance is what makes confirmation auditable one edge at a time (engine/roots).
+        if isinstance(entry, dict):
+            d = str(entry.get("ref") or "").strip()
+            eprov = entry.get("provenance") if isinstance(entry.get("provenance"), dict) else None
+        else:
+            d, eprov = str(entry).strip(), None
+        if not d:
+            continue
         # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
         # independence audit catch circular corroboration (see MECHANISM.md). The labeller writes
         # SRC:<existing id> or NEW-SRC:<title>; we resolve to an existing source and store "src:<id>".
+        # A citation edge cannot confirm a dataset, so its provenance is not carried.
         low = d.lower()
         if low.startswith("src:") or low.startswith("new-src:"):
             ref = d.split(":", 1)[1].strip()
@@ -421,7 +459,9 @@ def merge_delta(kb, delta):
         did, created = _resolve_dataset(kb, d)
         if created:
             report["newDatasets"].append(did)
-        rests_on.append(did)
+        # store an edge OBJECT only when the labeller attached a per-edge quote; a bare dataset
+        # dependency stays a plain string so string-only KBs are unchanged.
+        rests_on.append({"ref": did, "provenance": eprov} if eprov else did)
 
     sid = _unique_id("src_", slug(src["title"]) + "_" + str(src.get("year") or "0"),
                      lambda x: any(s["id"] == x for s in kb["sources"]))

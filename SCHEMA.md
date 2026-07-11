@@ -5,16 +5,29 @@ The KB is a single JSON document — the **compounding artifact**. Everything el
 A new case is a new KB with the same shape, so the tooling is domain-general: only the
 data changes, never the code.
 
+The machine-readable contract is [`schema/kb-v2.schema.json`](schema/kb-v2.schema.json). Runtime
+loaders use `engine.migrate.migrate_kb` for additive v1→v2 migration and
+`engine.migrate.validation_errors` for unique-ID and cross-reference integrity checks. Migration
+never invents trust fields such as quote verification or dataset confirmation.
+
+Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destructively with
+`python cli.py migrate old.kb.json --out migrated.kb.json` (or use `--apply` explicitly).
+
 ## Shape
 
 ```jsonc
 {
   "meta":      { "id", "question", "version", "updated", "note", "schemaVersion": 2 },
   "positions": [ { "id", "label", "hue" } ],                 // the camps
-  "datasets":  [ { "id", "label", "aliases": [..], "confirmed"? } ], // underlying evidence bases;
-                                //   confirmed = a real fetch or a curator vouched it's a real base.
-                                //   An UNCONFIRMED root (asserted only by unverified/paste-back
-                                //   input) counts at HALF strength -- see engine/roots (root admission)
+  "datasets":  [ { "id", "label", "aliases": [..], "confirmation"? } ], // underlying evidence bases;
+                                //   confirmation = {status: confirmed|provisional|disputed,
+                                //   method: curator|verified-edge, by?, source?, ts?, note?} -- an
+                                //   AUDITABLE record of HOW the root was admitted (replaces the bare
+                                //   legacy "confirmed": true, still read for old KBs). A root also
+                                //   confirms dynamically when a fetched source's PER-EDGE restsOn
+                                //   quote verified exact/fuzzy for THAT dataset. An UNCONFIRMED root
+                                //   (only unverified/paste-back input) is visible but contributes
+                                //   ZERO headline nEff until confirmed -- see engine/roots (admission)
   "vocab":     { "evidence":   [ { "label", "aliases": [..],
                                    "tier"?, "methodClass"? } ],    // per-case controlled
                  "population": [ { "label", "aliases": [..] } ],   //   tag vocabularies
@@ -30,9 +43,13 @@ data changes, never the code.
                                 //   | Industry | Advocacy | Undisclosed  (default Undisclosed)
                    "population", "confidence",
                    "methodClass"?,                         // optional correlated-error class override
-                   "restsOn": [datasetId | "src:sourceId", ...],  // evidentiary roots: datasets
+                   "restsOn": [datasetId | "src:sourceId"          // evidentiary roots: datasets
                                 //   AND/OR other sources (derivation edges) -> independence +
-                                //   circular-corroboration detection (see MECHANISM.md)
+                                //   circular-corroboration detection (see MECHANISM.md).
+                     | {ref: datasetId, provenance: {quote, verifiedQuote}} ],  // OR an EDGE OBJECT
+                                //   carrying THIS edge's own dependency quote, so a verified quote
+                                //   confirms only the one dataset it annotates -- never a sibling
+                                //   edge, never an inherited root (engine/roots._edges)
                    "textDepth",                    // full | abstract | partial | unknown -- how
                                 //   much of the source the labeller actually saw (engine/verify.py)
                    "provenance": { field: {quote, extractionConfidence, verifiedQuote?} },
@@ -135,7 +152,8 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    labelling time and refused at merge; (d) the independence metric counts **independent evidentiary
    roots**, not sources — re-used cohorts, review/meta-analysis **echo**, and **circular citation**
    (A↔B) all collapse to one root (the cycle is flagged), and animal/in-vitro or review-only roots
-   count at half. Each distinct root then counts **once**, no matter how many sources rest on it —
+   count at half. Provisional/unverified roots remain visible but count **zero** until confirmed.
+   Each confirmed distinct root then counts **once**, no matter how many sources rest on it —
    so **flooding a position with correlated, derivative, or circular evidence cannot move its
    independence at all** (only a genuinely new root, or primary/human grounding upgrading a halved
    one, raises it), and junk "support" aimed at a rival can't tank theirs either — the pile-up

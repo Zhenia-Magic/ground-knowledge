@@ -45,6 +45,13 @@ class PositionGuardTests(unittest.TestCase):
         merge_delta(self.kb, _delta("B", "NEW:Moderate alcohol decreases cardiovascular risk"))
         self.assertEqual(len(self.kb["positions"]), 2)
 
+    def test_negated_superset_is_not_folded_into_positive_stance(self):
+        # Token-subset alone used to merge these because every positive label token appears in the
+        # negated label. The polarity guard must keep the camps distinct.
+        merge_delta(self.kb, _delta("A", "NEW:Increase cardiovascular risk"))
+        merge_delta(self.kb, _delta("B", "NEW:No evidence of increase cardiovascular risk"))
+        self.assertEqual(len(self.kb["positions"]), 2)
+
     def test_distinct_stances_stay_distinct(self):
         for i, lab in enumerate(("NEW:Increases aggression", "NEW:No clear effect",
                                  "NEW:Decreases aggression")):
@@ -116,6 +123,19 @@ class TwoPassRefTests(unittest.TestCase):
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertTrue(any(str(e).startswith("src:") for e in a["restsOn"]))
         self.assertEqual(len(resolve(kb)["circular"]), 1)       # the A<->B ring is now flagged
+
+
+class DuplicateSuggestionTests(unittest.TestCase):
+    def test_acronym_and_full_dataset_name_are_suggested(self):
+        from engine.curate import suggest_duplicates
+        kb = empty_kb("t", "q")
+        kb["datasets"] = [
+            {"id": "nhs", "label": "NHS", "aliases": []},
+            {"id": "nurses", "label": "Nurses Health Study", "aliases": []},
+        ]
+        pairs = suggest_duplicates(kb).get("dataset", [])
+        self.assertEqual(len(pairs), 1)
+        self.assertEqual(pairs[0]["reason"], "acronym")
 
 
 class OffTopicRefusalTests(unittest.TestCase):

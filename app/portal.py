@@ -57,7 +57,8 @@ def _admin_delete_source(qid, sid):
 
 def _admin_confirm_dataset(qid, dataset_ref, confirmed=True):
     """Curator confirms (or un-confirms) a dataset as a real evidence base — a confirmed root counts
-    at full strength, an unconfirmed/paste-back one at half (engine/roots). Admin moderation."""
+    at full strength; an unconfirmed/paste-back root remains visible but contributes zero headline
+    nEff until confirmed (engine/roots). Admin moderation."""
     from engine import curate
     q = store.get_question(qid, with_kb=True)
     if not q:
@@ -120,6 +121,12 @@ def _strip_unverifiable_trust_fields(delta):
         for prov in (src.get("provenance") or {}).values():
             if isinstance(prov, dict):
                 prov.pop("verifiedQuote", None)
+        # per-edge restsOn quotes ride on the untrusted paste-back path too: a client must not be
+        # able to self-declare an edge object's dependency quote as verified (engine/roots confirms
+        # a root only through a server-verified edge). Strip it exactly like field provenance.
+        for entry in src.get("restsOn") or []:
+            if isinstance(entry, dict) and isinstance(entry.get("provenance"), dict):
+                entry["provenance"].pop("verifiedQuote", None)
     for fw in delta.get("factorWeights") or []:
         if isinstance(fw, dict):
             fw.pop("verifiedQuote", None)
@@ -159,8 +166,20 @@ def _delta_validation_error(delta):
         if len(rests) > 40:
             return "delta.source.restsOn has too many entries (max 40)"
         for i, e in enumerate(rests):
+            if isinstance(e, dict):                       # edge object {ref, provenance}
+                ref = e.get("ref")
+                if not isinstance(ref, (str, int, float)) or not str(ref).strip():
+                    return "delta.source.restsOn[{}].ref is required".format(i)
+                if len(str(ref)) > 300:
+                    return "delta.source.restsOn[{}].ref is too long".format(i)
+                ep = e.get("provenance")
+                if ep is not None and not isinstance(ep, dict):
+                    return "delta.source.restsOn[{}].provenance must be an object".format(i)
+                if isinstance(ep, dict) and len(str(ep.get("quote") or "")) > 2000:
+                    return "delta.source.restsOn[{}].provenance.quote is too long".format(i)
+                continue
             if not isinstance(e, (str, int, float)):
-                return "delta.source.restsOn[{}] must be a string".format(i)
+                return "delta.source.restsOn[{}] must be a string or {{ref, provenance}} object".format(i)
             if len(str(e)) > 300:
                 return "delta.source.restsOn[{}] is too long".format(i)
     factor_weights = delta.get("factorWeights", [])
@@ -180,7 +199,8 @@ def _delta_validation_error(delta):
 
 def _apply_delta(qid, q, delta, contributor):
     """Merge one or many deltas into the question's KB (deterministic, no key), version-checked.
-    Records the recompute diff on each source's log entry so the Changes tab shows what moved."""
+    A batch is one optimistic transaction: it records ONE recompute diff (whole batch, before→after)
+    on the LAST added source's log entry, so the Changes tab shows what the contribution moved."""
     from engine.merge import merge_delta
     from engine.assess import assess, diff_assessments
     kb, base = q["kb"], q["version"]
@@ -195,8 +215,13 @@ def _apply_delta(qid, q, delta, contributor):
             return {"error": err}
         deltas.append(d)
     added = dups = off = 0
+    # Assess the existing artifact once, then the completed batch once. The previous implementation
+    # assessed before and after EVERY source (2M whole-KB traversals for an M-source import), turning
+    # large contributions into avoidable quadratic work. A batch is one optimistic transaction and
+    # now has one epistemic diff; its last add-source log entry owns that diff.
+    before = assess(kb)
+    last_added_log = None
     for d in deltas:
-        before = assess(kb)
         rep = merge_delta(kb, d)
         if rep.get("offTopic"):
             off += 1
@@ -204,10 +229,13 @@ def _apply_delta(qid, q, delta, contributor):
             dups += 1
         elif rep.get("addedSource"):
             added += 1
-            if kb.get("log"):                       # persist the diff for the Changes tab
-                kb["log"][-1]["diff"] = diff_assessments(before, assess(kb))
+            if kb.get("log"):
+                last_added_log = kb["log"][-1]
     from engine.merge import resolve_pending_refs
     resolve_pending_refs(kb)                          # second pass: NEW-SRC forward refs in this batch
+    if last_added_log is not None:                    # persist one complete transaction diff
+        last_added_log["diff"] = diff_assessments(before, assess(kb))
+        last_added_log["batchSize"] = added
     try:
         version = store.save_kb(qid, kb, base)
     except store.Conflict:

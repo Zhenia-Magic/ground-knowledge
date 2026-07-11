@@ -51,7 +51,7 @@ def _root_incidence(kb, res):
                 else:                          #   sources fell into it; real roots accumulate per
                     weights[r] = weights.get(r, 0) + _roots.root_strength(
                         r, secondary_only, nonhuman_only, provisional)   # source (halved for
-        per_pos[p["id"]] = weights                          # review-only / animal / unconfirmed roots)
+        per_pos[p["id"]] = weights                          # review/animal; zero if unconfirmed)
     return per_pos
 
 
@@ -108,13 +108,21 @@ def weighted_distribution(kb, res=None):
     position propped up by re-used, derivative, or circular evidence shrinks vs. its raw bar."""
     res = _roots.resolve(kb) if res is None else res
     pres = _root_presence(kb, res)
+    provisional = res.get("provisional", frozenset())
+    secondary_only = res.get("secondary_only", frozenset())
+    nonhuman_only = res.get("nonhuman_only", frozenset())
     out, weights = [], []
     for p in kb["positions"]:
         mine = [s for s in kb["sources"] if s["position"] == p["id"]]
         n_eff = _n_indep(pres[p["id"]])
+        proposed = [r for r in pres[p["id"]] if r in provisional]
+        proposed_potential = sum(
+            _roots.root_strength(r, secondary_only, nonhuman_only, frozenset()) for r in proposed)
         weights.append(n_eff)
         out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
-                    "raw": len(mine), "weight": round(n_eff, 2)})
+                    "raw": len(mine), "weight": round(n_eff, 2),
+                    "provisionalCount": len(proposed),
+                    "provisionalPotential": round(proposed_potential, 2)})
     tot = sum(weights) or 1
     for o, w in zip(out, weights):
         o["pct"] = round(100 * w / tot)
@@ -466,16 +474,24 @@ def independence(kb, res=None):
         strengths = pres[p["id"]]
         raw = len(mine)
         n_eff = _n_indep(strengths)
+        provisional_count = sum(1 for rk in strengths if rk in prov)
+        # What the proposed roots would contribute after confirmation, preserving any independent
+        # secondary-only / non-human discounts. This is audit information only, never headline nEff.
+        provisional_potential = sum(
+            _roots.root_strength(rk, sec_only, nonhuman, frozenset())
+            for rk in strengths if rk in prov)
         total_w = sum(weights.values())
         top_key, top_w = None, 0.0
         for rk, w in weights.items():
             if w > top_w:
                 top_key, top_w = rk, w
         conc = (top_w / total_w) if total_w else 0
+        confirmed_by = res.get("confirmed_by", {})
         bases = sorted(
             ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman, prov), "kind": res["kind"][rk],
               "weight": round(w, 2), "strength": round(strengths[rk], 2),
-              "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov}
+              "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov,
+              "confirmedBy": confirmed_by.get(rk)}
              for rk, w in weights.items()), key=lambda b: -b["weight"])
         collapsed_secondary = sum(1 for s in mine
                                   if ("secpool:" + p["id"]) in res["source_roots"].get(s["id"], ()))
@@ -502,6 +518,8 @@ def independence(kb, res=None):
         out.append({
             "id": p["id"], "label": p["label"], "hue": p["hue"],
             "raw": raw, "distinct": len(weights), "nEff": n_eff, "concentration": conc,
+            "provisionalCount": provisional_count,
+            "provisionalPotential": round(provisional_potential, 2),
             "topDataset": top_ds,
             "datasets": [b["label"] for b in bases],
             "bases": bases,
