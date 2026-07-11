@@ -149,6 +149,119 @@ def _baseline_manifest_issues(baseline_name, base_dir, manifest):
     return issues
 
 
+# Paraphrase synonyms for the comparison ONLY. The gold labels were written from Ground Knowledge's
+# own structured vocabulary, so a bare substring test under-credits a prose report that discusses the
+# same concept in different words ("safe" for "No risk", "lab leak" for "research-related accident").
+# These synonyms level that bias so the comparison is fair to prose; they are NOT used to score GK's
+# own structure recall (structure_recall stays strict). Kept deliberately small and obvious.
+_COMPARE_SYNONYMS = {
+    "covid": {"Undetermined": ["unresolved", "undetermined", "inconclusive", "cannot be determined"],
+              "research-related accident": ["lab leak", "laboratory", "lab-associated", "research-related"],
+              "Epidemiological proximity": ["proximity", "clustering", "near the market", "epicenter"],
+              "genomic sequences": ["genomic", "genome", "lineage a", "lineage b", "two lineages"]},
+    "blackholes": {"No risk": ["safe", "no danger", "poses no risk", "not dangerous"],
+                   "Residual concern": ["residual", "cannot be excluded", "precaution", "small probability"],
+                   "Cosmic-ray empirical bound": ["cosmic ray", "cosmic-ray", "white dwarf", "neutron star"],
+                   "cosmic-ray safety analogy": ["cosmic ray", "cosmic-ray"],
+                   "safety argument itself": ["safety argument", "argument could be wrong", "flawed argument"]},
+    "eggs": {"Increases risk": ["increase", "raises risk", "higher risk", "harmful"],
+             "No association": ["no association", "no link", "no significant", "null result"],
+             "Context-dependent": ["context", "depends", "population-dependent", "it depends"],
+             "Nurses' Health Study": ["nurses", "nhs"],
+             "industry funding": ["industry", "egg board", "funding"],
+             "Subgroups": ["subgroup", "diabetic", "hyper-responder"],
+             "biomarkers": ["biomarker", "ldl", "cholesterol"]},
+}
+
+
+def _hits(items, haystacks, syn):
+    """Which of `items` appear in any of `haystacks` (list of strings), counting paraphrase synonyms.
+    Symmetric: used for both GK's structured labels and a baseline's prose."""
+    low = [h.lower() for h in haystacks]
+    got = set()
+    for e in items:
+        for cand in [e.lower()] + [s.lower() for s in syn.get(e, [])]:
+            if any(cand in h for h in low):
+                got.add(e)
+                break
+    return got
+
+
+def _text_hits(text, items, syn):
+    return _hits(items, [text or ""], syn)
+
+
+def _gk_hits(kb, gold, syn):
+    """Which gold items Ground Knowledge surfaces in its STRUCTURED output — position labels, resolved
+    root labels, and load-bearing crux labels — the structured analogue of a prose mention."""
+    pos_labels = [p["label"] for p in assess.independence(kb)]
+    roots = list(_root_labels(kb))
+    crux_labels = [c["label"] for c in assess.cruxes(kb) if c.get("loadBearing")]
+    return {"positions": _hits(gold["positions"], pos_labels, syn),
+            "keyRoots": _hits(gold["keyRoots"], roots, syn),
+            "cruxes": _hits(gold.get("cruxes", []), crux_labels, syn)}
+
+
+def comparative_recall(gold):
+    """Score the deep-research baseline REPORTS against the SAME gold Ground Knowledge is scored on:
+    a keyword-recall proxy over prose, symmetric with GK's structured recall. Reporting this honestly
+    is the whole point of the check — a good prose report usually MATCHES GK on which items it
+    surfaces; GK's advantage is the recomputable collapse / robustness / diff, not surfacing more.
+    Returns, per case, each system's set of hit gold items per category (or None if no report)."""
+    cats = ("positions", "keyRoots", "cruxes")
+    out = {}
+    for name, path in CASES.items():
+        kb, g = _load(path), gold[name]
+        syn = _COMPARE_SYNONYMS.get(name, {})
+        systems = {"Ground Knowledge": _gk_hits(kb, g, syn)}
+        for bname, rel_manifest in BASELINE_MANIFESTS.items():
+            manifest_path = os.path.join(ROOT, rel_manifest)
+            if not os.path.isfile(manifest_path):
+                systems[bname] = None
+                continue
+            base_dir = os.path.dirname(manifest_path)
+            rel = _load(rel_manifest).get(name, {}).get("file")
+            report = os.path.join(base_dir, rel) if rel else None
+            if not report or not os.path.isfile(report):
+                systems[bname] = None
+                continue
+            with open(report, encoding="utf-8") as f:
+                text = f.read()
+            systems[bname] = {c: _text_hits(text, g.get(c, []), syn) for c in cats}
+        out[name] = {"gold": g, "systems": systems}
+    return out
+
+
+def print_comparative(gold):
+    cats = ("positions", "keyRoots", "cruxes")
+    print("\n" + "=" * 78)
+    print("COMPARATIVE STRUCTURE RECALL  (same gold; GK structured output vs baseline prose)")
+    print("CAVEAT: this is a keyword-recall PROXY (paraphrase synonyms included). A strong deep-research")
+    print("report surfaces the same positions/roots/cruxes — near parity is the expected, honest result.")
+    print("GK's differentiator is NOT recall; it is the recomputable collapse (raw->independent bases),")
+    print("the EXECUTED flooding/fabrication contract, and the versioned diff. Read losses as the signal.")
+    print("=" * 78)
+    for name, data in comparative_recall(gold).items():
+        g = data["gold"]
+        print("\n### %s" % name.upper())
+        print("     %-24s %s" % ("", "  ".join("%-10s" % c for c in cats)))
+        for sysname, hits in data["systems"].items():
+            if hits is None:
+                print("     %-24s  (no captured report)" % sysname)
+                continue
+            cells = "  ".join("%-10s" % ("%d/%d" % (len(hits[c]), len(g.get(c, [])))) for c in cats)
+            print("     %-24s %s" % (sysname, cells))
+        gk = data["systems"]["Ground Knowledge"]
+        for sysname, hits in data["systems"].items():          # honest wins AND losses, item-level
+            if sysname == "Ground Knowledge" or hits is None:
+                continue
+            for c in cats:
+                if hits[c] - gk[c]:
+                    print("       · %s surfaces %s that GK misses" % (sysname, sorted(hits[c] - gk[c])))
+                if gk[c] - hits[c]:
+                    print("       · GK surfaces %s that %s misses" % (sorted(gk[c] - hits[c]), sysname))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Run Ground Knowledge's reproducible evaluation")
     ap.add_argument("--require-live-baseline", action="store_true",
@@ -192,6 +305,8 @@ def main(argv=None):
               % (af, b + 12))
         print("     %s  (echo pooled; fabricated unverified roots add zero confirmed nEff)"
               % verdict)
+
+    print_comparative(gold)
 
     print("\n" + "=" * 78)
     print("BASELINE STATUS:", "{} LIVE/INDEPENDENT SETS (files + hashes verified)".format(

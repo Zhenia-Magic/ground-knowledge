@@ -31,7 +31,9 @@
       "confirmation": {
         "status": "confirmed",
         "method": "curator"
-      }
+      },
+      "kind": "observation",
+      "proposition": "Cosmic rays above LHC energies have struck the Earth, Sun, white dwarfs and neutron stars for billions of years without destroying them; if LHC collisions could make a dangerous stable object, these dense stars would already be gone — an empirical upper bound on the risk."
     },
     {
       "id": "ds_hawking_radiation_black_hole_evaporation",
@@ -40,7 +42,9 @@
       "confirmation": {
         "status": "confirmed",
         "method": "curator"
-      }
+      },
+      "kind": "argument",
+      "proposition": "Any microscopic black hole produced would radiate away and evaporate essentially instantly via Hawking radiation, so it could never accrete."
     },
     {
       "id": "ds_strangelet_stability_calculations_rhic",
@@ -49,7 +53,8 @@
       "confirmation": {
         "status": "confirmed",
         "method": "curator"
-      }
+      },
+      "kind": "experiment"
     },
     {
       "id": "ds_argument_reliability_analysis_probability_th",
@@ -58,12 +63,38 @@
       "confirmation": {
         "status": "confirmed",
         "method": "curator"
-      }
+      },
+      "kind": "argument",
+      "proposition": "The safety case is a chain of theoretical assumptions; the probability the argument as a whole is flawed is not negligible and is itself a residual risk."
     },
     {
       "id": "ds_metastable_black_hole_accretion_scenario",
       "label": "Metastable-black-hole accretion scenario",
       "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator"
+      },
+      "kind": "argument",
+      "proposition": "In some beyond-standard-model scenarios a metastable micro black hole might accrete rather than evaporate, so the no-evaporation branch is not fully excluded."
+    },
+    {
+      "id": "arg_production_impossibility",
+      "label": "Production impossibility under standard gravity",
+      "aliases": [],
+      "kind": "argument",
+      "proposition": "LHC collision energies (~10 TeV) are ~15 orders of magnitude below the Planck scale, so black-hole production is impossible in standard 4D gravity — it requires speculative large extra dimensions.",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator"
+      }
+    },
+    {
+      "id": "arg_accretion_timescale",
+      "label": "Accretion-timescale safety argument",
+      "aliases": [],
+      "kind": "argument",
+      "proposition": "Even a stable, neutral micro black hole would accrete matter far too slowly to grow dangerous within the lifetime of the Earth or the Sun.",
       "confirmation": {
         "status": "confirmed",
         "method": "curator"
@@ -207,6 +238,7 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
+        "arg_accretion_timescale",
         "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
       ],
       "provenance": {
@@ -314,7 +346,7 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_giddings_mangano_astrophysical_implications__2008"
+        "arg_production_impossibility"
       ],
       "provenance": {
         "position": {
@@ -599,7 +631,7 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_giddings_mangano_astrophysical_implications__2008"
+        "arg_accretion_timescale"
       ],
       "provenance": {
         "position": {

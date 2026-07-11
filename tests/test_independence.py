@@ -571,6 +571,19 @@ class NonHumanTests(unittest.TestCase):
         self.assertNotIn("ds:D", res["nonhuman_only"])
         self.assertEqual(root_strength("ds:D", res["secondary_only"], res["nonhuman_only"]), 1.0)
 
+    def test_argument_kind_root_is_exempt_from_empirical_nonhuman_halving(self):
+        # a theoretical argument/model root has no 'population'; the animal / in-vitro discount that
+        # would halve an EMPIRICAL dataset must never touch it (schema-v3 evidence-base kinds).
+        from engine.roots import resolve, root_strength
+        kb = _kb([self._s2("m", "X", "Mechanistic", ["Darg"], "Mice")])
+        kb["datasets"] = [{"id": "Darg", "label": "Darg", "aliases": [], "kind": "argument",
+                           "confirmation": {"status": "confirmed", "method": "curator"}}]
+        res = resolve(kb)
+        self.assertNotIn("ds:Darg", res["nonhuman_only"])
+        self.assertEqual(res["base_kind"]["ds:Darg"], "argument")
+        self.assertEqual(root_strength("ds:Darg", res["secondary_only"], res["nonhuman_only"],
+                                       res["provisional"]), 1.0)
+
     def test_population_word_does_not_falsematch(self):
         from engine.roots import _is_nonhuman
         self.assertFalse(_is_nonhuman({"population": "moderate-risk adults"}))   # 'rat' in 'moderate'

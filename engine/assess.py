@@ -22,6 +22,15 @@ def _ds_label(kb, did):
     return did
 
 
+def _ds_meta(kb, did):
+    """(kind, proposition) for an evidence base — kind defaults to 'dataset'; proposition is the
+    plain-language claim of an argument/model root (empty for a plain dataset)."""
+    for d in kb["datasets"]:
+        if d["id"] == did:
+            return (d.get("kind") or "dataset"), (d.get("proposition") or "")
+    return "dataset", ""
+
+
 def _src_by_pos(kb):
     by = {}
     for s in kb["sources"]:
@@ -521,8 +530,11 @@ def independence(kb, res=None):
                 top_key, top_w = rk, w
         conc = (top_w / total_w) if total_w else 0
         confirmed_by = res.get("confirmed_by", {})
+        base_kind = res.get("base_kind", {})
         bases = sorted(
             ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman, prov), "kind": res["kind"][rk],
+              "baseKind": base_kind.get(rk, "dataset") if rk.startswith("ds:") else None,
+              "proposition": _ds_meta(kb, rk[3:])[1] if rk.startswith("ds:") else "",
               "weight": round(w, 2), "strength": round(strengths[rk], 2),
               "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov,
               "confirmedBy": confirmed_by.get(rk)}

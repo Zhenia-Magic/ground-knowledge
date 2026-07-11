@@ -25,6 +25,13 @@ back-compat but are no longer produced.
 """
 import re
 
+# Evidence-base kinds. Empirical bases carry data (population, samples) and take the empirical
+# discounts; theoretical bases are derivations/claims and must not be halved for 'non-human'
+# population. A base with no kind defaults to 'dataset' (empirical) for full back-compat.
+_EMPIRICAL_KINDS = {"dataset", "experiment", "observation"}
+_NON_EMPIRICAL_KINDS = {"argument", "model", "document"}
+
+
 def _norm(s):
     return re.sub(r"[^a-z0-9]+", " ", str(s if s is not None else "").lower()).strip()
 
@@ -261,8 +268,15 @@ def resolve(kb):
     all_ds = {r for rs in source_roots.values() for r in rs if r.startswith("ds:")}
     secondary_only = all_ds - primary_ds
 
+    # evidence-base KIND (dataset | experiment | observation | argument | model | document). Empirical
+    # bases default to 'dataset'; theoretical ones (argument/model/document) are NOT empirical data, so
+    # the population-based 'non-human' halving must never touch them (a safety proof has no 'population').
+    base_kind = {"ds:" + d["id"]: (d.get("kind") or "dataset") for d in kb.get("datasets", [])}
+    non_empirical = {r for r, k in base_kind.items() if k in _NON_EMPIRICAL_KINDS}
+
     # a root is 'non-human only' if EVERY source resting on it is an animal / in-vitro study — it's
-    # weaker evidence for a human/clinical question, so it counts at half (like secondary-only).
+    # weaker evidence for a human/clinical question, so it counts at half (like secondary-only). This
+    # is an EMPIRICAL discount: it never applies to a theoretical argument/model root.
     human, animal = set(), set()
     _COLLAPSED = ("secpool:", "primpool:", "cycle:")            # pooled voices: halving n/a
     for s in kb["sources"]:
@@ -270,7 +284,7 @@ def resolve(kb):
         for r in source_roots[s["id"]]:
             if not r.startswith(_COLLAPSED):
                 target.add(r)
-    nonhuman_only = animal - human
+    nonhuman_only = (animal - human) - non_empirical
 
     # ROOT ADMISSION: a dataset root is 'provisional' (unconfirmed) until the KB verifies it PER EDGE,
     # one of two auditable ways:
@@ -323,7 +337,8 @@ def resolve(kb):
 
     return {"source_roots": source_roots, "circular": circular,
             "secondary_only": secondary_only, "nonhuman_only": nonhuman_only,
-            "provisional": provisional, "confirmed_by": confirmed_by, "kind": kinds}
+            "provisional": provisional, "confirmed_by": confirmed_by,
+            "kind": kinds, "base_kind": base_kind}
 
 
 def root_strength(root_key, secondary_only, nonhuman_only=frozenset(), provisional=frozenset()):

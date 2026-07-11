@@ -51,6 +51,11 @@
       "properties": {
         "id": {"type": "string"}, "label": {"type": "string"},
         "aliases": {"type": "array", "items": {"type": "string"}},
+        "kind": {
+          "enum": ["dataset", "experiment", "observation", "argument", "model", "document"],
+          "description": "evidence-base kind; absent = dataset. argument/model/document are theoretical roots and are exempt from the empirical (non-human population) discount"
+        },
+        "proposition": {"type": "string", "description": "plain-language claim of an argument/model root"},
         "confirmed": {"type": "boolean", "description": "legacy; superseded by confirmation (still read)"},
         "confirmation": {
           "type": "object",

@@ -16,6 +16,10 @@ restsOn    : list of edges. Each is EITHER
                {ref:"ds_x", provenance:{quote, verifiedQuote:"exact|fuzzy|missing"}}
                                              a dataset edge carrying its OWN dependency quote
 dataset.confirmation : {status:"confirmed", method:"curator"|"verified-edge", by, source, ts}
+dataset.kind         : dataset | experiment | observation | argument | model | document
+                       (absent = dataset). argument/model/document are THEORETICAL roots — first-
+                       class independent bases, exempt from the empirical non-human discount. So a
+                       "safe" position resting on 4 distinct safety ARGUMENTS counts 4 bases, not 1.
 ```
 
 ## Step 1 — resolve every source to its evidentiary ROOTS

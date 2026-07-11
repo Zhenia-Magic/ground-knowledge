@@ -19,7 +19,12 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
 {
   "meta":      { "id", "question", "version", "updated", "note", "schemaVersion": 2 },
   "positions": [ { "id", "label", "hue" } ],                 // the camps
-  "datasets":  [ { "id", "label", "aliases": [..], "confirmation"? } ], // underlying evidence bases;
+  "datasets":  [ { "id", "label", "aliases": [..], "kind"?, "proposition"?, "confirmation"? } ],
+                                //   underlying EVIDENCE BASES (the key stays "datasets" for back-compat).
+                                //   kind = dataset | experiment | observation | argument | model |
+                                //   document (absent = dataset). argument/model/document are THEORETICAL
+                                //   roots — first-class independent bases, exempt from the empirical
+                                //   (non-human population) discount; proposition states the claim.
                                 //   confirmation = {status: confirmed|provisional|disputed,
                                 //   method: curator|verified-edge, by?, source?, ts?, note?} -- an
                                 //   AUDITABLE record of HOW the root was admitted (replaces the bare

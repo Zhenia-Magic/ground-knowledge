@@ -21,6 +21,20 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertEqual(issues, [])
         self.assertEqual(set(manifests), {"chatgpt-deep-research", "claude-code"})
 
+    def test_comparative_recall_scores_baselines_and_reports_losses(self):
+        gold = run_benchmark._load("eval/gold.json")
+        comp = run_benchmark.comparative_recall(gold)
+        self.assertEqual(set(comp), {"covid", "blackholes", "eggs"})
+        covid = comp["covid"]["systems"]
+        self.assertIn("chatgpt-deep-research", covid)
+        # GK surfaces all covid positions in its structured output
+        self.assertEqual(covid["Ground Knowledge"]["positions"],
+                         set(comp["covid"]["gold"]["positions"]))
+        # the honest signal is the LOSS: a baseline surfaces a crux GK's detector misses (biomarkers)
+        eggs = comp["eggs"]["systems"]
+        baseline_cruxes = eggs["claude-code"]["cruxes"] | eggs["chatgpt-deep-research"]["cruxes"]
+        self.assertIn("biomarkers", baseline_cruxes - eggs["Ground Knowledge"]["cruxes"])
+
 
 if __name__ == "__main__":
     unittest.main()
