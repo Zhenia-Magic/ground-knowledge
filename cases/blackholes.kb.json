@@ -8,7 +8,8 @@
    "id": "c6c6ad01ec11",
    "baseVersion": 20,
    "url": "https://groundknowledge.org"
-  }
+  },
+  "schemaVersion": 2
  },
  "positions": [
   {

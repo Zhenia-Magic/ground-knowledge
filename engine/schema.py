@@ -19,9 +19,13 @@ BASE_FUNDING = [
 ]
 
 
+SCHEMA_VERSION = 2   # bump when the KB shape changes in a way consumers must migrate for (see SCHEMA.md)
+
+
 def empty_kb(case_id, question):
     return {
-        "meta": {"id": case_id, "question": question or "", "version": 0, "updated": now_iso()},
+        "meta": {"id": case_id, "question": question or "", "version": 0, "updated": now_iso(),
+                 "schemaVersion": SCHEMA_VERSION},
         "positions": [],
         "datasets": [],
         "factors": [],

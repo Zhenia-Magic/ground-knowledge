@@ -130,6 +130,10 @@ nEff = Σ strength(root_i)     over the position's DISTINCT resolved roots
 strength = 1.0   for a real root (a NAMED dataset / cohort / experiment)
          × 0.5   if the root is known only via secondary sources (§6.5)
          × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
+         × 0.5   if the root is PROVISIONAL — asserted only by unverified input (textDepth
+                 'unknown' / public paste-back) and not yet confirmed by a real fetch or a
+                 curator. Root ADMISSION: an unconfirmed root counts at half until vouched for,
+                 so a public contributor can't mint full-strength roots by fabricating datasets.
          = 1.0   for the pooled secondary voice, the pooled unnamed-primary voice, or a
                  collapsed circular loop (one of each per position, counted once)
 ```
@@ -222,8 +226,9 @@ meta-flag: "this root is read both ways" (contested evidence).
    positions. v1: collapse to one root, contribute to each touched position, flag. *Weak spot:*
    semantics of a cross-side loop are genuinely odd; flagged as open.
 
-8. **Missing/garbled `restsOn`** → tier default kicks in (primary→own root, secondary→pool).
-   Graceful degradation; never crashes the metric.
+8. **Missing/garbled `restsOn`** → the source names no evidence base, so it pools per its tier
+   (a primary with nothing named → the position's one unnamed-first-hand voice; a secondary → the
+   review voice). Graceful degradation; never crashes the metric, and never mints a per-source root.
 
 9. **Duplicate roots under different names** → relies on root-identity resolution
    (normalized-string + learned aliases). *Weak spot:* a brand-new alias nobody has seen can slip

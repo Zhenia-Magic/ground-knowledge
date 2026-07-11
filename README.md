@@ -91,21 +91,20 @@ python cli.py gaps  cases/eggs.kb.json      # where is the evidence thin?
 python cli.py build cases/eggs.kb.json && open viewer/index.html
 ```
 
-`cases/eggs.kb.json` is a **real, verifiable** evidence base — 9 sourced studies, each with a
-citable url, its actual funding disclosure, and the underlying cohort/trial it rests on (Zhong
-2019 JAMA, Drouin-Chartier 2020 BMJ, Dehghan 2020 PURE, Qin 2018 China Kadoorie, Fuller 2018
-DIABEGG, Blesso/Fernandez 2013, Carson 2020 AHA, Barnard 2020, Hu 1999). Two findings fall out
-of the data, not the curation:
+`cases/eggs.kb.json` maps a **real** dispute — 20 sourced studies with citable urls, funding
+disclosures, and named cohorts (Zhong 2019 JAMA, Drouin-Chartier 2020 BMJ, Dehghan 2020 PURE, Qin
+2018 China Kadoorie, Zhuang 2021 NIH-AARP, Fuller 2018 DIABEGG, Alexander/Tran industry meta-analyses,
+Carson 2020 AHA, Hu 1999, …). **Verified vs authored:** anchor sources whose full text we could fetch
+carry quotes checked against the real text (`verifiedQuote: exact`, `textDepth: full/partial`); the
+rest are faithful reconstructions with **authored** quotes (`textDepth: unknown`), clearly marked and
+subject to the provisional-root discount until confirmed. Two findings fall out of the data:
 
-- **Funding skew (real):** the only two **industry-funded** studies (DIABEGG → Australian Egg
-  Corporation; Blesso → Egg Nutrition Center) both back *"Context-dependent / safe."* Barnard's
-  review quantifies the pattern: 49% of industry-funded egg studies reported conclusions
-  discordant with their own data, vs 13% of independent ones.
-- **Independence (real):** the *"Context-dependent"* camp lists 3 sources but rests two-thirds on
-  controlled feeding trials — closer to **~1.8 independent bases than 3** — while *"No
-  association"* rests partly on the same two Harvard cohorts (NHS+HPFS) two decades apart. The
-  tool doesn't manufacture a concentration problem where none exists; case-wide reliance here is
-  modest.
+- **Funding skew (real):** the interested-money studies cluster on one answer — the two industry-funded
+  meta-analyses (Alexander → American Egg Board; Tran → Egg Nutrition Center) both back *"No
+  association,"* which is where the funding-skew flag points.
+- **Independence (real):** the *"No association"* camp lists 9 sources but 6 resolve to the same
+  Nurses' Health / Health Professionals cohort, so it is closer to **~4 independent bases than 9** —
+  the shared-cohort collapse the source count hides.
 
 ### The update loop — recalculation made visible
 

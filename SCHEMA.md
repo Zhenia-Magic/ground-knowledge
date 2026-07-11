@@ -9,14 +9,17 @@ data changes, never the code.
 
 ```jsonc
 {
-  "meta":      { "id", "question", "version", "updated", "note" },
+  "meta":      { "id", "question", "version", "updated", "note", "schemaVersion": 2 },
   "positions": [ { "id", "label", "hue" } ],                 // the camps
-  "datasets":  [ { "id", "label", "aliases": [..] } ],       // underlying evidence bases
+  "datasets":  [ { "id", "label", "aliases": [..], "confirmed"? } ], // underlying evidence bases;
+                                //   confirmed = a real fetch or a curator vouched it's a real base.
+                                //   An UNCONFIRMED root (asserted only by unverified/paste-back
+                                //   input) counts at HALF strength -- see engine/roots (root admission)
   "vocab":     { "evidence":   [ { "label", "aliases": [..],
                                    "tier"?, "methodClass"? } ],    // per-case controlled
                  "population": [ { "label", "aliases": [..] } ],   //   tag vocabularies
                  "funding":    [ { "label", "aliases": [..] } ] }, // closed funder categories
-  "factors":   [ { "id", "label", "weights": {posId: high|med|low|n/a},
+  "factors":   [ { "id", "label", "weights": {posId: high|med|low|n/a},   // cell = MODE of the
                    "rationale", "provenance": [{source, pos, quote, verifiedQuote?}] } ],
   "sources":   [ { "id", "title", "year", "url",
                    "authors": [ "name", ... ],               // citation metadata (Zotero import/export)
@@ -152,8 +155,9 @@ Labelling is the one load-bearing AI step, so the schema records *how much the m
 just the winning label. When labelling runs as a **multi-model ensemble** (`ingest/ensemble.py`),
 the fused delta carries a `modelAgreement` report on the source: how many models ran, the position
 agreement fraction, which fields split (`disagreedFields`), the per-label `positionVote` tally, and
-each camp's best-confidence `proposals` (label + votes + quote). A `restsOn` edge is kept only if
-≥ half the models proposed it, so one model's spurious dataset/citation edge never survives the vote.
+each camp's best-confidence `proposals` (label + votes + quote). A `restsOn` edge is kept only on a
+**strict majority** (more than half the models proposed it), so at 2 models one model's spurious
+dataset/citation edge never survives the vote; edge-vote disagreement is recorded in `disagreedFields`.
 
 A `modelAgreement.flagged` source *did* merge (a majority formed, or the highest-confidence model
 broke a mild tie) but is surfaced for a second look. A **genuine** split — no majority on the

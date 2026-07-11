@@ -230,22 +230,24 @@ structural and named honestly.
 FLF chose three cases with deliberately different profiles; a general tool must handle all three
 with **only the data changing.** It does:
 
-- **Eggs — contested, mundane, malformed question.** The tool's headline findings fall out of the
-  data, not the curation: real funding skew toward "safe," a real but *modest* NHS over-reliance,
-  and — the insight — the lone non-crux factor is "subgroups," weighted `med` by *all three* camps
-  because Hu 1999, DIABEGG and the AHA advisory all concede diabetics/hyper-responders differ. The
-  tool is flagging that "are eggs healthy?" is mis-posed: the answer is "for whom?" (9 real,
-  url-cited sources; a judge can click each.)
+- **Eggs — contested, mundane, malformed question** (20 sources, 3 camps). The tool's headline
+  findings fall out of the data, not the curation: a real **funding skew toward "no association"**
+  (the two industry-funded meta-analyses back it), and the shared-cohort collapse — the *No
+  association* camp lists 9 sources but 6 rest on the Nurses' Health / Health Professionals cohort,
+  so it is closer to 4 independent bases than 9. The subgroup crux (diabetics/hyper-responders)
+  flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 
-- **COVID — live, contested, expertise-heavy.** The independence audit tells the honest story a
-  source count hides: the best-supported camp rests on several genuinely independent primary datasets
-  (genomic, market-epidemiology, bat-reservoir), while other camps turn out to rest on *zero* primary
-  evidence — government reports or commentary that collapse to a single voice each. The dispute's
-  spread localises to a handful of cruxes (prior on lab accidents, furin site, ascertainment bias).
+- **COVID — live, contested, expertise-heavy** (28 sources, 3 camps). The independence audit tells
+  the honest story a source count hides: the zoonotic camp's 15 sources collapse to ~5 independent
+  bases, and the **six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on the same
+  underlying evidence** — so they count as re-analysis, not 6 independent looks, the "23 orders of
+  magnitude from one evidence base" made visible. Cruxes: prior on lab accidents, furin site,
+  ascertainment bias.
 
-- **Black holes — essentially settled.** Distribution collapses to "No risk" (3 of 4), but
-  independence shows those rest **100%** on the cosmic-ray argument, and the lone dissent attacks
-  exactly that argument plus Hawking-radiation reliability. The tool surfaces the single
+- **Black holes — essentially settled** (20 sources, 2 camps). The naïve split is 70% "No risk," but
+  the 14 "safe" sources collapse to **~2.5 distinct evidence bases** — the consensus rests almost
+  entirely on the cosmic-ray/white-dwarf bound plus Hawking evaporation, and the residual-concern
+  side attacks the *reliability of that very argument* (Ord et al., Plaga). The tool surfaces the single
   load-bearing dependency of a settled consensus — FLF's explicit ask for this case.
 
 Same `assess()`; same renderer; three lines of `build`. That is the generalization evidence.
@@ -311,10 +313,13 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   state this in [`MECHANISM.md`](MECHANISM.md) §8 rather than paper over it; a verification pass
   (re-fetch each source, check the stored quote is actually present) is the complementary defence,
   on the roadmap.
-- *Tier mislabelling* — the primary/secondary floor depends on the evidence type being right; calling
-  opinion "Observational" mints a root it shouldn't. Partial defences (controlled vocab, relevance
-  gate, funding-defaults-to-Undisclosed, and — new — an **ensemble vote plus human review of genuine
-  disagreements**, which out-votes or escalates a single model's mislabel) exist; not airtight against
+- *Tier mislabelling* — the primary/secondary floor depends on the evidence type being right. Calling
+  opinion "Observational" no longer *mints a root* on its own (an ungrounded primary now pools, §4),
+  but it can still deny the review-collapse a genuine review deserves, or — paired with a **fabricated
+  named dataset** — mint an unconfirmed root (which counts at half until a fetch/curator confirms it).
+  Partial defences (controlled vocab, relevance gate, funding-defaults-to-Undisclosed, provisional
+  root admission, and an **ensemble vote plus human review** that out-votes or escalates a single
+  model's mislabel) exist; not airtight against
   a blind spot shared across models or a deliberately mislabelled submission.
 - *Curated factor weights* — positions' factor weightings are a human/LLM summary, not mechanical;
   they are the softest input. The *mechanical* parts (counts, datasets, funding category, the
