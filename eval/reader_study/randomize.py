@@ -35,7 +35,8 @@ def main(argv=None):
     with open(args.out, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=("participant", "sequence", "case", "condition"))
         w.writeheader(); w.writerows(rows)
-    print("wrote {} assignments to {}".format(len(rows), args.out))
+    print("wrote {} assignment rows ({} participants × {} cases, within-participant crossover) to {}"
+          .format(len(rows), args.participants, len(CASES), args.out))
 
 
 if __name__ == "__main__":
