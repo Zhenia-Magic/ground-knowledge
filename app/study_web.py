@@ -317,24 +317,38 @@ def study_results_html(responses):
     agg = study.aggregate(obs)
     n_participants = len({r.get("participant") for r in responses if r.get("participant")}) or len(responses)
 
+    # per-item accuracy columns, discovered dynamically (so changing the item set needs no code edit),
+    # in a stable reading order: the shared flood trap first, then the per-case objective items.
+    _ORDER = ["flood", "countfallacy", "loadbearing", "cruxshared"]
+    _LABEL = {"flood": "flood-trap", "countfallacy": "count-fallacy",
+              "loadbearing": "load-bearing", "cruxshared": "crux-vs-shared"}
+    ids = []
+    for cond in ("DR", "DR+GK"):
+        for k in (agg.get(cond, {}).get("itemAccuracy") or {}):
+            if k not in ids:
+                ids.append(k)
+    ids.sort(key=lambda k: _ORDER.index(k) if k in _ORDER else 99)
+
     def _cond_row(name):
         b = agg.get(name)
         if not b:
-            return "<tr><td>{}</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>".format(name)
+            return "<tr><td>{}</td><td>0</td><td>—</td>{}</tr>".format(
+                name, "".join("<td>—</td>" for _ in ids))
         ia = b["itemAccuracy"]
-        pct = lambda k: ("%.0f%%" % (100 * ia[k])) if k in ia else "—"
-        return "<tr><td><b>{}</b></td><td>{}</td><td>{:.2f}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
-            name, b["n"], b["meanObjective"] or 0, pct("flood"), pct("bases"), pct("crux"))
+        cells = "".join("<td>{}</td>".format(("%.0f%%" % (100 * ia[k])) if k in ia else "—") for k in ids)
+        return "<tr><td><b>{}</b></td><td>{}</td><td>{:.2f}</td>{}</tr>".format(
+            name, b["n"], b["meanObjective"] or 0, cells)
 
     uplift = agg.get("upliftDRplusGK")
     uplift_txt = ("<p class='uplift'>DR+GK − DR objective-score difference: <b>{:+.2f}</b> "
                   "(positive = the evidence map helped). <b>Exploratory</b> — a between-observations "
                   "read; see PROTOCOL.md for the paired analysis.</p>".format(uplift)) if uplift is not None else ""
+    hdr = "".join("<th>{}</th>".format(_LABEL.get(k, k)) for k in ids)
     body = ("<div class='kicker'>Reader study · results</div><h1>DR vs DR+GK</h1>"
             "<p>{np} participant(s), {no} case-observation(s) auto-scored.</p>"
             "<table class='rtbl'><thead><tr><th>Condition</th><th>n</th><th>mean objective (0–1)</th>"
-            "<th>flood-trap</th><th>independent-bases</th><th>crux</th></tr></thead><tbody>{dr}{drgk}</tbody></table>"
-            "{uplift}").format(np=n_participants, no=len(obs),
+            "{hdr}</tr></thead><tbody>{dr}{drgk}</tbody></table>"
+            "{uplift}").format(np=n_participants, no=len(obs), hdr=hdr,
                                dr=_cond_row("DR"), drgk=_cond_row("DR+GK"), uplift=uplift_txt)
     return _page("Reader study results", body + _RESULTS_CSS)
 

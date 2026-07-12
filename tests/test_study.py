@@ -39,11 +39,15 @@ class ScoringTests(unittest.TestCase):
         none = study.score_case("covid", self._answers("covid", False))
         self.assertEqual(none["objective"], 0.0)
 
-    def test_crux_accepts_any_listed_gold_answer(self):
-        # covid crux gold is a list; either the ascertainment or furin answer is correct
-        a = {"flood": "Stay the same", "bases": "about 5",
-             "crux": "Furin cleavage site as evidence of laboratory engineering"}
-        self.assertTrue(study.score_case("covid", a)["items"]["crux"])
+    def test_transfer_items_score_and_a_dispute_is_not_a_shared_point(self):
+        gold = study.load_gold()
+        q = {x["id"]: x["gold"] for x in gold["cases"]["covid"]["questions"]}
+        a = {"flood": "Stay the same", "countfallacy": q["countfallacy"],
+             "loadbearing": q["loadbearing"], "cruxshared": q["cruxshared"]}
+        self.assertTrue(all(study.score_case("covid", a)["items"].values()))
+        # a genuine point of DISPUTE is a wrong answer to "which do both camps AGREE on"
+        a["cruxshared"] = "Whether the furin cleavage site is a sign of laboratory engineering."
+        self.assertFalse(study.score_case("covid", a)["items"]["cruxshared"])
 
     def test_free_text_is_captured_not_scored(self):
         resp = {"participant": "p", "cases": [

@@ -1,5 +1,5 @@
 {
-  "_comment": "FROZEN reader-study items. Do not change gold after collecting responses (see PROTOCOL.md). Each case has objective, gold-answerable questions (auto-scored) plus optional free-text (captured, human-scored later). 'gold' may be a string or a list of acceptable answers.",
+  "_comment": "Reader-study items. FROZEN once responses are collected (see PROTOCOL.md) — this revision predates any collection. Each objective item is a TRANSFER/JUDGEMENT question (answerable in principle from either condition's materials), so a DR+GK win reflects better reasoning, not reading a number off the map. Deliberately NOT included: 'how many independent bases are there?' — that just asks the reader to recite the tool's output. 'gold' may be a string or a list of acceptable answers.",
   "flood_prompt": "Suppose twelve more articles are published that repeat the strongest camp's existing evidence — same datasets, no new data or argument. Should your confidence in that camp's conclusion change?",
   "flood_options": ["Increase", "Stay the same", "Decrease"],
   "flood_gold": "Stay the same",
@@ -9,21 +9,45 @@
       "title": "What is the origin of SARS-CoV-2 (COVID-19)?",
       "strongestPosition": "Zoonotic spillover at the Huanan market",
       "questions": [
-        {"id": "bases", "type": "choice",
-         "prompt": "The 'Zoonotic spillover at the Huanan market' position lists 14 sources. Once sources that reuse the same dataset or merely echo each other collapse, roughly how many INDEPENDENT evidence bases remain?",
-         "options": ["about 2", "about 5", "about 9", "about 14 (all of them)"],
-         "gold": "about 5"},
-        {"id": "crux", "type": "choice",
-         "prompt": "Which is the single most decisive point the two camps genuinely DISPUTE?",
-         "options": ["Ascertainment / reporting bias in early Wuhan case data",
-                     "Furin cleavage site as evidence of laboratory engineering",
-                     "The exact number of intermediate host species",
-                     "Whether bats carry coronaviruses at all"],
-         "gold": ["Ascertainment / reporting bias in early Wuhan case data",
-                  "Furin cleavage site as evidence of laboratory engineering"]}
+        {
+          "id": "countfallacy",
+          "type": "choice",
+          "prompt": "An analyst concludes the zoonotic camp is decisively strongest because it lists 15 sources to the lab camp's 8. What is the biggest problem with that reasoning?",
+          "options": [
+            "Nothing — more independent studies means stronger support.",
+            "Many of the 15 re-analyze the same market and genomic data (and the Bayesian analyses re-weigh the same evidence), so they aren't 15 independent looks.",
+            "Source counts from different camps can never be compared.",
+            "The lab-origin sources are more rigorous."
+          ],
+          "gold": "Many of the 15 re-analyze the same market and genomic data (and the Bayesian analyses re-weigh the same evidence), so they aren't 15 independent looks."
+        },
+        {
+          "id": "loadbearing",
+          "type": "choice",
+          "prompt": "If ONE finding turned out to be unreliable, which would most weaken the zoonotic-spillover case?",
+          "options": [
+            "That the earliest known COVID-19 cases cluster around the Huanan market.",
+            "That bats carry many coronaviruses in general.",
+            "The 2018 DEFUSE research proposal.",
+            "How many authors co-wrote the market study."
+          ],
+          "gold": "That the earliest known COVID-19 cases cluster around the Huanan market."
+        },
+        {
+          "id": "cruxshared",
+          "type": "choice",
+          "prompt": "Which of these do the two camps essentially AGREE on, so it is NOT a genuine point of dispute?",
+          "options": [
+            "SARS-CoV-2's closest known relatives are naturally-occurring bat coronaviruses.",
+            "Whether the furin cleavage site is a sign of laboratory engineering.",
+            "Whether the early market cases reflect an animal source or just where testing was concentrated.",
+            "How likely a lab accident was before weighing the specific evidence."
+          ],
+          "gold": "SARS-CoV-2's closest known relatives are naturally-occurring bat coronaviruses."
+        }
       ],
       "freeText": [
-        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "dep_explain", "prompt": "Name any sources here that are NOT independent of one another, and briefly why."},
         {"id": "crux_open", "prompt": "In your own words, what is the most important unresolved question the answer hinges on?"}
       ]
     },
@@ -32,21 +56,45 @@
       "title": "Could the LHC create a black hole that destroys Earth?",
       "strongestPosition": "No risk — LHC collisions are safe",
       "questions": [
-        {"id": "bases", "type": "choice",
-         "prompt": "The 'No risk' position lists 15 sources. Once shared datasets and echo collapse, roughly how many INDEPENDENT evidence bases / distinct safety arguments remain?",
-         "options": ["about 2", "about 4–5", "about 9", "about 15 (all of them)"],
-         "gold": "about 4–5"},
-        {"id": "crux", "type": "choice",
-         "prompt": "Which is the single most decisive UNRESOLVED question the answer hinges on?",
-         "options": ["Whether Hawking radiation is guaranteed (black-hole evaporation)",
-                     "Reliability of the cosmic-ray safety analogy",
-                     "How many physicists signed the safety report",
-                     "The cost of the LHC"],
-         "gold": ["Whether Hawking radiation is guaranteed (black-hole evaporation)",
-                  "Reliability of the cosmic-ray safety analogy"]}
+        {
+          "id": "countfallacy",
+          "type": "choice",
+          "prompt": "An analyst concludes the 'no risk' side is overwhelming because it lists 14 sources to the concern side's 6. What is the biggest problem with that reasoning?",
+          "options": [
+            "Nothing — more studies means the safety case is stronger.",
+            "Most of the 14 rest on the same two arguments (the cosmic-ray/dense-star bound and Hawking evaporation), so they aren't 14 independent lines of evidence.",
+            "Physics questions can never be judged by counting papers.",
+            "The concern-side sources aren't peer-reviewed."
+          ],
+          "gold": "Most of the 14 rest on the same two arguments (the cosmic-ray/dense-star bound and Hawking evaporation), so they aren't 14 independent lines of evidence."
+        },
+        {
+          "id": "loadbearing",
+          "type": "choice",
+          "prompt": "The safety reports say their case holds even if Hawking radiation turns out not to exist. Given that, if ONE argument failed, which would most weaken the 'no risk' consensus?",
+          "options": [
+            "The cosmic-ray / dense-star survival argument.",
+            "That microscopic black holes would evaporate via Hawking radiation.",
+            "How many institutions endorsed the safety report.",
+            "The construction cost of the collider."
+          ],
+          "gold": "The cosmic-ray / dense-star survival argument."
+        },
+        {
+          "id": "cruxshared",
+          "type": "choice",
+          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the crux?",
+          "options": [
+            "That cosmic rays far more energetic than the LHC have struck the Sun, Moon and dense stars for billions of years.",
+            "Whether that cosmic-ray record actually rules out danger from slow, collider-made black holes.",
+            "Whether the small chance that the safety argument is simply mistaken should be counted.",
+            "Whether Hawking evaporation is guaranteed."
+          ],
+          "gold": "That cosmic rays far more energetic than the LHC have struck the Sun, Moon and dense stars for billions of years."
+        }
       ],
       "freeText": [
-        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "dep_explain", "prompt": "Name any sources here that are NOT independent of one another, and briefly why."},
         {"id": "crux_open", "prompt": "In your own words, what is the most important unresolved assumption the safety case rests on?"}
       ]
     },
@@ -55,22 +103,45 @@
       "title": "Do eggs increase cardiovascular disease risk?",
       "strongestPosition": "No association",
       "questions": [
-        {"id": "bases", "type": "choice",
-         "prompt": "The 'No association' position lists 10 sources. Once sources that reuse the same cohort or echo each other collapse, roughly how many INDEPENDENT evidence bases remain?",
-         "options": ["about 2", "about 4", "about 6", "about 10 (all of them)"],
-         "gold": "about 6"},
-        {"id": "crux", "type": "choice",
-         "prompt": "Which is the single most decisive point the camps genuinely DISPUTE?",
-         "options": ["Discount for healthy-user / dietary-pattern confounding",
-                     "Judge eggs on biomarkers (LDL) vs hard CVD events",
-                     "Discount for industry funding",
-                     "Whether eggs contain cholesterol at all"],
-         "gold": ["Discount for healthy-user / dietary-pattern confounding",
-                  "Judge eggs on biomarkers (LDL) vs hard CVD events",
-                  "Discount for industry funding"]}
+        {
+          "id": "countfallacy",
+          "type": "choice",
+          "prompt": "An analyst concludes 'eggs are safe' is best-supported because the No-association camp lists 9 sources to the Increases-risk camp's 5. What is the biggest problem with that reasoning?",
+          "options": [
+            "Nothing — more studies means eggs are more clearly safe.",
+            "6 of the 9 rest on the same Nurses' Health / Health Professionals cohorts (and several are meta-analyses of them), so they aren't 9 independent looks.",
+            "Observational studies can never tell us anything.",
+            "The increases-risk studies are simply newer."
+          ],
+          "gold": "6 of the 9 rest on the same Nurses' Health / Health Professionals cohorts (and several are meta-analyses of them), so they aren't 9 independent looks."
+        },
+        {
+          "id": "loadbearing",
+          "type": "choice",
+          "prompt": "If ONE dataset turned out to be biased, which would most weaken the 'no association' case?",
+          "options": [
+            "The Nurses' Health Study / Health Professionals Follow-up cohorts.",
+            "The single small feeding trial in metabolic-syndrome patients.",
+            "How many eggs per week counted as 'high' intake.",
+            "Which journal published the meta-analyses."
+          ],
+          "gold": "The Nurses' Health Study / Health Professionals Follow-up cohorts."
+        },
+        {
+          "id": "cruxshared",
+          "type": "choice",
+          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the crux?",
+          "options": [
+            "That eggs are a major source of dietary cholesterol.",
+            "Whether that dietary cholesterol actually raises cardiovascular-event risk.",
+            "Whether people with diabetes are a distinct higher-risk group.",
+            "Whether healthy-user confounding explains the null results."
+          ],
+          "gold": "That eggs are a major source of dietary cholesterol."
+        }
       ],
       "freeText": [
-        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "dep_explain", "prompt": "Name any sources here that are NOT independent of one another, and briefly why."},
         {"id": "crux_open", "prompt": "In your own words, what most determines whether eggs raise CVD risk?"}
       ]
     }

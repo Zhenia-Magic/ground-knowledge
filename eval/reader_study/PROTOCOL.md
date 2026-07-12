@@ -12,9 +12,13 @@ A self-serve, auto-scored version runs in the portal so you can **just share one
   WITHIN-participant crossover (`randomize.assignments`) is the manual follow-up below.
 - **Blinded:** participants see only their materials (the deep-research report; and, in the `DR+GK`
   condition, the Ground Knowledge evidence map) — never the condition label.
-- **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): the flood trap,
-  an "independent evidence bases" estimate, and a crux multiple-choice. Free-text answers are captured
-  for optional later human scoring, never auto-scored.
+- **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): a flood trap and
+  three per-case TRANSFER/JUDGEMENT items — a count-fallacy question (is "more sources" a good
+  argument?), a load-bearing question (which finding, if wrong, most weakens the case?), and a
+  crux-vs-shared question (which point do both camps actually agree on?). These test the reader's
+  reasoning, not their ability to read a number off the map — deliberately NOT "how many independent
+  bases are there?", which would just ask the reader to recite the tool's output. Free-text answers
+  are captured for optional later human scoring, never auto-scored.
 - **Results:** `https://groundknowledge.org/study/results` shows DR vs DR+GK mean objective score and
   per-item accuracy. This is a **between-observations** read — an honest fast signal; the paired,
   human-scored analysis below is the rigorous follow-up. Report it as **exploratory** below the 24
