@@ -375,6 +375,19 @@ class Handler(BaseHTTPRequestHandler):
             from ingest import citations
             text, mime, ext = citations.export(q["kb"], fmt)
             return self._send_file(text, mime, "{}.{}".format(name, ext))
+        # --- reader study (anonymous) ---
+        if p == ["study"]:
+            from app import study_web
+            import uuid as _uuid
+            idx = store.count_study_participants()
+            return self._send_html(200, study_web.study_form_html(idx, _uuid.uuid4().hex[:6]))
+        if len(p) == 3 and p[0] == "study" and p[1] == "report":
+            from app import study_web
+            html = study_web.study_report_html(p[2])
+            return self._send_html(200 if html else 404, html or "<h1>Not found</h1>")
+        if p == ["study", "results"]:
+            from app import study_web
+            return self._send_html(200, study_web.study_results_html(store.list_study_responses()))
         self._send(404, {"error": "not found"})
 
     def do_POST(self):
@@ -449,6 +462,21 @@ class Handler(BaseHTTPRequestHandler):
                 res = _apply_delta(qid, q, body.get("delta"), body.get("contributor"))
                 return self._send(400 if res.get("error") else 200, res)
             return self._send(404, {"error": "unknown action"})
+        # --- reader study: anonymous response collection + auto-scoring ---
+        if p == ["api", "study"]:
+            body = self._json_body()
+            if body is None:
+                return
+            if not isinstance(body.get("cases"), list) or not body["cases"]:
+                return self._send(400, {"error": "no cases in submission"})
+            from eval.reader_study import study
+            scored = study.score_response(body)
+            if not scored:
+                return self._send(400, {"error": "no scorable cases in submission"})
+            store.save_study_response(body.get("participant"), body, scored)
+            correct = sum(o["score"]["nCorrect"] for o in scored)
+            items = sum(o["score"]["nItems"] for o in scored)
+            return self._send(200, {"ok": True, "correct": correct, "items": items})
         self._send(404, {"error": "not found"})
 
     def do_PUT(self):

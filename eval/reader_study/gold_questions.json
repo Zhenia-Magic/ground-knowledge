@@ -1,0 +1,78 @@
+{
+  "_comment": "FROZEN reader-study items. Do not change gold after collecting responses (see PROTOCOL.md). Each case has objective, gold-answerable questions (auto-scored) plus optional free-text (captured, human-scored later). 'gold' may be a string or a list of acceptable answers.",
+  "flood_prompt": "Suppose twelve more articles are published that repeat the strongest camp's existing evidence — same datasets, no new data or argument. Should your confidence in that camp's conclusion change?",
+  "flood_options": ["Increase", "Stay the same", "Decrease"],
+  "flood_gold": "Stay the same",
+  "cases": {
+    "covid": {
+      "gkQuestionId": "ac81b4cae8d0",
+      "title": "What is the origin of SARS-CoV-2 (COVID-19)?",
+      "strongestPosition": "Zoonotic spillover at the Huanan market",
+      "questions": [
+        {"id": "bases", "type": "choice",
+         "prompt": "The 'Zoonotic spillover at the Huanan market' position lists 14 sources. Once sources that reuse the same dataset or merely echo each other collapse, roughly how many INDEPENDENT evidence bases remain?",
+         "options": ["about 2", "about 5", "about 9", "about 14 (all of them)"],
+         "gold": "about 5"},
+        {"id": "crux", "type": "choice",
+         "prompt": "Which is the single most decisive point the two camps genuinely DISPUTE?",
+         "options": ["Ascertainment / reporting bias in early Wuhan case data",
+                     "Furin cleavage site as evidence of laboratory engineering",
+                     "The exact number of intermediate host species",
+                     "Whether bats carry coronaviruses at all"],
+         "gold": ["Ascertainment / reporting bias in early Wuhan case data",
+                  "Furin cleavage site as evidence of laboratory engineering"]}
+      ],
+      "freeText": [
+        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "crux_open", "prompt": "In your own words, what is the most important unresolved question the answer hinges on?"}
+      ]
+    },
+    "blackholes": {
+      "gkQuestionId": "c6c6ad01ec11",
+      "title": "Could the LHC create a black hole that destroys Earth?",
+      "strongestPosition": "No risk — LHC collisions are safe",
+      "questions": [
+        {"id": "bases", "type": "choice",
+         "prompt": "The 'No risk' position lists 15 sources. Once shared datasets and echo collapse, roughly how many INDEPENDENT evidence bases / distinct safety arguments remain?",
+         "options": ["about 2", "about 4–5", "about 9", "about 15 (all of them)"],
+         "gold": "about 4–5"},
+        {"id": "crux", "type": "choice",
+         "prompt": "Which is the single most decisive UNRESOLVED question the answer hinges on?",
+         "options": ["Whether Hawking radiation is guaranteed (black-hole evaporation)",
+                     "Reliability of the cosmic-ray safety analogy",
+                     "How many physicists signed the safety report",
+                     "The cost of the LHC"],
+         "gold": ["Whether Hawking radiation is guaranteed (black-hole evaporation)",
+                  "Reliability of the cosmic-ray safety analogy"]}
+      ],
+      "freeText": [
+        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "crux_open", "prompt": "In your own words, what is the most important unresolved assumption the safety case rests on?"}
+      ]
+    },
+    "eggs": {
+      "gkQuestionId": "04329878656c",
+      "title": "Do eggs increase cardiovascular disease risk?",
+      "strongestPosition": "No association",
+      "questions": [
+        {"id": "bases", "type": "choice",
+         "prompt": "The 'No association' position lists 10 sources. Once sources that reuse the same cohort or echo each other collapse, roughly how many INDEPENDENT evidence bases remain?",
+         "options": ["about 2", "about 4", "about 6", "about 10 (all of them)"],
+         "gold": "about 6"},
+        {"id": "crux", "type": "choice",
+         "prompt": "Which is the single most decisive point the camps genuinely DISPUTE?",
+         "options": ["Discount for healthy-user / dietary-pattern confounding",
+                     "Judge eggs on biomarkers (LDL) vs hard CVD events",
+                     "Discount for industry funding",
+                     "Whether eggs contain cholesterol at all"],
+         "gold": ["Discount for healthy-user / dietary-pattern confounding",
+                  "Judge eggs on biomarkers (LDL) vs hard CVD events",
+                  "Discount for industry funding"]}
+      ],
+      "freeText": [
+        {"id": "dep_explain", "prompt": "Name any sources that are NOT independent of one another, and briefly why."},
+        {"id": "crux_open", "prompt": "In your own words, what most determines whether eggs raise CVD risk?"}
+      ]
+    }
+  }
+}

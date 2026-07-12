@@ -1,5 +1,24 @@
 # Blinded reader study — preregistration-ready protocol
 
+## Automated web variant (fast pilot)
+
+A self-serve, auto-scored version runs in the portal so you can **just share one link**:
+
+- **Participants open** `https://groundknowledge.org/study` — anonymous (a random token, never a name).
+- **Assignment** is the balanced crossover below, applied automatically per participant
+  (`eval/reader_study/study.assign`, driven by the submission count).
+- **Blinded:** participants see only their materials (the deep-research report; and, in the `DR+GK`
+  condition, the Ground Knowledge evidence map) — never the condition label.
+- **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): the flood trap,
+  an "independent evidence bases" estimate, and a crux multiple-choice. Free-text answers are captured
+  for optional later human scoring, never auto-scored.
+- **Results:** `https://groundknowledge.org/study/results` shows DR vs DR+GK mean objective score and
+  per-item accuracy. This is a **between-observations** read — an honest fast signal; the paired,
+  human-scored analysis below is the rigorous follow-up. Report it as **exploratory** below the 24
+  minimum.
+
+The manual, fully human-scored protocol follows.
+
 ## Question
 
 Does adding Ground Knowledge's structured evidence-root audit to a strong deep-research report help

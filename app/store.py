@@ -91,6 +91,13 @@ def init_db():
             " action TEXT NOT NULL,"
             " summary TEXT,"
             " created_at INTEGER NOT NULL)"))
+        cur.execute(_sql(
+            "CREATE TABLE IF NOT EXISTS study_responses ("   # blinded reader study (eval/reader_study)
+            " id TEXT PRIMARY KEY,"
+            " participant TEXT,"                              # self-chosen token, NOT PII
+            " response {kb} NOT NULL,"                        # raw answers (incl. free text)
+            " scored {kb} NOT NULL,"                          # auto-scored objective observations
+            " created_at INTEGER NOT NULL)".format(kb=_KB_COL)))
         conn.commit()
     finally:
         conn.close()
@@ -295,5 +302,45 @@ def contributions(qid, limit=100):
                          " ORDER BY created_at DESC LIMIT ?"), (qid, limit))
         return [{"contributor": r["contributor"], "action": r["action"],
                  "summary": r["summary"], "created_at": r["created_at"]} for r in cur.fetchall()]
+    finally:
+        conn.close()
+
+
+# ---- reader study ---------------------------------------------------------------------------
+
+def count_study_participants():
+    """Number of submissions so far — drives balanced crossover assignment (study.assign)."""
+    conn = _connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) AS n FROM study_responses")
+        row = cur.fetchone()
+        return int(row["n"]) if row else 0
+    finally:
+        conn.close()
+
+
+def save_study_response(participant, response, scored):
+    rid = uuid.uuid4().hex[:12]
+    conn = _connect()
+    try:
+        conn.cursor().execute(_sql(
+            "INSERT INTO study_responses (id, participant, response, scored, created_at)"
+            " VALUES (?, ?, ?, ?, ?)"),
+            (rid, (participant or "")[:64], _dump(response), _dump(scored), _now()))
+        conn.commit()
+    finally:
+        conn.close()
+    return rid
+
+
+def list_study_responses(limit=2000):
+    conn = _connect()
+    try:
+        cur = conn.cursor()
+        cur.execute(_sql("SELECT * FROM study_responses ORDER BY created_at ASC LIMIT ?"), (limit,))
+        return [{"id": r["id"], "participant": r["participant"], "response": _load(r["response"]),
+                 "scored": _load(r["scored"]), "created_at": r["created_at"]}
+                for r in cur.fetchall()]
     finally:
         conn.close()

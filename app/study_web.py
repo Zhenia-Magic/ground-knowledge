@@ -1,0 +1,195 @@
+"""Reader-study web surface: the blinded participant form, the deep-research report view, and the
+admin results page. Rendering only — assignment/scoring live in eval/reader_study/study.py, storage
+in app/store.py. Participants are anonymous (self-chosen token, never PII)."""
+import os
+import re
+
+from app.web import _page, _esc, ROOT
+from engine.render import json_for_script
+from eval.reader_study import study
+
+_REPORTS_DIR = os.path.join(ROOT, "eval", "baselines", "claude-code")
+
+
+def _render_md(md):
+    """Minimal, safe Markdown -> HTML for the report view (headings, bold, links, paragraphs)."""
+    out = []
+    for line in (md or "").split("\n"):
+        s = line.rstrip()
+        if not s:
+            continue
+        h = re.match(r"^(#{1,4})\s+(.*)", s)
+        if h:
+            lvl = len(h.group(1))
+            out.append("<h{0}>{1}</h{0}>".format(lvl, _esc(h.group(2))))
+            continue
+        t = _esc(re.sub(r"cite[a-z0-9]+", "", s))                 # strip stray citation tokens
+        t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+        t = re.sub(r"\[(.+?)\]\((https?://[^)\s]+)\)",
+                   r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
+        out.append("<p>" + t + "</p>")
+    return "\n".join(out)
+
+
+def study_report_html(case):
+    gold = study.load_gold()
+    if case not in gold["cases"]:
+        return None
+    path = os.path.join(_REPORTS_DIR, case + ".md")
+    if not os.path.isfile(path):
+        return _page("Report unavailable", "<p>Report not found.</p>")
+    with open(path, encoding="utf-8") as f:
+        md = f.read()
+    body = ("<div class='kicker'>Research report</div>"
+            "<h1>{}</h1><div class='report'>{}</div>").format(
+                _esc(gold["cases"][case]["title"]), _render_md(md))
+    return _page("Report · " + gold["cases"][case]["title"], body + _REPORT_CSS)
+
+
+_REPORT_CSS = """<style>
+  .report{max-width:760px;line-height:1.6;} .report h1,.report h2,.report h3{margin:1.2em 0 .4em;}
+  .report h2{font-size:19px;} .report h3{font-size:16px;} .report p{margin:.6em 0;color:#23262c;}
+</style>"""
+
+
+def _question_block(case, spec, gold):
+    """The objective + free-text items for one case (radio groups, a slider, textareas)."""
+    q = ['<div class="q"><label class="qlabel">{}</label>{}</div>'.format(
+        _esc(gold["flood_prompt"]),
+        "".join('<label class="opt"><input type="radio" name="{c}_flood" value="{v}"> {v}</label>'
+                .format(c=case, v=_esc(o)) for o in gold["flood_options"]))]
+    for item in spec["questions"]:
+        opts = "".join(
+            '<label class="opt"><input type="radio" name="{c}_{id}" value="{v}"> {v}</label>'
+            .format(c=case, id=item["id"], v=_esc(o)) for o in item["options"])
+        q.append('<div class="q"><label class="qlabel">{}</label>{}</div>'.format(
+            _esc(item["prompt"]), opts))
+    q.append('<div class="q"><label class="qlabel">How confident are you in the strongest side\'s '
+             'conclusion? <span class="conf" id="{c}_confv">50</span>/100</label>'
+             '<input type="range" min="0" max="100" value="50" name="{c}_confidence" '
+             'oninput="document.getElementById(\'{c}_confv\').textContent=this.value"></div>'.format(c=case))
+    for ft in spec.get("freeText", []):
+        q.append('<div class="q"><label class="qlabel">{}</label>'
+                 '<textarea name="{c}_{id}" rows="3"></textarea></div>'.format(
+                     _esc(ft["prompt"]), c=case, id=ft["id"]))
+    return "".join(q)
+
+
+def study_form_html(participant_index, token):
+    gold = study.load_gold()
+    plan = study.assign(participant_index)
+    sections = []
+    for row in plan:
+        case = row["case"]
+        spec = gold["cases"][case]
+        # blinded: the participant sees the materials, never the condition label ("DR"/"DR+GK").
+        materials = ['<a class="btn" href="/study/report/{}" target="_blank" rel="noopener">'
+                     '📄 Open the research report</a>'.format(case)]
+        if row["condition"] == "DR+GK":
+            materials.append('<a class="btn" href="/q/{}" target="_blank" rel="noopener">'
+                             '🗺️ Open the evidence map</a>'.format(spec["gkQuestionId"]))
+        sections.append(
+            '<section class="case" data-case="{c}" data-condition="{cond}">'
+            '<div class="cnum">Case {n} of {tot}</div><h2>{title}</h2>'
+            '<div class="materials">Read your materials, then answer below.<div class="mbtns">{mats}</div></div>'
+            '{qs}</section>'.format(
+                c=case, cond=row["condition"], n=row["sequence"], tot=len(plan),
+                title=_esc(spec["title"]), mats="".join(materials),
+                qs=_question_block(case, spec, gold)))
+    plan_json = json_for_script(plan)
+    body = """
+    <div class="kicker">Ground Knowledge — reader exercise</div>
+    <h1>How well can you read the evidence?</h1>
+    <div class="consent">This is an <b>anonymous</b> research exercise comparing two ways of presenting
+      evidence on contested questions. <b>Do not enter your name or anything identifying</b> — your token
+      below is just a random nickname. For each case, open the materials, then answer. There are no
+      trick questions; answer as you see it. By submitting you consent to anonymous use of your responses.</div>
+    <div class="q"><label class="qlabel">Your token (random — not your name)</label>
+      <input id="token" value="{token}" maxlength="64" style="max-width:240px"></div>
+    <div class="q"><label class="qlabel">How familiar are you with these topics? (1 = not at all, 5 = expert)</label>
+      <input type="range" min="1" max="5" value="3" id="familiarity"
+        oninput="document.getElementById('famv').textContent=this.value">
+      <span class="conf" id="famv">3</span></div>
+    {sections}
+    <button class="btn primary" id="submit">Submit my answers</button>
+    <div id="done" style="display:none"></div>
+    <script id="plan" type="application/json">{plan}</script>
+    <script>
+    const START=Date.now(), PLAN=JSON.parse(document.getElementById('plan').textContent);
+    document.getElementById('submit').onclick=async()=>{{
+      const val=n=>{{const el=document.querySelector('[name="'+n+'"]:checked')||document.querySelector('[name="'+n+'"]');return el?el.value:"";}};
+      const cases=PLAN.map(r=>{{
+        const c=r.case, sec=document.querySelector('section[data-case="'+c+'"]');
+        const answers={{flood:val(c+'_flood')}}; const free={{}};
+        sec.querySelectorAll('input[type=radio]').forEach(i=>{{const k=i.name.slice(c.length+1); if(i.checked) answers[k]=i.value;}});
+        sec.querySelectorAll('textarea').forEach(t=>{{free[t.name.slice(c.length+1)]=t.value;}});
+        return {{case:c, condition:r.condition, confidence:Number(val(c+'_confidence'))||null, answers, free}};
+      }});
+      const payload={{participant:document.getElementById('token').value.trim(),
+        familiarity:Number(document.getElementById('familiarity').value),
+        totalSeconds:Math.round((Date.now()-START)/1000), cases}};
+      const btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Submitting…';
+      try{{
+        const res=await fetch('/api/study',{{method:'POST',headers:{{'Content-Type':'application/json'}},body:JSON.stringify(payload)}});
+        const data=await res.json();
+        if(!res.ok){{throw new Error(data.error||'submit failed');}}
+        document.getElementById('done').style.display='block';
+        document.getElementById('done').innerHTML='<div class="thanks"><b>Thank you!</b> Your responses were recorded. '
+          +'You got <b>'+data.correct+' of '+data.items+'</b> objective items right across your cases.</div>';
+        btn.style.display='none';
+      }}catch(e){{btn.disabled=false; btn.textContent='Submit my answers'; alert('Could not submit: '+e.message);}}
+    }};
+    </script>
+    """.format(token=_esc(token), sections="".join(sections), plan=plan_json)
+    return _page("Reader exercise · Ground Knowledge", body + _FORM_CSS)
+
+
+_FORM_CSS = """<style>
+  .consent{background:#F5ECD6;border:1px solid #e4d9b8;border-radius:8px;padding:12px 15px;margin:12px 0;font-size:14px;}
+  .case{border:1px solid #E4E7EA;border-radius:10px;padding:16px 18px;margin:18px 0;}
+  .cnum{font-family:monospace;font-size:11px;color:#8A9098;text-transform:uppercase;letter-spacing:.05em;}
+  .materials{background:#F5F6F7;border-radius:8px;padding:10px 12px;margin:8px 0 14px;font-size:14px;}
+  .mbtns{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;}
+  .q{margin:14px 0;} .qlabel{display:block;font-weight:600;font-size:14px;margin-bottom:6px;}
+  .opt{display:block;font-weight:400;margin:3px 0;cursor:pointer;} .opt input{margin-right:7px;}
+  textarea{width:100%;border:1px solid #CDD2D7;border-radius:6px;padding:8px;font:inherit;}
+  input[type=range]{vertical-align:middle;} .conf{font-family:monospace;color:#2f6296;font-weight:600;}
+  .btn{display:inline-block;background:#fff;border:1px solid #CDD2D7;border-radius:7px;padding:8px 14px;
+    text-decoration:none;color:#15171B;font-size:14px;cursor:pointer;}
+  .btn.primary{background:#2f6296;color:#fff;border-color:#2f6296;font-size:15px;padding:11px 20px;margin-top:10px;}
+  .thanks{background:#E7EEF6;border:1px solid #b9cfe6;border-radius:8px;padding:14px 16px;margin-top:14px;}
+</style>"""
+
+
+def study_results_html(responses):
+    """Admin: DR vs DR+GK on the auto-scored objective items, over every stored response."""
+    obs = [o for r in responses for o in (r.get("scored") or [])]
+    agg = study.aggregate(obs)
+    n_participants = len({r.get("participant") for r in responses if r.get("participant")}) or len(responses)
+
+    def _cond_row(name):
+        b = agg.get(name)
+        if not b:
+            return "<tr><td>{}</td><td>0</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>".format(name)
+        ia = b["itemAccuracy"]
+        pct = lambda k: ("%.0f%%" % (100 * ia[k])) if k in ia else "—"
+        return "<tr><td><b>{}</b></td><td>{}</td><td>{:.2f}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+            name, b["n"], b["meanObjective"] or 0, pct("flood"), pct("bases"), pct("crux"))
+
+    uplift = agg.get("upliftDRplusGK")
+    uplift_txt = ("<p class='uplift'>DR+GK − DR objective-score difference: <b>{:+.2f}</b> "
+                  "(positive = the evidence map helped). <b>Exploratory</b> — a between-observations "
+                  "read; see PROTOCOL.md for the paired analysis.</p>".format(uplift)) if uplift is not None else ""
+    body = ("<div class='kicker'>Reader study · results</div><h1>DR vs DR+GK</h1>"
+            "<p>{np} participant(s), {no} case-observation(s) auto-scored.</p>"
+            "<table class='rtbl'><thead><tr><th>Condition</th><th>n</th><th>mean objective (0–1)</th>"
+            "<th>flood-trap</th><th>independent-bases</th><th>crux</th></tr></thead><tbody>{dr}{drgk}</tbody></table>"
+            "{uplift}").format(np=n_participants, no=len(obs),
+                               dr=_cond_row("DR"), drgk=_cond_row("DR+GK"), uplift=uplift_txt)
+    return _page("Reader study results", body + _RESULTS_CSS)
+
+
+_RESULTS_CSS = """<style>
+  .rtbl{border-collapse:collapse;margin:14px 0;} .rtbl th,.rtbl td{border:1px solid #E4E7EA;padding:7px 12px;text-align:left;}
+  .rtbl th{background:#F5F6F7;font-size:13px;} .uplift{background:#E7EEF6;border-radius:8px;padding:12px 15px;max-width:640px;}
+</style>"""
