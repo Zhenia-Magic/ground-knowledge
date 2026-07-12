@@ -20,9 +20,31 @@ def _strip_preamble(md):
     return md or ""
 
 
+def _match_url(s, start):
+    """s[start]=='('; return (url, end_index) extracting a URL with BALANCED inner parens — so DOIs
+    like https://www.cell.com/cell/fulltext/S0092-8674(24)00901-2 aren't truncated at the first ')'.
+    None if it isn't a parenthesised http(s) URL."""
+    if start >= len(s) or s[start] != "(":
+        return None
+    depth, i = 0, start
+    while i < len(s):
+        c = s[i]
+        if c.isspace():
+            return None
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+            if depth == 0:
+                url = s[start + 1:i]
+                return (url, i + 1) if re.match(r"https?://", url) else None
+        i += 1
+    return None
+
+
 def _find_link(s, start):
-    """If a Markdown link starts at s[start]=='[', return (text, url, end) with the link TEXT matched
-    by balanced brackets (so a nested [x](u) inside the text doesn't end it early); else None."""
+    """A Markdown link at s[start]=='[': (text, url, end) with the TEXT matched by balanced brackets
+    (a nested [x](u) doesn't end it early) and the URL by balanced parens; else None."""
     if start >= len(s) or s[start] != "[":
         return None
     depth, i = 0, start
@@ -32,47 +54,59 @@ def _find_link(s, start):
         elif s[i] == "]":
             depth -= 1
             if depth == 0:
-                m = re.match(r"\((https?://[^)\s]+)\)", s[i + 1:])
-                return (s[start + 1:i], m.group(1), i + 1 + m.end()) if m else None
+                u = _match_url(s, i + 1)
+                return (s[start + 1:i], u[0], u[1]) if u else None
         i += 1
     return None
 
 
-def _flatten_links(t):
-    """Repair capture-corrupted nested links: an outer [text](url) whose text itself contains inner
-    [x](url) links (e.g. `[[DEFUSE](u)](u)`, `[*[Proximal Origin](u)* + [more](u)](u)`) collapses to
-    a single clean [text](url) — inner links flattened to their visible text. Leaves clean links as-is."""
-    if "[" not in t:
-        return t
-    out, i, n = [], 0, len(t)
+def _strip_inner_links(text):
+    """Reduce any links inside a link's TEXT to their visible label — repairs capture-corrupted
+    nested links like [[DEFUSE](u)](u) and [*[Proximal Origin](u)* + [more](u)](u)."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        if text[i] == "[":
+            link = _find_link(text, i)
+            if link:
+                out.append(_strip_inner_links(link[0]))
+                i = link[2]
+                continue
+        out.append(text[i]); i += 1
+    return "".join(out)
+
+
+def _emph(escaped):
+    """Bold/italic/code on already-escaped text."""
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"\*([^*\n]+?)\*", r"<em>\1</em>", s)
+    return s
+
+
+def _inline(t):
+    """Inline Markdown -> HTML via a scanner that handles links (balanced [] and (), nested-link
+    corruption, paren-containing URLs) and inline bold/italic/code. Injection-safe: text and URLs
+    are escaped."""
+    t = re.sub(r"cite(?:turn\w+)+", "", t)                    # strip stray deep-research cite tokens
+    out, buf, i, n = [], [], 0, len(t)
+
+    def flush():
+        if buf:
+            out.append(_emph(_esc("".join(buf)))); buf.clear()
+
     while i < n:
         if t[i] == "[":
             link = _find_link(t, i)
             if link:
                 text, url, end = link
-                prev = None
-                while prev != text:                           # strip inner [x](url) -> x, innermost first
-                    prev = text
-                    text = re.sub(r"\[([^\[\]]*)\]\(https?://[^)\s]+\)", r"\1", text)
-                out.append("[" + text + "](" + url + ")")
+                flush()
+                label = _emph(_esc(_strip_inner_links(text)))
+                out.append('<a href="{}" target="_blank" rel="noopener">{}</a>'.format(_esc(url), label))
                 i = end
                 continue
-        out.append(t[i])
-        i += 1
+        buf.append(t[i]); i += 1
+    flush()
     return "".join(out)
-
-
-def _inline(t):
-    """Inline Markdown -> HTML: code, bold, italic, links. Escapes first, so it is injection-safe."""
-    t = _flatten_links(t)                                     # de-corrupt nested links before rendering
-    t = re.sub(r"cite(?:turn\w+)+", "", t)                    # strip stray deep-research cite tokens
-    t = _esc(t)
-    t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
-    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)   # bold before italic
-    t = re.sub(r"\*([^*\n]+?)\*", r"<em>\1</em>", t)          # remaining single * = italic
-    t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
-               r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
-    return t
 
 
 def _table_cells(row):

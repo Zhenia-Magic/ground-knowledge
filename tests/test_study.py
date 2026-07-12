@@ -122,6 +122,13 @@ class WebRenderTests(unittest.TestCase):
         # a normal link is untouched
         self.assertEqual(_inline("[Worobey](%s)" % u).count("<a "), 1)
 
+    def test_url_with_balanced_parens_is_not_truncated(self):
+        from app.study_web import _inline
+        cell = "https://www.cell.com/cell/fulltext/S0092-8674(24)00901-2"       # DOI with (24) inside
+        h = _inline("[Crits-Christoph (Cell 2024)](%s)" % cell)
+        self.assertIn('href="%s"' % cell, h)                  # full url preserved, parens and all
+        self.assertNotIn("00901-2)", h)                       # nothing leaks after the url
+
 
 if __name__ == "__main__":
     unittest.main()
