@@ -695,3 +695,34 @@ class CruxTaxonomyTests(unittest.TestCase):
         self.assertFalse(c["isCrux"])
         self.assertFalse(c["loadBearing"])
         self.assertFalse(c["oneSidedLoadBearing"])
+
+
+class SemanticSuggestTests(unittest.TestCase):
+    """Embedding-assisted entity-resolution SUGGESTIONS (engine/curate.suggest_duplicates): surface
+    paraphrases lexical overlap misses, tagged 'embedding' — but NEVER auto-merge (item 10)."""
+
+    def _kb_ds(self, labels):
+        return {"positions": [], "datasets": [{"id": "d%d" % i, "label": l, "aliases": []}
+                                              for i, l in enumerate(labels)],
+                "factors": [], "sources": [], "vocab": {"population": [], "evidence": []}}
+
+    def test_embedding_surfaces_a_paraphrase_lexical_overlap_misses(self):
+        from engine.curate import suggest_duplicates
+        kb = self._kb_ds(["Huanan market environmental swabs", "Wuhan seafood-market samples"])
+        self.assertEqual(suggest_duplicates(kb), {})                 # lexical: no overlap, no suggestion
+        vecs = {"Huanan market environmental swabs": [1.0, 0.02],
+                "Wuhan seafood-market samples": [0.98, 0.05]}        # near-identical embeddings
+        sug = suggest_duplicates(kb, embed=lambda l: vecs.get(l, [0.0, 1.0]))
+        self.assertEqual(sug["dataset"][0]["reason"], "embedding")
+
+    def test_suggestion_never_mutates_the_kb(self):
+        from engine.curate import suggest_duplicates
+        kb = self._kb_ds(["Foo", "Bar"])
+        sug = suggest_duplicates(kb, embed=lambda l: [1.0, 0.0])     # identical vectors -> cosine 1.0
+        self.assertTrue(sug)                                          # surfaced as a candidate
+        self.assertEqual(len(kb["datasets"]), 2)                      # but nothing merged
+
+    def test_embed_none_is_identical_to_lexical_only(self):
+        from engine.curate import suggest_duplicates
+        kb = self._kb_ds(["Nurses Health Study", "Nurses Health Study cohort women"])
+        self.assertEqual(suggest_duplicates(kb), suggest_duplicates(kb, embed=None))

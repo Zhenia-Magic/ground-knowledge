@@ -91,6 +91,12 @@ never self-declare a fabricated edge as verified. Fabricated roots stay visible 
   `engine/merge.py` *disposes* by normalized-string + alias matching. Never make resolution depend on
   LLM output. A cohort must not be smuggled in under five names — fold variants with an explicit
   `curate.merge` / learned alias, and dedupe sources by URL/DOI.
+- **Finding paraphrase duplicates.** `python cli.py dups <kb>` suggests likely-same entities via
+  acronym + token-overlap (deterministic, no key). Add `--embed` to *also* surface **semantic**
+  paraphrases that lexical overlap misses (needs an OpenAI-compatible API key; backend in
+  `ingest/embed.py`). These are **suggestions only** — every merge is an explicit `curate.merge`; the
+  engine never auto-merges a semantic candidate, and the deterministic pipeline never depends on
+  embeddings.
 - **Evidence tier is load-bearing.** `primary` designs earn a distinct root by *naming* their data;
   ungrounded "primaries" that name nothing pool into one voice per position, as do reviews. A
   meta-analysis is `secondary` unless it tags the trials it pools. Add a genuinely new *primary

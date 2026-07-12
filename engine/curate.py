@@ -305,9 +305,27 @@ def _acronym_match(a, b):
     return (len(aa) >= 2 and aa in tb) or (len(ab) >= 2 and ab in ta)
 
 
-def suggest_duplicates(kb, threshold=0.4):
-    """Flag entity pairs whose labels look like paraphrases (token-overlap ≥ threshold), so a
-    curator doesn't have to hunt. Suggestions only — the merge is always explicit."""
+def _cosine(u, v):
+    import math
+    dot = sum(a * b for a, b in zip(u, v))
+    nu = math.sqrt(sum(a * a for a in u))
+    nv = math.sqrt(sum(b * b for b in v))
+    return (dot / (nu * nv)) if nu and nv else 0.0
+
+
+def suggest_duplicates(kb, threshold=0.4, embed=None, embed_threshold=0.83):
+    """Flag entity pairs whose labels look like the SAME entity, so a curator doesn't have to hunt.
+    **Suggestions only — the merge is always explicit; nothing here is ever auto-merged.**
+
+    Two candidate generators:
+      * lexical (always on, deterministic, no deps) — acronym match (NHS ↔ Nurses' Health Study) and
+        token-overlap Jaccard ≥ `threshold`.
+      * semantic (optional) — if `embed` (a label->vector function, from ingest/embed.py) is supplied,
+        pairs whose label embeddings have cosine ≥ `embed_threshold` are ALSO surfaced, catching novel
+        paraphrases lexical overlap misses ("Huanan market swabs" ↔ "Wuhan seafood-market samples").
+        Embeddings live in the ingestion layer and are ADVISORY: the deterministic merge never depends
+        on them, and every candidate still needs a human `curate.merge` to act.
+    Each suggestion carries its `reason` (acronym | token-overlap | embedding) and score."""
     groups = {
         "position": [(p["id"], p["label"]) for p in kb["positions"]],
         "dataset": [(d["id"], d["label"]) for d in kb["datasets"]],
@@ -317,7 +335,7 @@ def suggest_duplicates(kb, threshold=0.4):
     }
     out = {}
     for kind, items in groups.items():
-        pairs = []
+        pairs, flagged = [], set()
         for i in range(len(items)):
             for j in range(i + 1, len(items)):
                 acronym = _acronym_match(items[i][1], items[j][1])
@@ -327,6 +345,21 @@ def suggest_duplicates(kb, threshold=0.4):
                                   "b": {"ref": items[j][0], "label": items[j][1]},
                                   "sim": round(sim, 2),
                                   "reason": "acronym" if acronym else "token-overlap"})
+                    flagged.add((i, j))
+        # semantic candidates the lexical pass missed — advisory, never auto-merged
+        if embed is not None and len(items) >= 2:
+            vecs = [embed(lbl) for _, lbl in items]
+            for i in range(len(items)):
+                if not vecs[i]:
+                    continue
+                for j in range(i + 1, len(items)):
+                    if (i, j) in flagged or not vecs[j]:
+                        continue
+                    cs = _cosine(vecs[i], vecs[j])
+                    if cs >= embed_threshold:
+                        pairs.append({"a": {"ref": items[i][0], "label": items[i][1]},
+                                      "b": {"ref": items[j][0], "label": items[j][1]},
+                                      "sim": round(cs, 2), "reason": "embedding"})
         if pairs:
             out[kind] = sorted(pairs, key=lambda x: -x["sim"])
     return out

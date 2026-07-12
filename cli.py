@@ -358,15 +358,23 @@ def cmd_tidy(args):
 
 def cmd_dups(args):
     from engine import curate
-    sug = curate.suggest_duplicates(read_json(args.kb), threshold=args.threshold)
+    embed = None
+    if getattr(args, "embed", False):
+        from ingest.embed import embedder
+        embed = embedder()
+        if embed is None:
+            print("(--embed: no OpenAI-compatible API key set; using lexical suggestions only)")
+    sug = curate.suggest_duplicates(read_json(args.kb), threshold=args.threshold, embed=embed)
     if not sug:
         print("No likely duplicates above threshold {}.".format(args.threshold))
         return
     for kind, pairs in sug.items():
         print("\n{}:".format(kind.upper()))
         for p in pairs:
-            print('  {:.2f}  "{}"  ⇄  "{}"'.format(p["sim"], p["a"]["label"], p["b"]["label"]))
-    print('\nMerge with:  python cli.py merge <kb> <type> "<source label>" "<target label>"')
+            print('  {:.2f} [{}]  "{}"  ⇄  "{}"'.format(
+                p["sim"], p["reason"], p["a"]["label"], p["b"]["label"]))
+    print('\nThese are SUGGESTIONS only — nothing is merged. Confirm one with:')
+    print('  python cli.py merge <kb> <type> "<source label>" "<target label>"')
 
 
 def cmd_add(args):
@@ -913,8 +921,11 @@ def main():
     s.set_defaults(fn=cmd_rename)
     s = sub.add_parser("dedupe", help="remove duplicate SOURCES (same paper ingested twice)")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_dedupe)
-    s = sub.add_parser("dups", help="list likely-duplicate entities to merge")
+    s = sub.add_parser("dups", help="list likely-duplicate entities to merge (suggestions only)")
     s.add_argument("kb"); s.add_argument("--threshold", type=float, default=0.4)
+    s.add_argument("--embed", action="store_true",
+                   help="also surface SEMANTIC paraphrase candidates via embeddings (needs an "
+                        "OpenAI-compatible API key; advisory, never auto-merged)")
     s.set_defaults(fn=cmd_dups)
     s = sub.add_parser("tidy", help="prettify id-style / slug labels for display")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_tidy)
