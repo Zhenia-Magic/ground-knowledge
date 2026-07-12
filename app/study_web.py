@@ -11,23 +11,84 @@ from eval.reader_study import study
 _REPORTS_DIR = os.path.join(ROOT, "eval", "baselines", "claude-code")
 
 
+def _strip_preamble(md):
+    """Drop any pre-report narration (research-session commentary) by starting at the first heading."""
+    lines = (md or "").split("\n")
+    for idx, ln in enumerate(lines):
+        if re.match(r"^#{1,6}\s+", ln):
+            return "\n".join(lines[idx:])
+    return md or ""
+
+
+def _inline(t):
+    """Inline Markdown -> HTML: code, bold, italic, links. Escapes first, so it is injection-safe."""
+    t = re.sub(r"cite(?:turn\w+)+", "", t)                    # strip stray deep-research cite tokens
+    t = _esc(t)
+    t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)   # bold before italic
+    t = re.sub(r"\*([^*\n]+?)\*", r"<em>\1</em>", t)          # remaining single * = italic
+    t = re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)",
+               r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
+    return t
+
+
+def _table_cells(row):
+    return [c.strip() for c in row.strip().strip("|").split("|")]
+
+
+def _render_table(rows):
+    header = _table_cells(rows[0])
+    body = rows[2:] if len(rows) > 1 and re.match(r"^\|?[\s:|-]+\|?$", rows[1]) else rows[1:]
+    th = "".join("<th>" + _inline(c) + "</th>" for c in header)
+    trs = "".join("<tr>" + "".join("<td>" + _inline(c) + "</td>" for c in _table_cells(r)) + "</tr>"
+                  for r in body)
+    return "<table><thead><tr>" + th + "</tr></thead><tbody>" + trs + "</tbody></table>"
+
+
 def _render_md(md):
-    """Minimal, safe Markdown -> HTML for the report view (headings, bold, links, paragraphs)."""
-    out = []
-    for line in (md or "").split("\n"):
-        s = line.rstrip()
-        if not s:
-            continue
-        h = re.match(r"^(#{1,4})\s+(.*)", s)
+    """A compact but real Markdown -> HTML renderer: headings, horizontal rules, ordered/unordered
+    lists, blockquotes, tables, and inline bold/italic/code/links. Enough for the deep-research
+    reports shown to study participants."""
+    lines = (md or "").split("\n")
+    out, para, i, n = [], [], 0, len(lines)
+
+    def flush():
+        if para:
+            out.append("<p>" + _inline(" ".join(para)) + "</p>")
+            para.clear()
+
+    while i < n:
+        line = lines[i].rstrip()
+        h = re.match(r"^(#{1,6})\s+(.*)", line)
         if h:
-            lvl = len(h.group(1))
-            out.append("<h{0}>{1}</h{0}>".format(lvl, _esc(h.group(2))))
-            continue
-        t = _esc(re.sub(r"cite[a-z0-9]+", "", s))                 # strip stray citation tokens
-        t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
-        t = re.sub(r"\[(.+?)\]\((https?://[^)\s]+)\)",
-                   r'<a href="\2" target="_blank" rel="noopener">\1</a>', t)
-        out.append("<p>" + t + "</p>")
+            flush(); lvl = min(len(h.group(1)), 4)
+            out.append("<h{0}>{1}</h{0}>".format(lvl, _inline(h.group(2)))); i += 1; continue
+        if re.match(r"^(-{3,}|\*{3,}|_{3,})$", line):
+            flush(); out.append("<hr>"); i += 1; continue
+        if line.startswith("|") and "|" in line[1:]:                 # table block
+            flush(); tbl = []
+            while i < n and lines[i].strip().startswith("|"):
+                tbl.append(lines[i].strip()); i += 1
+            out.append(_render_table(tbl)); continue
+        if re.match(r"^\s*[-*]\s+", line):                            # unordered list
+            flush(); items = []
+            while i < n and re.match(r"^\s*[-*]\s+", lines[i]):
+                items.append("<li>" + _inline(re.sub(r"^\s*[-*]\s+", "", lines[i].rstrip())) + "</li>"); i += 1
+            out.append("<ul>" + "".join(items) + "</ul>"); continue
+        if re.match(r"^\s*\d+\.\s+", line):                           # ordered list
+            flush(); items = []
+            while i < n and re.match(r"^\s*\d+\.\s+", lines[i]):
+                items.append("<li>" + _inline(re.sub(r"^\s*\d+\.\s+", "", lines[i].rstrip())) + "</li>"); i += 1
+            out.append("<ol>" + "".join(items) + "</ol>"); continue
+        if line.startswith(">"):                                     # blockquote
+            flush(); quote = []
+            while i < n and lines[i].lstrip().startswith(">"):
+                quote.append(re.sub(r"^\s*>\s?", "", lines[i].rstrip())); i += 1
+            out.append("<blockquote>" + _inline(" ".join(quote)) + "</blockquote>"); continue
+        if not line.strip():
+            flush(); i += 1; continue
+        para.append(line); i += 1
+    flush()
     return "\n".join(out)
 
 
@@ -42,13 +103,23 @@ def study_report_html(case):
         md = f.read()
     body = ("<div class='kicker'>Research report</div>"
             "<h1>{}</h1><div class='report'>{}</div>").format(
-                _esc(gold["cases"][case]["title"]), _render_md(md))
+                _esc(gold["cases"][case]["title"]), _render_md(_strip_preamble(md)))
     return _page("Report · " + gold["cases"][case]["title"], body + _REPORT_CSS)
 
 
 _REPORT_CSS = """<style>
-  .report{max-width:760px;line-height:1.6;} .report h1,.report h2,.report h3{margin:1.2em 0 .4em;}
-  .report h2{font-size:19px;} .report h3{font-size:16px;} .report p{margin:.6em 0;color:#23262c;}
+  .report{max-width:760px;line-height:1.65;color:#23262c;}
+  .report h1,.report h2,.report h3,.report h4{margin:1.3em 0 .4em;line-height:1.3;}
+  .report h1{font-size:24px;} .report h2{font-size:19px;} .report h3{font-size:16px;} .report h4{font-size:14px;}
+  .report p{margin:.7em 0;} .report a{color:#2f6296;}
+  .report ul,.report ol{margin:.5em 0 .8em 1.4em;} .report li{margin:.3em 0;}
+  .report hr{border:0;border-top:1px solid #E4E7EA;margin:1.5em 0;}
+  .report blockquote{border-left:3px solid #CDD2D7;margin:.9em 0;padding:.2em 0 .2em 14px;color:#4a4f57;}
+  .report code{background:#eef0f2;padding:1px 5px;border-radius:4px;font-size:.9em;
+    font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .report table{border-collapse:collapse;margin:1em 0;font-size:14px;display:block;overflow-x:auto;}
+  .report th,.report td{border:1px solid #E4E7EA;padding:6px 11px;text-align:left;vertical-align:top;}
+  .report th{background:#F5F6F7;}
 </style>"""
 
 

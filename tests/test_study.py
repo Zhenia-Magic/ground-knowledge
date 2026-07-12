@@ -90,10 +90,19 @@ class WebRenderTests(unittest.TestCase):
         for title in ("SARS-CoV-2", "black hole", "eggs"):
             self.assertIn(title, html)
 
-    def test_report_renders_and_unknown_case_is_none(self):
+    def test_report_renders_markdown_and_strips_preamble(self):
         from app.study_web import study_report_html
-        self.assertIn("<h1>", study_report_html("covid"))
         self.assertIsNone(study_report_html("nope"))
+        html = study_report_html("covid")
+        # research-session narration is stripped; report starts at its real title
+        self.assertNotIn("loading the web tools", html)
+        self.assertIn("The Origin of SARS-CoV-2", html)
+        # markdown is actually rendered, not shown raw
+        self.assertIn("<em>", html)                 # italics
+        self.assertIn("<hr>", html)                 # horizontal rules
+        self.assertIn("<li>", html)                 # lists
+        self.assertNotIn("<p>---</p>", html)        # no raw horizontal rule
+        self.assertNotIn("<p>- ", html)             # no raw bullet
 
     def test_results_page_renders_empty(self):
         from app.study_web import study_results_html
