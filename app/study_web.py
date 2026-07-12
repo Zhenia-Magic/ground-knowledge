@@ -250,12 +250,13 @@ def study_form_html(participant_index, token):
     <div class="kicker">Ground Knowledge — reader exercise</div>
     <h1>How well can you read the evidence?</h1>
     <div class="consent">This is an <b>anonymous</b> research exercise comparing two ways of presenting
-      evidence on contested questions. <b>Do not enter your name or anything identifying</b> — your token
-      below is just a random nickname. For each case, open the materials, then answer. There are no
-      trick questions; answer as you see it. By submitting you consent to anonymous use of your responses.</div>
+      evidence on a contested question — it takes about <b>10 minutes</b>. <b>Do not enter your name or
+      anything identifying</b> — your token below is just a random nickname. Open the materials, then
+      answer. There are no trick questions; answer as you see it. By submitting you consent to anonymous
+      use of your responses.</div>
     <div class="q"><label class="qlabel">Your token (random — not your name)</label>
       <input id="token" value="{token}" maxlength="64" style="max-width:240px"></div>
-    <div class="q"><label class="qlabel">How familiar are you with these topics? (1 = not at all, 5 = expert)</label>
+    <div class="q"><label class="qlabel">How familiar are you with this topic? (1 = not at all, 5 = expert)</label>
       <input type="range" min="1" max="5" value="3" id="familiarity"
         oninput="document.getElementById('famv').textContent=this.value">
       <span class="conf" id="famv">3</span></div>

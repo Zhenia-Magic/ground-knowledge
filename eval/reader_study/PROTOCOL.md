@@ -5,8 +5,11 @@
 A self-serve, auto-scored version runs in the portal so you can **just share one link**:
 
 - **Participants open** `https://groundknowledge.org/study` — anonymous (a random token, never a name).
-- **Assignment** is the balanced crossover below, applied automatically per participant
-  (`eval/reader_study/study.assign`, driven by the submission count).
+- **Assignment:** each participant is given **ONE ~10-minute case** and one condition (a
+  between-subjects design), assigned automatically (`eval/reader_study/study.assign`, driven by the
+  submission count). The 3 cases × 2 conditions form 6 cells that rotate evenly, so cases and
+  conditions stay balanced. This keeps the ask short and spreads recruitment; the rigorous
+  WITHIN-participant crossover (`randomize.assignments`) is the manual follow-up below.
 - **Blinded:** participants see only their materials (the deep-research report; and, in the `DR+GK`
   condition, the Ground Knowledge evidence map) — never the condition label.
 - **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): the flood trap,

@@ -6,19 +6,21 @@ from eval.reader_study import study
 
 
 class AssignmentTests(unittest.TestCase):
-    def test_each_participant_gets_all_three_cases_deterministically(self):
+    def test_each_participant_gets_one_case_deterministically(self):
         a = study.assign(0)
-        self.assertEqual(sorted(r["case"] for r in a), ["blackholes", "covid", "eggs"])
+        self.assertEqual(len(a), 1)                                # web fast-pilot: ONE case per person
+        self.assertIn(a[0]["case"], ("blackholes", "covid", "eggs"))
+        self.assertIn(a[0]["condition"], ("DR", "DR+GK"))
         self.assertEqual(study.assign(0), a)                       # deterministic
-        for r in a:
-            self.assertIn(r["condition"], ("DR", "DR+GK"))
 
-    def test_conditions_balance_across_participants(self):
-        counts = {"DR": 0, "DR+GK": 0}
-        for i in range(24):
-            for r in study.assign(i):
-                counts[r["condition"]] += 1
-        self.assertLessEqual(abs(counts["DR"] - counts["DR+GK"]), 4)  # roughly balanced
+    def test_cases_and_conditions_balance_across_participants(self):
+        cases, conds = {"covid": 0, "blackholes": 0, "eggs": 0}, {"DR": 0, "DR+GK": 0}
+        for i in range(60):                                        # a multiple of the 6 cells
+            r = study.assign(i)[0]
+            cases[r["case"]] += 1
+            conds[r["condition"]] += 1
+        self.assertEqual(conds["DR"], conds["DR+GK"])              # perfectly balanced over 6-cell cycles
+        self.assertEqual(set(cases.values()), {20})               # each case equally often
 
 
 class ScoringTests(unittest.TestCase):
@@ -82,13 +84,13 @@ class StoreRoundTripTests(unittest.TestCase):
 
 
 class WebRenderTests(unittest.TestCase):
-    def test_form_renders_with_consent_and_all_cases(self):
+    def test_form_renders_with_consent_and_one_case(self):
         from app.study_web import study_form_html
         html = study_form_html(0, "abc123")
         self.assertIn("anonymous", html)
         self.assertIn("Submit my answers", html)
-        for title in ("SARS-CoV-2", "black hole", "eggs"):
-            self.assertIn(title, html)
+        self.assertEqual(html.count('<section class="case"'), 1)   # ONE case per participant now
+        self.assertIn("SARS-CoV-2", html)                          # participant 0 -> covid
 
     def test_report_renders_markdown_and_strips_preamble(self):
         from app.study_web import study_report_html

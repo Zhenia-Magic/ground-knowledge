@@ -7,7 +7,7 @@ text is captured but never auto-scored — it stays for optional later human sco
 import json
 import os
 
-from eval.reader_study.randomize import CASES, ORDERS
+from eval.reader_study.randomize import CASES
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _GOLD_PATH = os.path.join(_HERE, "gold_questions.json")
@@ -19,14 +19,16 @@ def load_gold():
 
 
 def assign(i):
-    """Participant #i (0-based) -> their ordered [{sequence, case, condition}] rows, matching the
-    balanced crossover in randomize.assignments (condition depends on the replication block, so
-    order/fatigue cannot masquerade as a treatment effect)."""
-    order = ORDERS[i % len(ORDERS)]
-    block = i // len(ORDERS)
-    return [{"sequence": s, "case": CASES[c],
-             "condition": "DR+GK" if (block + c) % 2 else "DR"}
-            for s, c in enumerate(order, 1)]
+    """Participant #i (0-based) -> a SINGLE assigned case + condition, as a one-row plan.
+
+    The web fast-pilot gives each person ONE ~10-minute case (a between-subjects read) rather than
+    all three, to keep the ask short and spread recruitment. The 3 cases x 2 conditions form 6 cells
+    that rotate evenly by participant index, so cases and conditions stay balanced and deterministic.
+    (The rigorous WITHIN-participant crossover is randomize.assignments, used by the manual protocol.)"""
+    cell = i % (len(CASES) * 2)               # 0..5 -> (case, condition)
+    case = CASES[cell // 2]
+    condition = "DR+GK" if cell % 2 else "DR"
+    return [{"sequence": 1, "case": case, "condition": condition}]
 
 
 def _correct(answer, gold):
