@@ -1,5 +1,9 @@
 # Ground Knowledge — a living, recomputing knowledge base for research disputes
 
+[![CI](https://github.com/Zhenia-Magic/ground-knowledge/actions/workflows/ci.yml/badge.svg)](https://github.com/Zhenia-Magic/ground-knowledge/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+· [Contributing](CONTRIBUTING.md)
+
 > *Ground News, but for research disputes — with the aggregator's neutrality inverted.*
 > Ground News counts and labels sources but stays neutral on who's right. In a research
 > dispute, naive source-counting rewards the loud, the numerous, and the industry-funded.

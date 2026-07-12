@@ -1,0 +1,59 @@
+name: CI
+
+# Ground Knowledge's engine, tests, and benchmark are pure stdlib Python — no pip install, no
+# network, no API key. CI mirrors exactly what a reviewer runs locally (see CONTRIBUTING.md).
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: tests · schema · benchmark
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Unit tests (stdlib only — no dependencies to install)
+        run: python -m unittest discover -s tests -t . -v
+
+      - name: Schema + cross-reference validation (every case KB)
+        run: |
+          for c in cases/*.kb.json; do
+            echo "::group::validate $c"
+            python cli.py validate "$c"
+            echo "::endgroup::"
+          done
+
+      - name: Strict benchmark (structure recall · collapse · adversarial · baseline hashes)
+        run: python eval/run_benchmark.py --require-live-baseline
+
+  smoke:
+    name: clean-clone smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # A fresh checkout must run end-to-end with zero setup. `cli.py demo` exercises the full
+      # assessment for every case plus the benchmark, and now propagates the benchmark's exit code.
+      - name: One-command demo from a clean checkout
+        run: python cli.py demo

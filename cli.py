@@ -952,7 +952,7 @@ def main():
     s.add_argument("--out"); s.set_defaults(fn=cmd_export)
 
     args = ap.parse_args()
-    args.fn(args)
+    return args.fn(args)          # propagate a command's exit code (e.g. `demo` returns benchmark PASS/FAIL)
 
 
 if __name__ == "__main__":
