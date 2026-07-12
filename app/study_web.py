@@ -20,8 +20,51 @@ def _strip_preamble(md):
     return md or ""
 
 
+def _find_link(s, start):
+    """If a Markdown link starts at s[start]=='[', return (text, url, end) with the link TEXT matched
+    by balanced brackets (so a nested [x](u) inside the text doesn't end it early); else None."""
+    if start >= len(s) or s[start] != "[":
+        return None
+    depth, i = 0, start
+    while i < len(s):
+        if s[i] == "[":
+            depth += 1
+        elif s[i] == "]":
+            depth -= 1
+            if depth == 0:
+                m = re.match(r"\((https?://[^)\s]+)\)", s[i + 1:])
+                return (s[start + 1:i], m.group(1), i + 1 + m.end()) if m else None
+        i += 1
+    return None
+
+
+def _flatten_links(t):
+    """Repair capture-corrupted nested links: an outer [text](url) whose text itself contains inner
+    [x](url) links (e.g. `[[DEFUSE](u)](u)`, `[*[Proximal Origin](u)* + [more](u)](u)`) collapses to
+    a single clean [text](url) — inner links flattened to their visible text. Leaves clean links as-is."""
+    if "[" not in t:
+        return t
+    out, i, n = [], 0, len(t)
+    while i < n:
+        if t[i] == "[":
+            link = _find_link(t, i)
+            if link:
+                text, url, end = link
+                prev = None
+                while prev != text:                           # strip inner [x](url) -> x, innermost first
+                    prev = text
+                    text = re.sub(r"\[([^\[\]]*)\]\(https?://[^)\s]+\)", r"\1", text)
+                out.append("[" + text + "](" + url + ")")
+                i = end
+                continue
+        out.append(t[i])
+        i += 1
+    return "".join(out)
+
+
 def _inline(t):
     """Inline Markdown -> HTML: code, bold, italic, links. Escapes first, so it is injection-safe."""
+    t = _flatten_links(t)                                     # de-corrupt nested links before rendering
     t = re.sub(r"cite(?:turn\w+)+", "", t)                    # strip stray deep-research cite tokens
     t = _esc(t)
     t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)

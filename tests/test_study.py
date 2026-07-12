@@ -108,6 +108,20 @@ class WebRenderTests(unittest.TestCase):
         from app.study_web import study_results_html
         self.assertIn("DR vs DR+GK", study_results_html([]))
 
+    def test_capture_corrupted_nested_links_render_clean(self):
+        from app.study_web import _inline
+        u = "https://theintercept.com/x"
+        # [[text](u)](u) and [*[a](u)*[ b](u)](u) are real capture artifacts in the baselines
+        h1 = _inline("[[DEFUSE proposal](%s)](%s)" % (u, u))
+        self.assertEqual(h1.count("<a "), 1)
+        self.assertIn(">DEFUSE proposal</a>", h1)
+        self.assertNotIn("](http", h1)                        # no raw url/markdown leaked
+        h2 = _inline("[*[Proximal Origin](%s)*[ + FOIA emails](%s)](%s)" % (u, u, u))
+        self.assertEqual(h2.count("<a "), 1)
+        self.assertIn("<em>Proximal Origin</em> + FOIA emails</a>", h2)
+        # a normal link is untouched
+        self.assertEqual(_inline("[Worobey](%s)" % u).count("<a "), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
