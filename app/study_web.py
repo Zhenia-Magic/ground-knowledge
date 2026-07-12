@@ -85,14 +85,15 @@ def _emph(escaped):
 
 def _inline(t):
     """Inline Markdown -> HTML via a scanner that handles links (balanced [] and (), nested-link
-    corruption, paren-containing URLs) and inline bold/italic/code. Injection-safe: text and URLs
-    are escaped."""
+    corruption, paren-containing URLs). Emphasis (bold/italic/code) is applied as a FINAL pass over
+    the assembled HTML, so it renders whether it sits inside a link or spans one. Injection-safe:
+    text and URLs are escaped before any tags are added."""
     t = re.sub(r"cite(?:turn\w+)+", "", t)                    # strip stray deep-research cite tokens
     out, buf, i, n = [], [], 0, len(t)
 
     def flush():
         if buf:
-            out.append(_emph(_esc("".join(buf)))); buf.clear()
+            out.append(_esc("".join(buf))); buf.clear()
 
     while i < n:
         if t[i] == "[":
@@ -100,13 +101,13 @@ def _inline(t):
             if link:
                 text, url, end = link
                 flush()
-                label = _emph(_esc(_strip_inner_links(text)))
-                out.append('<a href="{}" target="_blank" rel="noopener">{}</a>'.format(_esc(url), label))
+                out.append('<a href="{}" target="_blank" rel="noopener">{}</a>'.format(
+                    _esc(url), _esc(_strip_inner_links(text))))
                 i = end
                 continue
         buf.append(t[i]); i += 1
     flush()
-    return "".join(out)
+    return _emph("".join(out))                                # emphasis last: spans/enters links cleanly
 
 
 def _table_cells(row):

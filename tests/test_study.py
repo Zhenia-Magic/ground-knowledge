@@ -129,6 +129,13 @@ class WebRenderTests(unittest.TestCase):
         self.assertIn('href="%s"' % cell, h)                  # full url preserved, parens and all
         self.assertNotIn("00901-2)", h)                       # nothing leaks after the url
 
+    def test_bold_spanning_a_link_renders(self):
+        from app.study_web import _inline
+        h = _inline("and **organized the [Lancet statement](https://x.org) branding it** without")
+        self.assertIn("<strong>", h)
+        self.assertNotIn("**", h)                             # no literal bold markers left
+        self.assertEqual(h.count("<a "), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
