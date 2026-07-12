@@ -230,6 +230,9 @@
   .factor.crux .flabel{font-size:13.5px;font-weight:600;color:var(--ink);}
   .cruxbadge{font-family:var(--mono);font-size:9.5px;background:var(--chrome);color:#fff;
     border-radius:5px;padding:2px 7px;}
+  .pivotbadge{font-family:var(--mono);font-size:9.5px;background:#2f6296;color:#fff;
+    border-radius:5px;padding:2px 7px;}
+  .contestedtag{font-family:var(--mono);font-size:9.5px;color:#7fa8ce;}
   .onetag{font-family:var(--mono);font-size:9.5px;color:var(--faint);}
   .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);
     margin:12px 0 16px;}
@@ -805,7 +808,7 @@ function renderCoverageView(){
 function renderDivergenceView(){
   const c=cur(), {kb,assessment:a}=c;
   const cruxBy={}; (a.cruxes||[]).forEach(x=>cruxBy[x.id]=x);
-  const info=f=>cruxBy[f.id]||{spread:0,isCrux:false,engaged:0};
+  const info=f=>cruxBy[f.id]||{spread:0,isCrux:false,engaged:0,crossCampCrux:false,sharedPivot:false,contestedWeight:false};
   const activePos=kb.positions.filter(p=>state.posOn.has(p.id));
   const rank=z=>z.isCrux?0:(z.engaged>=2?1:2);
   const ordered=kb.factors.slice().sort((x,y)=>{const ix=info(x),iy=info(y);
@@ -822,21 +825,31 @@ function renderDivergenceView(){
     }).join("");
     const open=state.expanded.has("f"+f.id);
     const detail=open?`<tr class="detailrow"><td colspan="${activePos.length+1}">${factorDetailHtml(kb,f,activePos)}</td></tr>`:"";
-    const tag=cx.isCrux?' <span class="cruxbadge">CRUX</span>':(one?' <span class="onetag">one side only</span>':"");
+    const tag=cx.crossCampCrux?' <span class="cruxbadge">CRUX</span>'
+      :cx.sharedPivot?' <span class="pivotbadge">SHARED PIVOT</span>'
+      :one?' <span class="onetag">one side only</span>'
+      :cx.contestedWeight?' <span class="contestedtag">contested</span>':"";
+    const labelStyle=cx.isCrux?"font-weight:600;":one?"color:var(--muted);":"";
     return `<tr class="rowmain${one?" onesided":""}" data-fid="${esc(f.id)}">
-        <td class="wrap" style="${cx.isCrux?"font-weight:600;":"color:var(--muted);"}">${esc(f.label)}${tag}</td>
+        <td class="wrap" style="${labelStyle}">${esc(f.label)}${tag}</td>
         ${cells}
       </tr>${detail}`;
   }).join("");
-  const nCrux=(a.cruxes||[]).filter(x=>x.isCrux).length;
+  const nCross=(a.cruxes||[]).filter(x=>x.crossCampCrux).length;
+  const nPivot=(a.cruxes||[]).filter(x=>x.sharedPivot).length;
   const nOne=(a.cruxes||[]).filter(x=>x.engaged<2).length;
-  const nShared=(a.cruxes||[]).length-nCrux-nOne;
+  const nContested=(a.cruxes||[]).filter(x=>x.contestedWeight&&!x.crossCampCrux&&!x.sharedPivot).length;
+  const cruxBits=[];
+  if(nCross) cruxBits.push(`<b>${nCross} disagreement crux${nCross===1?"":"es"}</b>`);
+  if(nPivot) cruxBits.push(`<b>${nPivot} shared pivot${nPivot===1?"":"s"}</b>`);
+  if(nContested) cruxBits.push(`${nContested} contested`);
+  if(nOne) cruxBits.push(`${nOne} raised by one side`);
   el("main").innerHTML=`<h1>Divergence matrix</h1><div class="mmeta">where the disagreement actually lives</div>
     <div class="panel">
-      <div class="subnote">Each cell is how heavily that camp weighs that factor. A <b>crux</b> (bold row) is a factor the camps weigh very differently — that is where the real disagreement is; dimmed rows are dimensions only one camp engages, not points of disagreement. <b>Click a row</b> for the rationale and the sources behind it — each camp's own words on this factor, quote by quote.</div>
+      <div class="subnote">Each cell is how heavily that camp weighs that factor. A <b>disagreement crux</b> (black tag) is a factor the camps weigh very differently — the classic point of dispute. A <b>shared pivot</b> (blue tag) is one both camps call decisive but that science hasn't settled — the outcome hinges on it even though nobody disputes its importance. <b>Contested</b> rows are milder disagreements; <b>one side only</b> rows are dimensions a single camp raises. <b>Click a row</b> for the rationale and the sources behind it — each camp's own words, quote by quote.</div>
       <div class="wkey">weight: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">med</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
       <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-      <p style="font-size:13px;color:var(--muted);margin:14px 0 0"><b>${nCrux} crux${nCrux===1?"":"es"}</b> of ${kb.factors.length} factors · ${nShared} shared · ${nOne} raised by one side.</p>
+      <p style="font-size:13px;color:var(--muted);margin:14px 0 0">${cruxBits.join(" · ")||"no divergence factors"} — of ${kb.factors.length} factors.</p>
     </div>`;
   el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
     const k="f"+tr.getAttribute("data-fid");
