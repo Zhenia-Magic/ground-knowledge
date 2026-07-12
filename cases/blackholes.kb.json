@@ -2,8 +2,8 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 22,
-    "updated": "2026-07-11T01:16:01.222658+00:00",
+    "version": 27,
+    "updated": "2026-07-12T13:54:20.702160+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
       "baseVersion": 22,
@@ -30,7 +30,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_giddings_mangano_astrophysical_implications__2008"
       },
       "kind": "observation",
       "proposition": "Cosmic rays above LHC energies have struck the Earth, Sun, white dwarfs and neutron stars for billions of years without destroying them; if LHC collisions could make a dangerous stable object, these dense stars would already be gone — an empirical upper bound on the risk."
@@ -41,7 +45,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008"
       },
       "kind": "argument",
       "proposition": "Any microscopic black hole produced would radiate away and evaporate essentially instantly via Hawking radiation, so it could never accrete."
@@ -52,7 +60,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000"
       },
       "kind": "experiment"
     },
@@ -62,7 +74,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_kent_a_critical_look_at_risk_assessments_for_2004"
       },
       "kind": "argument",
       "proposition": "The safety case is a chain of theoretical assumptions; the probability the argument as a whole is flawed is not negligible and is itself a residual risk."
@@ -73,7 +89,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008"
       },
       "kind": "argument",
       "proposition": "In some beyond-standard-model scenarios a metastable micro black hole might accrete rather than evaporate, so the no-evaporation branch is not fully excluded."
@@ -86,7 +106,11 @@
       "proposition": "LHC collision energies (~10 TeV) are ~15 orders of magnitude below the Planck scale, so black-hole production is impossible in standard 4D gravity — it requires speculative large extra dimensions.",
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_koch_bleicher_st_cker_exclusion_of_black_hol_2009"
       }
     },
     {
@@ -97,7 +121,11 @@
       "proposition": "Even a stable, neutral micro black hole would accrete matter far too slowly to grow dangerous within the lifetime of the Earth or the Sun.",
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_giddings_mangano_astrophysical_implications__2008"
       }
     }
   ],
@@ -106,8 +134,8 @@
       "id": "f_reliability_of_the_cosmic_ray_safety_analogy",
       "label": "Reliability of the cosmic-ray safety analogy",
       "weights": {
-        "pos_residual_concern_the_safety_argument_has_wea": "med",
-        "pos_no_risk_lhc_collisions_are_safe": "high"
+        "pos_no_risk_lhc_collisions_are_safe": "high",
+        "pos_residual_concern_the_safety_argument_has_wea": "med"
       },
       "rationale": "The entire empirical safety case rests on cosmic-ray-produced black holes not having already destroyed dense stars.",
       "provenance": [
@@ -145,8 +173,8 @@
       "id": "f_whether_hawking_radiation_is_guaranteed_blac",
       "label": "Whether Hawking radiation is guaranteed (black-hole evaporation)",
       "weights": {
-        "pos_residual_concern_the_safety_argument_has_wea": "high",
-        "pos_no_risk_lhc_collisions_are_safe": "high"
+        "pos_no_risk_lhc_collisions_are_safe": "high",
+        "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
       "rationale": "Deliberately builds a safety argument that does not depend on Hawking evaporation.",
       "provenance": [
@@ -170,6 +198,13 @@
           "quote": "a metastable black hole could grow rather than evaporate",
           "verifiedQuote": null,
           "weight": "high"
+        },
+        {
+          "source": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001",
+          "pos": "pos_no_risk_lhc_collisions_are_safe",
+          "weight": "high",
+          "quote": "The analysis assumes prompt Hawking evaporation into Standard Model particles.",
+          "verifiedQuote": "fuzzy"
         }
       ]
     },
@@ -228,8 +263,11 @@
       "title": "Giddings & Mangano — Astrophysical implications of hypothetical stable TeV-scale black holes",
       "year": 2008,
       "url": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Steven B. Giddings",
+        "Michelangelo L. Mangano"
+      ],
+      "venue": "Physical Review D",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -249,15 +287,26 @@
         }
       },
       "addedIn": 1,
-      "textDepth": "full"
+      "textDepth": "full",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077500+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
       "title": "LHC Safety Assessment Group (LSAG) — Review of the Safety of LHC Collisions",
       "year": 2008,
       "url": "https://cern.ch/lsag/LSAG-Report.pdf",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "John Ellis",
+        "Gian Giudice",
+        "Michelangelo Mangano",
+        "Igor Tkachev",
+        "Urs Wiedemann"
+      ],
+      "venue": "Journal of Physics G: Nuclear and Particle Physics",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -276,15 +325,26 @@
         }
       },
       "addedIn": 2,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077520+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
       "title": "Ellis, Giudice, Mangano, Tkachev, Wiedemann — Review of the Safety of LHC Collisions (J. Phys. G)",
       "year": 2008,
       "url": "https://arxiv.org/abs/0806.3414",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "John Ellis",
+        "Gian Giudice",
+        "Michelangelo Mangano",
+        "Igor Tkachev",
+        "Urs Wiedemann"
+      ],
+      "venue": "Journal of Physics G",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -303,15 +363,22 @@
         }
       },
       "addedIn": 3,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.701851+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_hawking_particle_creation_by_black_holes_1975",
       "title": "Hawking — Particle creation by black holes",
       "year": 1975,
       "url": "https://link.springer.com/article/10.1007/BF02345020",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "S. W. Hawking"
+      ],
+      "venue": "Communications In Mathematical Physics",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -329,15 +396,24 @@
         }
       },
       "addedIn": 4,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077552+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_koch_bleicher_st_cker_exclusion_of_black_hol_2009",
       "title": "Koch, Bleicher, Stöcker — Exclusion of black hole disaster scenarios at the LHC",
       "year": 2009,
       "url": "https://arxiv.org/abs/0807.3349",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Benjamin Koch",
+        "Marcus Bleicher",
+        "Horst Stöcker"
+      ],
+      "venue": "Physics Letters B",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -355,15 +431,25 @@
         }
       },
       "addedIn": 5,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077568+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000",
       "title": "Jaffe, Busza, Sandweiss, Wilczek — Review of speculative disaster scenarios at RHIC",
       "year": 2000,
       "url": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.72.1125",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "R. L. Jaffe",
+        "W. Busza",
+        "F. Wilczek",
+        "J. Sandweiss"
+      ],
+      "venue": "Reviews of Modern Physics",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -382,15 +468,24 @@
         }
       },
       "addedIn": 6,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077585+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_dar_de_r_jula_heinz_will_relativistic_heavy__1999",
       "title": "Dar, De Rújula, Heinz — Will relativistic heavy ion colliders destroy our planet?",
       "year": 1999,
       "url": "https://arxiv.org/abs/hep-ph/9910471",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Arnon Dar",
+        "A. De Rújula",
+        "Ulrich Heinz"
+      ],
+      "venue": "Physics Letters B",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -408,15 +503,24 @@
         }
       },
       "addedIn": 7,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077601+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
       "title": "Ord, Hillerbrand & Sandberg — Probing the Improbable: Methodological Challenges for Risks with Low Probabilities and High Stakes",
       "year": 2010,
       "url": "https://arxiv.org/abs/0810.5515",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Toby Ord",
+        "Rafaela Hillerbrand",
+        "Anders Sandberg"
+      ],
+      "venue": "Journal of Risk Research",
       "citations": null,
       "retracted": false,
       "position": "pos_residual_concern_the_safety_argument_has_wea",
@@ -435,15 +539,22 @@
         }
       },
       "addedIn": 8,
-      "textDepth": "abstract"
+      "textDepth": "abstract",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077618+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_calogero_might_a_laboratory_experiment_destr_2000",
       "title": "Calogero — Might a laboratory experiment destroy planet Earth?",
       "year": 2000,
       "url": "https://www.tandfonline.com/doi/abs/10.1080/030186600605041",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Francesco Calogero"
+      ],
+      "venue": "Interdisciplinary Science Reviews",
       "citations": null,
       "retracted": false,
       "position": "pos_residual_concern_the_safety_argument_has_wea",
@@ -461,39 +572,22 @@
         }
       },
       "addedIn": 9,
-      "textDepth": "unknown"
-    },
-    {
-      "id": "src_rees_our_final_hour_precautionary_argument_o_2003",
-      "title": "Rees — Our Final Hour (precautionary argument on novel experiments)",
-      "year": 2003,
-      "url": "https://en.wikipedia.org/wiki/Our_Final_Hour",
-      "authors": [],
-      "venue": "",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_residual_concern_the_safety_argument_has_wea",
-      "evidence": "Narrative/Commentary",
-      "funding": "Undisclosed",
-      "population": "—",
-      "confidence": "low",
-      "restsOn": [],
-      "provenance": {
-        "position": {
-          "quote": "innovative physics experiments could conceivably threaten the whole Earth; the stakes warrant extreme caution",
-          "extractionConfidence": 0.6
-        }
-      },
-      "addedIn": 10,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.701966+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_johnson_the_black_hole_case_the_injunction_a_2009",
       "title": "Johnson — The Black Hole Case: The Injunction Against the End of the World (Wagner & Sancho lawsuit)",
       "year": 2009,
       "url": "https://arxiv.org/abs/0912.5480",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Eric E. Johnson"
+      ],
+      "venue": "Legal analysis / arXiv",
       "citations": null,
       "retracted": false,
       "position": "pos_residual_concern_the_safety_argument_has_wea",
@@ -509,15 +603,22 @@
         }
       },
       "addedIn": 11,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.701983+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_cern_the_safety_of_the_lhc_public_statement_2008",
       "title": "CERN — The Safety of the LHC (public statement)",
       "year": 2008,
       "url": "https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "CERN"
+      ],
+      "venue": "CERN",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -535,15 +636,23 @@
         }
       },
       "addedIn": 12,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702000+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
       "title": "Hut & Rees — How stable is our vacuum? (cosmic rays as a natural experiment)",
       "year": 1983,
       "url": "https://www.nature.com/articles/302508a0",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Piet Hut",
+        "Martin Rees"
+      ],
+      "venue": "Nature",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -561,15 +670,23 @@
         }
       },
       "addedIn": 13,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702017+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_tegmark_bostrom_is_a_doomsday_catastrophe_li_2005",
       "title": "Tegmark & Bostrom — Is a doomsday catastrophe likely?",
       "year": 2005,
       "url": "https://www.nature.com/articles/438754a",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Max Tegmark",
+        "Nick Bostrom"
+      ],
+      "venue": "Nature",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -587,15 +704,27 @@
         }
       },
       "addedIn": 14,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077686+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
       "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
       "year": 2003,
       "url": "https://cds.cern.ch/record/613175",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "J.-P. Blaizot",
+        "J. Iliopoulos",
+        "J. Madsen",
+        "G. G. Ross",
+        "P. Sonderegger",
+        "H.-J. Specht"
+      ],
+      "venue": "CERN Yellow Reports",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -614,15 +743,24 @@
         }
       },
       "addedIn": 15,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702052+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
       "title": "Casadio, Fabi & Harms — On the catastrophic black hole growth scenario at the LHC",
       "year": 2010,
       "url": "https://arxiv.org/abs/0901.2948",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Roberto Casadio",
+        "Sergio Fabi",
+        "Benjamin Harms"
+      ],
+      "venue": "arXiv",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -640,15 +778,22 @@
         }
       },
       "addedIn": 16,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702068+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_cavagli_particle_accelerators_as_black_hole__2010",
       "title": "Cavaglià — Particle accelerators as black hole factories?",
       "year": 2010,
       "url": "https://arxiv.org/abs/1004.4058",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Marco Cavaglià"
+      ],
+      "venue": "arXiv",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -666,15 +811,22 @@
         }
       },
       "addedIn": 17,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702084+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
       "title": "Plaga — On the potential catastrophic risk from metastable quantum black holes produced at colliders",
       "year": 2008,
       "url": "https://arxiv.org/abs/0808.1415",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Rainer Plaga"
+      ],
+      "venue": "arXiv",
       "citations": null,
       "retracted": false,
       "position": "pos_residual_concern_the_safety_argument_has_wea",
@@ -693,15 +845,23 @@
         }
       },
       "addedIn": 18,
-      "textDepth": "abstract"
+      "textDepth": "abstract",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702102+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_giddings_mangano_comments_on_claimed_risk_fr_2008",
       "title": "Giddings & Mangano — Comments on claimed risk from metastable black holes (response to Plaga)",
       "year": 2008,
       "url": "https://arxiv.org/abs/0808.4087",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Steven B. Giddings",
+        "Michelangelo L. Mangano"
+      ],
+      "venue": "arXiv",
       "citations": null,
       "retracted": false,
       "position": "pos_no_risk_lhc_collisions_are_safe",
@@ -719,15 +879,22 @@
         }
       },
       "addedIn": 19,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.702118+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_kent_a_critical_look_at_risk_assessments_for_2004",
       "title": "Kent — A critical look at risk assessments for global catastrophes",
       "year": 2004,
-      "url": "https://arxiv.org/abs/hep-ph/0009204",
-      "authors": [],
-      "venue": "",
+      "url": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
+      "authors": [
+        "Adrian Kent"
+      ],
+      "venue": "Risk Analysis",
       "citations": null,
       "retracted": false,
       "position": "pos_residual_concern_the_safety_argument_has_wea",
@@ -740,13 +907,59 @@
       ],
       "provenance": {
         "position": {
-          "quote": "[hep-ph/0009204] A critical look at risk assessments for global catastrophes Skip to main content arXiv is now an independent nonprofit!",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
+          "quote": "The costs of small risks of catastrophe have been significantly underestimated; acceptable risk bounds should be agreed before hypothetically risky experiments.",
+          "extractionConfidence": 0.96,
+          "verifiedQuote": "fuzzy"
         }
       },
       "addedIn": 20,
-      "textDepth": "partial"
+      "textDepth": "abstract",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.077772+00:00",
+        "method": "catalogue+manual-full-text"
+      }
+    },
+    {
+      "id": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001",
+      "title": "Dimopoulos & Landsberg — Black Holes at the Large Hadron Collider",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.87.161602",
+      "authors": [
+        "Savas Dimopoulos",
+        "Greg Landsberg"
+      ],
+      "venue": "Physical Review Letters",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Mechanistic",
+      "funding": "Government/public",
+      "population": "Hypothetical TeV-scale microscopic black holes",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_hawking_radiation_black_hole_evaporation",
+          "provenance": {
+            "quote": "The correlation between the black-hole mass and its temperature, deduced from the energy spectrum of the decay products, can test Hawking's evaporation law.",
+            "verifiedQuote": "exact"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "The decays of the black holes into final states with prompt, hard photons, electrons, or muons provide a clean signature with low background.",
+          "extractionConfidence": 0.97,
+          "verifiedQuote": "exact"
+        }
+      },
+      "addedIn": 25,
+      "textDepth": "full",
+      "fundingDetails": [
+        "U.S. Department of Energy grant DE-FG02-91ER40688",
+        "U.S. National Science Foundation grant PHY-9870115",
+        "Alfred P. Sloan Foundation"
+      ]
     }
   ],
   "vocab": {
@@ -788,7 +1001,12 @@
         "aliases": []
       }
     ],
-    "population": [],
+    "population": [
+      {
+        "label": "Hypothetical TeV-scale microscopic black holes",
+        "aliases": []
+      }
+    ],
     "funding": [
       {
         "label": "Government/public",
@@ -1112,6 +1330,161 @@
       "action": "verify-quotes",
       "summary": "fetched 4 anchors, verified quotes from real text",
       "ts": "2026-07-11T01:16:01.222658+00:00"
+    },
+    {
+      "version": 23,
+      "action": "backfill-confirmation-audit-metadata",
+      "by": "Evgeniia",
+      "ts": "2026-07-11T23:28:50-03:00",
+      "datasets": [
+        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr",
+        "ds_hawking_radiation_black_hole_evaporation",
+        "ds_strangelet_stability_calculations_rhic",
+        "ds_argument_reliability_analysis_probability_th",
+        "ds_metastable_black_hole_accretion_scenario",
+        "arg_production_impossibility",
+        "arg_accretion_timescale"
+      ],
+      "summary": "added actor/time/direct-source metadata to 7 existing curator confirmations"
+    },
+    {
+      "version": 24,
+      "action": "remove-source",
+      "summary": "removed source “Rees — Our Final Hour (precautionary argument on novel experiments)”: Generic book-level precautionary argument, linked through Wikipedia, with no LHC microscopic-black-hole analysis or source-verifiable case finding.",
+      "ts": "2026-07-12T13:45:29.285562+00:00",
+      "source": "src_rees_our_final_hour_precautionary_argument_o_2003",
+      "title": "Rees — Our Final Hour (precautionary argument on novel experiments)",
+      "by": "source-audit-2026-07",
+      "reason": "Generic book-level precautionary argument, linked through Wikipedia, with no LHC microscopic-black-hole analysis or source-verifiable case finding.",
+      "replacement": null,
+      "rewiredEdges": 0,
+      "prunedDatasets": []
+    },
+    {
+      "version": 25,
+      "action": "add-source",
+      "source": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001",
+      "title": "Dimopoulos & Landsberg — Black Holes at the Large Hadron Collider",
+      "ts": "2026-07-12T13:47:29.910269+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 14 → 15",
+        "concentration: No risk — LHC collisions are safe 43% → 42% (top: Cosmic-ray empirical bound (white-dwarf & neutron-star survival))"
+      ]
+    },
+    {
+      "version": 26,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 9 source(s)",
+      "changes": [
+        {
+          "source": "src_giddings_mangano_astrophysical_implications__2008",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_hawking_particle_creation_by_black_holes_1975",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_koch_bleicher_st_cker_exclusion_of_black_hol_2009",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_dar_de_r_jula_heinz_will_relativistic_heavy__1999",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_tegmark_bostrom_is_a_doomsday_catastrophe_li_2005",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
+          "manual": "replaced an arXiv page-header excerpt with the published abstract finding",
+          "catalogueMatch": 1.0
+        }
+      ],
+      "ts": "2026-07-12T13:51:36.077796+00:00"
+    },
+    {
+      "version": 27,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 10 source(s)",
+      "changes": [
+        {
+          "source": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_calogero_might_a_laboratory_experiment_destr_2000",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_johnson_the_black_hole_case_the_injunction_a_2009",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_cern_the_safety_of_the_lhc_public_statement_2008",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_cavagli_particle_accelerators_as_black_hole__2010",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_giddings_mangano_comments_on_claimed_risk_fr_2008",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        }
+      ],
+      "ts": "2026-07-12T13:54:20.702160+00:00"
     }
   ]
 }

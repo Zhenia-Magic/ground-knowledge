@@ -60,12 +60,27 @@
         "confirmation": {
           "type": "object",
           "description": "auditable admission record for the dataset root",
+          "required": ["status"],
           "properties": {
             "status": {"enum": ["confirmed", "provisional", "disputed"]},
             "method": {"enum": ["curator", "verified-edge"]},
             "by": {"type": "string"}, "source": {"type": "string"},
             "ts": {"type": "string"}, "note": {"type": "string"}
           },
+          "allOf": [
+            {
+              "if": {"properties": {"status": {"const": "confirmed"}}, "required": ["status"]},
+              "then": {"required": ["method", "ts"]}
+            },
+            {
+              "if": {"properties": {"status": {"const": "confirmed"}, "method": {"const": "curator"}}, "required": ["status", "method"]},
+              "then": {"required": ["by"]}
+            },
+            {
+              "if": {"properties": {"status": {"const": "confirmed"}, "method": {"const": "verified-edge"}}, "required": ["status", "method"]},
+              "then": {"required": ["source"]}
+            }
+          ],
           "additionalProperties": true
         }
       },
@@ -85,7 +100,9 @@
       "required": ["id", "title", "position", "evidence", "funding", "population", "restsOn", "provenance", "textDepth"],
       "properties": {
         "id": {"type": "string"}, "title": {"type": "string"}, "position": {"type": "string"},
-        "evidence": {"type": "string"}, "funding": {"type": "string"}, "population": {"type": "string"},
+        "evidence": {"type": "string"}, "funding": {"type": "string"},
+        "fundingDetails": {"type": "array", "items": {"type": "string"}},
+        "population": {"type": "string"},
         "restsOn": {
           "type": "array",
           "description": "each entry is a bare ref string, OR an edge object carrying its own dependency quote",

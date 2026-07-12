@@ -68,8 +68,8 @@ def _root_presence(kb, res):
     """Per position, each resolved root's OWN strength, counted exactly once no matter how many
     sources rest on it: {posId: {rootKey: strength}}. Strength is 1.0 for a real root, halved for
     a dataset known only via a secondary source, halved again for a root backed only by animal /
-    in-vitro studies; the collapsed secondary voice, the pooled unnamed-primary voice, and a
-    circular loop each count once at 1.0.
+    in-vitro studies; the collapsed secondary voice and pooled unnamed-primary voice each count
+    once at 1.0. A pure circular loop remains in the map for inspection but has strength 0.
     This idempotent map is the basis for nEff — writing the same key again cannot change it, which
     is what makes the independence number immune to flooding by construction."""
     src_by_pos = _src_by_pos(kb)
@@ -81,7 +81,11 @@ def _root_presence(kb, res):
         pres = {}
         for s in src_by_pos.get(p["id"], []):
             for r in res["source_roots"].get(s["id"], ()):
-                pres[r] = 1 if r.startswith(("secpool:", "primpool:", "cycle:")) else \
+                # Pooled primary/secondary voices are one assertion. A PURE citation cycle is shown
+                # in the incidence/bases table but has zero independent grounding, so it contributes
+                # zero headline nEff rather than laundering circularity into one evidentiary base.
+                pres[r] = (0 if r.startswith("cycle:") else 1) \
+                    if r.startswith(("secpool:", "primpool:", "cycle:")) else \
                     _roots.root_strength(r, secondary_only, nonhuman_only, provisional)
         per_pos[p["id"]] = pres
     return per_pos
@@ -89,14 +93,14 @@ def _root_presence(kb, res):
 
 def _n_indep(presence):
     """Effective independent bases = the sum of distinct-root strengths (a full-strength-equivalent
-    root count). Monotonicity invariant, relied on by tests/test_independence.py: adding a source
-    can only add new keys to the presence map or raise an existing root's strength (secondary_only
-    / nonhuman_only sets only ever shrink as sources are added, and an added source never changes
-    existing sources' resolved roots — it has no incoming edges, so existing SCCs are untouched).
-    Therefore nEff never decreases when a source is added, and stays EXACTLY equal unless the
+    root count). Fixed-graph monotonicity invariant, relied on by tests/test_independence.py: adding
+    a source with only outgoing edges can only add new keys to the presence map or raise an existing
+    root's strength (secondary_only / nonhuman_only sets only ever shrink, and existing SCCs are
+    untouched). Therefore nEff never decreases for that operation, and stays EXACTLY equal unless the
     source introduces a new root or upgrades one (a primary source landing on a review-only
-    dataset, a human study landing on an animal-only root). Piling sources onto already-counted
-    roots — grounded echo, cohort re-use, junk 'support' aimed at a rival — moves nothing."""
+    dataset, a human study landing on an animal-only root). A graph correction can legitimately lower
+    nEff — e.g. resolving a pending edge that reveals a pure citation cycle, or merging aliases that
+    were mistakenly split. Piling sources onto already-counted roots with identity fixed moves nothing."""
     return sum(presence.values())
 
 
@@ -113,8 +117,9 @@ def weighted_distribution(kb, res=None):
     """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
     sized not by raw source count but by its effective number of independent evidence ROOTS: each
     distinct resolved root counted once at its strength (MECHANISM.md). Sources sharing a dataset,
-    echoing as secondary reviews, or citing each other in a loop all collapse toward one 'look'. A
-    position propped up by re-used, derivative, or circular evidence shrinks vs. its raw bar."""
+    echoing as secondary reviews, or citing each other in a loop are de-duplicated. A position
+    propped up by re-used or derivative evidence shrinks vs. its raw bar; a pure, ungrounded
+    circular loop contributes zero to the weighted bar."""
     res = _roots.resolve(kb) if res is None else res
     pres = _root_presence(kb, res)
     provisional = res.get("provisional", frozenset())
@@ -358,14 +363,19 @@ def funding_skew(kb):
     total = len(kb["sources"])
     if not interested and not undisclosed:
         return None
-    top = None
+    top, leaders, counts = None, [], []
     if interested:
         by = {p["id"]: 0 for p in kb["positions"]}
         for s in interested:
             by[s["position"]] = by.get(s["position"], 0) + 1
-        tp = max(kb["positions"], key=lambda p: by[p["id"]])
-        top = {"id": tp["id"], "label": tp["label"]}
-    return {"n": len(interested), "top": top, "undisclosed": undisclosed, "total": total}
+        high = max(by.values())
+        leaders = [{"id": p["id"], "label": p["label"], "count": by[p["id"]]}
+                   for p in kb["positions"] if by[p["id"]] == high and high > 0]
+        counts = [{"id": p["id"], "label": p["label"], "count": by[p["id"]]}
+                  for p in kb["positions"] if by[p["id"]] > 0]
+        top = leaders[0] if len(leaders) == 1 else None
+    return {"n": len(interested), "top": top, "leaders": leaders, "counts": counts,
+            "tied": len(leaders) > 1, "undisclosed": undisclosed, "total": total}
 
 
 def blindspots(kb, min_support=2):
@@ -461,7 +471,7 @@ def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset(), provisiona
     if rk in nonhuman:
         notes.append("animal / in-vitro")
     if rk in provisional:
-        notes.append("unconfirmed — no fetched source")
+        notes.append("proposed/unconfirmed")
     suffix = (" — " + ", ".join(notes)) if notes else ""
     if rk.startswith("ds:"):
         return _ds_label(kb, rk[3:]) + suffix
@@ -492,12 +502,13 @@ def independence(kb, res=None):
         collapsedSecondary = how many secondary sources folded into the one 'secondary voice'
         circular     = circular-corroboration loops touching this position
 
-    The invariant (enforced by tests/test_independence.py, incl. a randomized monotonicity test):
-    adding a source NEVER lowers any position's nEff, and raises it only by introducing a new
+    The fixed-graph invariant (enforced by tests/test_independence.py, incl. a randomized property
+    test): adding a source with only outgoing edges NEVER lowers any position's nEff, and raises it only by introducing a new
     root or upgrading an existing root's strength (primary grounding for a review-only dataset,
     human evidence for an animal-only root). Correlated, derivative, or circular evidence lands
     on roots already counted, so it moves nEff nowhere — it can only push CONCENTRATION up, and
-    the pile-up is surfaced there. What this cannot see is a source that fabricates a new root
+    the pile-up is surfaced there. Correcting root identity or resolving a pending edge CAN lower
+    nEff (intentionally). What this cannot see is a source that fabricates a new root
     outright (claiming a dataset that doesn't back it) — that is an edge-fabrication attack,
     caught (partially) by quote verification, not by this arithmetic; see MECHANISM.md §8."""
     res = _roots.resolve(kb) if res is None else res
@@ -530,6 +541,7 @@ def independence(kb, res=None):
                 top_key, top_w = rk, w
         conc = (top_w / total_w) if total_w else 0
         confirmed_by = res.get("confirmed_by", {})
+        alias_suspects = res.get("alias_suspects", frozenset())
         base_kind = res.get("base_kind", {})
         bases = sorted(
             ({"key": rk, "label": _root_label(kb, rk, w, sec_only, nonhuman, prov), "kind": res["kind"][rk],
@@ -537,6 +549,7 @@ def independence(kb, res=None):
               "proposition": _ds_meta(kb, rk[3:])[1] if rk.startswith("ds:") else "",
               "weight": round(w, 2), "strength": round(strengths[rk], 2),
               "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov,
+              "aliasSuspect": rk in alias_suspects,
               "confirmedBy": confirmed_by.get(rk)}
              for rk, w in weights.items()), key=lambda b: -b["weight"])
         collapsed_secondary = sum(1 for s in mine

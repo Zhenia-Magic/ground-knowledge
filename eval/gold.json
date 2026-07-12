@@ -9,7 +9,7 @@
   "blackholes": {
     "subQuestion": "Could LHC collisions create a black hole that destroys Earth?",
     "positions": ["No risk", "Residual concern"],
-    "keyRoots": ["Cosmic-ray empirical bound", "Hawking radiation"],
+    "keyRoots": ["Cosmic-ray empirical bound", "Hawking radiation", "Production impossibility", "Accretion-timescale"],
     "cruxes": ["cosmic-ray safety analogy", "Hawking radiation", "safety argument itself"]
   },
   "eggs": {

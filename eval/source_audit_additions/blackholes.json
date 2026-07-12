@@ -1,0 +1,40 @@
+{
+  "source": {
+    "title": "Dimopoulos & Landsberg — Black Holes at the Large Hadron Collider",
+    "year": 2001,
+    "url": "https://doi.org/10.1103/PhysRevLett.87.161602",
+    "authors": ["Savas Dimopoulos", "Greg Landsberg"],
+    "venue": "Physical Review Letters",
+    "position": "pos_no_risk_lhc_collisions_are_safe",
+    "evidence": "Mechanistic",
+    "funding": "Government/public",
+    "fundingDetails": ["U.S. Department of Energy grant DE-FG02-91ER40688", "U.S. National Science Foundation grant PHY-9870115", "Alfred P. Sloan Foundation"],
+    "population": "Hypothetical TeV-scale microscopic black holes",
+    "confidence": "moderate",
+    "restsOn": [
+      {
+        "ref": "ds_hawking_radiation_black_hole_evaporation",
+        "provenance": {
+          "quote": "The correlation between the black-hole mass and its temperature, deduced from the energy spectrum of the decay products, can test Hawking's evaporation law.",
+          "verifiedQuote": "exact"
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "The decays of the black holes into final states with prompt, hard photons, electrons, or muons provide a clean signature with low background.",
+        "extractionConfidence": 0.97,
+        "verifiedQuote": "exact"
+      }
+    },
+    "textDepth": "full"
+  },
+  "factorWeights": [
+    {
+      "factor": "Whether Hawking radiation is guaranteed (black-hole evaporation)",
+      "weight": "high",
+      "quote": "The analysis assumes prompt Hawking evaporation into Standard Model particles.",
+      "verifiedQuote": "fuzzy"
+    }
+  ]
+}

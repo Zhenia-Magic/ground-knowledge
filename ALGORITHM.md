@@ -15,7 +15,8 @@ restsOn    : list of edges. Each is EITHER
                "src:<id>"                    a citation/derivation edge to another source
                {ref:"ds_x", provenance:{quote, verifiedQuote:"exact|fuzzy|missing"}}
                                              a dataset edge carrying its OWN dependency quote
-dataset.confirmation : {status:"confirmed", method:"curator"|"verified-edge", by, source, ts}
+dataset.confirmation : {status:"confirmed", method:"curator"|"verified-edge", by, ts,
+                        source?}    # source is optional for curator, required for verified-edge
 dataset.kind         : dataset | experiment | observation | argument | model | document
                        (absent = dataset). argument/model/document are THEORETICAL roots — first-
                        class independent bases, exempt from the empirical non-human discount. So a
@@ -27,7 +28,7 @@ dataset.kind         : dataset | experiment | observation | argument | model | d
 ```
 def resolve(kb):
     # collapse circular corroboration: SCCs of the source→source citation graph (Tarjan).
-    # a cycle with no primary grounding becomes ONE "cycle" root and is flagged.
+    # a cycle with no grounding becomes one VISIBLE "cycle" marker, flagged and worth zero.
     components = tarjan(citation_graph(kb))            # each SCC = one node in a DAG
 
     for component in reverse_topological(components):  # iterative post-order (no recursion limit)
@@ -37,7 +38,7 @@ def resolve(kb):
             if len(component) > 1:  roots = { "cycle:"+min(component) }      # circular, ungrounded
             else:
                 s = the one source
-                # NAMING a dataset earns a distinct root; merely CLAIMING the primary tier does not.
+                # NAMING proposes a distinct root; admission is Step 2. Claiming a tier does neither.
                 roots = { "primpool:"+s.position } if tier(s)=="primary"     # one pooled voice / camp
                         else { "secpool:"+s.position }                        # one review voice / camp
         memo[component] = roots
@@ -45,7 +46,8 @@ def resolve(kb):
 ```
 
 Consequences: ten reviews of the same study all resolve to that study's dataset root (echo → one
-look); eight papers off one cohort → one root; `A→B→A` with nothing primary → one flagged cycle.
+look); eight papers off one cohort → one root; `A→B→A` with nothing primary → one visible, flagged,
+**zero-strength** cycle marker.
 
 ## Step 2 — admit roots PER EDGE (confirmation)
 
@@ -61,9 +63,14 @@ for d in datasets:
 for s in sources where textDepth in {full, abstract, partial}:
     direct = { "ds:"+d for d in dataset_edges(s) }    # DIRECT dataset edges only
     for edge in s.restsOn:
-        if edge is a dataset edge AND edge.provenance.verifiedQuote in {exact, fuzzy}:
+        if edge is a dataset edge AND edge.provenance.verifiedQuote in {exact, fuzzy}
+           AND edge.quote names edge.ref's label/alias:
             confirmed_by.setdefault("ds:"+edge.ref, {method:"verified-edge", source:s.id})
-    # legacy: a source-level quote confirms only this source's DIRECT datasets (never inherited)
+    # legacy: source-level quote is accepted only when this source has EXACTLY ONE direct dataset
+
+# Literal quote presence does not settle root identity. Generic labels cannot auto-confirm;
+# within each lexical duplicate component, explicit curator records win, otherwise at most one
+# verified root is admitted and the other labels remain visible for review.
 
 provisional = { every dataset root } − keys(confirmed_by)
 ```
@@ -78,21 +85,22 @@ edge as verified — fabricated roots stay visible but quarantined.
 ```
 def strength(root):
     if root in provisional:        return 0.0         # unconfirmed → quarantined
+    if root is an ungrounded cycle: return 0.0         # visible warning, no independent grounding
     w = 1.0
     if root in secondary_only:     w *= 0.5           # no primary source instantiates it
     if root in nonhuman_only:      w *= 0.5           # animal / in-vitro only, for a human question
     return w
 
 def nEff(position):
-    # each DISTINCT root counted ONCE, at its strength — pooled voices (primpool/secpool/cycle)
-    # count once at 1.0. Idempotent: writing the same root again cannot change it.
+    # each DISTINCT root counted ONCE, at its strength. primpool/secpool count once at 1.0;
+    # an ungrounded cycle counts at 0. Idempotent: writing the same root again cannot change it.
     return sum( strength(r) for r in distinct_roots_supporting(position) )
 ```
 
-**Invariant (property-tested):** adding a source never lowers any position's `nEff`; it rises only
-by introducing a *new* root or upgrading one (primary grounding for a review-only dataset; human
-evidence for an animal-only root). Correlated / echo / circular sources land on already-counted
-roots and move `nEff` nowhere — they can only push *concentration* up.
+**Fixed-graph invariant (property-tested):** adding a source with only outgoing edges never lowers
+`nEff`; it rises only by introducing a new admitted root or upgrading one. Correlated/echo sources land on
+already-counted roots and move it nowhere. A graph correction can lower it intentionally: merging
+aliases or resolving a pending edge that reveals an ungrounded cycle removes false independence.
 
 ## Step 4 — surface what matters (cruxes)
 

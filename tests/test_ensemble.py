@@ -281,6 +281,21 @@ class EdgeClusteringTests(unittest.TestCase):
                           _d("NEW:X", conf=0.5, rests=["NEW:Greitemeyer 2019 aggression longitudinal"])])
         self.assertEqual(c["source"]["restsOn"], ["NEW:Greitemeyer 2019 aggression cohort"])
 
+    def test_winning_models_per_edge_quote_survives_edge_vote(self):
+        strong = {"ref": "NEW:Nurses Health Study", "provenance": {
+            "quote": "Participants came from the Nurses Health Study.",
+            "extractionConfidence": 0.9}}
+        weak = {"ref": "NEW:Nurses' Health Study cohort", "provenance": {
+            "quote": "The cohort was used.", "extractionConfidence": 0.5}}
+        # Put the weaker provider first: representative provenance follows the winning model,
+        # not provider order or the first identical normalized ref.
+        c, _ = self._one([_d("NEW:X", conf=0.5, rests=[weak]),
+                          _d("NEW:X", conf=0.9, rests=[strong])])
+        edge = c["source"]["restsOn"][0]
+        self.assertIsInstance(edge, dict)
+        self.assertEqual(edge["ref"], "NEW:Nurses Health Study")
+        self.assertEqual(edge["provenance"]["extractionConfidence"], 0.9)
+
     def test_two_genuinely_distinct_datasets_survive(self):
         # both models list the same TWO cohorts (one under a name variant) -> exactly two edges
         c, _ = self._one([_d("NEW:X", rests=["NEW:Nurses Health Study", "NEW:UK Biobank"]),

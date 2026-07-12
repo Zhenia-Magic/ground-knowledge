@@ -87,6 +87,22 @@ def validation_errors(kb):
 
     pos_ids, ds_ids, src_ids = ids("positions"), ids("datasets"), ids("sources")
     ids("factors")
+    for d in kb["datasets"]:
+        if not isinstance(d, dict):
+            errors.append("datasets entries must be objects")
+            continue
+        c = d.get("confirmation")
+        if not isinstance(c, dict) or c.get("status") != "confirmed":
+            continue
+        method = c.get("method")
+        if method not in ("curator", "verified-edge"):
+            errors.append("dataset {} confirmed record requires method curator or verified-edge".format(d.get("id", "?")))
+        if not (c.get("ts") or c.get("timestamp")):
+            errors.append("dataset {} confirmed record requires ts".format(d.get("id", "?")))
+        if method == "curator" and not (c.get("by") or c.get("curator")):
+            errors.append("dataset {} curator confirmation requires by".format(d.get("id", "?")))
+        if method == "verified-edge" and not c.get("source"):
+            errors.append("dataset {} verified-edge confirmation requires source".format(d.get("id", "?")))
     for s in kb["sources"]:
         if not isinstance(s, dict):
             errors.append("sources entries must be objects")
@@ -100,6 +116,19 @@ def validation_errors(kb):
             continue
         for edge in rests:
             ref = _edge_ref(edge)
+            if isinstance(edge, dict):
+                prov = edge.get("provenance")
+                if prov is not None and not isinstance(prov, dict):
+                    errors.append("source {} edge {} provenance must be an object".format(
+                        s.get("id", "?"), ref or "?"))
+                elif isinstance(prov, dict):
+                    verified = prov.get("verifiedQuote")
+                    if verified not in (None, "exact", "fuzzy", "missing"):
+                        errors.append("source {} edge {} has invalid verifiedQuote".format(
+                            s.get("id", "?"), ref or "?"))
+                    if verified in ("exact", "fuzzy") and not str(prov.get("quote") or "").strip():
+                        errors.append("source {} edge {} verifiedQuote requires quote".format(
+                            s.get("id", "?"), ref or "?"))
             if not ref:
                 continue
             if ref.startswith("src:"):
@@ -107,6 +136,11 @@ def validation_errors(kb):
                     errors.append("source {} references unknown source {}".format(s.get("id", "?"), ref[4:]))
             elif ref not in ds_ids:
                 errors.append("source {} references unknown dataset {}".format(s.get("id", "?"), ref))
+    for d in kb["datasets"]:
+        c = d.get("confirmation") if isinstance(d, dict) else None
+        if isinstance(c, dict) and c.get("source") and c["source"] not in src_ids:
+            errors.append("dataset {} confirmation references unknown source {}".format(
+                d.get("id", "?"), c["source"]))
     return errors
 
 

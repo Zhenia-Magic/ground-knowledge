@@ -159,6 +159,10 @@ def resolve_flagged_source(kb, sid, action, position=None):
         kb["sources"] = [x for x in kb["sources"] if x.get("id") != sid]
         for f in kb.get("factors", []):
             f["provenance"] = [pv for pv in f.get("provenance", []) if pv.get("source") != sid]
+        from .curate import repoint_confirmation_source
+        repoint_confirmation_source(kb, sid, reason="supporting source dropped during human review")
+        from .merge import recompute_factor_weights
+        recompute_factor_weights(kb)
         _bump(kb, "review-drop", "dropped after model disagreement: " + title)
         return {"dropped": True, "title": title}
     ma = s.setdefault("modelAgreement", {})

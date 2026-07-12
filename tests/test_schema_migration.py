@@ -39,6 +39,21 @@ class SchemaMigrationTests(unittest.TestCase):
         self.assertEqual(schema["properties"]["meta"]["properties"]["schemaVersion"]["const"], 2)
         self.assertIn("sources", schema["required"])
 
+    def test_incomplete_confirmed_record_is_rejected(self):
+        kb = empty_kb("x", "q")
+        kb["datasets"] = [{"id": "d", "label": "D", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator"}}]
+        errors = validation_errors(kb)
+        self.assertTrue(any("requires ts" in e for e in errors))
+        self.assertTrue(any("requires by" in e for e in errors))
+
+    def test_complete_curator_record_validates(self):
+        kb = empty_kb("x", "q")
+        kb["datasets"] = [{"id": "d", "label": "D", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator",
+                                            "by": "ann", "ts": "2026-07-11T00:00:00Z"}}]
+        self.assertEqual(validation_errors(kb), [])
+
 
 if __name__ == "__main__":
     unittest.main()

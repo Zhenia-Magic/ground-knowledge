@@ -38,10 +38,26 @@ def _src(d):
     return (d or {}).get("source") or {}
 
 
+def _edge_ref(edge):
+    """Raw reference carried by a restsOn string or per-edge provenance object."""
+    if isinstance(edge, dict):
+        return str(edge.get("ref") or "").strip()
+    return str(edge or "").strip()
+
+
 def _conf(d):
     prov = (_src(d).get("provenance") or {}).get("position") or {}
     try:
         return float(prov.get("extractionConfidence"))
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _edge_conf(edge):
+    if not isinstance(edge, dict):
+        return 0.0
+    try:
+        return float((edge.get("provenance") or {}).get("extractionConfidence") or 0)
     except (TypeError, ValueError):
         return 0.0
 
@@ -225,6 +241,7 @@ def combine_one(deltas):
         pos_vote = {}
         proposals = []
     wsrc = _src(winner)
+    winner_i = next(i for i, d in enumerate(rd) if d is winner)
 
     out = dict(wsrc)                                             # keep winner's quote/positionShort
     out["relevant"] = True
@@ -254,43 +271,51 @@ def combine_one(deltas):
     # old unconditional "if every model proposed <=1 dataset, merge them all" rule is removed — it
     # over-merged two genuinely different single datasets into false agreement. A dropped edge is now
     # safe: the source falls to the position's pool (A1), it can't inflate independence.
-    winner_edges = {_norm(x) for x in (wsrc.get("restsOn") or []) if x}
     src_count, src_form = Counter(), OrderedDict()
     ds_lists = []                                    # per model: [(norm, raw, tokens), ...]
-    for s in rs:
+    for model_i, s in enumerate(rs):
         seen_src, ds_row = set(), []
         for x in (s.get("restsOn") or []):
-            if not x:
+            ref = _edge_ref(x)
+            if not ref:
                 continue
-            if str(x).lower().startswith(("src:", "new-src:")):
-                k = _norm(x)
+            if ref.lower().startswith(("src:", "new-src:")):
+                k = _norm(ref)
                 if k not in seen_src:
                     seen_src.add(k)
                     src_count[k] += 1
-                    src_form.setdefault(k, x)
+                    src_form.setdefault(k, ref)
             else:
-                ds_row.append((_norm(x), x, _edge_tokens(x)))
+                # Keep the whole winning edge object as the representative form, so its specific
+                # dependency quote survives the vote and can be verified by pipeline._carry_meta.
+                ds_row.append((_norm(ref), x, _edge_tokens(ref)))
         ds_lists.append(ds_row)
-    clusters = []                                    # {"tokens", "forms":[(norm,raw)], "votes"}
+    clusters = []                                    # {"tokens", "forms":[(model,norm,raw)], "votes"}
     for model_i, row in enumerate(ds_lists):
         for k, raw, tk in row:
             for c in clusters:
                 if _same_edge(tk, c["tokens"]):
-                    c["forms"].append((k, raw))
+                    c["forms"].append((model_i, k, raw))
                     c["tokens"] |= tk
                     c["voters"].add(model_i)       # aliases repeated by ONE model are still one vote
                     break
             else:
-                clusters.append({"tokens": set(tk), "forms": [(k, raw)], "voters": {model_i}})
+                clusters.append({"tokens": set(tk), "forms": [(model_i, k, raw)],
+                                 "voters": {model_i}})
     rests, edge_dropped = [], False
     for k, cnt in src_count.items():
         (rests.append(src_form[k]) if cnt > m / 2.0 else None)
         edge_dropped = edge_dropped or (0 < cnt <= m / 2.0)
     for c in clusters:
         if len(c["voters"]) > m / 2.0:
-            # representative form: the winning model's wording when it contributed, else first
-            rests.append(next((raw for k, raw in c["forms"] if k in winner_edges),
-                              c["forms"][0][1]))
+            # Representative form: the winning POSITION model's exact edge when it contributed.
+            # If the majority edge came only from other models, keep their best-supported quote.
+            # Tracking model identity avoids provider-order dependence when every ref string is the
+            # same but quotes/confidences differ.
+            representative = next((raw for mi, _k, raw in c["forms"] if mi == winner_i), None)
+            if representative is None:
+                representative = max(c["forms"], key=lambda form: _edge_conf(form[2]))[2]
+            rests.append(representative)
         else:
             edge_dropped = True                       # a proposed edge failed to reach a majority
     out["restsOn"] = rests

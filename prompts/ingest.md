@@ -86,8 +86,11 @@ multiplying via paraphrase as a case grows):
   different outcome (e.g. all-cause mortality when the question asks about cardiovascular disease) or
   on heavy-use harm is off-topic unless it directly reports the question's outcome — mark such a
   source relevant:false rather than forcing it into a position.
-- provenance: for position and restsOn, quote ONE COMPLETE verbatim sentence that states the
-  actual FINDING/stance (direction of the association or the conclusion) + extractionConfidence
+- provenance: for position, quote ONE COMPLETE verbatim sentence that states the actual
+  FINDING/stance. For EACH DATASET in restsOn, attach a SEPARATE provenance object to that edge
+  with a sentence specifically identifying that dataset/trial/cohort as evidence used by this
+  source. One generic dependency sentence must never vouch for several roots. SRC:/NEW-SRC:
+  citation edges need no dependency quote. Every provenance object carries extractionConfidence
   [0,1]. The quote MUST be a whole sentence, not cut off mid-clause (never end on "associated
   with", "compared to", …). NEVER quote the title, a heading, the search snippet, or a METADATA /
   BOILERPLATE line (publication dates, "Accepted for Publication: …", author lists, "a literature
@@ -120,10 +123,18 @@ multiplying via paraphrase as a case grows):
     "evidence": "Observational",
     "funding": "Industry" | "Advocacy" | "Government/public" | "Nonprofit/charity" | "Academic/institutional" | "Undisclosed",
     "population": "US health professionals", "confidence": "moderate",
-    "restsOn": ["ds_nhs", "NEW:US pooled meta"],
+    "restsOn": [
+      { "ref": "ds_nhs", "provenance": {
+          "quote": "Participants were drawn from the Nurses' Health Study.",
+          "extractionConfidence": 0.9
+      }},
+      { "ref": "NEW:US pooled meta", "provenance": {
+          "quote": "We pooled individual-level data from the US cohorts.",
+          "extractionConfidence": 0.8
+      }}
+    ],
     "provenance": {
-      "position": { "quote": "...", "extractionConfidence": 0.85 },
-      "restsOn":  { "quote": "...", "extractionConfidence": 0.9 }
+      "position": { "quote": "...", "extractionConfidence": 0.85 }
     }
   },
   "factorWeights": [

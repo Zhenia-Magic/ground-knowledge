@@ -90,6 +90,9 @@ class ResolutionTests(unittest.TestCase):
         self.assertEqual(_roots(res, "a"), _roots(res, "b"))   # collapse to one loop root
         self.assertEqual(len(res["circular"]), 1)
         self.assertEqual(res["circular"][0]["sources"], ["a", "b"])
+        ind = {p["id"]: p for p in independence(kb)}["X"]
+        self.assertEqual(ind["nEff"], 0)                           # visible, but zero grounding
+        self.assertEqual(ind["bases"][0]["strength"], 0)
 
     def test_circular_but_grounded_is_not_flagged(self):
         kb = _kb([_s("a", "X", "Observational", ["src:b", "D"]),
@@ -310,13 +313,77 @@ class PerEdgeConfirmationTests(unittest.TestCase):
                       [{"ref": "D1", "provenance": {"quote": "we analysed cohort D1",
                                                      "verifiedQuote": "exact"}},
                        "D2"])
-        res = resolve(_kb([s]))
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D1", "label": "D1", "aliases": []},
+                          {"id": "D2", "label": "D2", "aliases": []}]
+        res = resolve(kb)
         self.assertNotIn("ds:D1", res["provisional"])
         self.assertIn("ds:D2", res["provisional"])
         self.assertEqual(res["confirmed_by"]["ds:D1"]["method"], "verified-edge")
         self.assertEqual(res["confirmed_by"]["ds:D1"]["source"], "a")
-        ind = {p["id"]: p for p in independence(_kb([s]))}["X"]
+        ind = {p["id"]: p for p in independence(kb)}["X"]
         self.assertAlmostEqual(ind["nEff"], 1.0, places=6)          # D1 only
+
+    def test_one_real_quote_copied_to_sibling_edges_confirms_only_named_dataset(self):
+        # Quote presence is not edge entailment. The fetched sentence really exists, but it names D1;
+        # copying it onto D2 must not admit D2 merely because the sentence is verbatim text.
+        q = "We analysed the D1 cohort."
+        s = self._src("a", "X", [
+            {"ref": "D1", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+            {"ref": "D2", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+        ])
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D1", "label": "D1", "aliases": []},
+                          {"id": "D2", "label": "D2", "aliases": []}]
+        res = resolve(kb)
+        self.assertNotIn("ds:D1", res["provisional"])
+        self.assertIn("ds:D2", res["provisional"])
+
+    def test_generic_methods_word_cannot_name_a_new_root(self):
+        q = "This cohort included 400 adults."
+        s = self._src("a", "X", [{"ref": "D", "provenance": {
+            "quote": q, "verifiedQuote": "exact"}}])
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D", "label": "Cohort", "aliases": []}]
+        self.assertEqual(independence(kb)[0]["nEff"], 0)
+        self.assertIn("ds:D", resolve(kb)["provisional"])
+
+    def test_synthesized_two_letter_acronym_cannot_bind_ordinary_prose(self):
+        q = "Mr. Smith reported no adverse events."
+        s = self._src("a", "X", [{"ref": "D", "provenance": {
+            "quote": q, "verifiedQuote": "exact"}}])
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "D", "label": "Medical Review", "aliases": []}]
+        self.assertEqual(independence(kb)[0]["nEff"], 0)
+
+    def test_unlearned_acronym_split_admits_at_most_one_root(self):
+        q = "We analyzed the Nurses Health Study (NHS) cohort."
+        s = self._src("a", "X", [
+            {"ref": "full", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+            {"ref": "short", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+        ])
+        kb = _kb([s])
+        kb["datasets"] = [{"id": "full", "label": "Nurses Health Study", "aliases": []},
+                          {"id": "short", "label": "NHS", "aliases": []}]
+        res = resolve(kb)
+        self.assertEqual(independence(kb, res)[0]["nEff"], 1)
+        self.assertEqual(res["alias_suspects"], {"ds:short"})
+
+    def test_legacy_source_level_quote_cannot_confirm_sibling_datasets(self):
+        # Back-compat source-level dependency provenance is safe only for ONE direct dataset. With
+        # siblings it is ambiguous, so neither root is admitted; new ingestion uses edge objects.
+        s = self._src("a", "X", ["D1", "D2"], provenance={
+            "restsOn": {"quote": "one generic dependency sentence", "verifiedQuote": "exact"}})
+        res = resolve(_kb([s]))
+        self.assertEqual(res["provisional"], {"ds:D1", "ds:D2"})
+        self.assertAlmostEqual({p["id"]: p for p in independence(_kb([s]))}["X"]["nEff"], 0.0)
+
+    def test_legacy_source_level_quote_still_confirms_one_direct_dataset(self):
+        s = self._src("a", "X", ["D"], provenance={
+            "restsOn": {"quote": "we used D", "verifiedQuote": "exact"}})
+        res = resolve(_kb([s]))
+        self.assertNotIn("ds:D", res["provisional"])
+        self.assertEqual(res["confirmed_by"]["ds:D"]["method"], "verified-edge-legacy-single")
 
     def test_inherited_root_not_confirmed_by_citing_source_quote(self):
         # a review that only CITES the study (src: edge) cannot confirm the study's dataset with its
@@ -336,7 +403,8 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         s = self._src("paste", "X", ["D"], depth="unknown")
         kb = _kb([s])
         kb["datasets"] = [{"id": "D", "label": "D", "aliases": [],
-                           "confirmation": {"status": "confirmed", "method": "curator", "by": "ann"}}]
+                           "confirmation": {"status": "confirmed", "method": "curator", "by": "ann",
+                                            "ts": "2026-07-11T00:00:00Z"}}]
         ind = {p["id"]: p for p in independence(kb)}["X"]
         self.assertAlmostEqual(ind["nEff"], 1.0, places=6)
         self.assertEqual(ind["bases"][0]["confirmedBy"]["method"], "curator")
@@ -352,9 +420,11 @@ class PerEdgeConfirmationTests(unittest.TestCase):
 
 
 class MonotonicityPropertyTests(unittest.TestCase):
-    """Randomized check of the independence invariant: adding a source through the merge path
+    """Randomized check of the fixed-graph independence invariant: adding a source through the merge path
     (a new node with only OUTGOING restsOn edges — merge_delta can never create incoming edges
-    or cycles) never lowers ANY position's nEff. Not just the flooded position's: a new primary
+    or cycles) never lowers ANY position's nEff. Resolving pending refs or merging root aliases is a
+    graph correction and may intentionally lower nEff; that distinct operation is out of scope here.
+    Not just the flooded position's: a new primary
     source can shrink the global secondary_only / nonhuman_only sets, which only ever RAISES
     other positions' root strengths. A fixed seed keeps the run deterministic; the generator
     mixes grounded/ungrounded sources, primary/secondary/unknown evidence types, animal and
@@ -577,7 +647,8 @@ class NonHumanTests(unittest.TestCase):
         from engine.roots import resolve, root_strength
         kb = _kb([self._s2("m", "X", "Mechanistic", ["Darg"], "Mice")])
         kb["datasets"] = [{"id": "Darg", "label": "Darg", "aliases": [], "kind": "argument",
-                           "confirmation": {"status": "confirmed", "method": "curator"}}]
+                           "confirmation": {"status": "confirmed", "method": "curator", "by": "ann",
+                                            "ts": "2026-07-11T00:00:00Z"}}]
         res = resolve(kb)
         self.assertNotIn("ds:Darg", res["nonhuman_only"])
         self.assertEqual(res["base_kind"]["ds:Darg"], "argument")
@@ -592,6 +663,16 @@ class NonHumanTests(unittest.TestCase):
 
 
 class BudgetAndFundingTests(unittest.TestCase):
+    def test_funding_skew_exposes_a_tie_instead_of_using_position_order(self):
+        from engine.assess import funding_skew
+        srcs = [_s("a", "X", "Observational", []), _s("b", "Y", "Observational", [])]
+        for s in srcs:
+            s["funding"] = "Industry"
+        fs = funding_skew(_kb(srcs))
+        self.assertIsNone(fs["top"])
+        self.assertTrue(fs["tied"])
+        self.assertEqual({x["label"] for x in fs["leaders"]}, {"X", "Y"})
+
     def test_funding_blindspot_gap_fires_when_all_undisclosed(self):
         from engine.gaps import find_gaps
         srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(5)]

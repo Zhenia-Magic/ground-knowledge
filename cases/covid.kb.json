@@ -2,8 +2,8 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 30,
-    "updated": "2026-07-11T01:13:23.923125+00:00",
+    "version": 35,
+    "updated": "2026-07-12T13:54:20.699949+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
       "baseVersion": 30,
@@ -35,7 +35,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022"
       }
     },
     {
@@ -44,7 +48,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022"
       }
     },
     {
@@ -53,7 +61,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021"
       }
     },
     {
@@ -62,7 +74,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023"
       }
     },
     {
@@ -71,7 +87,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020"
       }
     },
     {
@@ -80,7 +100,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021"
       }
     },
     {
@@ -89,7 +113,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020"
       }
     }
   ],
@@ -98,7 +126,8 @@
       "id": "f_epidemiological_proximity_of_the_earliest_ca",
       "label": "Epidemiological proximity of the earliest cases to the market",
       "weights": {
-        "pos_zoonotic_spillover_at_the_huanan_market": "high"
+        "pos_zoonotic_spillover_at_the_huanan_market": "high",
+        "pos_undetermined_unresolved": "high"
       },
       "rationale": "Spatial clustering of early cases and positive samples at the market is the load-bearing zoonotic argument.",
       "provenance": [
@@ -108,6 +137,13 @@
           "quote": "the earliest known COVID-19 cases were geographically centered on this market",
           "verifiedQuote": null,
           "weight": "high"
+        },
+        {
+          "source": "src_who_sago_independent_assessment_of_the_origi_2025",
+          "pos": "pos_undetermined_unresolved",
+          "weight": "high",
+          "quote": "The Huanan market appears to be a location for amplification, but it is not possible to determine if the first infections occurred there.",
+          "verifiedQuote": "fuzzy"
         }
       ]
     },
@@ -115,8 +151,8 @@
       "id": "f_ascertainment_reporting_bias_in_early_wuhan_",
       "label": "Ascertainment / reporting bias in early Wuhan case data",
       "weights": {
-        "pos_zoonotic_spillover_at_the_huanan_market": "low",
         "pos_laboratory_associated_origin": "high",
+        "pos_zoonotic_spillover_at_the_huanan_market": "low",
         "pos_undetermined_unresolved": "high"
       },
       "rationale": "Argues the market centering is not merely a surveillance artifact.",
@@ -165,8 +201,9 @@
       "id": "f_furin_cleavage_site_as_evidence_of_laborator",
       "label": "Furin cleavage site as evidence of laboratory engineering",
       "weights": {
+        "pos_laboratory_associated_origin": "high",
         "pos_zoonotic_spillover_at_the_huanan_market": "low",
-        "pos_laboratory_associated_origin": "high"
+        "pos_undetermined_unresolved": "low"
       },
       "rationale": "Reads the genome features as consistent with natural evolution.",
       "provenance": [
@@ -179,7 +216,7 @@
         },
         {
           "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
-          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "pos": "pos_undetermined_unresolved",
           "quote": "can be explained by natural evolutionary mechanisms",
           "verifiedQuote": null,
           "weight": "low"
@@ -229,6 +266,13 @@
           "quote": "collected from the Mojiang mine and passaged in the laboratory",
           "verifiedQuote": null,
           "weight": "high"
+        },
+        {
+          "source": "src_who_sago_independent_assessment_of_the_origi_2025",
+          "pos": "pos_undetermined_unresolved",
+          "weight": "med",
+          "quote": "Information and evidence is lacking to assess the possibility of a laboratory origin, so it cannot be ruled out.",
+          "verifiedQuote": "fuzzy"
         }
       ]
     },
@@ -294,8 +338,27 @@
       "title": "Worobey et al. — The Huanan market was the early epicenter of the COVID-19 pandemic",
       "year": 2022,
       "url": "https://www.science.org/doi/10.1126/science.abp8715",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Michael Worobey",
+        "Joshua I. Levy",
+        "Lorena Malpica Serrano",
+        "Alexander Crits-Christoph",
+        "Jonathan E. Pekar",
+        "Stephen A. Goldstein",
+        "Angela L. Rasmussen",
+        "Moritz U. G. Kraemer",
+        "Chris Newman",
+        "Marion P. G. Koopmans",
+        "Marc A. Suchard",
+        "Joel O. Wertheim",
+        "Philippe Lemey",
+        "David L. Robertson",
+        "Robert F. Garry",
+        "Edward C. Holmes",
+        "Andrew Rambaut",
+        "Kristian G. Andersen"
+      ],
+      "venue": "Science",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -314,15 +377,50 @@
         }
       },
       "addedIn": 1,
-      "textDepth": "full"
+      "textDepth": "full",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.074768+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
       "title": "Pekar et al. — The molecular epidemiology of multiple zoonotic origins of SARS-CoV-2",
       "year": 2022,
       "url": "https://www.science.org/doi/10.1126/science.abp8337",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jonathan E. Pekar",
+        "Andrew Magee",
+        "Edyth Parker",
+        "Niema Moshiri",
+        "Katherine Izhikevich",
+        "Jennifer L. Havens",
+        "Karthik Gangavarapu",
+        "Lorena Mariana Malpica Serrano",
+        "Alexander Crits-Christoph",
+        "Nathaniel L. Matteson",
+        "Mark Zeller",
+        "Joshua I. Levy",
+        "Jade C. Wang",
+        "Scott Hughes",
+        "Jungmin Lee",
+        "Heedo Park",
+        "Man-Seong Park",
+        "Katherine Ching Zi Yan",
+        "Raymond Tzer Pin Lin",
+        "Mohd Noor Mat Isa",
+        "Yusuf Muhammad Noor",
+        "Tetyana I. Vasylyeva",
+        "Robert F. Garry",
+        "Edward C. Holmes",
+        "Andrew Rambaut",
+        "Marc A. Suchard",
+        "Kristian G. Andersen",
+        "Michael Worobey",
+        "Joel O. Wertheim"
+      ],
+      "venue": "Science",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -341,15 +439,26 @@
         }
       },
       "addedIn": 2,
-      "textDepth": "full"
+      "textDepth": "full",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.074875+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
       "title": "Andersen, Rambaut, Lipkin, Holmes, Garry — The proximal origin of SARS-CoV-2",
       "year": 2020,
       "url": "https://www.nature.com/articles/s41591-020-0820-9",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Kristian G. Andersen",
+        "Andrew Rambaut",
+        "W. Ian Lipkin",
+        "Edward C. Holmes",
+        "Robert F. Garry"
+      ],
+      "venue": "Nature Medicine",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -367,15 +476,43 @@
         }
       },
       "addedIn": 3,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.074895+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_crits_christoph_et_al_genetic_tracing_of_mar_2024",
       "title": "Crits-Christoph et al. — Genetic tracing of market wildlife and viruses at the epicenter of the pandemic",
       "year": 2024,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/37745602/",
-      "authors": [],
-      "venue": "",
+      "url": "https://doi.org/10.1016/j.cell.2024.08.010",
+      "authors": [
+        "Alexander Crits-Christoph",
+        "Joshua I. Levy",
+        "Jonathan E. Pekar",
+        "Stephen A. Goldstein",
+        "Reema Singh",
+        "Zach Hensel",
+        "Karthik Gangavarapu",
+        "Matthew B. Rogers",
+        "Niema Moshiri",
+        "Robert F. Garry",
+        "Edward C. Holmes",
+        "Marion P. G. Koopmans",
+        "Philippe Lemey",
+        "Saskia Popescu",
+        "Andrew Rambaut",
+        "David L. Robertson",
+        "Marc A. Suchard",
+        "Joel O. Wertheim",
+        "Angela L. Rasmussen",
+        "Kristian G. Andersen",
+        "Michael Worobey",
+        "Florence Débarre"
+      ],
+      "venue": "Cell",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -388,26 +525,53 @@
       ],
       "provenance": {
         "position": {
-          "quote": "In the months after declaring the SARS outbreak, closely rela ted viruses were found in masked palm civets (Paguma larvata) , common raccoon dogs (Nyctereutes procyonoides ), and a ferret badger (Melogale moschata) at still-open wet markets(Guan et al.",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
+          "quote": "Market-linked SARS-CoV-2 genetic diversity is consistent with market emergence, and wildlife DNA was identified in SARS-CoV-2-positive samples from a wildlife stall.",
+          "extractionConfidence": 0.97,
+          "verifiedQuote": "fuzzy"
         }
       },
       "addedIn": 4,
-      "textDepth": "full"
+      "textDepth": "full",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699395+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_holmes_et_al_the_origins_of_sars_cov_2_a_cri_2021",
       "title": "Holmes et al. — The origins of SARS-CoV-2: A critical review",
       "year": 2021,
-      "url": "https://www.cell.com/cell/fulltext/S0092-8674(21",
-      "authors": [],
-      "venue": "",
+      "url": "https://doi.org/10.1016/j.cell.2021.08.017",
+      "authors": [
+        "Edward C. Holmes",
+        "Stephen A. Goldstein",
+        "Angela L. Rasmussen",
+        "David L. Robertson",
+        "Alexander Crits-Christoph",
+        "Joel O. Wertheim",
+        "Simon J. Anthony",
+        "Wendy S. Barclay",
+        "Maciej F. Boni",
+        "Peter C. Doherty",
+        "Jeremy Farrar",
+        "Jemma L. Geoghegan",
+        "Xiaowei Jiang",
+        "Julian L. Leibowitz",
+        "Stuart J.D. Neil",
+        "Tim Skern",
+        "Susan R. Weiss",
+        "Michael Worobey",
+        "Kristian G. Andersen",
+        "Robert F. Garry",
+        "Andrew Rambaut"
+      ],
+      "venue": "Cell",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
       "evidence": "Evidence-synthesis",
-      "funding": "Academic/institutional",
+      "funding": "Government/public",
       "population": "—",
       "confidence": "high",
       "restsOn": [
@@ -421,18 +585,44 @@
         }
       },
       "addedIn": 5,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "Biotechnology and Biological Sciences Research Council",
+        "Arizona Board of Regents",
+        "Canada Foundation for Innovation",
+        "Centers for Disease Control and Prevention",
+        "European and Developing Countries Clinical Trials Partnership",
+        "Austrian Science Fund",
+        "Coalition for Epidemic Preparedness Innovations",
+        "Fudan University",
+        "National Institutes of Health",
+        "Ministry of Agriculture of the People&apos;s Republic of China",
+        "Australian Research Council",
+        "National Science Foundation",
+        "European Research Council",
+        "Medical Research Council",
+        "Wellcome Trust",
+        "Bill and Melinda Gates Foundation"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.074958+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
-      "title": "Emergence of the Spike Furin Cleavage Site in SARS-CoV-2 — a natural-evolution account",
+      "title": "Chan & Zhan — The Emergence of the Spike Furin Cleavage Site in SARS-CoV-2",
       "year": 2022,
-      "url": "https://academic.oup.com/mbe/article/39/1/msab327/6426085",
-      "authors": [],
-      "venue": "",
+      "url": "https://doi.org/10.1093/molbev/msab327",
+      "authors": [
+        "Yujia Alina Chan",
+        "Shing Hei Zhan"
+      ],
+      "venue": "Molecular Biology and Evolution",
       "citations": null,
       "retracted": false,
-      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "position": "pos_undetermined_unresolved",
       "evidence": "Mechanistic",
       "funding": "Academic/institutional",
       "population": "SARS-CoV-2 genome",
@@ -442,20 +632,29 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the furin cleavage site can be explained by natural evolutionary mechanisms without invoking laboratory manipulation",
-          "extractionConfidence": 0.7
+          "quote": "Without access to the full set of viral sequences available before the emergence of SARS-CoV-2, it is difficult to know what novel cleavage sites were characterized and how they were introduced.",
+          "extractionConfidence": 0.96,
+          "verifiedQuote": "fuzzy"
         }
       },
       "addedIn": 6,
-      "textDepth": "unknown"
+      "textDepth": "full",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699508+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
       "title": "Segreto & Deigin — The genetic structure of SARS-CoV-2 does not rule out a laboratory origin",
       "year": 2021,
       "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/bies.202000240",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Rossana Segreto",
+        "Yuri Deigin"
+      ],
+      "venue": "BioEssays",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -473,15 +672,22 @@
         }
       },
       "addedIn": 7,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.074991+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
       "title": "Analysis of the DEFUSE proposal (EcoHealth / WIV / DARPA, 2018)",
       "year": 2023,
       "url": "https://usrtk.org/covid-19-origins/defuse-documents/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "U.S. Right to Know"
+      ],
+      "venue": "U.S. Right to Know",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -499,15 +705,22 @@
         }
       },
       "addedIn": 8,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699545+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
       "title": "Rootclaim (Saar Wilf) — Bayesian analysis of COVID-19 origins (lab leak)",
       "year": 2024,
       "url": "https://blog.rootclaim.com/rootclaims-covid-19-origins-debate-results/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Saar Wilf"
+      ],
+      "venue": "Rootclaim",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -526,15 +739,22 @@
         }
       },
       "addedIn": 9,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699563+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_weissman_an_inconvenient_probability_bayesia_2024",
       "title": "Weissman — An Inconvenient Probability: Bayesian analysis of COVID origins (lab ~70:1)",
       "year": 2024,
       "url": "https://michaelweissman.substack.com/p/an-inconvenient-probability-v50",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Michael Weissman"
+      ],
+      "venue": "Substack",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -553,15 +773,22 @@
         }
       },
       "addedIn": 10,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699581+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_peter_miller_the_case_for_zoonosis_covid_ori_2024",
       "title": "Peter Miller — The case for zoonosis (COVID origins debate)",
       "year": 2024,
       "url": "https://ermsta.com/covid_debate/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Peter Miller"
+      ],
+      "venue": "COVID Origins Debate",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -580,15 +807,22 @@
         }
       },
       "addedIn": 11,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699598+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_who_china_joint_study_on_the_origins_of_sars_2021",
       "title": "WHO-China Joint Study on the origins of SARS-CoV-2",
       "year": 2021,
       "url": "https://www.who.int/publications/i/item/who-convened-global-study-of-origins-of-sars-cov-2-china-part",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "WHO-convened global study team"
+      ],
+      "venue": "World Health Organization",
       "citations": null,
       "retracted": false,
       "position": "pos_undetermined_unresolved",
@@ -604,15 +838,22 @@
         }
       },
       "addedIn": 12,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699615+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
       "title": "US ODNI — Updated Assessment on COVID-19 Origins",
       "year": 2023,
       "url": "https://www.dni.gov/files/ODNI/documents/assessments/Declassified-Assessment-on-COVID-19-Origins.pdf",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Office of the Director of National Intelligence"
+      ],
+      "venue": "U.S. ODNI",
       "citations": null,
       "retracted": false,
       "position": "pos_undetermined_unresolved",
@@ -628,15 +869,22 @@
         }
       },
       "addedIn": 13,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699632+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
       "title": "Wade — The origin of COVID: Did people or nature open Pandora's box at Wuhan?",
       "year": 2021,
       "url": "https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Nicholas Wade"
+      ],
+      "venue": "Bulletin of the Atomic Scientists",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -654,15 +902,23 @@
         }
       },
       "addedIn": 14,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699649+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_response_to_segreto_deigin_there_is_still_no_2021",
       "title": "Response to Segreto & Deigin — There is still no evidence of SARS-CoV-2 laboratory origin",
       "year": 2021,
       "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8646886/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Alexander Tyshkovskiy",
+        "Alexander Y. Panchin"
+      ],
+      "venue": "BioEssays",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -680,15 +936,22 @@
         }
       },
       "addedIn": 15,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075106+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
       "title": "Scott Alexander — I watched 15 hours of COVID origins arguments so you don't have to",
       "year": 2024,
       "url": "https://www.astralcodexten.com/p/practically-a-book-review-rootclaim",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Scott Alexander"
+      ],
+      "venue": "Astral Codex Ten",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -707,15 +970,50 @@
         }
       },
       "addedIn": 16,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699684+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
       "title": "Zhou et al. — A pneumonia outbreak associated with a new coronavirus of probable bat origin (RaTG13)",
       "year": 2020,
       "url": "https://www.nature.com/articles/s41586-020-2012-7",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Peng Zhou",
+        "Xing-Lou Yang",
+        "Xian-Guang Wang",
+        "Ben Hu",
+        "Lei Zhang",
+        "Wei Zhang",
+        "Hao-Rui Si",
+        "Yan Zhu",
+        "Bei Li",
+        "Chao-Lin Huang",
+        "Hui-Dong Chen",
+        "Jing Chen",
+        "Yun Luo",
+        "Hua Guo",
+        "Ren-Di Jiang",
+        "Mei-Qin Liu",
+        "Ying Chen",
+        "Xu-Rui Shen",
+        "Xi Wang",
+        "Xiao-Shuang Zheng",
+        "Kai Zhao",
+        "Quan-Jiao Chen",
+        "Fei Deng",
+        "Lin-Lin Liu",
+        "Bing Yan",
+        "Fa-Xian Zhan",
+        "Yan-Yi Wang",
+        "Geng-Fu Xiao",
+        "Zheng-Li Shi"
+      ],
+      "venue": "Nature",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -733,15 +1031,47 @@
         }
       },
       "addedIn": 17,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075140+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
       "title": "Temmam et al. — Bat coronaviruses related to SARS-CoV-2 and infectious for human cells (BANAL-52, Laos)",
       "year": 2022,
       "url": "https://www.nature.com/articles/s41586-022-04532-4",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Sarah Temmam",
+        "Khamsing Vongphayloth",
+        "Eduard Baquero",
+        "Sandie Munier",
+        "Massimiliano Bonomi",
+        "Béatrice Regnault",
+        "Bounsavane Douangboubpha",
+        "Yasaman Karami",
+        "Delphine Chrétien",
+        "Daosavanh Sanamxay",
+        "Vilakhan Xayaphet",
+        "Phetphoumin Paphaphanh",
+        "Vincent Lacoste",
+        "Somphavanh Somlor",
+        "Khaithong Lakeomany",
+        "Nothasin Phommavanh",
+        "Philippe Pérot",
+        "Océane Dehan",
+        "Faustine Amara",
+        "Flora Donati",
+        "Thomas Bigot",
+        "Michael Nilges",
+        "Félix A. Rey",
+        "Sylvie van der Werf",
+        "Paul T. Brey",
+        "Marc Eloit"
+      ],
+      "venue": "Nature",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -759,15 +1089,29 @@
         }
       },
       "addedIn": 18,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075160+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_boni_et_al_evolutionary_origins_of_the_sars__2020",
       "title": "Boni et al. — Evolutionary origins of the SARS-CoV-2 sarbecovirus lineage (Nature Microbiology)",
       "year": 2020,
       "url": "https://www.nature.com/articles/s41564-020-0771-4",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Maciej F Boni",
+        "Philippe Lemey",
+        "Xiaowei Jiang",
+        "Tommy Tsan-Yuk Lam",
+        "Blair Perry",
+        "Todd Castoe",
+        "Andrew Rambaut",
+        "David L Robertson"
+      ],
+      "venue": "Nature Microbiology",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -785,15 +1129,30 @@
         }
       },
       "addedIn": 19,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699751+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_lytras_et_al_exploring_the_natural_origins_o_2022",
       "title": "Lytras et al. — Exploring the natural origins of SARS-CoV-2",
       "year": 2022,
       "url": "https://academic.oup.com/gbe/article/14/2/evac018/6523391",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Spyros Lytras",
+        "Joseph Hughes",
+        "Darren Martin",
+        "Arné de Klerk",
+        "Rentia Lourens",
+        "Sergei L Kosakovsky Pond",
+        "Wei Xia",
+        "Xiaowei Jiang",
+        "David L Robertson"
+      ],
+      "venue": "Genome Biology and Evolution",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -811,20 +1170,27 @@
         }
       },
       "addedIn": 20,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699772+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
       "title": "Garry — SARS-CoV-2 furin cleavage site was not engineered",
       "year": 2022,
       "url": "https://www.pnas.org/doi/10.1073/pnas.2211107119",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Robert F. Garry"
+      ],
+      "venue": "Proceedings of the National Academy of Sciences",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
       "evidence": "Mechanistic",
-      "funding": "Academic/institutional",
+      "funding": "Government/public",
       "population": "SARS-CoV-2 genome",
       "confidence": "moderate",
       "restsOn": [
@@ -837,15 +1203,59 @@
         }
       },
       "addedIn": 21,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "HHS | NIH | NIAID | Division of Microbiology and Infectious Diseases, National Institute of Allergy and Infectious Diseases"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075218+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_liu_gao_et_al_surveillance_of_sars_cov_2_at__2023",
       "title": "Liu, Gao et al. — Surveillance of SARS-CoV-2 at the Huanan Seafood Market (Chinese CDC)",
       "year": 2023,
       "url": "https://www.nature.com/articles/s41586-023-06043-2",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "William J. Liu",
+        "Peipei Liu",
+        "Wenwen Lei",
+        "Zhiyuan Jia",
+        "Xiaozhou He",
+        "Weifeng Shi",
+        "Yun Tan",
+        "Shumei Zou",
+        "Gary Wong",
+        "Ji Wang",
+        "Feng Wang",
+        "Gang Wang",
+        "Kun Qin",
+        "Rongbao Gao",
+        "Jie Zhang",
+        "Min Li",
+        "Wenling Xiao",
+        "Yuanyuan Guo",
+        "Ziqian Xu",
+        "Yingze Zhao",
+        "Jingdong Song",
+        "Jing Zhang",
+        "Wei Zhen",
+        "Wenting Zhou",
+        "Beiwei Ye",
+        "Juan Song",
+        "Mengjie Yang",
+        "Weimin Zhou",
+        "Yuting Dai",
+        "Gang Lu",
+        "Yuhai Bi",
+        "Wenjie Tan",
+        "Jun Han",
+        "George F. Gao",
+        "Guizhen Wu"
+      ],
+      "venue": "Nature",
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
@@ -863,20 +1273,27 @@
         }
       },
       "addedIn": 22,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075239+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
       "title": "Bloom — Recovery of deleted deep sequencing data sheds light on the early Wuhan epidemic",
       "year": 2021,
       "url": "https://academic.oup.com/mbe/article/38/12/5211/6353034",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jesse D Bloom"
+      ],
+      "venue": "Molecular Biology and Evolution",
       "citations": null,
       "retracted": false,
       "position": "pos_undetermined_unresolved",
       "evidence": "Observational",
-      "funding": "Academic/institutional",
+      "funding": "Government/public",
       "population": "Early SARS-CoV-2 sequences",
       "confidence": "moderate",
       "restsOn": [
@@ -889,15 +1306,27 @@
         }
       },
       "addedIn": 23,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "NIH",
+        "Howard Hughes Medical Institute"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075259+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_harrison_sachs_a_call_for_an_independent_inq_2022",
       "title": "Harrison & Sachs — A call for an independent inquiry into the origin of SARS-CoV-2 (PNAS)",
       "year": 2022,
       "url": "https://www.pnas.org/doi/10.1073/pnas.2202769119",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Neil L. Harrison",
+        "Jeffrey D. Sachs"
+      ],
+      "venue": "Proceedings of the National Academy of Sciences",
       "citations": null,
       "retracted": false,
       "position": "pos_undetermined_unresolved",
@@ -913,15 +1342,22 @@
         }
       },
       "addedIn": 24,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075276+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_relman_to_stop_the_next_pandemic_we_need_to__2020",
       "title": "Relman — To stop the next pandemic, we need to unravel the origins of COVID-19 (PNAS)",
       "year": 2020,
       "url": "https://www.pnas.org/doi/10.1073/pnas.2021133117",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "David A. Relman"
+      ],
+      "venue": "Proceedings of the National Academy of Sciences",
       "citations": null,
       "retracted": false,
       "position": "pos_undetermined_unresolved",
@@ -937,15 +1373,22 @@
         }
       },
       "addedIn": 25,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075292+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
       "title": "Quay — Bayesian analysis of SARS-CoV-2 origin (lab, high probability)",
       "year": 2021,
       "url": "https://zenodo.org/record/4477081",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Steven Quay"
+      ],
+      "venue": "Zenodo",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -963,15 +1406,23 @@
         }
       },
       "addedIn": 26,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699892+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_courtier_orgogozo_de_ribera_sars_cov_2_infec_2022",
       "title": "Courtier-Orgogozo & de Ribera — SARS-CoV-2 infection at the Wuhan market: a Bayesian analysis",
       "year": 2022,
       "url": "https://hal.science/hal-03264773",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Virginie Courtier-Orgogozo",
+        "Francisco A. de Ribera"
+      ],
+      "venue": "HAL open archive",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -989,15 +1440,23 @@
         }
       },
       "addedIn": 27,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.699909+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
       "title": "Latham & Wilson — The Mojiang Miners Passage hypothesis for the origin of SARS-CoV-2",
       "year": 2020,
       "url": "https://www.independentsciencenews.org/commentaries/the-case-is-building-that-covid-19-had-a-lab-origin/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Monali C. Rahalkar",
+        "Rahul A. Bahulikar"
+      ],
+      "venue": "Current Science",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -1015,7 +1474,48 @@
         }
       },
       "addedIn": 28,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.075336+00:00",
+        "method": "catalogue+manual-full-text"
+      }
+    },
+    {
+      "id": "src_who_sago_independent_assessment_of_the_origi_2025",
+      "title": "WHO SAGO — Independent assessment of the origins of SARS-CoV-2",
+      "year": 2025,
+      "url": "https://www.who.int/publications/m/item/independent-assessment-of-the-origins-of-sars-cov-2-from-the-scientific-advisory-group-for-the-origins-of-novel-pathogens",
+      "authors": [
+        "Scientific Advisory Group for the Origins of Novel Pathogens (SAGO)"
+      ],
+      "venue": "World Health Organization scientific brief",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Government/public",
+      "population": "Global SARS-CoV-2 origins evidence through June 2025",
+      "confidence": "high",
+      "restsOn": [
+        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+        "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+        "src:src_who_china_joint_study_on_the_origins_of_sars_2021",
+        "src:src_us_odni_updated_assessment_on_covid_19_origi_2023",
+        "src:src_harrison_sachs_a_call_for_an_independent_inq_2022"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "The weight of available evidence reviewed by SAGO suggests zoonotic spillover, but significant data gaps remain and SAGO is not in a position to rule out a laboratory origin.",
+          "extractionConfidence": 0.96,
+          "verifiedQuote": "fuzzy"
+        }
+      },
+      "addedIn": 32,
+      "textDepth": "full",
+      "fundingDetails": [
+        "World Health Organization"
+      ]
     }
   ],
   "vocab": {
@@ -1076,6 +1576,10 @@
       },
       {
         "label": "Early SARS-CoV-2 sequences",
+        "aliases": []
+      },
+      {
+        "label": "Global SARS-CoV-2 origins evidence through June 2025",
         "aliases": []
       }
     ],
@@ -1523,6 +2027,222 @@
       "action": "verify-quotes",
       "summary": "fetched 3 anchor sources and attached verified quotes from the real text",
       "ts": "2026-07-11T01:13:23.923125+00:00"
+    },
+    {
+      "version": 31,
+      "action": "backfill-confirmation-audit-metadata",
+      "by": "Evgeniia",
+      "ts": "2026-07-11T23:28:50-03:00",
+      "datasets": [
+        "ds_huanan_market_environmental_samples_early_ca",
+        "ds_early_sars_cov_2_genomic_sequences_lineages_",
+        "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+        "ds_defuse_grant_proposal_document_2018",
+        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+        "ds_deleted_early_wuhan_sequence_dataset",
+        "ds_mojiang_miners_ratg13_provenance"
+      ],
+      "summary": "added actor/time/direct-source metadata to 7 existing curator confirmations"
+    },
+    {
+      "version": 32,
+      "action": "add-source",
+      "source": "src_who_sago_independent_assessment_of_the_origi_2025",
+      "title": "WHO SAGO — Independent assessment of the origins of SARS-CoV-2",
+      "ts": "2026-07-12T13:47:29.915810+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 5 → 6",
+        "independent bases: Undetermined / unresolved 2.0 → 4.0",
+        "concentration: Undetermined / unresolved 50% → 25% (top: —)",
+        "+ new crux: Epidemiological proximity of the earliest cases to the market"
+      ]
+    },
+    {
+      "version": 33,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 17 source(s)",
+      "changes": [
+        {
+          "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "manual": null,
+          "catalogueMatch": 0.714
+        },
+        {
+          "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_crits_christoph_et_al_genetic_tracing_of_mar_2024",
+          "manual": null,
+          "catalogueMatch": 0.846
+        },
+        {
+          "source": "src_holmes_et_al_the_origins_of_sars_cov_2_a_cri_2021",
+          "manual": "repaired truncated Cell URL and added the article funding statement",
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_response_to_segreto_deigin_there_is_still_no_2021",
+          "manual": null,
+          "catalogueMatch": 0.55
+        },
+        {
+          "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
+          "manual": null,
+          "catalogueMatch": 0.917
+        },
+        {
+          "source": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
+          "manual": null,
+          "catalogueMatch": 0.8
+        },
+        {
+          "source": "src_boni_et_al_evolutionary_origins_of_the_sars__2020",
+          "manual": null,
+          "catalogueMatch": 0.562
+        },
+        {
+          "source": "src_lytras_et_al_exploring_the_natural_origins_o_2022",
+          "manual": null,
+          "catalogueMatch": 0.727
+        },
+        {
+          "source": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_liu_gao_et_al_surveillance_of_sars_cov_2_at__2023",
+          "manual": null,
+          "catalogueMatch": 0.833
+        },
+        {
+          "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
+          "manual": null,
+          "catalogueMatch": 0.765
+        },
+        {
+          "source": "src_harrison_sachs_a_call_for_an_independent_inq_2022",
+          "manual": null,
+          "catalogueMatch": 0.867
+        },
+        {
+          "source": "src_relman_to_stop_the_next_pandemic_we_need_to__2020",
+          "manual": null,
+          "catalogueMatch": 0.923
+        },
+        {
+          "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
+          "manual": null,
+          "catalogueMatch": 0.333
+        }
+      ],
+      "ts": "2026-07-12T13:51:36.075358+00:00"
+    },
+    {
+      "version": 34,
+      "action": "move-source",
+      "summary": "moved source “Emergence of the Spike Furin Cleavage Site in SARS-CoV-2 — a natural-evolution account”: “Zoonotic spillover at the Huanan market” → “Undetermined / unresolved”",
+      "ts": "2026-07-12T13:53:21.599536+00:00",
+      "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
+      "title": "Emergence of the Spike Furin Cleavage Site in SARS-CoV-2 — a natural-evolution account",
+      "from": "pos_zoonotic_spillover_at_the_huanan_market",
+      "to": "pos_undetermined_unresolved",
+      "by": "source-audit-2026-07",
+      "reason": "The paper does not conclude that the furin cleavage site arose naturally; it states that available sequences cannot distinguish natural emergence from experimental insertion."
+    },
+    {
+      "version": 35,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 14 source(s)",
+      "changes": [
+        {
+          "source": "src_crits_christoph_et_al_genetic_tracing_of_mar_2024",
+          "manual": "replaced a preprint PubMed link and an irrelevant SARS-CoV-1 excerpt with the 2024 Cell article and finding",
+          "catalogueMatch": 0.846
+        },
+        {
+          "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
+          "manual": "removed the false 'natural-evolution account' gloss and restored the paper's genuinely unresolved conclusion",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_peter_miller_the_case_for_zoonosis_covid_ori_2024",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_who_china_joint_study_on_the_origins_of_sars_2021",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_boni_et_al_evolutionary_origins_of_the_sars__2020",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": 0.562
+        },
+        {
+          "source": "src_lytras_et_al_exploring_the_natural_origins_o_2022",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": 0.727
+        },
+        {
+          "source": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_courtier_orgogozo_de_ribera_sars_cov_2_infec_2022",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        }
+      ],
+      "ts": "2026-07-12T13:54:20.699949+00:00"
     }
   ]
 }

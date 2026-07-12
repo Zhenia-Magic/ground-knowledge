@@ -112,6 +112,7 @@ class TwoPassRefTests(unittest.TestCase):
     def test_forward_ref_resolves_and_the_cycle_is_flagged(self):
         from engine.merge import resolve_pending_refs
         from engine.roots import resolve
+        from engine.assess import independence
         kb = empty_kb("t", "q")
         merge_delta(kb, {"source": {"title": "Paper A", "year": 2020, "url": "https://x/a",
             "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper B"]}})
@@ -119,10 +120,12 @@ class TwoPassRefTests(unittest.TestCase):
             "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper A"]}})
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertEqual(a["restsOn"], [])                      # forward ref unresolved at merge time
+        self.assertEqual(independence(kb)[0]["nEff"], 1)        # unresolved graph: one secondary voice
         self.assertGreaterEqual(resolve_pending_refs(kb), 1)    # second pass wires A->B
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertTrue(any(str(e).startswith("src:") for e in a["restsOn"]))
         self.assertEqual(len(resolve(kb)["circular"]), 1)       # the A<->B ring is now flagged
+        self.assertEqual(independence(kb)[0]["nEff"], 0)        # correction removes false grounding
 
 
 class DuplicateSuggestionTests(unittest.TestCase):
@@ -136,6 +139,156 @@ class DuplicateSuggestionTests(unittest.TestCase):
         pairs = suggest_duplicates(kb).get("dataset", [])
         self.assertEqual(len(pairs), 1)
         self.assertEqual(pairs[0]["reason"], "acronym")
+
+
+class DatasetEdgeObjectCurationTests(unittest.TestCase):
+    def test_merge_datasets_repoints_and_dedupes_object_edges_without_losing_quote(self):
+        from engine.curate import merge_datasets
+        from engine.migrate import validation_errors
+        from ui.server import _counts
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "Paper", "position": "NEW:Yes",
+            "evidence": "Observational", "funding": "Undisclosed", "population": "—",
+            "restsOn": [
+                {"ref": "NEW:NHS", "provenance": {"quote": "NHS quote"}},
+                {"ref": "NEW:Nurses Health Study", "provenance": {"quote": "full quote"}},
+            ]}})
+        merge_datasets(kb, "NHS", "Nurses Health Study")
+        edges = kb["sources"][0]["restsOn"]
+        self.assertEqual(len(edges), 1)
+        self.assertIsInstance(edges[0], dict)
+        self.assertEqual(edges[0]["provenance"]["quote"], "NHS quote")
+        self.assertEqual(validation_errors(kb), [])
+        self.assertEqual(sum(_counts(kb)[1].values()), 1)          # object edge is countable, not unhashable
+
+    def test_confirmation_blocks_likely_alias_without_explicit_explanation(self):
+        from engine.curate import confirm_dataset
+        kb = empty_kb("t", "q")
+        kb["datasets"] = [
+            {"id": "nhs", "label": "NHS", "aliases": []},
+            {"id": "nurses", "label": "Nurses Health Study", "aliases": []},
+        ]
+        with self.assertRaises(ValueError):
+            confirm_dataset(kb, "nhs", by="ann")
+        with self.assertRaises(ValueError):
+            confirm_dataset(kb, "nhs", by="ann", allow_similar=True)
+        confirm_dataset(kb, "nhs", by="ann", allow_similar=True,
+                        note="Distinct registry sharing an acronym; manually checked")
+        rec = kb["datasets"][0]["confirmation"]
+        self.assertEqual(rec["by"], "ann")
+        self.assertTrue(rec["ts"])
+        self.assertTrue(rec["similarityOverride"])
+
+
+class SourceRemovalTests(unittest.TestCase):
+    def _kb(self):
+        kb = empty_kb("t", "q")
+        first = {"source": {"title": "Irrelevant paper", "year": 2020,
+                 "url": "https://x/irrelevant", "position": "NEW:Yes",
+                 "evidence": "Observational", "funding": "Undisclosed", "population": "—",
+                 "restsOn": ["NEW:Only dataset"]},
+                 "factorWeights": [{"factor": "Crux", "weight": "low", "quote": "q"}]}
+        merge_delta(kb, first)
+        sid = kb["sources"][0]["id"]
+        merge_delta(kb, {"source": {"title": "Commentary", "year": 2021,
+                    "url": "https://x/commentary", "position": kb["positions"][0]["id"],
+                    "evidence": "Narrative/Commentary", "funding": "Undisclosed",
+                    "population": "—", "restsOn": ["src:" + sid]}})
+        return kb, sid
+
+    def test_remove_requires_editorial_audit_fields(self):
+        from engine.curate import remove_source
+        kb, sid = self._kb()
+        with self.assertRaises(ValueError):
+            remove_source(kb, sid, "", "curator")
+        with self.assertRaises(ValueError):
+            remove_source(kb, sid, "wrong outcome", "")
+
+    def test_remove_repairs_edges_factors_and_orphan_dataset(self):
+        from engine.curate import remove_source
+        from engine.migrate import validation_errors
+        kb, sid = self._kb()
+        report = remove_source(kb, sid, "measures another outcome", "source-audit-2026-07")
+        self.assertEqual(len(kb["sources"]), 1)
+        self.assertEqual(kb["sources"][0]["restsOn"], [])
+        self.assertEqual(kb["datasets"], [])
+        self.assertEqual(kb["factors"][0]["weights"], {})
+        self.assertEqual(kb["factors"][0]["provenance"], [])
+        self.assertEqual(report["prunedDatasets"], ["ds_only_dataset"])
+        self.assertEqual(kb["log"][-1]["reason"], "measures another outcome")
+        self.assertEqual(validation_errors(kb), [])
+
+    def test_duplicate_removal_repoints_source_edges(self):
+        from engine.curate import remove_source
+        kb, sid = self._kb()
+        retained = kb["sources"][1]["id"]
+        # Make a third paper cite the duplicate so replacement has an observable edge.
+        kb["sources"].append(dict(kb["sources"][1], id="third", title="Third",
+                                  url="https://x/third", restsOn=["src:" + sid]))
+        remove_source(kb, sid, "duplicate record", "source-audit-2026-07", retained)
+        third = next(s for s in kb["sources"] if s["id"] == "third")
+        self.assertEqual(third["restsOn"], ["src:" + retained])
+
+    def test_move_source_updates_factor_claim_and_logs_reason(self):
+        from engine.curate import move_source
+        kb, sid = self._kb()
+        kb["positions"].append({"id": "p2", "label": "Mixed", "hue": "#123"})
+        report = move_source(kb, sid, "Mixed", "finding is bidirectional", "source-audit-2026-07")
+        self.assertEqual(kb["sources"][0]["position"], "p2")
+        self.assertEqual(kb["factors"][0]["provenance"][0]["pos"], "p2")
+        self.assertEqual(kb["factors"][0]["weights"], {"p2": "low"})
+        self.assertEqual(report["to"], "p2")
+        self.assertEqual(kb["log"][-1]["reason"], "finding is bidirectional")
+
+    def test_merge_preserves_named_funding_details(self):
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "Funded study", "year": 2024,
+                    "url": "https://x/funded", "position": "NEW:Yes",
+                    "evidence": "Observational", "funding": "Government/public",
+                    "fundingDetails": ["National Science Foundation grant 123"],
+                    "population": "Adults", "restsOn": []}})
+        self.assertEqual(kb["sources"][0]["fundingDetails"],
+                         ["National Science Foundation grant 123"])
+
+    def test_merge_dataset_preserves_confirmed_root_and_audit_record(self):
+        from engine.curate import merge_datasets
+        from engine.assess import independence
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "Paper", "position": "NEW:Yes",
+            "evidence": "Observational", "funding": "Undisclosed", "population": "—",
+            "restsOn": ["NEW:Confirmed cohort"]}})
+        src_id = kb["datasets"][0]["id"]
+        kb["datasets"][0]["confirmation"] = {
+            "status": "confirmed", "method": "curator", "by": "ann",
+            "ts": "2026-07-11T00:00:00Z", "source": kb["sources"][0]["id"]}
+        kb["datasets"].append({"id": "target", "label": "Target cohort", "aliases": [],
+                               "confirmation": {"status": "provisional"}})
+        self.assertEqual(independence(kb)[0]["nEff"], 1)
+        merge_datasets(kb, src_id, "target")
+        self.assertEqual(independence(kb)[0]["nEff"], 1)
+        rec = next(d for d in kb["datasets"] if d["id"] == "target")["confirmation"]
+        self.assertEqual(rec["by"], "ann")
+        self.assertEqual(rec["mergedFrom"][0]["dataset"], src_id)
+
+    def test_source_dedupe_repoints_confirmation_support(self):
+        from engine.curate import dedupe_sources
+        from engine.migrate import validation_errors
+        kb = empty_kb("t", "q")
+        kb["positions"] = [{"id": "p", "label": "P", "hue": "#000"}]
+        base = {"position": "p", "evidence": "Observational", "funding": "Undisclosed",
+                "population": "—", "restsOn": [], "textDepth": "unknown"}
+        old = dict(base, id="old", title="Same paper", year=2020,
+                   url="https://doi.org/10.1234/same", provenance={})
+        new = dict(base, id="new", title="Same paper", year=2020,
+                   url="https://publisher.example/10.1234/same",
+                   provenance={"position": {"quote": "q"}})
+        kb["sources"] = [old, new]
+        kb["datasets"] = [{"id": "d", "label": "D", "aliases": [], "confirmation": {
+            "status": "confirmed", "method": "curator", "by": "ann",
+            "ts": "2026-07-11T00:00:00Z", "source": "old"}}]
+        dedupe_sources(kb)
+        self.assertEqual(kb["datasets"][0]["confirmation"]["source"], "new")
+        self.assertEqual(validation_errors(kb), [])
 
 
 class OffTopicRefusalTests(unittest.TestCase):

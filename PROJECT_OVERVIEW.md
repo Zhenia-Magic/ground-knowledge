@@ -17,11 +17,12 @@ This project ports that idea to **research questions** ("Do eggs raise heart-dis
 "Did COVID come from a lab?", "Could the LHC create a dangerous black hole?") — but inverts the
 neutrality. In a research dispute, some positions genuinely *are* better supported, so simply
 counting sources rewards whoever is loudest, most numerous, or best funded. That's **false
-balance**. So instead of counting heads, the tool **weights by evidence quality and audits
-whether the evidence is actually independent.**
+balance**. So instead of counting heads, the tool **counts resolved independent evidence bases**
+and displays evidence design/funding alongside that count. It is not a GRADE-style quality score.
 
-The headline behaviour: **adding more *correlated* papers to a position makes it look *less*
-settled, not more.** That single inversion is the whole point.
+The headline behaviour: **adding papers to an already resolved root adds no independent support.**
+The raw count can grow while the independent-bases count stays fixed; twelve unnamed rehashes add
+at most one pooled voice, and a pure citation loop adds zero.
 
 ---
 
@@ -49,8 +50,8 @@ This tool is built to surface exactly those three things.
 
 ## 3. The core idea (the "thesis")
 
-> **Aggregate, but weight by evidence quality and audit for independence — instead of counting
-> sources.** If a feature could be gamed by flooding the zone with low-quality or correlated
+> **Aggregate, but count independent evidence bases and audit quality separately — instead of
+> counting sources.** If a feature could be gamed by flooding the zone with low-quality or correlated
 > papers, it's the wrong feature.
 
 Everything in the project follows from that commitment.
@@ -101,10 +102,10 @@ Three sub-steps, and only the last needs an AI model:
   is it, who funded it, which datasets does it rest on, which factors does it weigh. This is the
   *only* step that uses an AI. Running several models and voting means a label no longer hinges on
   one model's quirk, and the per-field agreement is recorded. When the models genuinely **disagree
-  on the position**, the source isn't merged under a guessed label — it's parked in a *needs-review*
+  on the position or on the primary/secondary evidence tier**, the source isn't merged under a guessed label — it's parked in a *needs-review*
   queue (inside the KB itself) for a human to resolve: pick a position, or drop the paper. Pending
-  items count toward no metric. Every extracted provenance quote is also spot-checked against the
-  text that was actually fetched — a quote that doesn't match is flagged, but only counted as a
+  items count toward no metric. The requested position, per-dataset-edge, and factor-weight quotes
+  are spot-checked against the text that was actually fetched — a quote that doesn't match is flagged, but only counted as a
   real warning on a full-text source; the same check on an abstract-only source is expected
   noise, not an accusation (see §8).
 
@@ -132,18 +133,21 @@ A knowledge base is made of a few simple entity types:
 
 - **Positions** — the camps / stances on the question (e.g. "eggs increase risk", "no
   association", "context-dependent").
-- **Datasets** — the underlying primary evidence (a specific cohort, trial, or biobank, e.g.
-  "Nurses' Health Study"). This is what powers the independence audit.
-- **Sources** — the individual papers. Each is tagged with: its position, evidence type, funding
-  category, the population studied, and which datasets it rests on — every tag backed by a quote
-  from the source.
+- **Evidence bases** (stored under the legacy `datasets` key) — a specific cohort, trial, observation,
+  argument, model, or document. This is what powers the independence audit across empirical and
+  theoretical cases.
+- **Sources** — the individual papers. Each is tagged with its position, evidence type, funding
+  category, population, and dependencies. Position and dataset-dependency edges request quotes;
+  factor weights do too. Categorical metadata can come from fetched APIs and is not falsely described
+  as quote-backed field by field.
 - **Factors** — the dimensions of the debate (e.g. "hormones in dairy", "confounding by overall
   diet"). Each factor records how strongly *each position* weighs it.
 
 And then the metrics computed from these:
 
 - **Distribution** — share of sources per position. The naive view.
-- **Funding skew** — which position the *interested* money (industry/advocacy) favours, plus how
+- **Funding pattern** — how *interested* money (industry/advocacy) is distributed across positions,
+  explicitly reporting ties, plus how
   many sources don't disclose funding at all. Funding is a fixed set of categories
   (Government, Nonprofit, Academic, Industry, Advocacy, Undisclosed) and **defaults to
   "Undisclosed" — it never assumes independence** when a source is silent.
@@ -152,16 +156,12 @@ And then the metrics computed from these:
   once** (at half weight when a root is known only via a review, or backed only by animal /
   in-vitro work). If five sources all rest on one dataset, that's **1 independent look, not 5** —
   and adding a sixth, sixtieth, or six-hundredth source on that dataset moves the count by exactly
-  nothing; the pile-up shows only in the separate *concentration* share. This is the metric that
-  refuses to be gamed by volume, in either direction: you can't inflate your own side with
-  correlated sources, and you can't tank a rival by "supporting" it with junk. You also can't fake
-  independence by *relabelling* echo as original research: a distinct root requires **naming** a
-  distinct evidence base, so sources that name none — reviews, or "primaries" with nothing tagged —
-  each collapse to a single pooled voice per position.
-- **Cruxes** — from the factor grid: a factor is a "crux" when the camps weigh it very
-  differently (spread of ≥2 levels). This localises *where* the disagreement actually is. Cruxes
-  **emerge** as the base grows — a factor only becomes a crux once two different camps have
-  weighed it.
+  nothing; the pile-up shows only in the separate *concentration* share. An ungrounded flood adds at
+  most one pooled voice, not one root per item. Relabelling echo as original research does not bypass
+  that pool: a distinct root requires a **specific named and admitted** evidence base.
+- **Cruxes** — from the factor grid: cross-camp disagreement, shared high pivots, one-sided high
+  assumptions, unanswered high factors, and milder contests are separately typed. This localises
+  where disagreement or missing engagement actually lives without calling every factor a crux.
 - **Blindspots** — evidence types or populations present elsewhere in the debate but missing from
   a given position's own sources. "What is this camp not looking at?"
 
@@ -227,8 +227,9 @@ A guiding principle throughout: **finding and reading sources are free and keyle
   reintroduce the very bias the project fights.
 
 - **Duplicate and alias defences.** The same study can't be added twice (same URL or title+year
-  is refused). The same dataset submitted under five different names is matched to one entity, so
-  nobody can fake independence by renaming.
+  is refused). Exact and learned aliases resolve automatically; unknown lexical lookalikes are
+  quarantined at confirmation and shown for curator merge/override. Novel semantic paraphrases can
+  still evade the advisory embedding check, so renaming is reduced rather than claimed solved.
 
 - **A second, separate axis for correlated *bias*, not just correlated *data*.** The independence
   metric catches sources sharing a dataset — but 15 sources on 15 *distinct* cohorts can still all
@@ -239,7 +240,8 @@ A guiding principle throughout: **finding and reading sources are free and keyle
   count, so the primary metric's claim stays narrow and defensible while the warning still surfaces
   the risk (see `MECHANISM.md` §12).
 
-- **Provenance quotes are checked, not just collected.** Every quote is matched against the exact
+- **Requested provenance quotes are checked, not just collected.** Position quotes, per-dataset-edge
+  dependency quotes, and factor-weight quotes are matched against the exact
   text the labeller actually saw. A mismatch on a full-text source is a real red flag (the model
   said something the paper doesn't support); the identical mismatch on an abstract-only source is
   expected noise, since the quote may be true but drawn from body text the tool never had — the two
@@ -251,9 +253,9 @@ A guiding principle throughout: **finding and reading sources are free and keyle
 
 A core value of the project is naming what it *doesn't* solve:
 
-- **Paraphrase collisions.** String-matching can tell "NHS" = "Nurses' Health Study" via aliases,
-  but not "Wuhan market data" = "Huanan seafood market." Human curation tools exist to fix these
-  after the fact; full automation would need AI embeddings (a future step).
+- **Paraphrase collisions.** String matching handles known aliases. Optional embedding suggestions
+  (`dups --embed`) surface semantic candidates, and confirmation blocks likely duplicates unless a
+  curator records an override; the final identity decision remains deliberately human.
 - **Curated factor weights.** How strongly each camp weighs each factor is a human/AI judgment —
   the softest input. The *mechanical* parts (counts, datasets, funding category, concentration)
   are what resist gaming.
@@ -261,8 +263,9 @@ A core value of the project is naming what it *doesn't* solve:
   factors it mentions; older sources aren't re-scored when a new factor appears. So the grid fills
   in only as sources across camps happen to address the same factors — a deliberate trade for
   determinism and provenance.
-- **Data realism.** One case (eggs) is a fully real, sourced evidence base; the others (COVID,
-  black holes) are "worked seeds" — real structure, illustrative content.
+- **Data realism.** All three competition cases use real, citable sources. Their structure and factor
+  weights are curator-authored, and most evidence-base confirmations are curator decisions rather
+  than fetched, per-edge dependency verification; the audit records say so explicitly.
 - **Method-bias is a warning, not yet a bounded second score.** The natural next step — a single
   "triangulation" number that discounts independence for shared correlated error, the way the
   primary metric discounts for shared datasets — turned out not to have a safe general formula

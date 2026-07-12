@@ -42,6 +42,8 @@ def _admin_delete_source(qid, sid):
         return {"error": "source not found"}
     for f in kb.get("factors", []):
         f["provenance"] = [pv for pv in f.get("provenance", []) if pv.get("source") != sid]
+    from engine.curate import repoint_confirmation_source
+    repoint_confirmation_source(kb, sid, reason="supporting source removed by portal administrator")
     from engine.merge import recompute_factor_weights
     recompute_factor_weights(kb)                      # re-derive cells so the dropped weight is gone
     kb["meta"]["version"] = kb["meta"].get("version", 0) + 1
@@ -55,7 +57,8 @@ def _admin_delete_source(qid, sid):
     return {"ok": True, "version": v}
 
 
-def _admin_confirm_dataset(qid, dataset_ref, confirmed=True):
+def _admin_confirm_dataset(qid, dataset_ref, confirmed=True, by="portal-admin", source=None,
+                           note=None, allow_similar=False):
     """Curator confirms (or un-confirms) a dataset as a real evidence base — a confirmed root counts
     at full strength; an unconfirmed/paste-back root remains visible but contributes zero headline
     nEff until confirmed (engine/roots). Admin moderation."""
@@ -65,7 +68,8 @@ def _admin_confirm_dataset(qid, dataset_ref, confirmed=True):
         return {"error": "no such question"}
     kb = q["kb"]
     try:
-        res = curate.confirm_dataset(kb, dataset_ref, confirmed)
+        res = curate.confirm_dataset(kb, dataset_ref, confirmed, by=by or "portal-admin",
+                                     source=source, note=note, allow_similar=allow_similar)
     except (ValueError, KeyError) as e:
         return {"error": str(e)}
     try:
@@ -158,7 +162,8 @@ def _delta_validation_error(delta):
         return "delta.source.title is too long (max 500 chars)"
     # restsOn is the root-admission surface: bound it and type-check it so one public source can't
     # supply an unbounded or malformed root list. (Novel roots from this path are unverified ->
-    # textDepth is stripped to 'unknown' -> they count at HALF until confirmed; see engine/roots.)
+    # textDepth is stripped to 'unknown' -> they stay visible but count ZERO until an auditable
+    # confirmation admits them; see engine/roots.)
     rests = src.get("restsOn")
     if rests is not None:
         if not isinstance(rests, list):
@@ -395,7 +400,8 @@ class Handler(BaseHTTPRequestHandler):
             if p[2] == "confirm-dataset":
                 return self._send(200, _admin_confirm_dataset(
                     body.get("id"), body.get("dataset") or body.get("datasetId"),
-                    body.get("confirmed", True)))
+                    body.get("confirmed", True), body.get("by") or "portal-admin",
+                    body.get("source"), body.get("note"), body.get("allowSimilar", False)))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()

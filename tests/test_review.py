@@ -140,10 +140,16 @@ class FlaggedSourceReReviewTests(unittest.TestCase):
     def test_drop_removes_the_merged_source_and_prunes_provenance(self):
         self.kb.setdefault("factors", []).append(
             {"id": "f_x", "label": "X", "weights": {}, "provenance": [{"source": self.sid, "quote": "q"}]})
+        self.kb.setdefault("datasets", []).append({"id": "d", "label": "D", "aliases": [],
+            "confirmation": {"status": "confirmed", "method": "curator", "by": "ann",
+                             "ts": "2026-07-11T00:00:00Z", "source": self.sid}})
         rep = review.resolve_flagged_source(self.kb, self.sid, "drop")
         self.assertTrue(rep["dropped"])
         self.assertEqual(self.kb["sources"], [])
         self.assertEqual(self.kb["factors"][0]["provenance"], [])
+        self.assertNotIn("source", self.kb["datasets"][0]["confirmation"])
+        from engine.migrate import validation_errors
+        self.assertEqual(validation_errors(self.kb), [])
 
     def test_unknown_source_id_raises(self):
         with self.assertRaises(ValueError):

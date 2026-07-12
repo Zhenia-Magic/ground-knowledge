@@ -1,0 +1,43 @@
+{
+  "source": {
+    "title": "Formisano et al. — Effect of egg consumption on health outcomes: an updated umbrella review",
+    "year": 2025,
+    "url": "https://doi.org/10.1016/j.numecd.2025.103849",
+    "authors": ["Elena Formisano", "Lenycia de Cassya Lopes Neri", "Irene Caffa", "Consuelo Borgarelli", "Maria Regina Ferrando", "Elisa Proietti", "Federica Turrini", "Daniela Martini", "Donato Angelino", "Anna Tagliabue", "Livia Pisciotta"],
+    "venue": "Nutrition, Metabolism and Cardiovascular Diseases",
+    "position": "pos_no_association",
+    "evidence": "Evidence-synthesis",
+    "funding": "Academic/institutional",
+    "fundingDetails": ["No external funding reported"],
+    "population": "General adults",
+    "confidence": "moderate",
+    "restsOn": [
+      "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+      "src:src_godos_et_al_egg_consumption_and_cardiovascul_2021",
+      "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
+      "src:src_carson_et_al_dietary_cholesterol_and_cardiov_2020"
+    ],
+    "provenance": {
+      "position": {
+        "quote": "No evidence of association was found among all cardiovascular outcomes and all-cause mortality risk between high vs. low egg consumption.",
+        "extractionConfidence": 0.98,
+        "verifiedQuote": "exact"
+      }
+    },
+    "textDepth": "full"
+  },
+  "factorWeights": [
+    {
+      "factor": "Judge eggs on biomarkers (LDL) vs hard CVD events",
+      "weight": "high",
+      "quote": "The level of evidence was very weak for all the significant associations, including higher LDL cholesterol, while no association was found for cardiovascular outcomes.",
+      "verifiedQuote": "fuzzy"
+    },
+    {
+      "factor": "Population/context dependence (who is eating eggs)",
+      "weight": "med",
+      "quote": "The wide range of outcomes, with substantial variability and high heterogeneity, indicated a lack of robust evidence.",
+      "verifiedQuote": "exact"
+    }
+  ]
+}

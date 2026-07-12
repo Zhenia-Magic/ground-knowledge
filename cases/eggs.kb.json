@@ -2,8 +2,8 @@
   "meta": {
     "id": "eggs",
     "question": "Do eggs increase cardiovascular disease risk?",
-    "version": 23,
-    "updated": "2026-07-11T01:15:26.902222+00:00",
+    "version": 27,
+    "updated": "2026-07-12T13:54:20.703909+00:00",
     "portal": {
       "id": "04329878656c",
       "baseVersion": 23,
@@ -35,7 +35,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_zhong_et_al_associations_of_dietary_choleste_2019"
       }
     },
     {
@@ -44,7 +48,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021"
       }
     },
     {
@@ -53,7 +61,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020"
       }
     },
     {
@@ -62,7 +74,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020"
       }
     },
     {
@@ -71,7 +87,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018"
       }
     },
     {
@@ -80,7 +100,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018"
       }
     },
     {
@@ -89,7 +113,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_blesso_fernandez_whole_egg_consumption_impro_2013"
       }
     },
     {
@@ -98,7 +126,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_djouss_gaziano_egg_consumption_and_risk_of_h_2008"
       }
     },
     {
@@ -107,7 +139,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_spence_jenkins_davignon_egg_yolk_consumption_2010"
       }
     },
     {
@@ -116,7 +152,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_virtanen_et_al_egg_consumption_and_risk_of_c_2016"
       }
     },
     {
@@ -125,7 +165,11 @@
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
-        "method": "curator"
+        "method": "curator",
+        "by": "Evgeniia",
+        "ts": "2026-07-11T23:28:50-03:00",
+        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
+        "source": "src_larsson_et_al_egg_consumption_and_risk_of_he_2015"
       }
     }
   ],
@@ -135,7 +179,8 @@
       "label": "Judge eggs on biomarkers (LDL) vs hard CVD events",
       "weights": {
         "pos_context_dependent_depends_on_the_person": "low",
-        "pos_increases_risk": "med"
+        "pos_increases_risk": "med",
+        "pos_no_association": "high"
       },
       "rationale": "Weights hard clinical endpoints from large pooled cohorts.",
       "provenance": [
@@ -159,6 +204,13 @@
           "quote": "carotid plaque area increased with egg yolk consumption",
           "verifiedQuote": null,
           "weight": "med"
+        },
+        {
+          "source": "src_formisano_et_al_effect_of_egg_consumption_on_2025",
+          "pos": "pos_no_association",
+          "weight": "high",
+          "quote": "The level of evidence was very weak for all the significant associations, including higher LDL cholesterol, while no association was found for cardiovascular outcomes.",
+          "verifiedQuote": "fuzzy"
         }
       ]
     },
@@ -216,6 +268,13 @@
           "quote": "associated with heart failure risk",
           "verifiedQuote": null,
           "weight": "med"
+        },
+        {
+          "source": "src_formisano_et_al_effect_of_egg_consumption_on_2025",
+          "pos": "pos_no_association",
+          "weight": "med",
+          "quote": "The wide range of outcomes, with substantial variability and high heterogeneity, indicated a lack of robust evidence.",
+          "verifiedQuote": "exact"
         }
       ]
     },
@@ -305,8 +364,22 @@
       "title": "Zhong et al. — Associations of dietary cholesterol/egg consumption with CVD and mortality (JAMA)",
       "year": 2019,
       "url": "https://jamanetwork.com/journals/jama/fullarticle/2728487",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Victor W. Zhong",
+        "Linda Van Horn",
+        "Marilyn C. Cornelis",
+        "John T. Wilkins",
+        "Hongyan Ning",
+        "Mercedes R. Carnethon",
+        "Philip Greenland",
+        "Robert J. Mentz",
+        "Katherine L. Tucker",
+        "Lihui Zhao",
+        "Arnita F. Norwood",
+        "Donald M. Lloyd-Jones",
+        "Norrina B. Allen"
+      ],
+      "venue": "JAMA",
       "citations": null,
       "retracted": false,
       "position": "pos_increases_risk",
@@ -324,15 +397,29 @@
         }
       },
       "addedIn": 1,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079142+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021",
       "title": "Zhuang et al. — Egg & cholesterol consumption and mortality (NIH-AARP, PLOS Medicine)",
       "year": 2021,
       "url": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Pan Zhuang",
+        "Fei Wu",
+        "Lei Mao",
+        "Fanghuan Zhu",
+        "Yiju Zhang",
+        "Xiaoqian Chen",
+        "Jingjing Jiao",
+        "Yu Zhang"
+      ],
+      "venue": "PLOS Medicine",
       "citations": null,
       "retracted": false,
       "position": "pos_increases_risk",
@@ -350,15 +437,34 @@
         }
       },
       "addedIn": 2,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "National Key Research and Development Program of China"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079171+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
       "title": "Drouin-Chartier et al. — Egg consumption and risk of cardiovascular disease: three cohorts + meta-analysis (BMJ)",
       "year": 2020,
       "url": "https://www.bmj.com/content/368/bmj.m513",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jean-Philippe Drouin-Chartier",
+        "Siyu Chen",
+        "Yanping Li",
+        "Amanda L Schwab",
+        "Meir J Stampfer",
+        "Frank M Sacks",
+        "Bernard Rosner",
+        "Walter C Willett",
+        "Frank B Hu",
+        "Shilpa N Bhupathiraju"
+      ],
+      "venue": "BMJ",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -377,15 +483,26 @@
         }
       },
       "addedIn": 3,
-      "textDepth": "partial"
+      "textDepth": "partial",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079192+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020",
       "title": "Dehghan et al. — Egg consumption and CVD/mortality in 50 countries (PURE)",
       "year": 2020,
       "url": "https://academic.oup.com/ajcn/article/111/4/795/5735848",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Mahshid Dehghan",
+        "Andrew Mente",
+        "Sumathy Rangarajan",
+        "Viswanathan Mohan",
+        "et al."
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -403,15 +520,26 @@
         }
       },
       "addedIn": 4,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703578+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
       "title": "Qin et al. — Egg consumption and cardiovascular disease (China Kadoorie Biobank)",
       "year": 2018,
       "url": "https://heart.bmj.com/content/104/21/1756",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Canqing Yu",
+        "Ling Yang",
+        "Yiping Chen",
+        "Zheng Bian",
+        "et al."
+      ],
+      "venue": "Heart",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -429,15 +557,22 @@
         }
       },
       "addedIn": 5,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703597+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
       "title": "Hu et al. — A prospective study of egg consumption and risk of cardiovascular disease (JAMA)",
       "year": 1999,
       "url": "https://jamanetwork.com/journals/jama/fullarticle/189529",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Frank B. Hu"
+      ],
+      "venue": "JAMA",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -455,15 +590,25 @@
         }
       },
       "addedIn": 6,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079241+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
       "title": "Rong et al. — Egg consumption and risk of CHD and stroke: dose-response meta-analysis (BMJ)",
       "year": 2013,
       "url": "https://www.bmj.com/content/346/bmj.e8539",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Ying Rong",
+        "Li Chen",
+        "Tingting Zhu",
+        "et al."
+      ],
+      "venue": "BMJ",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -481,15 +626,25 @@
         }
       },
       "addedIn": 7,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703633+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
       "title": "Fuller et al. (DIABEGG) — High vs low egg diet in type 2 diabetes: randomized trial",
       "year": 2018,
       "url": "https://academic.oup.com/ajcn/article/107/6/921/5016058",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Nicholas R. Fuller",
+        "Amanda Sainsbury",
+        "Ian D. Caterson",
+        "et al."
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
@@ -507,15 +662,26 @@
         }
       },
       "addedIn": 8,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703651+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
       "title": "Blesso & Fernandez — Whole egg consumption improves lipoprotein profiles (feeding trial)",
       "year": 2013,
       "url": "https://pubmed.ncbi.nlm.nih.gov/23021013/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Christopher N. Blesso",
+        "Catherine J. Andersen",
+        "Jacqueline Barona",
+        "Jeff S. Volek",
+        "Maria Luz Fernandez"
+      ],
+      "venue": "Metabolism",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
@@ -533,15 +699,30 @@
         }
       },
       "addedIn": 9,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079286+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
       "title": "Carson et al. — Dietary cholesterol and cardiovascular risk: an AHA science advisory",
       "year": 2020,
       "url": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000743",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jo Ann S. Carson",
+        "Alice H. Lichtenstein",
+        "Cheryl A.M. Anderson",
+        "Lawrence J. Appel",
+        "Penny M. Kris-Etherton",
+        "Katie A. Meyer",
+        "Kristina Petersen",
+        "Tamar Polonsky",
+        "Linda Van Horn"
+      ],
+      "venue": "Circulation",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
@@ -557,15 +738,26 @@
         }
       },
       "addedIn": 10,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079304+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_barnard_et_al_industry_funding_and_cholester_2020",
-      "title": "Barnard et al. — Industry funding and cholesterol research on eggs",
-      "year": 2020,
-      "url": "https://www.ahajournals.org/doi/10.1161/JAHA.119.014868",
-      "authors": [],
-      "venue": "",
+      "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review",
+      "year": 2019,
+      "url": "https://doi.org/10.1177/1559827619892198",
+      "authors": [
+        "Neal D. Barnard",
+        "M. Blaire Long",
+        "Jennifer M. Ferguson",
+        "Rosendo Flores",
+        "Hana Kahleova"
+      ],
+      "venue": "American Journal of Lifestyle Medicine",
       "citations": null,
       "retracted": false,
       "position": "pos_increases_risk",
@@ -581,15 +773,26 @@
         }
       },
       "addedIn": 11,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "Conflict disclosed: lead author was uncompensated president of the Physicians Committee for Responsible Medicine, which advocates plant-based diets"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079322+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_djouss_gaziano_egg_consumption_and_risk_of_h_2008",
       "title": "Djoussé & Gaziano — Egg consumption and risk of heart failure (Physicians' Health Study)",
       "year": 2008,
       "url": "https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.107.734855",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Luc Djoussé",
+        "J. Michael Gaziano"
+      ],
+      "venue": "Circulation",
       "citations": null,
       "retracted": false,
       "position": "pos_increases_risk",
@@ -607,20 +810,29 @@
         }
       },
       "addedIn": 12,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703725+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_spence_jenkins_davignon_egg_yolk_consumption_2010",
       "title": "Spence, Jenkins & Davignon — Egg yolk consumption and carotid plaque",
-      "year": 2010,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/20643123/",
-      "authors": [],
-      "venue": "",
+      "year": 2012,
+      "url": "https://doi.org/10.1016/j.atherosclerosis.2012.07.032",
+      "authors": [
+        "J. David Spence",
+        "David J. A. Jenkins",
+        "Jean Davignon"
+      ],
+      "venue": "Atherosclerosis",
       "citations": null,
       "retracted": false,
       "position": "pos_increases_risk",
       "evidence": "Observational",
-      "funding": "Academic/institutional",
+      "funding": "Nonprofit/charity",
       "population": "Vascular-prevention clinic patients",
       "confidence": "low",
       "restsOn": [
@@ -633,15 +845,30 @@
         }
       },
       "addedIn": 13,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "Heart & Stroke Foundation of Ontario",
+        "Stroke Prevention & Atherosclerosis Research Centre"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079360+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_alexander_et_al_meta_analysis_of_egg_consump_2016",
       "title": "Alexander et al. — Meta-analysis of egg consumption and risk of CHD and stroke",
       "year": 2016,
       "url": "https://pubmed.ncbi.nlm.nih.gov/27710205/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Dominik D. Alexander",
+        "Paula E. Miller",
+        "Ashley J. Vargas",
+        "Douglas L. Weed",
+        "Sarah S. Cohen"
+      ],
+      "venue": "Journal of the American College of Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -659,15 +886,25 @@
         }
       },
       "addedIn": 14,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079377+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_tran_et_al_egg_consumption_and_cardiovascula_2014",
       "title": "Tran et al. — Egg consumption and cardiovascular disease: a meta-analysis",
       "year": 2014,
       "url": "https://pubmed.ncbi.nlm.nih.gov/24606898/",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Tasnim F. Imran",
+        "Trevor Toavs",
+        "Mahnoor Khalid",
+        "Luc Djoussé"
+      ],
+      "venue": "Handbook of Egg Science and Technology",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -685,15 +922,25 @@
         }
       },
       "addedIn": 15,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079393+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_virtanen_et_al_egg_consumption_and_risk_of_c_2016",
       "title": "Virtanen et al. — Egg consumption and risk of coronary artery disease (Kuopio, KIHD)",
       "year": 2016,
       "url": "https://academic.oup.com/ajcn/article/103/3/895/4564748",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jyrki K. Virtanen",
+        "Jaakko Mursu",
+        "Hassan E. K. Virtanen",
+        "et al."
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
@@ -711,20 +958,31 @@
         }
       },
       "addedIn": 16,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:54:20.703802+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_berger_et_al_dietary_cholesterol_and_cardiov_2015",
       "title": "Berger et al. — Dietary cholesterol and cardiovascular disease: a systematic review and meta-analysis",
       "year": 2015,
       "url": "https://academic.oup.com/ajcn/article/102/2/276/4564408",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Samantha Berger",
+        "Gowri Raman",
+        "Rohini Vishwanathan",
+        "Paul F Jacques",
+        "Elizabeth J Johnson"
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_no_association",
       "evidence": "Evidence-synthesis",
-      "funding": "Academic/institutional",
+      "funding": "Industry",
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
@@ -737,15 +995,29 @@
         }
       },
       "addedIn": 17,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "USDA",
+        "American Egg Board, Egg Nutrition Center"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079426+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
       "title": "Shin et al. — Egg consumption in relation to cardiovascular disease and diabetes: a meta-analysis",
       "year": 2013,
       "url": "https://academic.oup.com/ajcn/article/98/1/146/4577167",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Jang Yel Shin",
+        "Pengcheng Xun",
+        "Yasuyuki Nakamura",
+        "Ka He"
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
@@ -763,15 +1035,24 @@
         }
       },
       "addedIn": 18,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079443+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
       "title": "Larsson et al. — Egg consumption and risk of heart failure, myocardial infarction and stroke (Swedish cohorts)",
       "year": 2015,
       "url": "https://academic.oup.com/ajcn/article/102/5/1007/4564606",
-      "authors": [],
-      "venue": "",
+      "authors": [
+        "Susanna C Larsson",
+        "Agneta Åkesson",
+        "Alicja Wolk"
+      ],
+      "venue": "The American Journal of Clinical Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
@@ -789,34 +1070,112 @@
         }
       },
       "addedIn": 19,
-      "textDepth": "unknown"
+      "textDepth": "unknown",
+      "fundingDetails": [
+        "Swedish Research Council",
+        "Swedish Research Council for Health, Working Life and Welfare",
+        "Swedish Stroke Association"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079471+00:00",
+        "method": "catalogue+manual-full-text"
+      }
     },
     {
       "id": "src_godos_et_al_egg_consumption_and_cardiovascul_2021",
-      "title": "Godos et al. — Egg consumption and cardiovascular risk: an umbrella review",
+      "title": "Godos et al. — Egg consumption and cardiovascular risk: a dose-response meta-analysis of prospective cohort studies",
       "year": 2021,
-      "url": "https://pubmed.ncbi.nlm.nih.gov/33340391/",
-      "authors": [],
-      "venue": "",
+      "url": "https://doi.org/10.1007/s00394-020-02345-7",
+      "authors": [
+        "Justyna Godos",
+        "Agnieszka Micek",
+        "Tomasz Brzostek",
+        "Estefania Toledo",
+        "Licia Iacoviello",
+        "Arne Astrup",
+        "Oscar H. Franco",
+        "Fabio Galvano",
+        "Miguel A. Martinez-Gonzalez",
+        "Giuseppe Grosso"
+      ],
+      "venue": "European Journal of Nutrition",
       "citations": null,
       "retracted": false,
       "position": "pos_context_dependent_depends_on_the_person",
       "evidence": "Evidence-synthesis",
-      "funding": "Academic/institutional",
+      "funding": "Government/public",
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_shin_et_al_egg_consumption_in_relation_to_ca_2013"
+        "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+        "src:src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+        "src:src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
+        "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015"
       ],
       "provenance": {
         "position": {
-          "quote": "METHODS: A dataset of 55 cases, including 40 training sets, five validation sets, and 10 test sets, was used to predict the static MLC shape.",
-          "extractionConfidence": 0.75,
-          "verifiedQuote": "exact"
+          "quote": "There is no conclusive evidence on the role of egg in CVD risk; possible protection at moderate intake and increased heart-failure risk at high intake both require stronger evidence.",
+          "extractionConfidence": 0.97,
+          "verifiedQuote": "fuzzy"
         }
       },
       "addedIn": 20,
-      "textDepth": "abstract"
+      "textDepth": "full",
+      "fundingDetails": [
+        "Italian Ministry of Health",
+        "University of Catania"
+      ],
+      "metadataAudit": {
+        "by": "source-audit-2026-07",
+        "ts": "2026-07-12T13:51:36.079492+00:00",
+        "method": "catalogue+manual-full-text"
+      }
+    },
+    {
+      "id": "src_formisano_et_al_effect_of_egg_consumption_on_2025",
+      "title": "Formisano et al. — Effect of egg consumption on health outcomes: an updated umbrella review",
+      "year": 2025,
+      "url": "https://doi.org/10.1016/j.numecd.2025.103849",
+      "authors": [
+        "Elena Formisano",
+        "Lenycia de Cassya Lopes Neri",
+        "Irene Caffa",
+        "Consuelo Borgarelli",
+        "Maria Regina Ferrando",
+        "Elisa Proietti",
+        "Federica Turrini",
+        "Daniela Martini",
+        "Donato Angelino",
+        "Anna Tagliabue",
+        "Livia Pisciotta"
+      ],
+      "venue": "Nutrition, Metabolism and Cardiovascular Diseases",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Evidence-synthesis",
+      "funding": "Academic/institutional",
+      "population": "General adults",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+        "src:src_godos_et_al_egg_consumption_and_cardiovascul_2021",
+        "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
+        "src:src_carson_et_al_dietary_cholesterol_and_cardiov_2020"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "No evidence of association was found among all cardiovascular outcomes and all-cause mortality risk between high vs. low egg consumption.",
+          "extractionConfidence": 0.98,
+          "verifiedQuote": "exact"
+        }
+      },
+      "addedIn": 25,
+      "textDepth": "full",
+      "fundingDetails": [
+        "No external funding reported"
+      ]
     }
   ],
   "vocab": {
@@ -893,6 +1252,10 @@
       },
       {
         "label": "Swedish adults",
+        "aliases": []
+      },
+      {
+        "label": "General adults",
         "aliases": []
       }
     ],
@@ -1252,6 +1615,160 @@
       "action": "verify-quotes",
       "summary": "fetched 2 anchors, verified quotes from real text",
       "ts": "2026-07-11T01:15:26.902222+00:00"
+    },
+    {
+      "version": 24,
+      "action": "backfill-confirmation-audit-metadata",
+      "by": "Evgeniia",
+      "ts": "2026-07-11T23:28:50-03:00",
+      "datasets": [
+        "ds_pooled_us_cohorts_lifetime_risk_pooling_proj",
+        "ds_nih_aarp_diet_and_health_study",
+        "ds_nurses_health_study_health_professionals_fol",
+        "ds_prospective_urban_rural_epidemiology_pure_st",
+        "ds_china_kadoorie_biobank",
+        "ds_diabegg_randomized_trial",
+        "ds_egg_feeding_trial_metabolic_syndrome",
+        "ds_physicians_health_study",
+        "ds_carotid_plaque_clinic_cohort",
+        "ds_kuopio_ischaemic_heart_disease_study_kihd",
+        "ds_swedish_mammography_cohort_cohort_of_swedish"
+      ],
+      "summary": "added actor/time/direct-source metadata to 11 existing curator confirmations"
+    },
+    {
+      "version": 25,
+      "action": "add-source",
+      "source": "src_formisano_et_al_effect_of_egg_consumption_on_2025",
+      "title": "Formisano et al. — Effect of egg consumption on health outcomes: an updated umbrella review",
+      "ts": "2026-07-12T13:47:29.912322+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No association 9 → 10",
+        "independent bases: No association 4.0 → 6.0",
+        "concentration: No association 67% → 58% (top: Nurses' Health Study & Health Professionals Follow-up Study)",
+        "most-reused case-wide: Nurses' Health Study & Health Professionals Follow-up Study 8 → Nurses' Health Study & Health Professionals Follow-up Study 9/21",
+        "+ new crux: Judge eggs on biomarkers (LDL) vs hard CVD events"
+      ]
+    },
+    {
+      "version": 26,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 14 source(s)",
+      "changes": [
+        {
+          "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
+          "manual": null,
+          "catalogueMatch": 0.6
+        },
+        {
+          "source": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021",
+          "manual": null,
+          "catalogueMatch": 0.227
+        },
+        {
+          "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+          "manual": null,
+          "catalogueMatch": 0.5
+        },
+        {
+          "source": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "manual": null,
+          "catalogueMatch": 0.714
+        },
+        {
+          "source": "src_blesso_fernandez_whole_egg_consumption_impro_2013",
+          "manual": null,
+          "catalogueMatch": 0.273
+        },
+        {
+          "source": "src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
+          "manual": null,
+          "catalogueMatch": 0.467
+        },
+        {
+          "source": "src_barnard_et_al_industry_funding_and_cholester_2020",
+          "manual": "replaced an unrelated JAHA DOI with the actual funding-review publication",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_spence_jenkins_davignon_egg_yolk_consumption_2010",
+          "manual": "corrected publication year and PubMed link for the carotid-plaque paper",
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_alexander_et_al_meta_analysis_of_egg_consump_2016",
+          "manual": null,
+          "catalogueMatch": 0.667
+        },
+        {
+          "source": "src_tran_et_al_egg_consumption_and_cardiovascula_2014",
+          "manual": null,
+          "catalogueMatch": 0.625
+        },
+        {
+          "source": "src_berger_et_al_dietary_cholesterol_and_cardiov_2015",
+          "manual": null,
+          "catalogueMatch": 1.0
+        },
+        {
+          "source": "src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
+          "manual": null,
+          "catalogueMatch": 0.75
+        },
+        {
+          "source": "src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
+          "manual": null,
+          "catalogueMatch": 0.667
+        },
+        {
+          "source": "src_godos_et_al_egg_consumption_and_cardiovascul_2021",
+          "manual": "corrected unrelated PubMed link/quote and restored the actual Godos meta-analysis",
+          "catalogueMatch": null
+        }
+      ],
+      "ts": "2026-07-12T13:51:36.079514+00:00"
+    },
+    {
+      "version": 27,
+      "action": "source-metadata-audit",
+      "by": "source-audit-2026-07",
+      "summary": "corrected/enriched metadata for 6 source(s)",
+      "changes": [
+        {
+          "source": "src_dehghan_et_al_egg_consumption_and_cvd_mortal_2020",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_djouss_gaziano_egg_consumption_and_risk_of_h_2008",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        },
+        {
+          "source": "src_virtanen_et_al_egg_consumption_and_risk_of_c_2016",
+          "manual": "filled author and venue metadata from the publication page",
+          "catalogueMatch": null
+        }
+      ],
+      "ts": "2026-07-12T13:54:20.703909+00:00"
     }
   ]
 }

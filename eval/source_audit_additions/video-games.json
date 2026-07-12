@@ -1,0 +1,40 @@
+{
+  "source": {
+    "title": "Lacko, Machackova & Smahel — Does violence in video games impact aggression and empathy?",
+    "year": 2024,
+    "url": "https://doi.org/10.1016/j.chb.2024.108341",
+    "authors": ["David Lacko", "Hana Machackova", "David Smahel"],
+    "venue": "Computers in Human Behavior",
+    "position": "pos_no_clear_effect",
+    "evidence": "Observational",
+    "funding": "Government/public",
+    "fundingDetails": ["European Union co-financing: Research of Excellence on Digital Technologies and Wellbeing CZ.02.01.01/00/22_008/0004583"],
+    "population": "Czech adolescents aged 13–17",
+    "confidence": "moderate",
+    "restsOn": [
+      {
+        "ref": "NEW:Czech adolescent violent-game longitudinal panel (4 waves; n=3,010)",
+        "provenance": {
+          "quote": "Drawing on a representative sample of 3010 Czech adolescents aged 13–17, data were collected over four waves to measure physical and verbal aggression.",
+          "verifiedQuote": "exact"
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "All desensitization effects were statistically insignificant; the findings challenge violent video games as a significant contributor to heightened aggression in adolescents.",
+        "extractionConfidence": 0.97,
+        "verifiedQuote": "fuzzy"
+      }
+    },
+    "textDepth": "full"
+  },
+  "factorWeights": [
+    {
+      "factor": "Effect size magnitude",
+      "weight": "low",
+      "quote": "Within-person effects of changes in violent-game exposure on aggression were statistically insignificant.",
+      "verifiedQuote": "fuzzy"
+    }
+  ]
+}

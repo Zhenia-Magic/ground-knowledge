@@ -1,98 +1,83 @@
-# Benchmark results — Ground Knowledge vs. a deep-research baseline
+# Benchmark results — Ground Knowledge vs two deep-research baselines
 
-*Run `python eval/run_benchmark.py` to reproduce. Gold fixtures: `eval/gold.json`. Baselines:
-`eval/baselines/`.*
+Run `python eval/run_benchmark.py --require-live-baseline` to reproduce. Gold fixtures are in
+`eval/gold.json`; independently captured ChatGPT Deep Research and Claude Code / Opus 4.8 reports,
+prompts, provenance, and SHA-256 hashes are in `eval/baselines/`.
 
-The rubric's first instruction to judges is to anchor against off-the-shelf deep research. This is
-that comparison, made runnable. The claim is **not** "a better paragraph" — a good deep-research tool
-writes an excellent paragraph. The claim is a **structured, recomputable artifact whose numbers move
-only for legitimate reasons**, which a prose answer cannot be.
+This is a **developer-authored diagnostic**, not a held-out evaluation or evidence that readers make
+better decisions. The small gold is deliberately non-exhaustive; comparative scoring is a transparent
+keyword-recall proxy with declared synonyms, and reports recall rather than precision. Hashes establish
+capture integrity, not research quality. The value is that wins and losses are executable and visible.
 
-## 1. Structure recall (does the tool surface the right map?)
+## 1. Structure recall
 
-Against small hand-specified gold fixtures per case:
+| Case | Ground Knowledge positions | roots | cruxes |
+|---|---:|---:|---:|
+| COVID | 3/3 | 4/4 | 3/3 |
+| Black holes | 2/2 | 4/4 | 3/3 |
+| Eggs | 3/3 | 3/3 | 3/3 |
 
-| Case | positions | key roots | cruxes |
-|---|---|---|---|
-| COVID | 3/3 | 4/4 | 1/3 |
-| Black holes | 2/2 | 2/2 | 0/3 |
-| Eggs | 3/3 | 3/3 | 1/3 |
+All expected crux concepts are present in the visible factor matrices. This structure-recall score
+does not pretend every concept was promoted to a headline badge: the separate crux taxonomy
+(`crossCampCrux`, `sharedPivot`, `oneSidedLoadBearing`, `missingCounterassessment`) remains selective.
+For example, the eggs biomarkers and black-hole cosmic-ray concepts are modeled but remain below
+the load-bearing promotion threshold; the executable output reports those type counts separately.
 
-Positions and evidentiary roots are recalled fully. **Crux recall is honestly partial** — and that is
-a *finding*, not a bug: a crux only emerges when ≥2 camps weigh the *same* factor with a ≥2-level
-spread, so cruxes a single camp raises (or a settled 2-camp case like black holes) don't register.
-This is the sparse-factor-grid limitation named in `SPEC.md` §8, surfaced quantitatively.
+## 2. Collapse — the headline claim
 
-## 2. Collapse (the headline claim, quantified)
+Raw source count → confirmed independent bases:
 
-Raw source count → distinct independent evidence bases, per position:
+- **COVID:** zoonotic 15 → **5.0**; laboratory-associated 8 → **3.5**; undetermined 5 → **2.0**.
+- **Black holes:** no-risk 14 → **4.5**; residual concern 6 → **3.0**. The safe case now models
+  production impossibility, Hawking evaporation, accretion timescale, the cosmic-ray/dense-star
+  observation, and a half-strength review-only calculation as distinct layers.
+- **Eggs:** increases-risk 5 → **5.0**; no-association 9 → **4.0**; context-dependent 6 → **5.0**.
 
-- **COVID** — Zoonotic 15 → **5.0**, Laboratory 8 → **3.5** (the six Bayesian re-analyses rest on the
-  same evidence; they are re-analysis, not six independent looks).
-- **Black holes** — No risk 14 → **2.5** (the settled consensus rests on ~2–3 arguments), Residual 6 → 3.0.
-- **Eggs** — No association 9 → **4.0** (6 of the 9 share the Nurses' Health / HPFS cohort).
+The live baselines independently notice shared cohorts and recycled arguments. Ground Knowledge's
+additional product is not that qualitative observation; it is the explicit, recomputable root graph,
+quantitative collapse, and update diff.
 
-The live Deep Research reports do better than a naive literature summary: they independently notice
-shared cohorts and recycled arguments. They do **not** turn that observation into a recomputable
-root graph or the quantitative 9 → 4 collapse. That inspectable number is the product distinction.
+## 3. Adversarial contract — executed on every case
 
-## 3. Adversarial robustness (the robustness contract, executed)
+| Attack | Required result |
+|---|---|
+| +12 ungrounded echo sources | increase ≤1.0; all twelve pool into one voice |
+| +12 fabricated named roots through the unverified path | increase 0.0; roots remain proposed |
+| one real dependency quote copied to a fabricated sibling | only the base actually named by the quote enters; sibling stays proposed |
+| 12-source ungrounded citation ring | increase 0.0; loop is visible and flagged |
+| new source using a known alias | increase 0.0; alias resolves to the existing root |
+| generic fetched label (`Cohort`) | increase 0.0; ordinary methods prose cannot identify a root |
+| two unknown lexical aliases named by one real sentence | at most one root enters; collision is flagged |
 
-For each case, flood the strongest position and recompute:
+**All seven attacks pass on all three cases.** The benchmark traverses the ordinary merge,
+verification, pending-reference, root-resolution, and assessment paths. Novel semantic aliases are
+not claimed as automatically solved: lexical checks bound automatic admission, optional embeddings
+suggest further candidates, and confirmation blocks a likely duplicate unless a curator records an override.
 
-| Attack | Result | Contract |
-|---|---|---|
-| +12 ungrounded echo | nEff + **≤1.0** | 12 rehashes collapse to one pooled voice |
-| +12 fabricated named datasets (unverified path) | confirmed nEff + **0.0** | proposed roots remain visible but are quarantined until confirmed |
+## 4. Comparative recall
 
-**PASS on all three cases.** Echo is pooled. Fabricated roots remain visible for review but contribute
-zero to confirmed nEff until a fetched dependency quote verifies them or a curator confirms them. The remaining risk is false
-confirmation: the arithmetic cannot itself tell whether a fetched source really entails the proposed
-edge. A prose baseline has no analogue of this executable property —
-adding twelve fabricated citations to a deep-research prompt simply makes the paragraph more confident.
+| Case/system | positions | roots | cruxes |
+|---|---:|---:|---:|
+| COVID — Ground Knowledge | 3/3 | 4/4 | 3/3 |
+| COVID — ChatGPT | 3/3 | 4/4 | 3/3 |
+| COVID — Claude | 3/3 | 4/4 | 3/3 |
+| Black holes — Ground Knowledge | 2/2 | 4/4 | 3/3 |
+| Black holes — ChatGPT | 1/2 | 4/4 | 2/3 |
+| Black holes — Claude | 2/2 | 4/4 | 3/3 |
+| Eggs — Ground Knowledge | 3/3 | 3/3 | 3/3 |
+| Eggs — ChatGPT | 3/3 | 3/3 | 3/3 |
+| Eggs — Claude | 3/3 | 3/3 | 3/3 |
 
-## What the live baseline gives, and doesn't
+Near parity is the honest result. A good deep-research report already finds the main positions,
+evidence layers, uncertainty, funding concerns, and cruxes. Ground Knowledge adds a structured,
+portable artifact whose root count and adversarial properties can be rerun after every contribution.
 
-Two independent baseline sets were captured on 2026-07-11 from the same prompts with no repository,
-case source list, or Ground Knowledge framework supplied: ChatGPT Deep Research and Claude Code web
-research. Raw outputs, operator-confirmed prompts, timestamps, and SHA-256 hashes live in the two
-baseline manifests. The original authored COVID stand-in is retained separately for audit history.
+## 5. What remains unproven
 
-This is a strong baseline. All three reports identify the main positions, load-bearing evidence,
-uncertainty, source-quality issues, and important cruxes. They also notice evidence dependence:
-
-| Capability | ChatGPT Deep Research | Claude Code | Ground Knowledge |
-|---|---|---|---|
-| Main positions, load-bearing evidence, cruxes | yes | yes | yes, structured |
-| Reused/overlapping evidence noticed qualitatively | yes | yes, in dedicated sections | encoded as root edges |
-| Funding/source-quality concerns | yes | yes | structured fields + warnings |
-| Portable URLs in captured Markdown | no (internal citation tokens) | yes | yes |
-| Explicit root graph and deterministic collapse count | no | no | yes |
-| Versioned update diff / contributor artifact | no | no | yes |
-| Executable flooding/fabrication contract | no | no | yes |
-
-The Claude reports are particularly demanding comparators. The eggs report independently reduces the
-literature to roughly four genuinely distinct strands; the COVID report identifies the shared Chinese
-market dataset, overlapping author group, and recycled advocacy document set; the black-hole report
-separates production, Hawking evaporation, accretion, and dense-star survival into different failure
-layers. That last report exposes a real ontology limitation here: Ground Knowledge's 2.5-base safe
-count captures the encoded empirical/dependency roots but does not fully represent every independent
-theoretical safety argument. The number must not be presented as an exhaustive count of all arguments.
-
-The honest advantage is therefore narrower than “Deep Research misses correlation.” It does not.
-What Ground Knowledge adds is:
-
-- a **recomputable** independence number (re-run the engine, get the same answer);
-- the **collapse** of six Bayesian re-analyses to their shared evidence;
-- an **adversarial-robustness contract** you can execute;
-- a **diffable artifact** another team extends, rather than a one-time paragraph.
-
-## Honest limitations this benchmark surfaces
-
-1. **Crux recall is partial** (sparse factor grid).
-2. **Fabrication is quarantined, not semantically disproved** — a bad confirmation can still admit it.
-3. **Portable citation limitation:** ChatGPT's Markdown export preserved internal citation tokens
-   (`turn…view…`) but not their URLs. The original chats/share links or PDF exports should accompany
-   the submission so judges can open the cited sources. Claude Code's captures do preserve URLs.
-4. **Non-empirical root ontology remains incomplete:** the black-hole Claude baseline distinguishes
-   more theoretical failure layers than the current KB encodes as roots.
+1. A wrong curator can still confirm a bad root; the actor/time/source record makes the decision
+   auditable but cannot make it correct.
+2. An omitted citation edge remains invisible because the system does not crawl and compare an
+   external citation graph.
+3. A genuinely novel semantic alias can evade automatic identity matching until review.
+4. No blinded reader study yet shows better calibration or decision quality than deep-research prose.
+   A ready-to-run protocol lives in `eval/reader_study/PROTOCOL.md`.

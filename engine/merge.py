@@ -482,6 +482,10 @@ def merge_delta(kb, delta):
         # SCHEMA.md and engine/verify.py. Never guessed as 'full'; that would overclaim.
         "textDepth": src.get("textDepth", "unknown"),
     })
+    if src.get("fundingDetails"):
+        kb["sources"][-1]["fundingDetails"] = [
+            str(item).strip() for item in src.get("fundingDetails", []) if str(item).strip()
+        ]
     if src.get("modelAgreement"):        # multi-model ensemble agreement report (ingest/ensemble.py)
         kb["sources"][-1]["modelAgreement"] = src["modelAgreement"]
     if pending:                          # forward source-refs to resolve after the batch (two-pass)

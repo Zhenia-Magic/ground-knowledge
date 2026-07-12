@@ -1,0 +1,44 @@
+{
+  "source": {
+    "title": "WHO SAGO — Independent assessment of the origins of SARS-CoV-2",
+    "year": 2025,
+    "url": "https://www.who.int/publications/m/item/independent-assessment-of-the-origins-of-sars-cov-2-from-the-scientific-advisory-group-for-the-origins-of-novel-pathogens",
+    "authors": ["Scientific Advisory Group for the Origins of Novel Pathogens (SAGO)"],
+    "venue": "World Health Organization scientific brief",
+    "position": "pos_undetermined_unresolved",
+    "evidence": "Expert advisory",
+    "funding": "Government/public",
+    "fundingDetails": ["World Health Organization"],
+    "population": "Global SARS-CoV-2 origins evidence through June 2025",
+    "confidence": "high",
+    "restsOn": [
+      "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+      "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+      "src:src_who_china_joint_study_on_the_origins_of_sars_2021",
+      "src:src_us_odni_updated_assessment_on_covid_19_origi_2023",
+      "src:src_harrison_sachs_a_call_for_an_independent_inq_2022"
+    ],
+    "provenance": {
+      "position": {
+        "quote": "The weight of available evidence reviewed by SAGO suggests zoonotic spillover, but significant data gaps remain and SAGO is not in a position to rule out a laboratory origin.",
+        "extractionConfidence": 0.96,
+        "verifiedQuote": "fuzzy"
+      }
+    },
+    "textDepth": "full"
+  },
+  "factorWeights": [
+    {
+      "factor": "Epidemiological proximity of the earliest cases to the market",
+      "weight": "high",
+      "quote": "The Huanan market appears to be a location for amplification, but it is not possible to determine if the first infections occurred there.",
+      "verifiedQuote": "fuzzy"
+    },
+    {
+      "factor": "Prior probability of a research-related accident in Wuhan",
+      "weight": "med",
+      "quote": "Information and evidence is lacking to assess the possibility of a laboratory origin, so it cannot be ruled out.",
+      "verifiedQuote": "fuzzy"
+    }
+  ]
+}

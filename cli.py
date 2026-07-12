@@ -96,6 +96,9 @@ def cmd_show(args):
         if fs.get("top"):
             L.append('  funding skew: interested money most backs "{}" ({} industry/advocacy sources)'.format(
                 fs["top"]["label"], fs["n"]))
+        elif fs.get("tied"):
+            L.append("  funding pattern: tied — " + "; ".join(
+                "{} ({})".format(x["label"], x["count"]) for x in fs.get("leaders", [])))
         elif fs.get("undisclosed"):
             L.append("  funding gap: {} of {} sources undisclosed".format(
                 fs["undisclosed"], fs["total"]))
@@ -348,6 +351,24 @@ def cmd_dedupe(args):
         _build_viewer([args.kb])
 
 
+def cmd_remove_source(args):
+    """Remove an editorially irrelevant source with an auditable reason."""
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.remove_source(kb, args.ref, args.reason, args.by, args.replacement)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
+
+
+def cmd_move_source(args):
+    """Re-file a source under the position its actual finding supports."""
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.move_source(kb, args.ref, args.position, args.reason, args.by)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
+
+
 def cmd_tidy(args):
     from engine import curate
     kb = read_json(args.kb)
@@ -375,6 +396,22 @@ def cmd_dups(args):
                 p["sim"], p["reason"], p["a"]["label"], p["b"]["label"]))
     print('\nThese are SUGGESTIONS only — nothing is merged. Confirm one with:')
     print('  python cli.py merge <kb> <type> "<source label>" "<target label>"')
+
+
+def cmd_confirm_dataset(args):
+    from engine import curate
+    kb = read_json(args.kb)
+    embed = None
+    if args.embed:
+        from ingest.embed import embedder
+        embed = embedder()
+        if embed is None:
+            print("(--embed: no OpenAI-compatible API key set; using lexical suggestions only)")
+    report = curate.confirm_dataset(
+        kb, args.ref, confirmed=not args.provisional, by=args.by, source=args.source,
+        note=args.note, allow_similar=args.allow_similar, embed=embed)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
 
 
 def cmd_add(args):
@@ -921,12 +958,33 @@ def main():
     s.set_defaults(fn=cmd_rename)
     s = sub.add_parser("dedupe", help="remove duplicate SOURCES (same paper ingested twice)")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_dedupe)
+    s = sub.add_parser("remove-source", help="remove an irrelevant source with a versioned audit record")
+    s.add_argument("kb"); s.add_argument("ref", help="source id, exact title, or unique title substring")
+    s.add_argument("--reason", required=True, help="why the source does not belong in this case")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--replacement", help="retained source to receive dependency references")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_remove_source)
+    s = sub.add_parser("move-source", help="re-file a source under a different existing position")
+    s.add_argument("kb"); s.add_argument("ref", help="source id, exact title, or unique title substring")
+    s.add_argument("position", help="position id, exact label, or unique label substring")
+    s.add_argument("--reason", required=True, help="why the current position is incorrect")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_move_source)
     s = sub.add_parser("dups", help="list likely-duplicate entities to merge (suggestions only)")
     s.add_argument("kb"); s.add_argument("--threshold", type=float, default=0.4)
     s.add_argument("--embed", action="store_true",
                    help="also surface SEMANTIC paraphrase candidates via embeddings (needs an "
                         "OpenAI-compatible API key; advisory, never auto-merged)")
     s.set_defaults(fn=cmd_dups)
+    s = sub.add_parser("confirm-dataset", help="admit a proposed evidence base with an auditable curator record")
+    s.add_argument("kb"); s.add_argument("ref")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--source", help="source id supporting the confirmation")
+    s.add_argument("--note", help="reason/evidence for the decision")
+    s.add_argument("--provisional", action="store_true", help="remove confirmation instead")
+    s.add_argument("--embed", action="store_true", help="check semantic duplicate suggestions before confirming")
+    s.add_argument("--allow-similar", action="store_true", help="override a duplicate suggestion (requires --note)")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_confirm_dataset)
     s = sub.add_parser("tidy", help="prettify id-style / slug labels for display")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_tidy)
     s = sub.add_parser("harvest"); s.add_argument("kb"); s.add_argument("--k", type=int, default=8)

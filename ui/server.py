@@ -441,6 +441,7 @@ def add_file_op(cid, filename, b64, apply):
     from ingest import llm
     delta = _parse_json(llm.complete(build_extract_prompt(kb, doc)))
     delta.setdefault("source", {}).setdefault("title", doc["title"])
+    _carry_meta(delta, doc)                    # verify position + per-edge quotes against uploaded text
     return {"mode": "auto", "results": _merge_list(cid, [delta])}
 
 
@@ -449,7 +450,9 @@ def _counts(kb):
     for s in kb["sources"]:
         posc[s["position"]] = posc.get(s["position"], 0) + 1
         for d in s.get("restsOn", []):
-            dsc[d] = dsc.get(d, 0) + 1
+            ref = str(d.get("ref") or "").strip() if isinstance(d, dict) else str(d).strip()
+            if ref:
+                dsc[ref] = dsc.get(ref, 0) + 1
         if s.get("population"):
             popc[s["population"]] = popc.get(s["population"], 0) + 1
         if s.get("evidence"):

@@ -93,9 +93,13 @@ _RULES = """Rules (apply to each source):
   cell" — never leave an animal or cell study looking like human evidence; that distinction is the
   whole point of the population tag for a clinical question.
 - confidence: the source's OWN stated strength (high/moderate/low/unstated).
-- provenance: for position and restsOn, quote ONE COMPLETE verbatim sentence from the text that
-  states the actual FINDING/stance (the direction of the association or the conclusion) +
-  extractionConfidence [0,1]. The quote MUST be a whole sentence, not cut off mid-clause (never
+- provenance: for position, quote ONE COMPLETE verbatim sentence from the text that states the
+  actual FINDING/stance (the direction of the association or the conclusion). For EACH DATASET in
+  restsOn, attach a SEPARATE provenance object to that edge with a sentence that specifically
+  identifies that dataset/trial/cohort as evidence used by this source. One generic sentence must
+  never vouch for several roots. Source-citation edges (SRC:/NEW-SRC:) need no dependency quote.
+  Every provenance object also carries extractionConfidence [0,1]. Quotes MUST be whole sentences,
+  not cut off mid-clause (never
   end on "associated with", "compared to", etc.). NEVER quote the paper's title, a heading, the
   search snippet, or a METADATA / BOILERPLATE line — publication dates ("Accepted for Publication:
   …"), author lists, "a literature search was conducted from …", "this review summarises …" — these
@@ -132,8 +136,8 @@ _SCHEMA = ('{"source":{"title":"...","year":2020,"url":"...",\n'
            '"evidence":"...",'
            '"funding":"Industry|Advocacy|Government/public|Nonprofit/charity|Academic/institutional|Undisclosed",\n'
            '"population":"...","confidence":"moderate",\n'
-           '"restsOn":["ds_id","NEW:Label","SRC:existing_source_id"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8},\n'
-           '"restsOn":{"quote":"...","extractionConfidence":0.8}}},\n'
+           '"restsOn":[{"ref":"ds_id or NEW:Dataset label","provenance":{"quote":"sentence naming THIS dataset","extractionConfidence":0.8}},'
+           '"SRC:existing_source_id"],"provenance":{"position":{"quote":"...","extractionConfidence":0.8}}},\n'
            '"factorWeights":[{"factor":"exact factor label","weight":"high|med|low","quote":"...","rationale":"..."}]}')
 
 EXTRACT_TEMPLATE = (
@@ -471,7 +475,22 @@ def _carry_meta(delta, doc, verify_text=None):
     src["textDepth"] = doc.get("kind", "unknown")
 
     text = verify_text if verify_text is not None else (doc.get("text") or "")
-    for prov in (src.get("provenance") or {}).values():
+    for field, prov in (src.get("provenance") or {}).items():
+        # Source-level dependency provenance is a legacy storage shape and is ambiguous when a
+        # source names siblings. New ingestion must earn admission through the edge objects below;
+        # remove any model-supplied trust flag rather than reviving the legacy path.
+        if field == "restsOn" and isinstance(prov, dict):
+            prov.pop("verifiedQuote", None)
+            continue
+        if isinstance(prov, dict) and prov.get("quote"):
+            prov["verifiedQuote"] = match_quote(prov["quote"], text)
+    # Dependency quotes are PER EDGE. Verifying them here, while the fetched text and the exact
+    # model-visible slice are both in scope, is the only path that may promote a proposed root.
+    # A sibling edge without its own quote remains provisional in engine/roots.py.
+    for edge in src.get("restsOn") or []:
+        if not isinstance(edge, dict):
+            continue
+        prov = edge.get("provenance")
         if isinstance(prov, dict) and prov.get("quote"):
             prov["verifiedQuote"] = match_quote(prov["quote"], text)
     for fw in delta.get("factorWeights", []):

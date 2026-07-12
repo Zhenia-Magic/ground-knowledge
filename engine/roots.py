@@ -8,8 +8,8 @@ sources. Pure functions of the KB; deterministic; no side effects.
 Root keys produced:
     ds:<id>           a real dataset / cohort / experiment
     primpool:<posId>  the single 'unnamed first-hand voice' for a position — every ungrounded
-                      PRIMARY source that names NO evidence base collapses here (you earn a
-                      distinct root by NAMING a distinct dataset, not by claiming the primary tier)
+                      PRIMARY source that names NO evidence base collapses here (a distinct root
+                      needs a specific name AND admission, not a claimed primary tier)
     secpool:<posId>   the single 'ungrounded secondary' voice for a position (all echo collapses here)
     cycle:<sourceId>  a circular-corroboration loop with no primary grounding (flagged)
 
@@ -19,8 +19,8 @@ careless labeller) marks ten rehashes 'Observational' with an empty restsOn and 
 bypassing the echo collapse that only fired for the secondary tier. Pooling makes ungrounded
 primaries collapse symmetrically with ungrounded secondaries: a source that claims original data but
 names none is epistemically indistinguishable from an assertion and is worth one pooled voice. A
-REAL primary study keeps full, distinct credit by naming its own trial/cohort/sample in restsOn
-(the labelling prompt requires this). prim:<sourceId> keys from older KBs still resolve for
+REAL primary study can keep full, distinct credit by naming its own trial/cohort/sample in restsOn
+and passing root admission (the labelling prompt requires the per-edge evidence). prim:<sourceId> keys from older KBs still resolve for
 back-compat but are no longer produced.
 """
 import re
@@ -88,9 +88,21 @@ def _dataset_confirmation(d):
     the claim instead of trusting an opaque flag (see SCHEMA.md, MECHANISM.md §8)."""
     c = d.get("confirmation")
     if isinstance(c, dict):
-        if c.get("status", "confirmed") != "confirmed":
+        if c.get("status") != "confirmed":
             return None
-        rec = {"method": c.get("method") or "curator"}
+        method = c.get("method")
+        ts = c.get("ts") or c.get("timestamp")
+        actor = c.get("by") or c.get("curator")
+        # A structured record is an audit boundary, not decoration: a curator decision needs an
+        # actor+time; a verified-edge record needs the source+time. Incomplete objects stay
+        # provisional. Legacy confirmed:true remains readable separately below for old KBs.
+        if method == "curator" and (not actor or not ts):
+            return None
+        if method == "verified-edge" and (not c.get("source") or not ts):
+            return None
+        if method not in {"curator", "verified-edge"}:
+            return None
+        rec = {"method": method}
         for k in ("by", "source", "curator", "ts", "timestamp", "note"):
             if c.get(k):
                 rec[k] = c[k]
@@ -98,6 +110,110 @@ def _dataset_confirmation(d):
     if d.get("confirmed"):
         return {"method": "curator"}
     return None
+
+
+_GENERIC_IDENTITY = {
+    "analysis", "argument", "cohort", "data", "dataset", "document", "evidence",
+    "experiment", "health", "medical", "model", "observation", "participants", "patients",
+    "registry", "research", "review", "sample", "study", "trial",
+}
+
+
+def _specific_identity_label(label):
+    """Whether a label is specific enough to bind a fetched sentence to one evidence base.
+
+    Generic labels such as "cohort" or "study sample" occur routinely in methods text and cannot
+    establish identity. A multiword name needs at least one non-generic token; a one-token name must
+    look like a real proper name/code (Framingham, DIABEGG, RaTG13, NHS), not ordinary prose.
+    """
+    raw = str(label or "").strip()
+    tokens = _norm(raw).split()
+    content = [t for t in tokens if t not in _GENERIC_IDENTITY]
+    if not content:
+        return False
+    if len(tokens) >= 2:
+        return True
+    token = content[0]
+    compact = re.sub(r"[^A-Za-z0-9]+", "", raw)
+    return bool(re.search(r"\d", token)) or (compact.isupper() and len(compact) >= 3) \
+        or len(token) >= 6
+
+
+def _quote_identifies_dataset(kb, dataset_id, quote):
+    """Conservative identity check for a verified dependency quote.
+
+    `verifiedQuote` proves only that the sentence occurs in fetched text. It does NOT prove that the
+    sentence names the proposed root. Require the quote to contain a sufficiently specific canonical
+    label or an EXPLICIT learned alias before that edge may admit the root. We deliberately do not
+    synthesise acronyms: "Medical Review" -> "MR" would match ordinary "Mr. Smith" prose. Generic
+    wording such as "we used the cohort" stays visible but provisional for a curator.
+    """
+    q = _norm(quote)
+    if not q:
+        return False
+    d = next((x for x in kb.get("datasets", []) if x.get("id") == dataset_id), None)
+    if not d:
+        return False
+    labels = [d.get("label")] + list(d.get("aliases") or [])
+    for label in labels:
+        lab = _norm(label)
+        if not lab or not _specific_identity_label(label):
+            continue
+        if (" " + lab + " ") in (" " + q + " "):
+            return True
+    return False
+
+
+def _suppress_auto_alias_splits(kb, confirmed_by, automatic):
+    """Quarantine automatically verified roots that look like aliases of another root.
+
+    Literal quote matching and even quote-to-label binding do not settle root identity: one sentence
+    can name both "Nurses Health Study" and "NHS". Curation's deterministic lexical duplicate
+    detector defines the review boundary. Explicit curator confirmations win; otherwise at most one
+    automatically admitted member of each suspect component survives (the most descriptive label).
+    Nothing is silently merged: suppressed roots remain visible/provisional for a curator.
+    """
+    if not automatic:
+        return set()
+    from .curate import suggest_duplicates
+    pairs = suggest_duplicates(kb).get("dataset", [])
+    if not pairs:
+        return set()
+    parent = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    for pair in pairs:
+        union("ds:" + pair["a"]["ref"], "ds:" + pair["b"]["ref"])
+    groups = {}
+    for rk in parent:
+        groups.setdefault(find(rk), set()).add(rk)
+    labels = {"ds:" + d["id"]: d.get("label") or "" for d in kb.get("datasets", [])}
+    suppressed = set()
+    for group in groups.values():
+        auto = group & automatic & set(confirmed_by)
+        if not auto:
+            continue
+        explicit = (group & set(confirmed_by)) - automatic
+        if explicit:
+            suppressed |= auto
+            continue
+        if len(auto) > 1:
+            keep = max(auto, key=lambda rk: (len(_norm(labels.get(rk))), labels.get(rk), rk))
+            suppressed |= auto - {keep}
+    for rk in suppressed:
+        confirmed_by.pop(rk, None)
+    return suppressed
 
 
 # population tokens / phrases that mark a NON-human study (animal model or in-vitro). Token match
@@ -303,6 +419,7 @@ def resolve(kb):
     # confirmed, so the admission is itself auditable.
     _DEPTH_OK = {"full", "abstract", "partial"}
     confirmed_by = {}                                          # root_key -> {method, source?/by?/...}
+    automatic = set()                                           # admitted from fetched edge quotes
     for d in kb.get("datasets", []):
         rec = _dataset_confirmation(d)
         if rec:
@@ -312,20 +429,27 @@ def resolve(kb):
             continue
         d_ids, _src_ids, edge_prov = _edges(s)
         direct = {"ds:" + d for d in d_ids}                   # this source's DIRECT dataset edges
-        # legacy source-level dependency quote: back-compat only. Applies to the source's direct
-        # dataset edges (never inherited roots). Ambiguous across siblings, so new ingestion should
-        # attach provenance to the specific edge object instead.
+        # Legacy source-level dependency quote: back-compat ONLY when this source has exactly ONE
+        # direct dataset. With two or more direct roots it is inherently ambiguous and confirms none
+        # of them — one generic sentence must never whitewash every sibling edge. New ingestion
+        # always attaches provenance to the specific edge object below.
         legacy = (s.get("provenance") or {}).get("restsOn")
         if isinstance(legacy, dict) and ("verifiedQuote" in legacy or "quote" in legacy) \
-                and legacy.get("verifiedQuote") in {"exact", "fuzzy"}:
-            for rk in direct:
-                confirmed_by.setdefault(rk, {"method": "verified-edge", "source": s["id"]})
+                and legacy.get("verifiedQuote") in {"exact", "fuzzy"} and len(direct) == 1:
+            rk = next(iter(direct))
+            if rk not in confirmed_by:
+                confirmed_by[rk] = {"method": "verified-edge-legacy-single", "source": s["id"]}
+                automatic.add(rk)
         for ref_key, ep in edge_prov.items():                 # per-edge object provenance
             if ref_key.startswith("src:"):
                 continue                                       # a citation edge cannot self-confirm
             rk = "ds:" + ref_key
-            if rk in direct and ep.get("verifiedQuote") in {"exact", "fuzzy"}:
-                confirmed_by.setdefault(rk, {"method": "verified-edge", "source": s["id"]})
+            if rk in direct and ep.get("verifiedQuote") in {"exact", "fuzzy"} \
+                    and _quote_identifies_dataset(kb, ref_key, ep.get("quote")):
+                if rk not in confirmed_by:
+                    confirmed_by[rk] = {"method": "verified-edge", "source": s["id"]}
+                    automatic.add(rk)
+    alias_suspects = _suppress_auto_alias_splits(kb, confirmed_by, automatic)
     provisional = {r for r in all_ds if r not in confirmed_by}
 
     def kind_of(r):
@@ -338,15 +462,15 @@ def resolve(kb):
     return {"source_roots": source_roots, "circular": circular,
             "secondary_only": secondary_only, "nonhuman_only": nonhuman_only,
             "provisional": provisional, "confirmed_by": confirmed_by,
-            "kind": kinds, "base_kind": base_kind}
+            "alias_suspects": alias_suspects, "kind": kinds, "base_kind": base_kind}
 
 
 def root_strength(root_key, secondary_only, nonhuman_only=frozenset(), provisional=frozenset()):
     """Independence weight a root contributes. Halved for a dataset known only through a secondary
     source (we heard about it, no primary source brought it in), halved for a root backed only by
-    animal / in-vitro studies (weak evidence for a human question), and halved for a PROVISIONAL
-    (unconfirmed / unverified) root contributes ZERO until a fetched dependency quote verifies it or
-    a curator explicitly confirms it.
+    animal / in-vitro studies (weak evidence for a human question). A PROVISIONAL (unconfirmed /
+    unverified) root contributes ZERO until a fetched dependency quote verifies it or a curator
+    explicitly confirms it.
     See MECHANISM.md §6."""
     if root_key in provisional:
         return 0.0

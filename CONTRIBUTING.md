@@ -39,14 +39,12 @@ clean-clone smoke test. A PR must be green.
 These are enforced by tests; if your change trips one, the design question is real — ask, don't
 weaken the test.
 
-1. **Independence monotonicity.** Adding a source never *lowers* any position's `nEff`. It rises
-   only by introducing a genuinely new root or upgrading one (a primary source grounding a
-   review-only dataset; human evidence for an animal-only root). Correlated/echo/circular sources
-   land on already-counted roots and move `nEff` nowhere. (`tests/test_independence.py`, incl. a
-   randomized property test.)
-2. **Adversarial robustness contract.** +12 ungrounded echo raises `nEff` by ≤ 1.0 (they pool to one
-   voice); +12 fabricated named datasets on the unverified path add **0** (quarantined). Executed on
-   every case by the benchmark; must stay PASS.
+1. **Fixed-graph independence monotonicity.** Adding a source with only outgoing edges never lowers
+   `nEff`; it rises only through a new admitted root or grounding upgrade. Graph corrections may lower it
+   intentionally (alias merge; pending edge reveals a pure cycle). Both are tested.
+2. **Adversarial robustness contract.** Every case executes seven attacks: echo, fabricated roots,
+   copied-sibling quote, circular ring, known alias, generic fetched label, and unknown lexical alias
+   split. All must stay PASS.
 3. **Determinism / no drift.** The viewer renders `engine/assess.assess()` output; it never
    recomputes. One `assess()` is one `resolve()`. Same KB in → same numbers out, always.
 4. **Confirmation is per edge** (see below) — never re-widen it to a source-level boolean.
@@ -70,10 +68,11 @@ A named dataset is not trusted just because a source claims it. A root is **prov
 contributes **zero** to the headline `nEff` — until confirmed one of two auditable ways:
 
 - **Curator confirmation.** A human vouches that the base is real, recorded as an *auditable object*
-  `confirmation: {status:"confirmed", method:"curator", by, source, ts}` — **not** a bare boolean, so
+  `confirmation: {status:"confirmed", method:"curator", by, ts, source?}` — **not** a bare boolean, so
   a reader can see *how* and *by whom* it was admitted. Use `engine.curate.confirm_dataset(...)`.
 - **Verified edge.** A source that was actually fetched (`textDepth` full/abstract/partial) carries a
-  dependency quote that verified against the fetched text **for that specific dataset edge**.
+  dependency quote that verified against the fetched text **and names that specific dataset's
+  canonical label or alias**.
 
 Two things are deliberately **not** enough (do not re-introduce them):
 
@@ -97,6 +96,9 @@ never self-declare a fabricated edge as verified. Fabricated roots stay visible 
   `ingest/embed.py`). These are **suggestions only** — every merge is an explicit `curate.merge`; the
   engine never auto-merges a semantic candidate, and the deterministic pipeline never depends on
   embeddings.
+- **Confirmation is an alias gate.** Use `python cli.py confirm-dataset <kb> <ref> --by <identity>`.
+  A likely lexical/semantic duplicate is refused unless `--allow-similar --note "why distinct"` is
+  explicit; every admitted curator record carries actor and timestamp.
 - **Evidence tier is load-bearing.** `primary` designs earn a distinct root by *naming* their data;
   ungrounded "primaries" that name nothing pool into one voice per position, as do reviews. A
   meta-analysis is `secondary` unless it tags the trials it pools. Add a genuinely new *primary

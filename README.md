@@ -8,8 +8,8 @@
 > Ground News counts and labels sources but stays neutral on who's right. In a research
 > dispute, naive source-counting rewards the loud, the numerous, and the industry-funded.
 > So we **aggregate, but weight by independent evidence and audit for independence** instead of
-> counting heads. Adding more *correlated* papers — re-used cohorts, review echo, or two sources
-> that cite each other — makes a position look **less** independently supported, not more.
+> counting heads. Adding more papers on an *already resolved* cohort or review chain does **not**
+> add independent support; the widening gap between raw sources and roots makes the correlation visible.
 
 **Live, no setup, no API key → [groundknowledge.org](https://groundknowledge.org)**
 
@@ -36,9 +36,10 @@ three:
   sources, *zero* independent grounding (the adversarial case).
 
 The independence engine (`engine/roots.py`) resolves every source down to the primary
-**evidentiary roots** it actually depends on, collapsing all three into a single, honest count of
-*independent bases* per position — and flags circular loops explicitly. It's adversarially robust
-by construction: flooding a position with echo can neither inflate it **nor** tank a rival.
+**evidentiary roots** it actually depends on, collapsing echo/re-use into an honest count of
+*independent bases* per position while flagging and excluding ungrounded circular loops. It's adversarially robust
+under explicit contracts: sources landing on an existing root add zero; twelve ungrounded rehashes
+add at most one pooled voice rather than twelve; and a pure citation loop adds zero.
 
 ## Layout
 
@@ -53,19 +54,19 @@ by construction: flooding a position with echo can neither inflate it **nor** ta
 | `engine/review.py` | Structure | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB (counted in no metric) for a human to resolve — pick a position, or drop the paper |
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
-| `engine/curate.py` | Structure | curation ops: merge / rename / tidy duplicate entities |
+| `engine/curate.py` | Structure | curation ops: merge / rename / tidy; lexical + optional embedding duplicate suggestions; auditable confirmation gate |
 | `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, cruxes |
-| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · ui · pull · push · questions · import-citations · export` |
+| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** (browse/search, contribute keyless, AI-retrieval docs, admin moderation) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |
-| `cases/*.kb.json` | artifact | the knowledge bases (`eggs` is real & sourced; pull others from the portal) |
+| `cases/*.kb.json` | artifact | five local, sourced knowledge bases (three competition cases plus alcohol and video-games generalization cases) |
 | `MECHANISM.md` · `SCHEMA.md` · `SPEC.md` | spec | the independence mechanism, the schema, and the written submission |
 
 **Core (engine + viewer build + URL/txt ingestion + `--dry-run` + the local portal store) is
 pure stdlib — no `pip install`.** Full-text PDF labelling needs `pypdf`, `.docx` needs
 `python-docx`, and Postgres-in-prod needs `psycopg` (`requirements.txt`); all degrade gracefully
-without. Tested on Python 3.9–3.10.
+without. CI tests Python 3.10–3.13.
 
 > ### Reviewers — start here
 > **Try the live instance — no setup, no API key: [groundknowledge.org](https://groundknowledge.org)**
@@ -107,9 +108,9 @@ rest are faithful reconstructions with **authored** quotes (`textDepth: unknown`
 An unverified newly proposed root contributes zero headline nEff unless a fetched dependency quote
 verifies it or an explicit curator confirmation admits it. Two findings fall out of the data:
 
-- **Funding skew (real):** the interested-money studies cluster on one answer — the two industry-funded
-  meta-analyses (Alexander → American Egg Board; Tran → Egg Nutrition Center) both back *"No
-  association,"* which is where the funding-skew flag points.
+- **Funding pattern (real):** interested funding does **not** uniquely favor one answer here. Two
+  industry-funded meta-analyses back *"No association"* while two industry-funded trials back the
+  context-dependent camp; the audit now reports that tie instead of choosing by position order.
 - **Independence (real):** the *"No association"* camp lists 9 sources but 6 resolve to the same
   Nurses' Health / Health Professionals cohort, so it is closer to **~4 independent bases than 9** —
   the shared-cohort collapse the source count hides.
@@ -167,16 +168,14 @@ claim). *Web search / deep research need an Anthropic key; every provider can la
 Same engine, only the KB JSON differs. Browse these on the [live portal](https://groundknowledge.org)
 or `pull` them locally (`python cli.py pull <id>`):
 
-- **Eggs (real, malformed question):** funding skew, modest real concentration, and a lone non-crux
-  factor (subgroups, weighted `med` by *all* camps) flagging that "are eggs healthy?" is mis-posed —
-  the answer is "for whom?".
-- **COVID origin (contested):** the independence audit shows the headline honestly — the
-  best-supported position rests on several genuinely independent primary datasets, while others
-  turn out to rest on *zero* primary evidence (government reports / commentary collapsed to one
-  voice each). Source counts alone hide this entirely.
-- **Black holes (settled):** distribution collapses to "No risk", but the audit shows it resting on
-  one load-bearing argument (the cosmic-ray empirical bound) — and the lone dissent attacks exactly
-  that. The tool surfaces the single dependency of even a settled consensus (FLF's ask for this case).
+- **Eggs:** 20 sources across three answers; the no-association camp's 9 sources collapse to about
+  4 bases, while funding, subgroup effects, and biomarker-vs-outcome reasoning remain visible cruxes.
+- **COVID origin (contested):** 15 zoonotic sources collapse to about 5 bases and 8 laboratory-origin
+  sources to 3.5; Bayesian re-analyses resolve onto shared underlying evidence rather than counting
+  as independent looks.
+- **Black holes (settled):** 14 safe sources resolve to 4.5 bases spanning production impossibility,
+  Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, and one
+  half-strength review-only calculation. Residual concern attacks the reliability of those layers.
 
 ## Two surfaces, one compounding knowledge base
 
@@ -203,7 +202,7 @@ Both write the same portable `cases/<id>.kb.json` through the same merge. Labell
 open-access PDF** when one exists (richer positions, named datasets from the methods, and the
 funding/COI statement the abstract omits), with a Crossref funder lookup as backup.
 
-## Why this beats off-the-shelf deep research (the baseline)
+## What this adds to off-the-shelf deep research (the baseline)
 
 Deep research answers *this* question *once*, as prose. This produces a **structured artifact**
 another team can extend; every number is recomputed by one legible function; it **resists being
@@ -213,12 +212,9 @@ knowledge base that holds up under motivated reading and gets better as more peo
 
 ## Honest limitations
 
-- `cases/eggs.kb.json` is real and sourced (every entry has a citable url + funding + underlying
-  dataset). Evidence tiers and provenance quotes come from the labelling pipeline, but most sources
-  are abstract/unknown text depth and **dataset confirmation is curator-asserted, not fetch-verified**
-  (no `restsOn` dependency quote has been checked against fetched text in this case yet — see the
-  confirmation caveat below); positions and factor *weights* are a curator's faithful summary of each
-  camp — the mechanical parts (datasets, funding, counts, independence) are what the metrics run on.
+- The three competition cases are real and sourced, but most dependency edges remain
+  **curator-confirmed rather than fetch-verified**. Every shipped curator record now names the actor,
+  time, and a direct supporting source; its note says explicitly that this is not a verified edge.
 - **Independence depends on self-reported edges.** The mechanism collapses echo and detects circular
   citation, but only sees a dependency if the labeller recorded it. We don't crawl real citation
   graphs, so an adversary who *omits* a `src:` edge can still look more independent than they are —
@@ -231,7 +227,7 @@ knowledge base that holds up under motivated reading and gets better as more peo
   vote** that escalates genuine tier/position disagreements to a human review queue. Unverified
   named datasets add zero confirmed nEff; false confirmation or a blind spot shared across models
   remains possible.
-- Entity resolution is normalized-string + alias matching — robust to casing/aliases, not to
-  paraphrase. The `dups`/`merge` curation tools + a token-overlap suggester mitigate; embedding-match
-  with human confirmation is the next step.
+- Entity resolution is normalized-string + learned aliases — robust to known variants, not every
+  paraphrase. `dups --embed` adds advisory semantic candidates; nothing auto-merges, and a likely
+  duplicate is blocked at confirmation unless the curator records an override reason.
 - The viewer is render-only by design; to see an update you re-run `build`.

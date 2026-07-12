@@ -44,10 +44,18 @@ independence or smuggle in a duplicate.
       "position": "pos_id" | "NEW:Some stance",
       "evidence": "Observational", "funding": "independent" | "industry",
       "population": "General adults" | "—", "confidence": "moderate",
-      "restsOn": ["ds_id", "NEW:Cohort name"],
+      "restsOn": [
+        {"ref": "ds_id", "provenance": {
+          "quote": "One sentence specifically naming this dataset as evidence used by the source.",
+          "extractionConfidence": 0.9
+        }},
+        {"ref": "NEW:Cohort name", "provenance": {
+          "quote": "A separate sentence specifically naming this cohort.",
+          "extractionConfidence": 0.8
+        }}
+      ],
       "provenance": {
-        "position": { "quote": "...", "extractionConfidence": 0.85 },
-        "restsOn":  { "quote": "...", "extractionConfidence": 0.9 }
+        "position": { "quote": "...", "extractionConfidence": 0.85 }
       }
     },
     "factorWeights": [

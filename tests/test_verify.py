@@ -3,6 +3,7 @@ _carry_meta, engine/merge.py's textDepth/verifiedQuote passthrough, and engine/a
 quote_audit. See SCHEMA.md (textDepth, provenance[field].verifiedQuote) and MECHANISM.md.
 """
 import unittest
+from unittest import mock
 
 from engine.assess import quote_audit
 from engine.merge import merge_delta
@@ -76,6 +77,53 @@ class CarryMetaVerificationTests(unittest.TestCase):
         self.assertEqual(delta["source"]["provenance"]["position"]["verifiedQuote"], "exact")
         self.assertEqual(delta["source"]["provenance"]["evidence"]["verifiedQuote"], "missing")
 
+    def test_verifies_each_dependency_edge_against_doc_text(self):
+        delta = {"source": {"title": "t", "restsOn": [
+            {"ref": "D1", "provenance": {"quote": "We enrolled participants from the Nurses' Health Study."}},
+            {"ref": "D2", "provenance": {"quote": FABRICATED_QUOTE}},
+            "SRC:another-paper",
+        ]}}
+        _carry_meta(delta, {"kind": "full", "text": TEXT})
+        edges = delta["source"]["restsOn"]
+        self.assertEqual(edges[0]["provenance"]["verifiedQuote"], "exact")
+        self.assertEqual(edges[1]["provenance"]["verifiedQuote"], "missing")
+
+    def test_new_ingestion_does_not_revive_legacy_source_level_dependency_trust(self):
+        delta = {"source": {"title": "t", "restsOn": ["D"], "provenance": {
+            "restsOn": {"quote": "We enrolled participants from the Nurses' Health Study.",
+                        "verifiedQuote": "exact"}}}}
+        _carry_meta(delta, {"kind": "full", "text": TEXT})
+        self.assertNotIn("verifiedQuote", delta["source"]["provenance"]["restsOn"])
+
+    def test_per_edge_verification_survives_merge(self):
+        kb = empty_kb("abc", "Does X cause Y?")
+        delta = {"source": {"title": "A", "position": "NEW:Yes", "evidence": "Observational",
+                            "funding": "Undisclosed", "population": "—", "restsOn": [
+            {"ref": "NEW:Nurses Health Study", "provenance": {"quote":
+             "We enrolled participants from the Nurses' Health Study."}}
+        ]}}
+        _carry_meta(delta, {"kind": "full", "text": TEXT})
+        merge_delta(kb, delta)
+        edge = kb["sources"][0]["restsOn"][0]
+        self.assertIsInstance(edge, dict)
+        self.assertEqual(edge["provenance"]["verifiedQuote"], "exact")
+
+    def test_uploaded_document_path_verifies_edge_before_merge(self):
+        import base64
+        from ui.server import add_file_op
+        delta = {"source": {"title": "Uploaded", "position": "NEW:Yes",
+                            "evidence": "Observational", "restsOn": [{
+            "ref": "NEW:Nurses Health Study", "provenance": {
+                "quote": "We enrolled participants from the Nurses' Health Study."}}]}}
+        with mock.patch("ui.server.extract_text", return_value={"kind": "full", "text": TEXT}), \
+             mock.patch("ui.server._read", return_value=empty_kb("x", "q")), \
+             mock.patch("ui.server.llm.complete", return_value=__import__("json").dumps(delta)), \
+             mock.patch("ui.server._merge_list", return_value=[]) as merge:
+            add_file_op("x", "paper.txt", base64.b64encode(b"x").decode(), True)
+        carried = merge.call_args[0][1][0]
+        self.assertEqual(carried["source"]["textDepth"], "full")
+        self.assertEqual(carried["source"]["restsOn"][0]["provenance"]["verifiedQuote"], "exact")
+
     def test_verifies_factor_weight_quotes(self):
         delta = {"source": {"title": "t"}, "factorWeights": [{"factorLabel": "F", "weight": "high",
                                                                 "quote": FABRICATED_QUOTE}]}
@@ -128,6 +176,13 @@ class PromptTextTruncationTests(unittest.TestCase):
                                             max_text=10)
         # unique to the doc text (not boilerplate elsewhere in the template), sits past char 10
         self.assertNotIn("R01-AA000000", prompt)
+
+    def test_prompt_requests_per_edge_dependency_provenance(self):
+        from ingest.pipeline import build_extract_prompt
+        kb = empty_kb("abc", "Does X cause Y?")
+        prompt = build_extract_prompt(kb, {"title": "t", "url": "u", "text": TEXT})
+        self.assertIn('"restsOn":[{"ref":', prompt)
+        self.assertNotIn('"restsOn":{"quote"', prompt)
 
 
 class MergeCarriesVerificationTests(unittest.TestCase):

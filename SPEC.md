@@ -21,16 +21,15 @@ opposite of good epistemics.
 
 So our one design commitment, from which everything else follows:
 
-> **Aggregate, but weight by evidence quality and audit for independence instead of counting
-> sources.** If a feature could be gamed by flooding the zone with low-quality or correlated
-> papers, it is wrong. Adding correlated evidence to a position must make it look **less**
-> settled, not more.
+> **Aggregate, but count independent evidence bases and audit quality separately instead of
+> counting sources.** Sources landing on an already resolved base add no independent support;
+> twelve unnamed rehashes add at most one pooled voice rather than twelve.
 
 Everything below is in service of that inversion.
 
 ---
 
-## 2. What it produces, and why that beats the baseline
+## 2. What it produces, and what it adds to the baseline
 
 The honest baseline for any entry is *"a careful analyst with a deep-research tool on the same
 sub-question."* Deep research is very good and improving. It produces **one prose answer, once.**
@@ -41,9 +40,9 @@ We produce a different kind of object:
 |---|---|---|
 | Output | prose, for one reader, one time | a **structured JSON artifact** another team forks and extends |
 | Numbers | asserted in text | each recomputed by one **legible function**; inspectable |
-| Gaming | a flood of weak papers reads as "growing consensus" | echo, re-used cohorts, and **circular citation collapse to one look** — flooding can't inflate (or deflate) a side |
+| Gaming | a flood of weak papers reads as "growing consensus" | sources on an existing root add zero; unnamed floods add at most one pooled voice; an ungrounded **circular citation loop counts zero** |
 | Updating | re-run the whole query | add one source → **O(new) ingest**, deterministic recompute, **diff of what changed** |
-| Audit | trust the narrator | every edge carries a **provenance quote**; the metric is a pure function you can re-run |
+| Audit | trust the narrator | position, dataset-dependency, and factor-weight claims request **provenance quotes**; the metric is a pure function you can re-run |
 
 The value isn't a better paragraph. It's a knowledge base that **compounds**, an audit that
 **holds under motivated reading**, and a record of **what each new source did to the picture.**
@@ -84,8 +83,9 @@ and free of publisher scraping. Only *labelling* the fetched text uses an LLM, a
 contributor's choice: **Anthropic, OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter** (one
 stdlib code path, since all but Anthropic speak the OpenAI protocol). The labeller judges, in order:
 **relevance** (off-topic sources are refused at merge, like duplicates), then position, evidence
-type, funding, population, the datasets the source rests on (or the *other sources* it derives from),
-and a verbatim **provenance quote** for each. So cold start works with **no LLM key** up to the
+type, funding, population, the datasets the source rests on (or the *other sources* it derives from).
+It requests a verbatim quote for the position, each dataset edge, and each factor weight; source→source
+citation edges need not carry one. So cold start works with **no LLM key** up to the
 labelling step, and AI web search / deep research is an Anthropic feature while every provider can
 label fetched text. The OpenAlex fallback keeps relevance high with two *stance-neutral* filters
 (subject-topic cluster + exposure term) so a statin trial sharing "cardiovascular risk" is dropped
@@ -103,7 +103,7 @@ and that variance is now **measured and acted on**: labelling can run as an **en
 models over the same source, combined by a deterministic field-level majority vote
 (`ingest/ensemble.py`), with per-field agreement recorded on each source. A `restsOn` edge survives
 only if a **strict majority** (> half) of distinct models proposed it; a genuine split on the
-*position* is **not** merged under a
+*position or primary/secondary evidence tier* is **not** merged under a
 guessed label — it is queued in the KB for a human to resolve (pick a position or drop the paper;
 `engine/review.py`), and pending items count toward no metric. Labelling stays the one load-bearing
 AI step and the system's honestly-stated biggest lever (MECHANISM.md §8.1); the ensemble narrows it,
@@ -120,26 +120,23 @@ serve the thesis:
 The first is the naive aggregator's view (share of *sources* per position). The second re-sizes
 each position by its **effective independent evidence bases** — each distinct *resolved root* its
 sources reduce to, counted once at its strength (`weighted_distribution`; see the independence
-engine below), so sources sharing a dataset, echoing as reviews, or citing each other in a loop all
-collapse toward one "look" and a position propped up by re-used, derivative, or circular data
-**shrinks**. Seeing the correlated position contract between the two bars *is* the thesis, rendered.
-**Funding skew** then complicates
-it further: which position does *interested* money (Industry or
-Advocacy) most favour? On the real eggs case the two industry-funded studies (DIABEGG → Australian
-Egg Corporation; Blesso → Egg Nutrition Center) both back "context-dependent / safe" — a flag to
-weigh before counting heads, not a verdict. Funding is a **closed vocabulary** (Government/public,
+engine below), so sources sharing a dataset collapse, ungrounded reviews pool into one voice, and
+an ungrounded citation loop is flagged but contributes zero. The weighted bar therefore exposes how
+far raw source volume exceeds independent support. **Funding pattern** then complicates it further:
+where does *interested* money (Industry or Advocacy) cluster? On the real eggs case it is tied:
+two industry-funded meta-analyses back "No association," while two industry-funded trials back the
+context-dependent camp. The tool reports both instead of picking a winner by position order. Funding
+is a **closed vocabulary** (Government/public,
 Nonprofit/charity, Academic/institutional, Industry, Advocacy, Undisclosed) that **defaults to
 Undisclosed, never "independent"** — so the metric also reports how much of a case rests on
 sources that don't disclose funding, surfacing the data gap instead of fabricating independence.
 
 **Divergence / cruxes** (intellectual lineage: Heuer's *Analysis of Competing Hypotheses*). A
-factors × positions matrix; a factor is a **crux** when its weighting spreads ≥2 levels across
-positions. The point is to show that most disagreement is *local* — camps agree on most factors
-and diverge on a few. Each factor also reports `engaged` (how many positions weighed it) so the
-view separates cruxes from **shared** factors and **one-sided** ones (a dimension only one camp
-raises — dimmed, not a point of disagreement). A subtle property: a factor becomes a crux only
-once enough positions have weighed in, so cruxes **emerge as the base grows** (visible in the
-black-hole case: the three cruxes appeared only when the dissenting source arrived).
+factors × positions matrix distinguishes: a cross-camp crux (spread ≥2), a shared pivot (two camps
+rate it high), a one-sided high assumption, a high factor a camp leaves unanswered, and a milder
+contested weight. The tight headline `isCrux` is only cross-camp/shared-pivot; `loadBearing` also
+includes one-sided and unanswered factors. On black holes the current artifact has one headline
+crux plus two one-sided load-bearing factors — not an inflated claim of three headline cruxes.
 
 **Independence — the anti-false-balance core** (the full mechanism is `engine/roots.py` /
 [`MECHANISM.md`](MECHANISM.md)). Echo, cohort re-use, and circular corroboration are one disease —
@@ -152,20 +149,20 @@ depends on by following its `restsOn` edges (to datasets **and to other sources*
   (an original study earns a distinct root only by *naming* its trial/cohort/sample, not by claiming
   the tier — this closes the "label your echo Observational" flooding hole); an unrecognised evidence
   label defaults to secondary;
-- **strongly-connected citation cycles** (A→B→A with no primary grounding) collapse to one root and
-  raise a **circular-corroboration flag** — the adversarial pattern, surfaced loudly;
+- **strongly-connected citation cycles** (A→B→A with no grounding) become one visible,
+  zero-strength marker and raise a **circular-corroboration flag**;
 - a dataset known **only via a review**, or a root backed **only by animal / in-vitro** sources,
   counts at **half** (weak evidence, shown distinctly).
 
 The effective count (`nEff`) counts **each distinct resolved root once, at its strength** — never
 how many sources landed on it — and the audit **shows its work**: each position is broken down into
 its bases (each base's one-time `strength` contribution sums to `nEff` exactly), with the
-collapsed-source count surfaced separately. The invariant, enforced by a randomized monotonicity
-test: **adding a source never lowers any position's `nEff`, and only genuinely new evidentiary
-roots (or an upgrade — primary grounding for a review-only dataset, human evidence for an
-animal-only root) can raise it.** Flooding a position with correlated, derivative, or circular
-evidence moves nothing; junk "support" aimed at a rival moves nothing of theirs either — the
-pile-up surfaces only as *concentration*, honestly labelled. This is the metric that refuses to be
+collapsed-source count surfaced separately. The fixed-graph invariant, enforced by a randomized
+test: **adding a source with only outgoing edges cannot lower `nEff`; only a genuinely new root or
+grounding upgrade can raise it.** A graph correction can legitimately lower it by merging aliases
+or revealing a pure citation cycle. Flooding with correlated or derivative evidence moves nothing;
+junk "support" aimed at a rival moves nothing of theirs either — the pile-up surfaces only as
+*concentration*, honestly labelled. This is the metric that refuses to be
 flooded, and it produces honest, differing verdicts (e.g. on the real COVID-origin case the
 best-supported camp rests on several genuinely independent primary datasets while others collapse to
 a single government-report or commentary voice — invisible to a source count).
@@ -199,19 +196,21 @@ structural and named honestly.
    the gap without giving up determinism: strong **prompt discipline** (reuse aggressively; a
    mechanism is a factor not a position; `restsOn` is a named cohort, never "the literature"),
    which cut a 31-source test case from 6 positions / 24 datasets to 3 / 10; and explicit
-   **curation ops** (`engine/curate.py`: merge, rename, tidy, plus a token-overlap duplicate
-   suggester) exposed in the CLI and the UI Curate panel, so a human resolves the residual
-   paraphrases a string match can't. Embedding-assisted suggestions are the next step.
+   **curation ops** (`engine/curate.py`: merge, rename, tidy, plus lexical/acronym duplicate
+   suggestions) exposed in the CLI and UI. Optional embedding suggestions (`dups --embed`) surface
+   paraphrases a string match misses but never auto-merge. Confirmation blocks a likely duplicate
+   unless the curator records an explicit override.
 
 2. **Determinism & cost (scalability).** All assessment is pure counting over the KB. Ingestion is
    **O(new sources)**; recompute is **O(whole KB) but cheap**. Adding the 1000th source never
    re-reasons over the first 999. That is the scalability story: it gets better with more
    contributors and compute, not bottlenecked on re-doing prior work.
 
-3. **Provenance per edge.** Every extracted field carries a quote + extraction-confidence back to
-   the source (see the real eggs entries). Without this the base can't be audited and fails
-   "withstands motivated reading." *Tradeoff:* extraction confidence is the model's self-report;
-   it bounds, but does not eliminate, extraction error.
+3. **Provenance on load-bearing claims.** Position, each dataset-dependency edge, and factor weight
+   carry a quote + extraction-confidence when produced by the current fetch/label path. The quote is
+   checked against the exact model-visible text. Source-citation edges and categorical API metadata
+   are not falsely claimed to be quote-backed. *Tradeoff:* extraction confidence is the model's
+   self-report; it bounds, but does not eliminate, extraction error.
 
 4. **Open schema — interoperability vs nuance** (a tension FLF names explicitly). A small fixed
    *core* the metrics operate on (source, position, dataset, factor, edge) plus *open
@@ -231,9 +230,10 @@ structural and named honestly.
 FLF chose three cases with deliberately different profiles; a general tool must handle all three
 with **only the data changing.** It does:
 
-- **Eggs — contested, mundane, malformed question** (20 sources, 3 camps). The tool's headline
-  findings fall out of the data, not the curation: a real **funding skew toward "no association"**
-  (the two industry-funded meta-analyses back it), and the shared-cohort collapse — the *No
+- **Eggs — contested, mundane, malformed question** (20 sources, 3 camps). The curator-authored
+  structure makes two auditable patterns visible: interested funding is **tied** between the
+  no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
+  industry-funded trials), and the shared-cohort collapse — the *No
   association* camp lists 9 sources but 6 rest on the Nurses' Health / Health Professionals cohort,
   so it is closer to 4 independent bases than 9. The subgroup crux (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
@@ -246,10 +246,9 @@ with **only the data changing.** It does:
   ascertainment bias.
 
 - **Black holes — essentially settled** (20 sources, 2 camps). The naïve split is 70% "No risk," but
-  the 14 "safe" sources collapse to **~2.5 distinct evidence bases** — the consensus rests almost
-  entirely on the cosmic-ray/white-dwarf bound plus Hawking evaporation, and the residual-concern
-  side attacks the *reliability of that very argument* (Ord et al., Plaga). The tool surfaces the single
-  load-bearing dependency of a settled consensus — FLF's explicit ask for this case.
+  the 14 "safe" sources collapse to **4.5 bases**: production impossibility under standard gravity,
+  Hawking evaporation, slow accretion, the cosmic-ray/dense-star observation, and a half-strength
+  review-only strangelet calculation. The residual side attacks the reliability of those layers.
 
 Same `assess()`; same renderer; three lines of `build`. That is the generalization evidence.
 
@@ -258,8 +257,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 ## 7. Scalability, compounding, shareability
 
 - **Scales with better models** (ingestion/extraction quality), **more compute** (broader
-  discovery), and **more contributors** (each adds sources through the same merge). The
-  bottleneck is never a single hand-designed human step.
+  discovery), and **more contributors** (each adds sources through the same merge). Human review is
+  deliberately concentrated at confirmation, alias resolution, and ensemble disagreements; it is a
+  real integrity bottleneck, not hidden.
 - **Compounds:** the artifact is a JSON file another team forks and keeps growing; nothing is
   locked in the UI. The `Changes` tab and append-only log make the evolution legible.
 - **Shareable two ways:** `viewer/index.html` is self-contained (double-click, no server) for a
@@ -272,35 +272,35 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 ## 8. Adversarial robustness — failure modes named and bounded
 
 **Defended (verified in the prototype, with tests in `tests/test_independence.py`):**
-- *Flooding the zone with echo.* A pile of reviews / commentary / untagged meta-analyses on a side
-  collapses to **one voice** — so flooding can neither inflate a position **nor** tank a rival
-  (collapsing to one voice is symmetric; a count-weighted version would let you attack a side you
-  dislike by flooding it). Re-used cohorts collapse the same way.
+- *Flooding the zone with echo.* Sources landing on an existing root add zero. A pile of otherwise
+  ungrounded reviews / commentary / untagged meta-analyses collapses to **at most one pooled voice**
+  rather than one root per item; the first such pool can add 1.0. Re-used cohorts collapse exactly.
 - *Echo relabelled "primary".* The same flood dressed as original observations with an empty
   `restsOn` no longer mints a root each — **ungrounded primaries pool to one voice per position**
-  too, so a distinct root requires *naming* a distinct evidence base, not claiming the tier
+  too, so a distinct root requires a *specific named and admitted* evidence base, not a claimed tier
   (`test_echo_as_primary_flood_cannot_inflate_independence`). An unrecognised evidence label
-  defaults to secondary for the same reason. *Not defended:* fabricating a distinct *named* dataset
-  per source (edge fabrication) — bounded by quote verification + ensemble + human review, below.
-- *Circular corroboration.* Two sources whose only support is citing each other — the adversarial
-  pattern a reviewer flagged — are detected as a strongly-connected cycle, collapsed to one root,
-  and **flagged**, instead of reading as two independent confirmations.
-- *Alias-splitting.* One cohort submitted under five names is matched to a single dataset by the
-  alias table, so it cannot fake independence.
+  defaults to secondary for the same reason. Fabricating distinct *named* datasets on the unverified
+  path is quarantined at zero; the remaining semantic attack is a fetched or curator-confirmed false
+  identity, bounded by the per-edge identity and duplicate gates below.
+- *Circular corroboration.* Sources whose only support is citing one another become a visible,
+  strongly-connected cycle, contribute **zero**, and are flagged.
+- *Alias-splitting.* Exact and learned aliases resolve deterministically. Automatically verified
+  lexical lookalikes admit at most one root and expose the collision; curator confirmation blocks
+  lexical/acronym duplicates unless an override reason is recorded. Optional embeddings surface
+  further semantic candidates but do not auto-merge them.
 - *Duplicate submission.* Same url, or same **title+year even under a different url** (the same paper
   via PMC vs DOI vs publisher), is refused — a camp can't be inflated by re-submitting a study.
 - *Off-topic padding.* A real but tangential source is judged at labelling time and refused at merge,
   so it never pads a position.
-- *Tier laundering.* A meta-analysis or review only earns independence if it **names the trials it
-  pools** (then it collapses into them); an untagged one is echo, not a free independent base.
+- *Tier laundering.* A meta-analysis or review only earns independence through **named, admitted**
+  evidence bases (then it collapses into them); an untagged one is echo, not a free independent base.
 - *Animal evidence passed off as human.* A root backed only by animal / in-vitro sources counts at
   half on a clinical question.
 
 **Partially addressed since first draft:**
-- *Paraphrase-level entity collision* — a determined actor describing the same dataset in novel
-  prose can still split it on ingestion, but the **curation ops** (§5.1: merge/rename/tidy + a
-  duplicate suggester) let a human collapse it deterministically after the fact; full automation
-  awaits embedding-based resolution.
+- *Paraphrase-level entity collision* — a determined actor can still propose a novel name. Optional
+  embedding suggestions and the confirmation-time duplicate gate reduce this risk, but the semantic
+  decision remains human; the metric deliberately does not auto-merge uncertain entities.
 - *Advocacy / undisclosed funding* — the `funding` axis is no longer binary. It is a closed
   vocabulary (Industry, Advocacy, Government/public, Nonprofit/charity, Academic/institutional,
   Undisclosed) that captures *advocacy* stake (e.g. a dairy council) separately, and **defaults
@@ -311,9 +311,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 **Not defended (stated plainly):**
 - *Self-reported citation edges* — the independence engine only sees a dependency if the labeller
   recorded it, so an actor who **omits** a `src:` edge can look more independent than they are. We
-  state this in [`MECHANISM.md`](MECHANISM.md) §8 rather than paper over it; a verification pass
-  (re-fetch each source, check the stored quote is actually present) is the complementary defence,
-  on the roadmap.
+  state this in [`MECHANISM.md`](MECHANISM.md) §8 rather than paper over it. Quote verification is
+  implemented for the claims the prompt requests; comparing stored dependencies with an external
+  citation graph is the complementary defence that remains future work.
 - *Tier mislabelling* — the primary/secondary floor depends on the evidence type being right. Calling
   opinion "Observational" no longer *mints a root* on its own (an ungrounded primary now pools, §4),
   but it can still deny the review-collapse a genuine review deserves. A **fabricated named dataset**
@@ -359,7 +359,7 @@ evidence base are real and runnable.
 | `cli.py` | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · ui · pull · push · questions · import-citations · export` |
 | `app/` | the deployed keyless **portal** ([groundknowledge.org](https://groundknowledge.org)) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |
 | `ui/` | the local web console (`python cli.py ui`): find → fetch → label → import, **gap-driven deepen**, Curate, and pull/push |
-| `cases/eggs.kb.json` | **real, url-cited** evidence base; pull the COVID / milk / black-hole cases from the portal |
+| `cases/*.kb.json` | five local, url-cited KBs: eggs, COVID, black holes, alcohol, and video games |
 | `viewer/index.html` | self-contained, render-only viewer (Coverage · Divergence · Independence · Changes) |
 | `MECHANISM.md` / `SCHEMA.md` / `QUICKSTART.md` / `WORKFLOW.md` | the independence mechanism / data model / step-by-step tasks / operator runbook |
 

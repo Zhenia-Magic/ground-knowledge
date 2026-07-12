@@ -6,6 +6,8 @@ population terms). Every op leaves the KB internally consistent, so the metrics 
 just recompute. Each op bumps the version and appends a log entry, so the Changes tab records
 the curation alongside source additions.
 """
+import copy
+
 from .merge import norm, now_iso, prettify_label
 
 
@@ -25,6 +27,25 @@ def _resolve(items, ref, kind):
     if len(sub) > 1:
         raise ValueError("'{}' is ambiguous among {} {}s — use the id".format(ref, len(sub), kind))
     raise ValueError("no {} matches '{}'".format(kind, ref))
+
+
+def _resolve_source(kb, ref):
+    """Resolve a source by id, exact title, or a unique title substring."""
+    ref_s = str(ref or "").strip()
+    sources = kb.get("sources", [])
+    for source in sources:
+        if source.get("id") == ref_s:
+            return source
+    n = norm(ref_s)
+    exact = [source for source in sources if norm(source.get("title")) == n]
+    if exact:
+        return exact[0]
+    sub = [source for source in sources if n and n in norm(source.get("title"))]
+    if len(sub) == 1:
+        return sub[0]
+    if len(sub) > 1:
+        raise ValueError("'{}' is ambiguous among {} sources — use the id".format(ref, len(sub)))
+    raise ValueError("no source matches '{}'".format(ref))
 
 
 def _vocab_kind(kind):
@@ -68,12 +89,23 @@ def dedupe_sources(kb):
         return {"version": kb["meta"].get("version", 0), "summary": "no duplicate sources found",
                 "removed": []}
     remap = dict(dropped)
+    resolved_remap = {}
+    for loser, winner in dropped:
+        # A richer duplicate source replaces the old id everywhere, including optional dataset
+        # confirmation support. Follow a short replacement chain if successive duplicates folded.
+        final = winner
+        seen_chain = {loser}
+        while final in remap and final not in seen_chain:
+            seen_chain.add(final)
+            final = remap[final]
+        resolved_remap[loser] = final
+        repoint_confirmation_source(kb, loser, final, "duplicate source merged into retained record")
     kept_ids = {s["id"] for s in keep}
     kb["sources"] = keep
     for f in kb["factors"]:                        # re-point or drop provenance of removed sources
         prov, seen = [], set()
         for p in f.get("provenance", []):
-            sid = remap.get(p.get("source"), p.get("source"))
+            sid = resolved_remap.get(p.get("source"), p.get("source"))
             if sid in kept_ids and (sid, p.get("pos")) not in seen:
                 seen.add((sid, p.get("pos"))); p["source"] = sid; prov.append(p)
         f["provenance"] = prov
@@ -100,6 +132,213 @@ def _dedup(seq):
             seen.add(x)
             out.append(x)
     return out
+
+
+def _edge_ref(edge):
+    return str(edge.get("ref") or "").strip() if isinstance(edge, dict) else str(edge or "").strip()
+
+
+def _repoint_and_dedup_edges(edges, src_id, dst_id):
+    """Rewrite dataset refs inside both string and object edges, deduping by resolved ref.
+
+    When a bare edge and a provenance-carrying object collapse to the same target, keep the object:
+    dropping its dependency quote during curation would erase the audit trail.
+    """
+    out, where = [], {}
+    for edge in edges or []:
+        ref = _edge_ref(edge)
+        if not ref:
+            continue
+        if ref == src_id:
+            if isinstance(edge, dict):
+                edge = dict(edge)
+                edge["ref"] = dst_id
+            else:
+                edge = dst_id
+            ref = dst_id
+        key = ref.lower() if ref.lower().startswith("src:") else ref
+        if key not in where:
+            where[key] = len(out)
+            out.append(edge)
+        elif isinstance(edge, dict) and not isinstance(out[where[key]], dict):
+            out[where[key]] = edge
+    return out
+
+
+def repoint_confirmation_source(kb, source_id, replacement=None, reason=None):
+    """Maintain dataset-confirmation integrity when a supporting source is removed or deduped.
+
+    Curator confirmations remain valid without their optional supporting-source pointer, but the
+    removal is recorded. A `verified-edge` record is different: deleting its verification source
+    removes the basis for admission, so it becomes provisional. Dedupe operations repoint either
+    method to the retained source.
+    """
+    changed = 0
+    why = reason or "supporting source removed"
+    for d in kb.get("datasets", []):
+        c = d.get("confirmation")
+        if not isinstance(c, dict) or c.get("source") != source_id:
+            continue
+        if replacement:
+            c["source"] = replacement
+            c.setdefault("sourceHistory", []).append({"from": source_id, "to": replacement,
+                                                       "ts": now_iso(), "reason": why})
+        elif c.get("method") == "verified-edge":
+            d["confirmation"] = {"status": "provisional", "ts": now_iso(),
+                                 "note": why + "; verified-edge admission withdrawn"}
+        else:
+            c.pop("source", None)
+            c.setdefault("sourceHistory", []).append({"removed": source_id, "ts": now_iso(),
+                                                       "reason": why})
+        changed += 1
+    return changed
+
+
+def remove_source(kb, ref, reason, by, replacement=None):
+    """Remove an irrelevant or duplicate source without leaving stale derived state.
+
+    A reason and curator identity are mandatory because relevance is an editorial judgment.  If
+    ``replacement`` is supplied, source-to-source edges, factor provenance, and dataset-confirmation
+    support are redirected to that retained record; otherwise those dependencies are withdrawn.
+    Evidence bases referenced only by the removed source are pruned as orphans.  Factor cells are
+    then re-derived from their remaining provenance claims.
+    """
+    reason = str(reason or "").strip()
+    by = str(by or "").strip()
+    if not reason:
+        raise ValueError("source removal requires a reason")
+    if not by:
+        raise ValueError("source removal requires a curator identity")
+    source = _resolve_source(kb, ref)
+    target = _resolve_source(kb, replacement) if replacement else None
+    if target and target.get("id") == source.get("id"):
+        raise ValueError("replacement is the source being removed")
+    sid = source["id"]
+    target_id = target.get("id") if target else None
+    source_ref = "src:" + sid
+    target_ref = "src:" + target_id if target_id else None
+
+    # Only datasets touched by this source are candidates for pruning; pre-existing empty/proposed
+    # entities are not silently swept up by an unrelated curation action.
+    candidate_datasets = {
+        _edge_ref(edge) for edge in source.get("restsOn", [])
+        if _edge_ref(edge) and not _edge_ref(edge).lower().startswith("src:")
+    }
+
+    rewired = 0
+    for other in kb.get("sources", []):
+        if other is source:
+            continue
+        edges = []
+        for edge in other.get("restsOn", []):
+            if _edge_ref(edge) != source_ref:
+                edges.append(edge)
+                continue
+            rewired += 1
+            if not target_ref:
+                continue
+            if isinstance(edge, dict):
+                edge = dict(edge)
+                edge["ref"] = target_ref
+            else:
+                edge = target_ref
+            edges.append(edge)
+        # Deduplicate after a replacement in case the retained record was already cited.
+        deduped, seen = [], set()
+        for edge in edges:
+            key = _edge_ref(edge)
+            if key and key not in seen:
+                seen.add(key)
+                deduped.append(edge)
+        other["restsOn"] = deduped
+
+    for factor in kb.get("factors", []):
+        claims, seen = [], set()
+        for claim in factor.get("provenance", []):
+            if claim.get("source") == sid:
+                if not target_id:
+                    continue
+                claim = dict(claim)
+                claim["source"] = target_id
+            key = (claim.get("source"), claim.get("pos"), claim.get("weight"), claim.get("quote"))
+            if key not in seen:
+                seen.add(key)
+                claims.append(claim)
+        factor["provenance"] = claims
+
+    repoint_confirmation_source(kb, sid, target_id, reason)
+    kb["sources"] = [item for item in kb.get("sources", []) if item.get("id") != sid]
+
+    used_datasets = {
+        _edge_ref(edge) for item in kb.get("sources", []) for edge in item.get("restsOn", [])
+        if _edge_ref(edge) and not _edge_ref(edge).lower().startswith("src:")
+    }
+    orphaned = sorted(candidate_datasets - used_datasets)
+    if orphaned:
+        kb["datasets"] = [d for d in kb.get("datasets", []) if d.get("id") not in orphaned]
+
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)
+    summary = "removed source “{}”: {}".format(source.get("title"), reason)
+    report = _commit(kb, "remove-source", summary)
+    kb["log"][-1].update({"source": sid, "title": source.get("title"), "by": by,
+                           "reason": reason, "replacement": target_id,
+                           "rewiredEdges": rewired, "prunedDatasets": orphaned})
+    report.update({"removed": sid, "replacement": target_id, "rewiredEdges": rewired,
+                   "prunedDatasets": orphaned})
+    return report
+
+
+def move_source(kb, ref, position_ref, reason, by):
+    """Re-file a source under a different existing position, preserving an editorial audit trail."""
+    reason = str(reason or "").strip()
+    by = str(by or "").strip()
+    if not reason:
+        raise ValueError("source move requires a reason")
+    if not by:
+        raise ValueError("source move requires a curator identity")
+    source = _resolve_source(kb, ref)
+    position = _resolve(kb.get("positions", []), position_ref, "position")
+    old = source.get("position")
+    if old == position.get("id"):
+        raise ValueError("source is already filed under that position")
+    source["position"] = position["id"]
+    for factor in kb.get("factors", []):
+        for claim in factor.get("provenance", []):
+            if claim.get("source") == source.get("id") and claim.get("pos") == old:
+                claim["pos"] = position["id"]
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)
+    old_label = next((p.get("label") for p in kb.get("positions", []) if p.get("id") == old), old)
+    summary = "moved source “{}”: “{}” → “{}”".format(
+        source.get("title"), old_label, position.get("label"))
+    report = _commit(kb, "move-source", summary)
+    kb["log"][-1].update({"source": source.get("id"), "title": source.get("title"),
+                           "from": old, "to": position.get("id"), "by": by, "reason": reason})
+    report.update({"source": source.get("id"), "from": old, "to": position.get("id")})
+    return report
+
+
+def _merge_confirmation(src, dst):
+    """Preserve admission audit records when two dataset identities are explicitly merged."""
+    src_c = copy.deepcopy(src.get("confirmation"))
+    dst_c = dst.get("confirmation")
+    src_confirmed = isinstance(src_c, dict) and src_c.get("status") == "confirmed"
+    dst_confirmed = isinstance(dst_c, dict) and dst_c.get("status") == "confirmed"
+    if src_confirmed and not dst_confirmed:
+        src_c.setdefault("mergedFrom", []).append({"dataset": src["id"], "label": src["label"],
+                                                    "ts": now_iso()})
+        dst["confirmation"] = src_c
+        dst.pop("confirmed", None)
+    elif src_confirmed and dst_confirmed:
+        dst_c.setdefault("mergedConfirmations", []).append({
+            "dataset": src["id"], "label": src["label"], "confirmation": src_c,
+            "ts": now_iso(),
+        })
+    elif src.get("confirmed") and not dst_confirmed and not dst.get("confirmed"):
+        # Preserve the old boolean only for legacy files; the audit migration can convert it later.
+        dst.pop("confirmation", None)
+        dst["confirmed"] = True
 
 
 # ---- merges -------------------------------------------------------------------------------
@@ -139,13 +378,14 @@ def merge_datasets(kb, src_ref, dst_ref):
     n = 0
     for s in kb["sources"]:
         ro = s.get("restsOn", [])
-        if src["id"] in ro:
-            s["restsOn"] = _dedup([dst["id"] if d == src["id"] else d for d in ro])
+        if any(_edge_ref(edge) == src["id"] for edge in ro):
+            s["restsOn"] = _repoint_and_dedup_edges(ro, src["id"], dst["id"])
             n += 1
     dst.setdefault("aliases", [])
     for al in [src["label"]] + src.get("aliases", []):
         if al not in dst["aliases"]:
             dst["aliases"].append(al)
+    _merge_confirmation(src, dst)
     kb["datasets"] = [d for d in kb["datasets"] if d["id"] != src["id"]]
     return _commit(kb, "merge-dataset",
                    "merged dataset “{}” → “{}” ({} sources)".format(src["label"], dst["label"], n))
@@ -226,25 +466,49 @@ def rename(kb, kind, ref, new_label):
     return _commit(kb, "rename", "renamed {} “{}” → “{}”".format(kind, old, new_label))
 
 
-def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=None, note=None):
+def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=None, note=None,
+                    allow_similar=False, embed=None):
     """Curator vouches that a dataset is a REAL, identified evidence base (or un-vouches it).
     A confirmed dataset root counts at full strength; an unconfirmed one asserted only by
     unverified/paste-back input is quarantined at zero (see engine/roots.root_strength). This is how
     a human resolves the 'is this a fabricated root?' question the arithmetic can't answer.
 
-    Writes an AUDITABLE confirmation record — {status, method, by, source, ts, note} — rather than an
+    Writes an AUDITABLE confirmation record — {status, method, by, ts, source?, note?} — rather than an
     opaque boolean, so a reader can see HOW and by WHOM a root was admitted (engine/roots
     ._dataset_confirmation). The legacy `confirmed` flag is removed once the object is written; it is
     still honored on read for KBs that predate this."""
     d = _resolve(kb["datasets"], ref, "dataset")
     if confirmed:
+        actor = str(by or "").strip()
+        if method != "curator":
+            raise ValueError("manual confirmation method must be 'curator'; verified edges are admitted automatically")
+        if not actor:
+            raise ValueError("curator confirmation requires a non-empty 'by' identity")
+        if source and not any(s.get("id") == source for s in kb.get("sources", [])):
+            raise ValueError("confirmation source '{}' does not exist in the knowledge base".format(source))
+        # Confirmation is the point at which a proposed name can start moving headline nEff. Stop a
+        # likely alias split here, before two spellings of one cohort become two trusted roots.
+        candidates = []
+        for pair in suggest_duplicates(kb, embed=embed).get("dataset", []):
+            if d["id"] in {pair["a"]["ref"], pair["b"]["ref"]}:
+                candidates.append(pair)
+        if candidates and not allow_similar:
+            other = [p["b"]["label"] if p["a"]["ref"] == d["id"] else p["a"]["label"]
+                     for p in candidates]
+            raise ValueError("possible duplicate evidence base: {} — merge first, or explicitly "
+                             "override with allow_similar=True and a note".format(", ".join(other)))
+        if candidates and allow_similar and not str(note or "").strip():
+            raise ValueError("a similarity override requires a note explaining why the bases are distinct")
         rec = {"status": "confirmed", "method": method, "ts": now_iso()}
-        if by:
-            rec["by"] = by
+        rec["by"] = actor
         if source:
             rec["source"] = source
         if note:
             rec["note"] = note
+        if candidates:
+            rec["similarityOverride"] = [
+                {"ref": p["b"]["ref"] if p["a"]["ref"] == d["id"] else p["a"]["ref"],
+                 "reason": p["reason"], "similarity": p["sim"]} for p in candidates]
         d["confirmation"] = rec
     else:
         d["confirmation"] = {"status": "provisional", "ts": now_iso()}
