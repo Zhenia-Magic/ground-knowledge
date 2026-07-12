@@ -128,6 +128,7 @@ class DeltaValidationTests(unittest.TestCase):
                               "evidence": "Observational", "restsOn": []}}
                  for i in range(4)]
         with mock.patch("app.store.save_kb", return_value=4), \
+             mock.patch("app.store.log_contribution"), \
              mock.patch("engine.assess.assess", wraps=__import__("engine.assess", fromlist=["assess"]).assess) as assess_mock:
             res = _apply_delta("abc", q, items, "tester")
         self.assertEqual(res["added"], 4)
@@ -172,7 +173,8 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
     def test_end_to_end_apply_delta_never_persists_spoofed_verification(self):
         kb = empty_kb("abc", "question")
         q = {"kb": kb, "version": 0}
-        with mock.patch("app.store.save_kb", return_value=1):
+        with mock.patch("app.store.save_kb", return_value=1), \
+             mock.patch("app.store.log_contribution"):
             _apply_delta("abc", q, {"source": {
                 "title": "t", "position": "NEW:Yes", "evidence": "Observational",
                 "funding": "Undisclosed", "population": "—", "textDepth": "full",
