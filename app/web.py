@@ -76,9 +76,9 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .combo-in{width:100%;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;color:var(--ink);}
 .combo-in::placeholder{color:var(--faint);}
 .combo-in:focus{outline:none;border-color:var(--chrome);box-shadow:0 1px 4px rgba(0,0,0,.08);}
-.combo-menu{position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;max-height:240px;overflow:auto;background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;box-shadow:0 8px 24px rgba(0,0,0,.14);display:none;padding:4px;}
+.combo-menu{position:absolute;z-index:30;top:calc(100% + 4px);right:0;left:auto;width:max-content;min-width:100%;max-width:min(460px,88vw);max-height:280px;overflow:auto;background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;box-shadow:0 8px 24px rgba(0,0,0,.14);display:none;padding:4px;}
 .combo-menu.open{display:block;}
-.combo-opt{padding:8px 10px;border-radius:6px;font-size:13px;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.combo-opt{padding:8px 10px;border-radius:6px;font-size:13px;line-height:1.35;color:var(--ink);cursor:pointer;white-space:normal;overflow-wrap:anywhere;}
 .combo-opt:hover,.combo-opt.active{background:#f2f4f6;}
 .combo-opt .why{color:var(--faint);font-size:11px;font-family:var(--mono);}
 .combo-empty{padding:9px 10px;color:var(--muted);font-size:12.5px;}
