@@ -134,32 +134,41 @@
         {
           "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "the earliest known COVID-19 cases were geographically centered on this market",
+          "quote": "We show the earliest known COVID-19 cases from December 2019, including those without reported direct links, were geographically centered on this market.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "76af6b9ad836494efd1992a8d2c0d413ebc84b23ff291b204f7050852b2cefd1",
-            "textDepth": "full",
-            "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8715",
-            "reason": "not-found"
+            "status": "exact",
+            "textSha256": "89494598b10827e4886c4a8ddfdb9b99753eb2b377e5f95c239cfeaa8251627b",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9348750/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "488d4a2ea0b9519823f3d32056dedac4da748b378771c5dd83a24150a17cf079",
+            "normalizedCharStart": 14067,
+            "normalizedCharEnd": 14220,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_who_sago_independent_assessment_of_the_origi_2025",
           "pos": "pos_undetermined_unresolved",
           "weight": "high",
-          "quote": "The Huanan market appears to be a location for amplification, but it is not possible to determine if the first infections occurred there.",
-          "verifiedQuote": "fuzzy",
+          "quote": "The HSM was a site for amplification, which allowed the virus to spread further, but it is not possible to determine if the first infections occurred at the HSM .",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "5ba4bc5062d8305e04e44c3f37746894c3520cae047dc649d55687f8b7fd0349",
             "textDepth": "full",
             "sourceUrl": "https://cdn.who.int/media/docs/default-source/documents/epp/sago/independent-assessment-of-the-origins-of-sars-cov-2-by-sago.pdf?sfvrsn=b0f90ad4_6&download=true",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d8761006fa160dd4e002df07d467d1ac0b5a5eec7740b8367d78c230d190575d",
+            "normalizedCharStart": 122163,
+            "normalizedCharEnd": 122325,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -175,36 +184,6 @@
       "rationale": "Argues the market centering is not merely a surveillance artifact.",
       "provenance": [
         {
-          "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
-          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "cases with no known link to the market were nonetheless geographically distributed near it",
-          "weight": "low",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "76af6b9ad836494efd1992a8d2c0d413ebc84b23ff291b204f7050852b2cefd1",
-            "textDepth": "full",
-            "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8715",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
-          "pos": "pos_laboratory_associated_origin",
-          "quote": "early case data reflects where testing was concentrated, not where infection began",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "e18b444b955cc83734caf6d5900ebf1e8def3a046d64bd9c2c7cf72f3b570529",
-            "textDepth": "partial",
-            "sourceUrl": "https://blog.rootclaim.com/rootclaims-covid-19-origins-debate-results/",
-            "reason": "not-found"
-          }
-        },
-        {
           "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
           "pos": "pos_undetermined_unresolved",
           "quote": "Phylogenetic analysis of these sequences in the context of carefully annotated existing data further supports the idea that the Huanan Seafood Market sequences are not fully representative of the viruses in Wuhan early in the epidemic.",
@@ -213,7 +192,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "3d69935e0556d80fd9f6b3efcdb43d9a63dffdf0873beea1fa51d064218cd4a4",
+            "textSha256": "a9e79b6508bfb042620f8bf693badb7ef8cabaabe5bbd583d153f2c78e3eee14",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8436388/",
             "reason": "verbatim-single-sentence",
@@ -237,16 +216,21 @@
         {
           "source": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "two separate introductions of lineages A and B into humans",
+          "quote": "Phylodynamic rooting methods, coupled with epidemic simulations, reveal that these lineages were the result of at least two separate cross-species transmission events into humans.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "b7d4f0173512b9e0a7abf5103dec39e7e6a7b4f37278ac9802868153847a6ee3",
             "textDepth": "full",
             "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8337",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4e22d9ceff473a9b1b1e78a88d280fb31f93da86d51afc690a8f83b563349901",
+            "normalizedCharStart": 452,
+            "normalizedCharEnd": 631,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -264,62 +248,61 @@
         {
           "source": "src_andersen_rambaut_lipkin_holmes_garry_the_pro_2020",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "the acquisition of both the polybasic cleavage site and predicted O-linked glycans argues against manipulation",
+          "quote": "The acquisition of both the polybasic cleavage site and predicted O-linked glycans also argues against culture-based scenarios.",
           "weight": "low",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "d6ab17c4e03724e8825f38c3f490d7fa38745b0f4fd73dce461038694d785c55",
+            "status": "exact",
+            "textSha256": "fd5baa5d8b5fe9eaa7960bb5631381a2863b3992d27bddb6ebed8632f2c8e2a6",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41591-020-0820-9",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.936
-          }
-        },
-        {
-          "source": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
-          "pos": "pos_undetermined_unresolved",
-          "quote": "can be explained by natural evolutionary mechanisms",
-          "weight": "low",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "56639595a9a4f41b51df7c6f26d30583e04282db20b895a6bde90a44cd3f7b6a",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1093/molbev/msab327",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e88fa4a308cf6f5d5ff5b20dc558735381ba382a689ea9ef4d7663418a7412b1",
+            "normalizedCharStart": 12638,
+            "normalizedCharEnd": 12765,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
           "pos": "pos_laboratory_associated_origin",
-          "quote": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
+          "quote": "The furin cleavage site in the spike protein of SARS-CoV-2 confers to the virus the ability to cross species and tissue barriers, but was previously unseen in other SARS-like CoVs.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "1d13a9966cecb23ebc7fc71e579644cbb908d3cf646ba01ab21643d4da945105",
             "textDepth": "abstract",
             "sourceUrl": "https://onlinelibrary.wiley.com/doi/full/10.1002/bies.202000240",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "9ef6979a0cbc372af77a7f212674f4d2450764e24b8aefb45b94765192eae410",
+            "normalizedCharStart": 435,
+            "normalizedCharEnd": 615,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "not consistent with laboratory engineering",
+          "quote": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
           "weight": "low",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "8172d3f7572f700bf6959c263fc0647ee81f10e09933eb834ca497977b0264c6",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9546612/",
-            "reason": "not-found"
+            "status": "exact",
+            "textSha256": "5c3885045cdaab30a73e837c8eee88389575a4bd9945927a24cf02fe5277af4b",
+            "textDepth": "full",
+            "sourceUrl": "https://pdfs.semanticscholar.org/bf02/ddc9442b96c045c4359635f7ce77fd6b130b.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "bf6b964761303e7447ec7717998bb2855417300ed7d70414efdbb29f6d682f16",
+            "normalizedCharStart": 5069,
+            "normalizedCharEnd": 5208,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -336,53 +319,61 @@
         {
           "source": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
           "pos": "pos_laboratory_associated_origin",
-          "quote": "proposed exactly the kind of engineering that would produce a virus like SARS-CoV-2",
-          "weight": "high"
-        },
-        {
-          "source": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
-          "pos": "pos_undetermined_unresolved",
-          "quote": "a laboratory-associated origin remains plausible",
-          "weight": "med",
-          "verifiedQuote": "missing",
+          "quote": "Specifically, the scientists sought to insert furin cleavage sites at the S1/S2 junction of the spike protein; to assemble synthetic viruses in six segments; to identify coronaviruses up to 25 percent different from SARS; and to select for receptor binding domains adept at infecting human receptors.",
+          "weight": "high",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "69f892a69df82e6070fa089cde5fe235f5ba77338e99db67da5aca2eacb3bba2",
-            "textDepth": "full",
-            "sourceUrl": "https://www.dni.gov/files/ODNI/documents/assessments/Declassified-Assessment-on-COVID-19-Origins.pdf",
-            "reason": "not-found"
+            "status": "exact",
+            "textSha256": "b4dc5773d525cbf144f2e7bd83c182f7daf44e422604d16ca67140c00c595563",
+            "textDepth": "partial",
+            "sourceUrl": "https://usrtk.org/covid-19-origins/scientists-proposed-making-viruses-with-unique-features-of-sars-cov-2-in-wuhan/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e7a8cdabf8f0bbcd5b53113446866d44afdafc29ce6c6891dec37b3da246e2ee",
+            "normalizedCharStart": 1609,
+            "normalizedCharEnd": 1909,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
           "pos": "pos_laboratory_associated_origin",
-          "quote": "collected from the Mojiang mine and passaged in the laboratory",
+          "quote": "It is a 370 nucleotide virus fragment collected from the Mojiang mine in 2013 by the lab of Zeng-li Shi at the WIV ( Ge et al., 2016 ).",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "72b785895484b73652770c2f24a775f1ef208c5c82fca979efeaf628b2710016",
+            "status": "exact",
+            "textSha256": "08cea6bd03376813de5c44021d7a98727d5ff6d97c3995fa7871d491a734a75c",
             "textDepth": "partial",
             "sourceUrl": "https://jonathanlatham.net/a-proposed-origin-for-sars-cov-2-and-the-covid-19-pandemic/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "6de8f65e1fadd32fdbaeadf7c966bfb40444928feff6ebce59eacb81c72656ea",
+            "normalizedCharStart": 12452,
+            "normalizedCharEnd": 12587,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_who_sago_independent_assessment_of_the_origi_2025",
           "pos": "pos_undetermined_unresolved",
           "weight": "med",
-          "quote": "Information and evidence is lacking to assess the possibility of a laboratory origin, so it cannot be ruled out.",
-          "verifiedQuote": "fuzzy",
+          "quote": "Information and evidence is also lacking to assess the possibility of a laboratory origin - either the evidence is not available or has not been provided to the scientific community .",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "5ba4bc5062d8305e04e44c3f37746894c3520cae047dc649d55687f8b7fd0349",
             "textDepth": "full",
             "sourceUrl": "https://cdn.who.int/media/docs/default-source/documents/epp/sago/independent-assessment-of-the-origins-of-sars-cov-2-by-sago.pdf?sfvrsn=b0f90ad4_6&download=true",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7bcbdc188daa0d156199aee0c5ce7d8d31a400542b19a9bf94a88f824415893d",
+            "normalizedCharStart": 129957,
+            "normalizedCharEnd": 130140,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -398,46 +389,41 @@
         {
           "source": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
           "pos": "pos_laboratory_associated_origin",
-          "quote": "combining the likelihoods across independent lines of evidence",
+          "quote": "The mistakes were heavily skewed toward zoonosis, since our methodology involves steelmanning and maximizing the likelihoods of both hypotheses, while Miller used figures heavily biased toward zoonosis, in some cases using extreme estimates that are impossible to reach in a robust probabilistic analysis, as we explain below.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "e18b444b955cc83734caf6d5900ebf1e8def3a046d64bd9c2c7cf72f3b570529",
+            "status": "exact",
+            "textSha256": "a2eb8158e8e41424a82e1477cbe967537001dcc6608853f2c537684071eb705b",
             "textDepth": "partial",
             "sourceUrl": "https://blog.rootclaim.com/rootclaims-covid-19-origins-debate-results/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "306d204439e50fd4a30b7ebafa781d3f220a76cf3d710fc4ba6e0ce5ac18d9fe",
+            "normalizedCharStart": 4017,
+            "normalizedCharEnd": 4343,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_weissman_an_inconvenient_probability_bayesia_2024",
           "pos": "pos_laboratory_associated_origin",
-          "quote": "70 to 1 in favor of a lab origin",
+          "quote": "Methods The standard logical procedure to calculate the odds, P(LL)/P(ZW), is to combine some rough prior sense of the odds with judgments of how consistent new pieces of evidence are with the LL and ZW hypotheses.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "9b6446dc065127a3ee0ec9429069bd641e74e385ce189e465c471f796a11c527",
+            "status": "exact",
+            "textSha256": "f8cc0057c8e72bb008f12853692c1033e1185df98f280b0e07ee34d9c68b3aa0",
             "textDepth": "partial",
             "sourceUrl": "https://michaelweissman.substack.com/p/an-inconvenient-probability-v50",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_quay_bayesian_analysis_of_sars_cov_2_origin__2021",
-          "pos": "pos_laboratory_associated_origin",
-          "quote": "greater than 99%",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "e566e4d79b36bd57f9ff8803900036fecd9c8a2b65faa5be12e48119de107c76",
-            "textDepth": "partial",
-            "sourceUrl": "https://zenodo.org/record/4477081",
-            "reason": "too-short-to-verify"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "73c7f720980293d29c4e4e29d1fa87f6c9d98ebb0a1b664f01e83466da3489d4",
+            "normalizedCharStart": 14957,
+            "normalizedCharEnd": 15171,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -453,32 +439,41 @@
         {
           "source": "src_zhou_et_al_a_pneumonia_outbreak_associated_w_2020",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "96.2% identical to a bat coronavirus, RaTG13",
+          "quote": "Furthermore, we show that 2019-nCoV is 96% identical at the whole-genome level to a bat coronavirus.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "fe585755415cc3cd430a26da6f3c0c8853d1e93115d33875ce07af21de90b25f",
+            "status": "exact",
+            "textSha256": "b56056993dc2f32d841e06710c39d92cf8dc13bf170aff99d09f54754fafa8b2",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41586-020-2012-7",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d16ca116bd64ba4ec387038c69d9c67e97e30474b87bae738c4f25e499e76473",
+            "normalizedCharStart": 1485,
+            "normalizedCharEnd": 1585,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_temmam_et_al_bat_coronaviruses_related_to_sa_2022",
           "pos": "pos_zoonotic_spillover_at_the_huanan_market",
-          "quote": "can bind to ACE2 and use it to enter human cells",
+          "quote": "As expected from the high affinity for hACE2 of the S ectodomain of BANAL-236, pseudoviruses expressing it were able to efficiently enter human cells expressing endogenous hACE2 using an ACE2-dependent pathway.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "8a8440b0aee8d45d2d65ba28a09212bc4255b917c74d17c52d2bf0a4eb4fb220",
+            "status": "exact",
+            "textSha256": "db3bb8545f4746bcfb54513de620a729ff23add65685fe68c1ed40df061843c0",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41586-022-04532-4",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5e013de188cca93785654fe3fa08ceb7fc90c452279cb6ee7d3a8be7a6adec34",
+            "normalizedCharStart": 29191,
+            "normalizedCharEnd": 29401,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -489,7 +484,7 @@
       "id": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
       "title": "Worobey et al. — The Huanan market was the early epicenter of the COVID-19 pandemic",
       "year": 2022,
-      "url": "https://www.science.org/doi/10.1126/science.abp8715",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9348750/",
       "authors": [
         "Michael Worobey",
         "Joshua I. Levy",
@@ -523,26 +518,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Although there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred through the live wildlife trade in China and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
+          "quote": "While there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred via the live wildlife trade in China, and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
           "extractionConfidence": 0.9,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "76af6b9ad836494efd1992a8d2c0d413ebc84b23ff291b204f7050852b2cefd1",
-            "textDepth": "full",
-            "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8715",
+            "textSha256": "89494598b10827e4886c4a8ddfdb9b99753eb2b377e5f95c239cfeaa8251627b",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9348750/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "e23203eebfef9be019e910c7693f881012552bd284e5f51fe2419596e61d46f4",
-            "normalizedCharStart": 824,
-            "normalizedCharEnd": 1111,
+            "quoteSha256": "e8daf561efbe7ca870a03f079966a7840c6b3630d7d5d402f31502c72938fb03",
+            "normalizedCharStart": 14436,
+            "normalizedCharEnd": 14717,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 1,
-      "textDepth": "full",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.074768+00:00",
@@ -655,7 +650,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "d6ab17c4e03724e8825f38c3f490d7fa38745b0f4fd73dce461038694d785c55",
+            "textSha256": "fd5baa5d8b5fe9eaa7960bb5631381a2863b3992d27bddb6ebed8632f2c8e2a6",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41591-020-0820-9",
             "reason": "verbatim-single-sentence",
@@ -791,14 +786,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "eeb71838016f16e14fb5ca6c7251a9fc2dd76d7f789ee46a600fecc7f8e2fe2f",
+            "textSha256": "e12706f3bca9f0f8071c6fff9bcb2d579a12ff8651ec914d319646a150756e3b",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8373617/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "b30100f733bc098105f2be462b99ac9006cfac1bcebe128ce804b75df2891961",
-            "normalizedCharStart": 32251,
-            "normalizedCharEnd": 32322,
+            "normalizedCharStart": 32254,
+            "normalizedCharEnd": 32325,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -927,9 +922,9 @@
     },
     {
       "id": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
-      "title": "Analysis of the DEFUSE proposal (EcoHealth / WIV / DARPA, 2018)",
+      "title": "US Right to Know — analysis of DEFUSE proposal drafts",
       "year": 2023,
-      "url": "https://usrtk.org/wp-content/uploads/2023/01/defuse-proposal.pdf",
+      "url": "https://usrtk.org/covid-19-origins/scientists-proposed-making-viruses-with-unique-features-of-sars-cov-2-in-wuhan/",
       "authors": [
         "U.S. Right to Know"
       ],
@@ -946,12 +941,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the DEFUSE proposal described inserting a furin cleavage site into a SARS-related bat coronavirus",
-          "extractionConfidence": 0.7
+          "quote": "Furin cleavage site at the S1/S2 boundary While the language of the formal DEFUSE proposal called for the insertion of “human specific proteolytic cleavage sites” in a portion of the spike protein called the “S2′,” earlier drafts of DEFUSE were more explicit.",
+          "extractionConfidence": 0.7,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "b4dc5773d525cbf144f2e7bd83c182f7daf44e422604d16ca67140c00c595563",
+            "textDepth": "partial",
+            "sourceUrl": "https://usrtk.org/covid-19-origins/scientists-proposed-making-viruses-with-unique-features-of-sars-cov-2-in-wuhan/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "bf59ce44abf65f8bff382b3fc5be7f82d50af5e6eb3afd0d9983cc9d6cbbd7d3",
+            "normalizedCharStart": 6263,
+            "normalizedCharEnd": 6522,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 8,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.699545+00:00",
@@ -986,7 +995,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "e18b444b955cc83734caf6d5900ebf1e8def3a046d64bd9c2c7cf72f3b570529",
+            "textSha256": "a2eb8158e8e41424a82e1477cbe967537001dcc6608853f2c537684071eb705b",
             "textDepth": "partial",
             "sourceUrl": "https://blog.rootclaim.com/rootclaims-covid-19-origins-debate-results/",
             "reason": "verbatim-single-sentence",
@@ -1034,14 +1043,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "9b6446dc065127a3ee0ec9429069bd641e74e385ce189e465c471f796a11c527",
+            "textSha256": "f8cc0057c8e72bb008f12853692c1033e1185df98f280b0e07ee34d9c68b3aa0",
             "textDepth": "partial",
             "sourceUrl": "https://michaelweissman.substack.com/p/an-inconvenient-probability-v50",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "c4f1b40343adda9381c9bdad9b8460685f425d1294ac209c716cd61c8e8a79ad",
-            "normalizedCharStart": 107080,
-            "normalizedCharEnd": 107216,
+            "normalizedCharStart": 107110,
+            "normalizedCharEnd": 107246,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -1121,17 +1130,21 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "introduction through a laboratory incident was assessed to be an extremely unlikely pathway",
+          "quote": "Assessment of likelihood In view of the above, a laboratory origin of the pandemic was considered to be extremely unlikely.",
           "extractionConfidence": 0.6,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "12294c0e2991cae89b4f315ed54aa85b35c3c93849e2cf0311e172b646405c73",
             "textDepth": "full",
             "sourceUrl": "https://www.who.int/docs/default-source/coronaviruse/final-joint-report_origins-studies-6-april-201.pdf?sfvrsn=4f5e5196_1&download=true",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "edbcaff573b4b4189922e62d7f4394ccec17cd1a6486f64f73cd4c8f23eeadac",
+            "normalizedCharStart": 276190,
+            "normalizedCharEnd": 276313,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -1162,26 +1175,11 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "After examining all available intelligence reporting and other information, though, the IC remains divided on the most likely origin of COVID-19.",
-          "extractionConfidence": 0.75,
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "69f892a69df82e6070fa089cde5fe235f5ba77338e99db67da5aca2eacb3bba2",
-            "textDepth": "full",
-            "sourceUrl": "https://www.dni.gov/files/ODNI/documents/assessments/Declassified-Assessment-on-COVID-19-Origins.pdf",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "38c7e7eb8851af9c6a1ff52ba8d523f10b51a9f8f2c6bbdb04bacc1c5ad4c11a",
-            "normalizedCharStart": 1185,
-            "normalizedCharEnd": 1330,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
+          "extractionConfidence": 0.75
         }
       },
       "addedIn": 13,
-      "textDepth": "full",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.699632+00:00",
@@ -1257,22 +1255,7 @@
       ],
       "provenance": {
         "position": {
-          "quote": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
-          "extractionConfidence": 0.75,
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "8a69102ada3f11fb0a70f8dfabeb629690d3d179025620c161fc190e56f884a0",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8646886/",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "48cb69c2d92e815889a12c89de09405574d5f8d86f18836037c201810c75ccda",
-            "normalizedCharStart": 3383,
-            "normalizedCharEnd": 3536,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
+          "extractionConfidence": 0.75
         }
       },
       "addedIn": 15,
@@ -1311,14 +1294,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "a78ce4fc2b679dc11076927f84f3edb7c3fa57a3c7be6faa3e61c1f03cf56fc3",
+            "textSha256": "b18ac325be9d37677a4ee805b8a32ec1eb0e10cc119cfe5509838c4f0657b846",
             "textDepth": "partial",
             "sourceUrl": "https://www.astralcodexten.com/p/practically-a-book-review-rootclaim",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "7bfe97d7be09b306be7cb898b0737fb34337d920804058cbe1dba8a96ec50f6b",
-            "normalizedCharStart": 43958,
-            "normalizedCharEnd": 43996,
+            "normalizedCharStart": 43960,
+            "normalizedCharEnd": 43998,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -1386,7 +1369,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "fe585755415cc3cd430a26da6f3c0c8853d1e93115d33875ce07af21de90b25f",
+            "textSha256": "b56056993dc2f32d841e06710c39d92cf8dc13bf170aff99d09f54754fafa8b2",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41586-020-2012-7",
             "reason": "verbatim-single-sentence",
@@ -1458,7 +1441,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8a8440b0aee8d45d2d65ba28a09212bc4255b917c74d17c52d2bf0a4eb4fb220",
+            "textSha256": "db3bb8545f4746bcfb54513de620a729ff23add65685fe68c1ed40df061843c0",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41586-022-04532-4",
             "reason": "verbatim-single-sentence",
@@ -1512,7 +1495,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "981111076213c726b42c347f4fa6ca043ffee8813738d3560e520b53a00515bc",
+            "textSha256": "83599bccc700a1565d6fa58193768f0fdc5a8bddbe3bc25d8e4bfe1dd0bec95c",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41564-020-0771-4",
             "reason": "verbatim-single-sentence",
@@ -1567,7 +1550,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "b7cc505915d82914c279fd904422720ba017eeb8eacc5fe29cea32a36d95087a",
+            "textSha256": "a44f8cbf6d0a15bf9f35e4b4230bd147ab5e5053539843e88565eeae009af29b",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8882382/",
             "reason": "verbatim-single-sentence",
@@ -1591,7 +1574,7 @@
       "id": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
       "title": "Garry — SARS-CoV-2 furin cleavage site was not engineered",
       "year": 2022,
-      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9546612/",
+      "url": "https://pdfs.semanticscholar.org/bf02/ddc9442b96c045c4359635f7ce77fd6b130b.pdf",
       "authors": [
         "Robert F. Garry"
       ],
@@ -1608,22 +1591,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Rather, we noted that the SARS-CoV-2 FCS is \"suboptimal.\" We also noted, correctly, that placing the insertion out of frame would be \"an unusual and needlessly complex feat of genetic engineering.\" The immediate proximal ancestor of SARS-CoV-2 did not come directly from a bat to a human, but first evolved in an intermediate host.",
+          "quote": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
           "extractionConfidence": 0.8,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "8172d3f7572f700bf6959c263fc0647ee81f10e09933eb834ca497977b0264c6",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9546612/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "status": "exact",
+            "textSha256": "5c3885045cdaab30a73e837c8eee88389575a4bd9945927a24cf02fe5277af4b",
+            "textDepth": "full",
+            "sourceUrl": "https://pdfs.semanticscholar.org/bf02/ddc9442b96c045c4359635f7ce77fd6b130b.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "bf6b964761303e7447ec7717998bb2855417300ed7d70414efdbb29f6d682f16",
+            "normalizedCharStart": 5069,
+            "normalizedCharEnd": 5208,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 21,
-      "textDepth": "partial",
+      "textDepth": "full",
       "fundingDetails": [
         "HHS | NIH | NIAID | Division of Microbiology and Infectious Diseases, National Institute of Allergy and Infectious Diseases"
       ],
@@ -1694,7 +1681,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "e9ec294aed9780d6bd4f58af9824db882d352f0d65726f6d3ff2ab5af9044a84",
+            "textSha256": "9ac05b4e4e39335eadbdd53673f62fe1b585933cd4e6afb1fbcf6d368034b985",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41586-023-06043-2",
             "reason": "verbatim-single-sentence",
@@ -1735,20 +1722,20 @@
       ],
       "provenance": {
         "position": {
-          "quote": "First, they provide further evidence that the Huanan Seafood Market sequences that were the focus of the joint WHO-China report ( WHO 2021 ) are not representative of all SARS-CoV-2 in Wuhan early in the epidemic.",
+          "quote": "Phylogenetic analysis of these sequences in the context of carefully annotated existing data further supports the idea that the Huanan Seafood Market sequences are not fully representative of the viruses in Wuhan early in the epidemic.",
           "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "3d69935e0556d80fd9f6b3efcdb43d9a63dffdf0873beea1fa51d064218cd4a4",
+            "textSha256": "a9e79b6508bfb042620f8bf693badb7ef8cabaabe5bbd583d153f2c78e3eee14",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8436388/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "db4e5c53c3dfb53e4f8f191f8583a4f822e5de2ab7cc91655db391348a658d88",
-            "normalizedCharStart": 34193,
-            "normalizedCharEnd": 34406,
+            "quoteSha256": "365f305ac339bc7f2a85b5c25cfee96ed6049826c5f57fe3700fee321bd90f56",
+            "normalizedCharStart": 2256,
+            "normalizedCharEnd": 2491,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -1785,17 +1772,21 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "The investigation into the origin of the virus has been made difficult by the lack of key evidence from the earliest days of the outbreak-there's no doubt that greater transparency on the part of Chinese authorities would be enormously helpful.",
+          "quote": "However, we do assert that there has been no independent and transparent scientific scrutiny to date of the full scope of the US-based evidence.",
           "extractionConfidence": 0.75,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "3564932f9ff5a53a9d6dda3b0e3fd85af6a3a185bc8bb68113ea09f3834360ec",
+            "status": "exact",
+            "textSha256": "d14977a397cbc42daa68e74c57283a38b365c639a684b278a3cf589fbda4e00d",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9173817/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "212329cb385f20955099a348fe2213a96c49dc7ff05b00630ef65bcad105528c",
+            "normalizedCharStart": 17793,
+            "normalizedCharEnd": 17937,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -1832,14 +1823,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "0eabdba5bfa323e51c145b987fdd0bb590181f380ebb14ca9d8907dbedcd00b2",
+            "textSha256": "b903456dbbd1ddcc54cebd22f44eafd284e3ec01738bdcafc292aa53cb3488e1",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7703598/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "a94db7ba5b5e35071c511999ae8d139875bc92f10a6ae32162c34bb5b5652f30",
-            "normalizedCharStart": 3468,
-            "normalizedCharEnd": 3659,
+            "normalizedCharStart": 3472,
+            "normalizedCharEnd": 3663,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -1879,7 +1870,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "e566e4d79b36bd57f9ff8803900036fecd9c8a2b65faa5be12e48119de107c76",
+            "textSha256": "588e6a33bbd84b3770c6907674b010439eb862d6e5f96323cfa9b35f1c5d3778",
             "textDepth": "partial",
             "sourceUrl": "https://zenodo.org/record/4477081",
             "reason": "verbatim-single-sentence",
@@ -1927,14 +1918,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "72b785895484b73652770c2f24a775f1ef208c5c82fca979efeaf628b2710016",
+            "textSha256": "08cea6bd03376813de5c44021d7a98727d5ff6d97c3995fa7871d491a734a75c",
             "textDepth": "partial",
             "sourceUrl": "https://jonathanlatham.net/a-proposed-origin-for-sars-cov-2-and-the-covid-19-pandemic/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "339ace68c2a74a251560b1b45426b5da3d4c749241eda486c03eb318a831ed2a",
-            "normalizedCharStart": 1634,
-            "normalizedCharEnd": 1757,
+            "normalizedCharStart": 1616,
+            "normalizedCharEnd": 1739,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -2727,7 +2718,7 @@
       "version": 35,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T00:35:42.051652+00:00",
+      "ts": "2026-07-13T01:28:12.740961+00:00",
       "sources": 28
     }
   ],

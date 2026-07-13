@@ -8,7 +8,8 @@ from app.web import viewer_html
 from engine.merge import clean_url, merge_delta
 from engine.render import json_for_script
 from engine.schema import empty_kb
-from ingest.extract import _SafeHTTPSHandler, _connect_public, _validate_remote_url
+from ingest.extract import (_SafeHTTPSHandler, _connect_public, _validate_remote_url,
+                            _verified_ssl_context, _strip_html, clean_url as clean_fetch_url)
 from ingest.pipeline import fetch_docs
 from app.portal import _apply_delta, _norm_delta
 
@@ -84,6 +85,19 @@ class OutboundUrlTests(unittest.TestCase):
             self.assertEqual(handler.https_open(mock.Mock()), "ok")
         self.assertIn("context", do_open.call_args.kwargs)
         self.assertNotIn("check_hostname", do_open.call_args.kwargs)
+
+    def test_verified_ssl_context_keeps_certificate_checks_enabled(self):
+        context = _verified_ssl_context()
+        self.assertEqual(context.verify_mode, __import__("ssl").CERT_REQUIRED)
+        self.assertTrue(context.check_hostname)
+
+    def test_fetch_url_keeps_balanced_parentheses_in_bare_url(self):
+        url = "https://example.org/article/S0002-9165(23)13738-5/fulltext"
+        self.assertEqual(clean_fetch_url(url), url)
+
+    def test_html_cleaner_preserves_less_than_comparison(self):
+        cleaned = _strip_html("<p>Egg intake &lt;1/week was compared with &gt;7/week.</p>")
+        self.assertEqual(cleaned, "Egg intake <1/week was compared with >7/week.")
 
 
 class FullPushAuthorizationTests(unittest.TestCase):

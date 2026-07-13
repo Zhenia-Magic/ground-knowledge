@@ -142,47 +142,41 @@
         {
           "source": "src_giddings_mangano_astrophysical_implications__2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "eight observed white dwarf stars... present a form of living evidence that the LHC must be safe",
+          "quote": "We argue that cases with such an effect at shorter times than the solar lifetime are ruled out, since in these scenarios black holes produced by cosmic rays impinging on much denser white dwarfs and neutron stars would then catalyze their decay on time scales incompatible with their known lifetimes.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
             "textDepth": "full",
             "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "205dac7d04652dc043e62ced1ef32387db158d8a76c491712c2663a981b6610f",
+            "normalizedCharStart": 636,
+            "normalizedCharEnd": 936,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
+          "quote": "If the probability estimate given by an argument is dwarfed by the chance that the argument itself is flawed, then the estimate is suspect.",
           "weight": "med",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
             "textDepth": "abstract",
             "sourceUrl": "https://arxiv.org/abs/0810.5515",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
-          "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "cosmic-ray collisions at energies far above those of any accelerator",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "2d0d1055497be5fac6658a11a293cca19721655be1b395b1290c21d492564b73",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.nature.com/articles/302508a0",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "efdd6fcbfd1b1c207251c35cd70d82a1cfa528f59b564942154dae53d32a2c95",
+            "normalizedCharStart": 895,
+            "normalizedCharEnd": 1034,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -199,47 +193,41 @@
         {
           "source": "src_giddings_mangano_astrophysical_implications__2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "even if Hawking radiation does not exist",
+          "quote": "Even if penetration does not occur during slowdown, there is a different argument that it takes place on rapid time scales.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
             "textDepth": "full",
             "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "51ee1185b7371aee342ebac56c5491ed54c2a153ff1f0a34efc0af1beb52c904",
+            "normalizedCharStart": 116760,
+            "normalizedCharEnd": 116883,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "microscopic black holes would decay almost instantly by Hawking radiation",
+          "quote": "Any microscopic black holes produced at the LHC are expected to decay by Hawking radiation before they reach the detector walls.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
             "textDepth": "abstract",
             "sourceUrl": "https://arxiv.org/pdf/0806.3414",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
-          "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "a metastable black hole could grow rather than evaporate",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "8f43d900a69b3d6fa1e65a16a0bd7e5c670f6c14a405cc9e6139bf95d5ce4acc",
-            "textDepth": "abstract",
-            "sourceUrl": "https://arxiv.org/abs/0808.1415",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "77e510ba0dc56af1c9ac0b7e4f9257676df3c34ca503706dbc70f63df11cc5b1",
+            "normalizedCharStart": 1083,
+            "normalizedCharEnd": 1211,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -255,47 +243,21 @@
         {
           "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "their argument may fail for reasons such as a flaw in the underlying theory, a mistake in modelling, or a calculation error",
+          "quote": "However, their argument may fail for a number of reasons such as a flaw in the underlying theory, a flaw in the modeling of the problem, or a mistake in the calculations.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
             "textDepth": "abstract",
             "sourceUrl": "https://arxiv.org/abs/0810.5515",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.754
-          }
-        },
-        {
-          "source": "src_calogero_might_a_laboratory_experiment_destr_2000",
-          "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "reassurances may be motivated more by the wish to proceed",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "374108c470656f6c5f065c8601ecf180fd92e938c69998b27a146963a8b5d7e6",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1179/030801800679224",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
-          "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "d186fcfef076943455dafb09ccb55f58b8a239ac699b1ab0b8ad85f480e76d0b",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1d8d086d30aad852f9a243c7d1d6d5ff47bfcfa627d014c83783dfa55eed6c8f",
+            "normalizedCharStart": 724,
+            "normalizedCharEnd": 894,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -307,23 +269,7 @@
         "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
       "rationale": "Conflict-of-interest concern about self-assessment.",
-      "provenance": [
-        {
-          "source": "src_johnson_the_black_hole_case_the_injunction_a_2009",
-          "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "safety reviews were conducted by the same institution seeking to run the experiment",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "6a519f52604c791d822f3f61a30aa6aa04d13309087629cee1d4c4988d82c43d",
-            "textDepth": "abstract",
-            "sourceUrl": "https://arxiv.org/abs/0912.5480",
-            "reason": "not-found"
-          }
-        }
-      ]
+      "provenance": []
     }
   ],
   "sources": [
@@ -402,16 +348,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "LHC collisions present no danger and there are no reasons for concern",
+          "quote": "The stability of astronomical bodies constrains strongly the possible rate of accretion by any such microscopic black holes, so that they present no conceivable danger.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
             "textDepth": "abstract",
             "sourceUrl": "https://arxiv.org/pdf/0806.3414",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5ae3f6de7aff284d447b13fc1e98a3224e4accbe647f51bb5d672b06a456e30a",
+            "normalizedCharStart": 1351,
+            "normalizedCharEnd": 1519,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -641,17 +592,7 @@
       ],
       "provenance": {
         "position": {
-          "quote": "there is a tendency to underplay such risks... reassurances may be motivated more by the wish to proceed than by the strength of the case",
-          "extractionConfidence": 0.7,
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "374108c470656f6c5f065c8601ecf180fd92e938c69998b27a146963a8b5d7e6",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1179/030801800679224",
-            "reason": "not-found"
-          }
+          "extractionConfidence": 0.7
         }
       },
       "addedIn": 9,
@@ -734,14 +675,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "013d4077013f5a1e10a66caa6a6338aa913554e47d7180fa67ee68d2ec571a89",
+            "textSha256": "e0bcba1f53a04815f9ca545a42831a9b6e8e845981fccf7a8077a7eaffbb65e2",
             "textDepth": "partial",
             "sourceUrl": "https://home.cern/cern-reiterates-safety-of-lhc-on-eve-of-first-beam/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "4dec0c63cc156a151c142b512a4235121e76eb5c465df1f8abf059343e1dd539",
-            "normalizedCharStart": 203,
-            "normalizedCharEnd": 402,
+            "normalizedCharStart": 197,
+            "normalizedCharEnd": 396,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -782,14 +723,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "2d0d1055497be5fac6658a11a293cca19721655be1b395b1290c21d492564b73",
+            "textSha256": "c371c8b947ce9e3056d1dcac71e093832c9678871cddb0a1c3416568df0ce77b",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/302508a0",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "7e6bf75147d763cb2d4e85f5d2540902d8df5dd217808d8b19c5a86a963142e3",
-            "normalizedCharStart": 1863,
-            "normalizedCharEnd": 2080,
+            "normalizedCharStart": 1865,
+            "normalizedCharEnd": 2082,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -830,7 +771,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "fb2f7c6444eb73eaec3cc8a5ffdde92a484762b0a90d399298fc72a6a370de36",
+            "textSha256": "e623f4b9b9997441c11c988381da72bffcf42d513530f40cf2b006e9f02606a5",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/438754a",
             "reason": "verbatim-single-sentence",
@@ -854,7 +795,7 @@
       "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
       "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
       "year": 2003,
-      "url": "https://cds.cern.ch/record/613175/files/CERN-2003-001.pdf",
+      "url": "https://cds.cern.ch/record/613175/files",
       "authors": [
         "J.-P. Blaizot",
         "J. Iliopoulos",
@@ -877,12 +818,11 @@
       ],
       "provenance": {
         "position": {
-          "quote": "we find no basis for any conceivable threat from heavy-ion collisions at the LHC",
           "extractionConfidence": 0.85
         }
       },
       "addedIn": 15,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702052+00:00",
@@ -959,16 +899,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "any microscopic black hole would evaporate almost instantaneously via Hawking radiation",
+          "quote": "By this process, the mini-black holes formed in particle accelerators would evaporate nearly as soon as they are created – typically, such black holes would only exist for a few tenth of a trillionth of a trillionth (10 -25 , in exponential notation ) seconds.",
           "extractionConfidence": 0.75,
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "c9c69388066cc96a8fa3391b453cff11f58fd8c726a03e8e89e3bc48fbc1521f",
+            "status": "exact",
+            "textSha256": "ba32e15c6af51c389b720ded1b2f9a1505a93674a17b395bafb1f9ccfd62a666",
             "textDepth": "partial",
             "sourceUrl": "https://www.einstein-online.info/en/spotlight/accelerators_bh/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1d476eff292e2e499da036d88f59b9979a23ddd511fe10cbe662f779ffe193c6",
+            "normalizedCharStart": 4962,
+            "normalizedCharEnd": 5222,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -1651,7 +1596,7 @@
       "version": 27,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T00:35:29.291944+00:00",
+      "ts": "2026-07-13T01:28:12.350461+00:00",
       "sources": 17
     }
   ],

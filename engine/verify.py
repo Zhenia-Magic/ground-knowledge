@@ -13,7 +13,12 @@ import unicodedata
 
 _WS = re.compile(r"\s+")
 _PARAGRAPH = re.compile(r"\n\s*\n+")
-_SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[\"'“‘(\[]*[A-Z0-9])")
+# Keep the two fixed-width lookbehinds separate because Python's regular-expression engine does
+# not permit variable-width lookbehinds.  The second alternative matters for prose such as
+# ``... is “suboptimal.” We also ...``: a closing quotation mark must not join two sentences into
+# one supposedly verified excerpt.
+_SENTENCE = re.compile(
+    r"(?:(?<=[.!?])|(?<=[.!?][\"'”’]))\s+(?=[\"'“‘(\[]*[A-Z0-9])")
 _HEADING = re.compile(
     r"^(abstract|background|objective|objectives|methods?|results?|discussion|conclusions?|"
     r"introduction|keywords?|highlights?|summary|article info)\s*:?$", re.I)

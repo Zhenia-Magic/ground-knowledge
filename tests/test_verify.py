@@ -3,6 +3,9 @@ _carry_meta, engine/merge.py's textDepth/verifiedQuote passthrough, and engine/a
 quote_audit. See SCHEMA.md (textDepth, provenance[field].verifiedQuote) and MECHANISM.md.
 """
 import hashlib
+import json
+import pathlib
+import tempfile
 import unittest
 from unittest import mock
 
@@ -11,6 +14,7 @@ from engine.merge import merge_delta
 from engine.schema import empty_kb
 from engine.verify import apply_quote_verification, ground_quote, is_verified_exact, match_quote
 from ingest.pipeline import _carry_meta, _prompt_text, build_batch_extract_prompt
+from scripts.audit_quotes import write_markdown_report
 
 TEXT = """Title of Paper
 
@@ -74,6 +78,15 @@ class MatchQuoteTests(unittest.TestCase):
                          source_title="The Huanan market was the early epicenter of the COVID-19 pandemic")
                          ["status"], "fuzzy")
 
+    def test_closing_quote_ends_sentence(self):
+        text = ('Rather, we noted that the FCS is “suboptimal.” '
+                'We also noted that the insertion was unusual. A third sentence follows.')
+        joined = ('Rather, we noted that the FCS is “suboptimal.” '
+                  'We also noted that the insertion was unusual.')
+        result = ground_quote(joined, text)
+        self.assertEqual(result["status"], "fuzzy")
+        self.assertEqual(result["reason"], "crosses-structural-boundary")
+
     def test_exact_result_has_hashed_audit_and_canonical_sentence(self):
         result = ground_quote(EXACT_QUOTE, TEXT, text_depth="full")
         self.assertEqual(result["method"], "verbatim-sentence-v2")
@@ -86,6 +99,21 @@ class MatchQuoteTests(unittest.TestCase):
         self.assertTrue(is_verified_exact(provenance))
         provenance["quote"] += " altered"
         self.assertFalse(is_verified_exact(provenance))
+
+    def test_audit_counts_edge_quote_when_position_quote_is_absent(self):
+        edge = {"quote": "We enrolled participants from the Nurses' Health Study."}
+        apply_quote_verification(edge, TEXT, text_depth="full")
+        kb = {"sources": [{"id": "s", "provenance": {"position": {}},
+                            "restsOn": [{"ref": "D", "provenance": edge}]}],
+              "factors": []}
+        with tempfile.TemporaryDirectory() as directory:
+            case = pathlib.Path(directory) / "case.kb.json"
+            report = pathlib.Path(directory) / "report.md"
+            case.write_text(json.dumps(kb), encoding="utf-8")
+            write_markdown_report([case], report)
+            rendered = report.read_text(encoding="utf-8")
+        self.assertIn("Position excerpts: **0 exact of 0**", rendered)
+        self.assertIn("All stored excerpts (position, dependency, and factor): **1 exact of 1**", rendered)
 
 
 class CarryMetaVerificationTests(unittest.TestCase):

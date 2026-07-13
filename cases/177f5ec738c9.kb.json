@@ -129,48 +129,41 @@
         {
           "source": "src_reexamining_the_findings_of_the_american_psy_2020",
           "pos": "pos_no_clear_effect",
-          "quote": "Effect sizes appeared to be elevated because of non‑best‑practices and researcher‑expectancy effects, particularly for experimental studies.",
+          "quote": "However, effect sizes appeared to be elevated because of non-best-practices and researcher-expectancy effects, particularly for experimental studies.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "e80ddc9280df3f4a7d779bf71dfa01bd0f9fbf0557bd9f1acf466be2d81bfc51",
             "textDepth": "abstract",
             "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1745691620927666",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
-        },
-        {
-          "source": "src_violent_video_game_effects_on_aggression_emp_2010",
-          "pos": "pos_increases_aggression",
-          "quote": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
-          "weight": "low",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "410b3fa8e8760446c449303c75392e40fd40467f1206b1686d402b5152f26024",
-            "textDepth": "abstract",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192553/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ff5ea1f11b54e5ede0e6deba5fa2df19bde1ad763db632764a10f4c4e751250e",
+            "normalizedCharStart": 1263,
+            "normalizedCharEnd": 1412,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_much_ado_about_nothing_the_misestimation_and_2010",
           "pos": "pos_no_clear_effect",
-          "quote": "Included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
+          "quote": "Anderson et al. included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "49b2fa2d46038e301c96fc58298fa18136ce7aabfd423e42a5c53efb0b3cc5d4",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192554/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1eb2fbf2f884f335c50fef27d7d263052db4f9d5f85c47873cdca92f8cdf102e",
+            "normalizedCharStart": 738,
+            "normalizedCharEnd": 1044,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -233,47 +226,61 @@
         {
           "source": "src_finding_common_ground_in_meta_analysis_wars__2019",
           "pos": "pos_increases_aggression",
-          "quote": "effects ... are almost always quite small.",
+          "quote": "Despite seemingly conflicting results for the statistical significance of the pooled estimates in different meta-analyses of video-game studies, all of the meta-analyses do in fact point to the conclusion that, in the vast majority of settings, violent video games do increase aggressive behavior but that these effects are almost always quite small.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "db32ded757ef1d6fe4357800549f5b2cf21136d9b93ab52767ba2023be710c5f",
+            "status": "exact",
+            "textSha256": "f11decc734d9c806c2dc67d67aa45905cc744584e8c981fad107eed528e4d5ac",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f5fc923643f4eed3e4f5158b0c2c3138b90ce5c59430f1cc566f62256b6bcf46",
+            "normalizedCharStart": 2680,
+            "normalizedCharEnd": 3030,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_apa_task_force_report_on_violent_video_games_2020",
           "pos": "pos_increases_aggression",
-          "quote": "The small and reliable relationship ... the effect sizes reported ... were interpreted by the author as “minimal” but not null effects.",
+          "quote": "However, upon closer examination, the effect sizes reported in Ferguson’s 2015 meta-analysis are non-zero and were interpreted by the author as “minimal” but not null effects.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "d63d9b81994d212436c5304726e51193d207a96b118389d5ea2b88f51abcf0ff",
             "textDepth": "full",
             "sourceUrl": "https://www.apa.org/about/policy/violent-video-games.pdf",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "32c8aa75b835ac8c5960850e105b4c320c25ba057a95f0427be69026ea78ccb8",
+            "normalizedCharStart": 12191,
+            "normalizedCharEnd": 12366,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_lacko_machackova_smahel_does_violence_in_vid_2024",
           "pos": "pos_no_clear_effect",
           "weight": "low",
-          "quote": "Within-person effects of changes in violent-game exposure on aggression were statistically insignificant.",
-          "verifiedQuote": "missing",
+          "quote": "At the within-person level, two hypotheses were examined: the selection effect (effects of changes in aggression/empathy on changes in VVG) and the desensitization effect (effects of changes in VVG on alterations in aggression/empathy).",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
             "textDepth": "abstract",
             "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "211e0d85f15e2d2f7807991f73e729ab47fe3da99f4c99bc962bdae36b8edeaa",
+            "normalizedCharStart": 1028,
+            "normalizedCharEnd": 1264,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -305,14 +312,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "4ab02bcde91343c17145d860909133d24e39d22ff8a5f44869c0bbe0340467c1",
+            "textSha256": "76b072cc06f73dc450160cc5aa92b7ad8f46bb55f2fe6aa75b3200cd30d4c57f",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2848956/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "f1cd78ecba9882ecc5398d6755665a6bcec4dfcbb6e494edb1eb802860447ee4",
-            "normalizedCharStart": 4815,
-            "normalizedCharEnd": 5057,
+            "normalizedCharStart": 4821,
+            "normalizedCharEnd": 5063,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -359,35 +366,28 @@
         {
           "ref": "ds_ferguson_and_kilburn_2009_meta_analysis",
           "provenance": {
-            "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14-.29).",
+            "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
             "extractionConfidence": 0.8,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "131b135b8c040dca6ea74bdc1e4d85b79c169ac7631312cad5e9544c45aa7e59",
               "textDepth": "full",
               "sourceUrl": "https://www.apa.org/pi/families/review-video-games.pdf",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "aed83779a52004a05466d414ea608bc07ee27ae5f21382951f35d74569bd5008",
+              "normalizedCharStart": 11753,
+              "normalizedCharEnd": 11947,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
       ],
       "provenance": {
         "position": {
-          "quote": "The research demonstrates a consistent relation between violent video game use and increases in aggressive behavior, aggressive cognitions, and aggressive affect and decreases in prosocial behavior, empathy, and sensitivity to aggression.",
-          "extractionConfidence": 1.0,
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "131b135b8c040dca6ea74bdc1e4d85b79c169ac7631312cad5e9544c45aa7e59",
-            "textDepth": "full",
-            "sourceUrl": "https://www.apa.org/pi/families/review-video-games.pdf",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
+          "extractionConfidence": 1.0
         }
       },
       "addedIn": 2,
@@ -426,17 +426,21 @@
         {
           "ref": "ds_przybylski_and_weinstein_2019_registered_rep",
           "provenance": {
-            "quote": "A large sample of British adolescent participants (n = 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
+            "quote": "= 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
             "extractionConfidence": 0.9,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "4fa86833e8579c2dbbe2a80400b3301a1b06ef40c2a611360d1f5c90bcbe6943",
               "textDepth": "abstract",
               "sourceUrl": "https://doi.org/10.1098/rsos.171474",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7a99bebd565c65a7d4ba3d2f84ac1a89e35fcd7608dee65bd8103c74573bd3a6",
+              "normalizedCharStart": 122,
+              "normalizedCharEnd": 204,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -810,7 +814,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "7736968bbac8377d079205aa02733a98cfba9f0344f874eff28cb84d6fddcdc5",
+              "textSha256": "35bef046c860d64f39ed7d69890d407fd6d753b6ad5aa10d6fbfb30b10efd8ff",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6756088/",
               "reason": "verbatim-single-sentence",
@@ -831,14 +835,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "7736968bbac8377d079205aa02733a98cfba9f0344f874eff28cb84d6fddcdc5",
+            "textSha256": "35bef046c860d64f39ed7d69890d407fd6d753b6ad5aa10d6fbfb30b10efd8ff",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6756088/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "009b8e0973f0d1c01de2bd95b01bafc7c51ffc67f041443430e257eda7da5c2d",
-            "normalizedCharStart": 49683,
-            "normalizedCharEnd": 49835,
+            "normalizedCharStart": 49992,
+            "normalizedCharEnd": 50144,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -883,14 +887,14 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "0ed1acd1769dca79c4f0ccada08a34c3b70e218e2f340e2cc7b9810589135719",
+              "textSha256": "29a65820ef2bdb4be7964b4ab9e009a00e500df3e2b246f8ccbcdfa50e1463ca",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6790614/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
               "quoteSha256": "daea1afd3bb64c2e7e1de06ca2ab9812c812d333b78bb2c674f2a9ead74e57a3",
-              "normalizedCharStart": 11269,
-              "normalizedCharEnd": 11373,
+              "normalizedCharStart": 11303,
+              "normalizedCharEnd": 11407,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           }
@@ -898,17 +902,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Mediation analyses showed that friends' aggression at Time 1 accounted for the impact of friends' amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
+          "quote": "Mediation analyses showed that friends’ aggression at Time 1 accounted for the impact of friends’ amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "0ed1acd1769dca79c4f0ccada08a34c3b70e218e2f340e2cc7b9810589135719",
+            "status": "exact",
+            "textSha256": "29a65820ef2bdb4be7964b4ab9e009a00e500df3e2b246f8ccbcdfa50e1463ca",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6790614/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7efb756d13b8bc69d39e8424f3432f498707939c1311927ad8f6eb80a6825b50",
+            "normalizedCharStart": 2534,
+            "normalizedCharEnd": 2718,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -977,17 +985,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player's aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player's aggression are aggressive toward a neutral person.",
+          "quote": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player’s aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player’s aggression are aggressive toward a neutral person.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "3ae12f406b46e139daf1dac6c0b2027fda21f3976d9670ba22393746cc8d0a30",
             "textDepth": "abstract",
             "sourceUrl": "https://www.tandfonline.com/doi/full/10.1080/15534510.2023.2277476",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "488d215d878690d98e5c1eec5e12f957c810b660b5dabc3477810272166b26ee",
+            "normalizedCharStart": 405,
+            "normalizedCharEnd": 709,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -1140,17 +1152,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "This commentary argues that, rather than providing an \"exhaustive review,\" Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
+          "quote": "This commentary argues that, rather than providing an “exhaustive review,” Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "11ebaf9df72bdd6cf4fd41ece607c7cb49490f5199b372f3a809aaaf1f54ca20",
             "textDepth": "abstract",
             "sourceUrl": "https://econtent.hogrefe.com/doi/10.1027/1016-9040/a000165",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "29497cb93a204cf550bfa2c789fba3d3b0d7ed08cb1f99717ae83f150352b53c",
+            "normalizedCharStart": 74,
+            "normalizedCharEnd": 374,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -1398,17 +1414,7 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Although C. J. Ferguson and J. Kilburn believe that the effects we obtained are trivial in size, they are larger than many effects that are deemed sufficiently large to warrant action in medical and violence domains.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "c7a957dffd22aa4da926706b1af8b217cbee74c449a1ecf94f8423d3fd6c05e9",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1037/a0018718",
-            "reason": "crosses-structural-boundary"
-          }
+          "extractionConfidence": 0.9
         }
       },
       "addedIn": 22,
@@ -2346,14 +2352,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "83ea3aab663e07d0b5f8fe0f1d6696c019219d105d3dfcdc81b8d4154e539802",
+            "textSha256": "8284f0468c5df2cb47c12a70e61c5e4290ec6ce06f07153600a8e63f88333144",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6176643/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "b33028deb0314a59bf63ac8202c71079ff8b16e107c19d53a0784c05cafae9e7",
-            "normalizedCharStart": 35085,
-            "normalizedCharEnd": 35288,
+            "normalizedCharStart": 35123,
+            "normalizedCharEnd": 35326,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -2458,7 +2464,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "db32ded757ef1d6fe4357800549f5b2cf21136d9b93ab52767ba2023be710c5f",
+            "textSha256": "f11decc734d9c806c2dc67d67aa45905cc744584e8c981fad107eed528e4d5ac",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
             "reason": "verbatim-single-sentence",
@@ -2520,14 +2526,14 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "8ac50703cdc4ece33dbd3adbee9ec788a4093a795689f25e3bd5f5ae09bbe60b",
+              "textSha256": "c797558cfe20f6161d7bee621be5c65ae50d685eef731020087b66bfebf785ee",
               "textDepth": "partial",
               "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S1359178907000055",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
               "quoteSha256": "7b40078ee59b855a8867657ebdbd76bb7cf62986a2eb3e88b7a3bbcaa98b030c",
-              "normalizedCharStart": 3864,
-              "normalizedCharEnd": 4051,
+              "normalizedCharStart": 3791,
+              "normalizedCharEnd": 3978,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           }
@@ -2541,14 +2547,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8ac50703cdc4ece33dbd3adbee9ec788a4093a795689f25e3bd5f5ae09bbe60b",
+            "textSha256": "c797558cfe20f6161d7bee621be5c65ae50d685eef731020087b66bfebf785ee",
             "textDepth": "partial",
             "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S1359178907000055",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "090dcb8e98f68807cc56a808a92c5c713ee89961b08d1be217abb05a61c82765",
-            "normalizedCharStart": 8268,
-            "normalizedCharEnd": 8374,
+            "normalizedCharStart": 8195,
+            "normalizedCharEnd": 8301,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -2650,17 +2656,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "The Task Force's general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
+          "quote": "The Task Force’s general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "d63d9b81994d212436c5304726e51193d207a96b118389d5ea2b88f51abcf0ff",
             "textDepth": "full",
             "sourceUrl": "https://www.apa.org/about/policy/violent-video-games.pdf",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7293601faadbaf7a7c6f809e0db07f635ebd6364aedc423eff8dff2b5ffb104e",
+            "normalizedCharStart": 10885,
+            "normalizedCharEnd": 11096,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -2702,16 +2712,20 @@
         {
           "ref": "ds_czech_adolescent_violent_game_longitudinal_p",
           "provenance": {
-            "quote": "Drawing on a representative sample of 3010 Czech adolescents aged 13–17, data were collected over four waves to measure physical and verbal aggression.",
-            "verifiedQuote": "fuzzy",
+            "quote": "Drawing on representative sample of 3010 Czech adolescents (aged 13–17), data were collected over four waves to measure physical and verbal aggression, and cognitive and affective empathy.",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
               "textDepth": "abstract",
               "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 0.973
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "1617bc06e9d1202f71a5c7e9fbf76bbb73cf49145f223079596a1168e4b1ca34",
+              "normalizedCharStart": 553,
+              "normalizedCharEnd": 741,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -3627,7 +3641,7 @@
       "version": 55,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T00:34:19.927721+00:00",
+      "ts": "2026-07-13T01:28:11.120417+00:00",
       "sources": 37
     }
   ],

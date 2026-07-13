@@ -1,13 +1,11 @@
 {
   "method": "verbatim-sentence-v2",
   "automaticFuzzyRepair": false,
-  "generated": "2026-07-13T00:34:12.555053+00:00",
+  "generated": "2026-07-13T01:28:10.992954+00:00",
   "cases": {
     "177f5ec738c9.kb.json": {
       "summary": {
-        "exact": 50,
-        "fuzzy": 12,
-        "missing": 3,
+        "exact": 62,
         "empty": 1
       },
       "sources": [
@@ -32,19 +30,11 @@
           "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The research demonstrates a consistent relation between violent video game use and increases in aggressive behavior, aggressive cognitions, and aggressive affect and decreases in prosocial behavior, empathy, and sensitivity to aggression.",
-              "new": "The research demonstrates a consistent relation between violent video game use and increases in aggressive behavior, aggressive cognitions, and aggressive affect and decreases in prosocial behavior, empathy, and sensitivity to aggression.",
-              "field": "source:position"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14-.29).",
-              "new": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14-.29).",
+              "old": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
+              "new": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
               "field": "edge:0"
             }
           ]
@@ -63,11 +53,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "A large sample of British adolescent participants (n = 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
-              "new": "A large sample of British adolescent participants (n = 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
+              "old": "= 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
+              "new": "= 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
               "field": "edge:0"
             }
           ]
@@ -185,11 +175,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Mediation analyses showed that friends' aggression at Time 1 accounted for the impact of friends' amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
-              "new": "Mediation analyses showed that friends' aggression at Time 1 accounted for the impact of friends' amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
+              "old": "Mediation analyses showed that friends’ aggression at Time 1 accounted for the impact of friends’ amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
+              "new": "Mediation analyses showed that friends’ aggression at Time 1 accounted for the impact of friends’ amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
               "field": "source:position"
             },
             {
@@ -208,11 +198,11 @@
           "fetch": "abstract",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player's aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player's aggression are aggressive toward a neutral person.",
-              "new": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player's aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player's aggression are aggressive toward a neutral person.",
+              "old": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player’s aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player’s aggression are aggressive toward a neutral person.",
+              "new": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player’s aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player’s aggression are aggressive toward a neutral person.",
               "field": "source:position"
             },
             {
@@ -239,11 +229,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Effect sizes appeared to be elevated because of non‑best‑practices and researcher‑expectancy effects, particularly for experimental studies.",
-              "new": "Effect sizes appeared to be elevated because of non‑best‑practices and researcher‑expectancy effects, particularly for experimental studies.",
+              "old": "However, effect sizes appeared to be elevated because of non-best-practices and researcher-expectancy effects, particularly for experimental studies.",
+              "new": "However, effect sizes appeared to be elevated because of non-best-practices and researcher-expectancy effects, particularly for experimental studies.",
               "field": "factor:f_researcher_expectancy_effects"
             }
           ]
@@ -269,11 +259,11 @@
           "fetch": "abstract",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "This commentary argues that, rather than providing an \"exhaustive review,\" Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
-              "new": "This commentary argues that, rather than providing an \"exhaustive review,\" Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
+              "old": "This commentary argues that, rather than providing an “exhaustive review,” Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
+              "new": "This commentary argues that, rather than providing an “exhaustive review,” Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
               "field": "source:position"
             }
           ]
@@ -343,16 +333,7 @@
           "id": "src_much_ado_about_something_violent_video_game__2010",
           "title": "Much ado about something: Violent video game effects and a school of red herring: Reply to Ferguson and Kilburn (2010).",
           "fetch": "abstract",
-          "quotes": [
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "Although C. J. Ferguson and J. Kilburn believe that the effects we obtained are trivial in size, they are larger than many effects that are deemed sufficiently large to warrant action in medical and violence domains.",
-              "new": "Although C. J. Ferguson and J. Kilburn believe that the effects we obtained are trivial in size, they are larger than many effects that are deemed sufficiently large to warrant action in medical and violence domains.",
-              "field": "source:position"
-            }
-          ]
+          "quotes": []
         },
         {
           "id": "src_the_effects_of_violent_video_games_on_aggres_2001",
@@ -473,14 +454,6 @@
               "old": "Meta-analytic procedures were used to test the effects of violent video games on aggressive behavior, aggressive cognition, aggressive affect, physiological arousal, empathy/desensitization, and prosocial behavior.",
               "new": "Meta-analytic procedures were used to test the effects of violent video games on aggressive behavior, aggressive cognition, aggressive affect, physiological arousal, empathy/desensitization, and prosocial behavior.",
               "field": "edge:0"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
-              "new": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
-              "field": "factor:f_researcher_expectancy_effects"
             }
           ]
         },
@@ -498,11 +471,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
-              "new": "Included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
+              "old": "Anderson et al. included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
+              "new": "Anderson et al. included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
               "field": "factor:f_researcher_expectancy_effects"
             }
           ]
@@ -694,11 +667,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "effects ... are almost always quite small.",
-              "new": "effects ... are almost always quite small.",
+              "old": "Despite seemingly conflicting results for the statistical significance of the pooled estimates in different meta-analyses of video-game studies, all of the meta-analyses do in fact point to the conclusion that, in the vast majority of settings, violent video games do increase aggressive behavior but that these effects are almost always quite small.",
+              "new": "Despite seemingly conflicting results for the statistical significance of the pooled estimates in different meta-analyses of video-game studies, all of the meta-analyses do in fact point to the conclusion that, in the vast majority of settings, violent video games do increase aggressive behavior but that these effects are almost always quite small.",
               "field": "factor:f_effect_size_magnitude"
             }
           ]
@@ -747,19 +720,19 @@
           "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The Task Force's general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
-              "new": "The Task Force's general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
+              "old": "The Task Force’s general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
+              "new": "The Task Force’s general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The small and reliable relationship ... the effect sizes reported ... were interpreted by the author as “minimal” but not null effects.",
-              "new": "The small and reliable relationship ... the effect sizes reported ... were interpreted by the author as “minimal” but not null effects.",
+              "old": "However, upon closer examination, the effect sizes reported in Ferguson’s 2015 meta-analysis are non-zero and were interpreted by the author as “minimal” but not null effects.",
+              "new": "However, upon closer examination, the effect sizes reported in Ferguson’s 2015 meta-analysis are non-zero and were interpreted by the author as “minimal” but not null effects.",
               "field": "factor:f_effect_size_magnitude"
             }
           ]
@@ -778,19 +751,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Drawing on a representative sample of 3010 Czech adolescents aged 13–17, data were collected over four waves to measure physical and verbal aggression.",
-              "new": "Drawing on a representative sample of 3010 Czech adolescents aged 13–17, data were collected over four waves to measure physical and verbal aggression.",
+              "old": "Drawing on representative sample of 3010 Czech adolescents (aged 13–17), data were collected over four waves to measure physical and verbal aggression, and cognitive and affective empathy.",
+              "new": "Drawing on representative sample of 3010 Czech adolescents (aged 13–17), data were collected over four waves to measure physical and verbal aggression, and cognitive and affective empathy.",
               "field": "edge:0"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Within-person effects of changes in violent-game exposure on aggression were statistically insignificant.",
-              "new": "Within-person effects of changes in violent-game exposure on aggression were statistically insignificant.",
+              "old": "At the within-person level, two hypotheses were examined: the selection effect (effects of changes in aggression/empathy on changes in VVG) and the desensitization effect (effects of changes in VVG on alterations in aggression/empathy).",
+              "new": "At the within-person level, two hypotheses were examined: the selection effect (effects of changes in aggression/empathy on changes in VVG) and the desensitization effect (effects of changes in VVG on alterations in aggression/empathy).",
               "field": "factor:f_effect_size_magnitude"
             }
           ]
@@ -799,9 +772,7 @@
     },
     "51fb332b4e96.kb.json": {
       "summary": {
-        "exact": 162,
-        "fuzzy": 71,
-        "missing": 7
+        "exact": 229
       },
       "sources": [
         {
@@ -885,22 +856,6 @@
               "old": "Studies reviewed Of 4235 studies reviewed for eligibility, quality, and data extraction, 84 were included in the final analysis.",
               "new": "Studies reviewed Of 4235 studies reviewed for eligibility, quality, and data extraction, 84 were included in the final analysis.",
               "field": "edge:0"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-              "new": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-              "field": "factor:f_observational_study_bias_overestimation_conc"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-              "new": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-              "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
         },
@@ -964,11 +919,11 @@
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "This is why the cardiovascular benefits of low-moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
-              "new": "This is why the cardiovascular benefits of low-moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
+              "old": "This is why the cardiovascular benefits of low–moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
+              "new": "This is why the cardiovascular benefits of low–moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             }
           ]
@@ -987,19 +942,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one 'likes' alcohol drinking.",
-              "new": "Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one 'likes' alcohol drinking.",
+              "old": "Conclusion Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one \"likes\" alcohol drinking.",
+              "new": "Conclusion Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one \"likes\" alcohol drinking.",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "However, the evidence of 'cardioprotection' conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
-              "new": "However, the evidence of 'cardioprotection' conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
+              "old": "However, the evidence of \"cardioprotection\" conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
+              "new": "However, the evidence of \"cardioprotection\" conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             }
           ]
@@ -1010,11 +965,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Moderate drinking-defined as one to two drinks per day-has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
-              "new": "Moderate drinking-defined as one to two drinks per day-has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
+              "old": "Moderate drinking—defined as one to two drinks per day—has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
+              "new": "Moderate drinking—defined as one to two drinks per day—has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
               "field": "source:position"
             }
           ]
@@ -1033,11 +988,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Association between alcohol and cardiovascular disease: Mendelian randomisation analysis based on individual participant data",
-              "new": "Association between alcohol and cardiovascular disease: Mendelian randomisation analysis based on individual participant data",
+              "old": "This suggests that reduction of alcohol consumption, even for light to moderate drinkers, is beneficial for cardiovascular health.",
+              "new": "This suggests that reduction of alcohol consumption, even for light to moderate drinkers, is beneficial for cardiovascular health.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -1056,11 +1011,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on cardiovascular disease.",
-              "new": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on cardiovascular disease.",
+              "old": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on 8 cardiovascular diseases.",
+              "new": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on 8 cardiovascular diseases.",
               "field": "edge:0"
             },
             {
@@ -1072,11 +1027,11 @@
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68-1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77-1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56-1.90]; P =0.926).",
-              "new": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68-1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77-1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56-1.90]; P =0.926).",
+              "old": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68–1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77–1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56–1.90]; P =0.926).",
+              "new": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68–1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77–1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56–1.90]; P =0.926).",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -1095,27 +1050,27 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "This study used data are from the UK Biobank (www.ukbiobank.ac.uk) and legal constraints do not permit public sharing of the data.",
-              "new": "This study used data are from the UK Biobank (www.ukbiobank.ac.uk) and legal constraints do not permit public sharing of the data.",
+              "old": "Data Availability: This study used data are from the UK Biobank ( www.ukbiobank.ac.uk ) and legal constraints do not permit public sharing of the data.",
+              "new": "Data Availability: This study used data are from the UK Biobank ( www.ukbiobank.ac.uk ) and legal constraints do not permit public sharing of the data.",
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses.",
-              "new": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses.",
+              "old": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses, both as one-sample analyses in the UK Biobank and as two-sample analyses in external consortia.",
+              "new": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses, both as one-sample analyses in the UK Biobank and as two-sample analyses in external consortia.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure.",
-              "new": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure.",
+              "old": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure; similarly, a positive association between alcohol use with type 2 diabetes was mitigated by BMI in multivariable analysis.",
+              "new": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure; similarly, a positive association between alcohol use with type 2 diabetes was mitigated by BMI in multivariable analysis.",
               "field": "factor:f_blood_pressure_as_mediator"
             }
           ]
@@ -1134,19 +1089,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Considering the heterogeneity in methodological quality of the included MR studies, it is not yet possible to draw conclusions on the causal role of moderate alcohol consumption on cardiometabolic health.",
-              "new": "Considering the heterogeneity in methodological quality of the included MR studies, it is not yet possible to draw conclusions on the causal role of moderate alcohol consumption on cardiometabolic health.",
+              "old": "This makes it difficult to draw firm conclusions on the causal role of alcohol-in-moderation on cardiometabolic health.",
+              "new": "This makes it difficult to draw firm conclusions on the causal role of alcohol-in-moderation on cardiometabolic health.",
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Alcohol consumption in relation to cardiovascular diseases and mortality: a systematic review of Mendelian randomization studies",
-              "new": "Alcohol consumption in relation to cardiovascular diseases and mortality: a systematic review of Mendelian randomization studies",
+              "old": "Six out of the nine studies (67%) that assessed cardiovascular disease as outcome reported null associations.",
+              "new": "Six out of the nine studies (67%) that assessed cardiovascular disease as outcome reported null associations.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -1173,11 +1128,11 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)].",
-              "new": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)].",
+              "old": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)], and the weak inverse association with fibrinogen in the multivariable analysis [-2.0% (-2.1, -1.8)] was not present in the IV analyses [0.6% (-3.8, 5.0)], but statistically the results for both of these could not be reliably distinguished from each other (P-values 0.21 and 0.32, respectively).",
+              "new": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)], and the weak inverse association with fibrinogen in the multivariable analysis [-2.0% (-2.1, -1.8)] was not present in the IV analyses [0.6% (-3.8, 5.0)], but statistically the results for both of these could not be reliably distinguished from each other (P-values 0.21 and 0.32, respectively).",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
@@ -1189,11 +1144,11 @@
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses].",
-              "new": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses].",
+              "old": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses; P-value for difference in these results = 0.95].",
+              "new": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses; P-value for difference in these results = 0.95].",
               "field": "factor:f_blood_pressure_as_mediator"
             }
           ]
@@ -1212,11 +1167,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be 'abstinent'.",
-              "new": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be 'abstinent'.",
+              "old": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be “abstinent”.",
+              "new": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be “abstinent”.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
@@ -1290,19 +1245,19 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and 'light' or 'moderate' drinkers to be at equal risk for all-cause and CHD mortality.",
-              "new": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and 'light' or 'moderate' drinkers to be at equal risk for all-cause and CHD mortality.",
+              "old": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and \"light\" or \"moderate\" drinkers to be at equal risk for all-cause and CHD mortality.",
+              "new": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and \"light\" or \"moderate\" drinkers to be at equal risk for all-cause and CHD mortality.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported 'light' or 'moderate' regular use of alcohol to be 'protective' against coronary heart disease.",
-              "new": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported 'light' or 'moderate' regular use of alcohol to be 'protective' against coronary heart disease.",
+              "old": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported \"light\" or \"moderate\" regular use of alcohol to be \"protective\" against coronary heart disease.",
+              "new": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported \"light\" or \"moderate\" regular use of alcohol to be \"protective\" against coronary heart disease.",
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             }
           ]
@@ -1321,11 +1276,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
-              "new": "We designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
+              "old": "To examine whether alcohol drinking during the past 12 months and heaviest drinking period were differentially associated with the risk of CHD, we designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
+              "new": "To examine whether alcohol drinking during the past 12 months and heaviest drinking period were differentially associated with the risk of CHD, we designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
               "field": "edge:0"
             },
             {
@@ -1337,11 +1292,11 @@
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10-2.27] for men; AOR, 95% CI = 1.33 [1.02-1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43-2.97] for men; AOR, 95% CI = 1.51 [1.19-1.92] for women) more often had CHD than lifetime abstainers.",
-              "new": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10-2.27] for men; AOR, 95% CI = 1.33 [1.02-1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43-2.97] for men; AOR, 95% CI = 1.51 [1.19-1.92] for women) more often had CHD than lifetime abstainers.",
+              "old": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10–2.27] for men; AOR, 95% CI = 1.33 [1.02–1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43–2.97] for men; AOR, 95% CI = 1.51 [1.19–1.92] for women) more often had CHD than lifetime abstainers.",
+              "new": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10–2.27] for men; AOR, 95% CI = 1.33 [1.02–1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43–2.97] for men; AOR, 95% CI = 1.51 [1.19–1.92] for women) more often had CHD than lifetime abstainers.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             }
           ]
@@ -1446,11 +1401,11 @@
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol.",
-              "new": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol.",
+              "old": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol intake.",
+              "new": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol intake.",
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             }
           ]
@@ -1477,11 +1432,11 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The fragmen[tation] ... and 99% of reviews were rated as critically low quality.",
-              "new": "The fragmen[tation] ... and 99% of reviews were rated as critically low quality.",
+              "old": "Study overlap was low (CCA 2.59%) and 99% of reviews were rated as critically low quality.",
+              "new": "Study overlap was low (CCA 2.59%) and 99% of reviews were rated as critically low quality.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
@@ -1532,11 +1487,11 @@
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Those with industry funding were more likely to study broader outcomes such as 'cardiovascular disease' or 'coronary heart disease' as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]).",
-              "new": "Those with industry funding were more likely to study broader outcomes such as 'cardiovascular disease' or 'coronary heart disease' as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]).",
+              "old": "Those with industry funding were more likely to study broader outcomes such as ‘cardiovascular disease’ or ‘coronary heart disease’ as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]) (chi-squared 12.4, p < 0.001) and have more included studies (mean of 29 versus 20).",
+              "new": "Those with industry funding were more likely to study broader outcomes such as ‘cardiovascular disease’ or ‘coronary heart disease’ as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]) (chi-squared 12.4, p < 0.001) and have more included studies (mean of 29 versus 20).",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -1547,11 +1502,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
-              "new": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
+              "old": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
+              "new": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
               "field": "source:position"
             },
             {
@@ -1563,11 +1518,11 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
-              "new": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
+              "old": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
+              "new": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
@@ -1594,19 +1549,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
-              "new": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
+              "old": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
+              "new": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
-              "new": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
+              "old": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
+              "new": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -1633,19 +1588,19 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (P for nonlinearity <0.00).",
-              "new": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (P for nonlinearity <0.00).",
+              "old": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (_P_ for nonlinearity <0.00).",
+              "new": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (_P_ for nonlinearity <0.00).",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (P=0.762 for Begg's test and 0.172 for Egger's test).",
-              "new": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (P=0.762 for Begg's test and 0.172 for Egger's test).",
+              "old": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (_P_=0.762 for Begg's test and 0.172 for Egger's test).",
+              "new": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (_P_=0.762 for Begg's test and 0.172 for Egger's test).",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             }
           ]
@@ -1742,19 +1697,19 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Exploring causal associations between alcohol and coronary heart disease risk factors in a Chinese population using Mendelian randomization analysis",
-              "new": "Exploring causal associations between alcohol and coronary heart disease risk factors in a Chinese population using Mendelian randomization analysis",
+              "old": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
+              "new": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Exploring causal associations of alcohol with cardiovascular and metabolic risk factors in a Chinese population using Mendelian randomization analysis",
-              "new": "Exploring causal associations of alcohol with cardiovascular and metabolic risk factors in a Chinese population using Mendelian randomization analysis",
+              "old": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
+              "new": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -1820,11 +1775,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as 'abstainers' many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
-              "new": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as 'abstainers' many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
+              "old": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as ‘abstainers’ many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
+              "new": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as ‘abstainers’ many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
               "field": "edge:0"
             },
             {
@@ -1843,11 +1798,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
-              "new": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+              "old": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+              "new": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
               "field": "source:position"
             },
             {
@@ -1867,19 +1822,19 @@
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
-              "new": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+              "old": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+              "new": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males.",
-              "new": "intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males.",
+              "old": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+              "new": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -1898,11 +1853,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "A Mendelian randomization study of alcohol use and cardiometabolic disease risk in a multi-ancestry population from the Million Veteran Program.",
-              "new": "A Mendelian randomization study of alcohol use and cardiometabolic disease risk in a multi-ancestry population from the Million Veteran Program.",
+              "old": "Conclusions We replicate prior observational studies that show a U‐shaped association between alcohol consumption and cardiometabolic diseases, but MR findings show no causal association between these traits.",
+              "new": "Conclusions We replicate prior observational studies that show a U‐shaped association between alcohol consumption and cardiometabolic diseases, but MR findings show no causal association between these traits.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -1913,11 +1868,11 @@
           "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
-              "new": "Drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
+              "old": "Results from our quantitative meta-analysis showed that drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
+              "new": "Results from our quantitative meta-analysis showed that drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
               "field": "source:position"
             },
             {
@@ -1999,11 +1954,11 @@
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
-              "new": "Studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
+              "old": "Short-term randomized controlled trials (RCT) have identified potentially beneficial effects of alcohol consumption on cardiovascular risk factors, but studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
+              "new": "Short-term randomized controlled trials (RCT) have identified potentially beneficial effects of alcohol consumption on cardiovascular risk factors, but studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
@@ -2038,11 +1993,11 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Moderate Alcohol Use and Cardiovascular Disease from Mendelian Randomization.",
-              "new": "Moderate Alcohol Use and Cardiovascular Disease from Mendelian Randomization.",
+              "old": "Larger studies are needed to confirm the null associations with IHD, CVD and fasting glucose.",
+              "new": "Larger studies are needed to confirm the null associations with IHD, CVD and fasting glucose.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -2053,19 +2008,19 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking.",
-              "new": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking.",
+              "old": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking ( 40 , 104 ).",
+              "new": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking ( 40 , 104 ).",
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
-              "new": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
+              "old": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
+              "new": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
               "field": "edge:0"
             },
             {
@@ -2085,11 +2040,11 @@
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
-              "new": "we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
+              "old": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
+              "new": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -2108,11 +2063,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study.",
-              "new": "Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study.",
+              "old": "Methods Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study—our analysis included 129,032 individuals (46,547 men and 82,485 women) with complete data on ADH1B rs1229984 and ALDH2 rs671 genotypes and alcohol drinking status.",
+              "new": "Methods Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study—our analysis included 129,032 individuals (46,547 men and 82,485 women) with complete data on ADH1B rs1229984 and ALDH2 rs671 genotypes and alcohol drinking status.",
               "field": "edge:0"
             },
             {
@@ -2124,11 +2079,11 @@
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables.",
-              "new": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables.",
+              "old": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables: alcohol dehydrogenase 1B ( ADH1B ) rs1229984 and aldehyde dehydrogenase 2 ( ALDH2 ) rs671.",
+              "new": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables: alcohol dehydrogenase 1B ( ADH1B ) rs1229984 and aldehyde dehydrogenase 2 ( ALDH2 ) rs671.",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -2247,19 +2202,19 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy.",
-              "new": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy.",
+              "old": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy [ 1 ].",
+              "new": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy [ 1 ].",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Acute excessive alcohol intake has been repeatedly associated with the 'Holiday Heart Syndrome'. It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals.",
-              "new": "Acute excessive alcohol intake has been repeatedly associated with the 'Holiday Heart Syndrome'. It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals.",
+              "old": "It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals [ 2 ].",
+              "new": "It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals [ 2 ].",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -2270,11 +2225,11 @@
           "fetch": "abstract",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
-              "new": "Studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
+              "old": "As predicted, studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
+              "new": "As predicted, studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
               "field": "source:position"
             },
             {
@@ -2294,19 +2249,19 @@
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Studies with lifetime selection biases may create misleading positive health associations. These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
-              "new": "Studies with lifetime selection biases may create misleading positive health associations. These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
+              "old": "These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
+              "new": "These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "'Higher-quality' studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
-              "new": "'Higher-quality' studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
+              "old": "\"Higher-quality\" studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
+              "new": "\"Higher-quality\" studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             }
           ]
@@ -2325,19 +2280,19 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
-              "new": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
+              "old": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
+              "new": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
-              "new": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
+              "old": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
+              "new": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             }
           ]
@@ -2354,30 +2309,6 @@
               "old": "Overall, our results lend support to a causal association between alcohol consumption and risk of hypertension, especially above an alcohol intake of 12 g/d, and are consistent with recommendations to avoid or limit alcohol intake.",
               "new": "Overall, our results lend support to a causal association between alcohol consumption and risk of hypertension, especially above an alcohol intake of 12 g/d, and are consistent with recommendations to avoid or limit alcohol intake.",
               "field": "source:position"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-              "new": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-              "field": "factor:f_hormetic_dose_response_drinking_pattern"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "We conducted a systematic review and dose-response meta-analysis of nonexperimental cohort studies examining the association between alcohol intake and risk of hypertension.",
-              "new": "We conducted a systematic review and dose-response meta-analysis of nonexperimental cohort studies examining the association between alcohol intake and risk of hypertension.",
-              "field": "factor:f_observational_study_bias_overestimation_conc"
-            },
-            {
-              "status": "fuzzy",
-              "changed": false,
-              "repaired": false,
-              "old": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-              "new": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-              "field": "factor:f_blood_pressure_as_mediator"
             }
           ]
         },
@@ -2434,7 +2365,7 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
               "old": "A subset of studies examined associations of moderate alcohol consumption—with the risk of MI, stroke, and CVD death—with particular care to include people who never consumed alcohol as the reference group.",
@@ -2442,7 +2373,7 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
               "old": "A subset of studies examined associations of moderate alcohol consumption—with the risk of MI, stroke, and CVD death—with particular care to include people who never consumed alcohol as the reference group.",
@@ -2458,11 +2389,11 @@
               "field": "factor:f_lack_of_rct_evidence_quality_of_evidence_con"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "This chapter assesses the association of moderate alcohol consumption with the risk of MI, stroke, and CVD death.",
-              "new": "This chapter assesses the association of moderate alcohol consumption with the risk of MI, stroke, and CVD death.",
+              "old": "CHOICE OF CVD OUTCOMES This chapter assesses the association of moderate alcohol consumption versus no alcohol consumption with the risk of experiencing a major adverse cardiovascular event (MACE-3), which includes the three primary outcomes of MI, stroke, and cardiovascular death ( Ridker et al., 2005 ).",
+              "new": "CHOICE OF CVD OUTCOMES This chapter assesses the association of moderate alcohol consumption versus no alcohol consumption with the risk of experiencing a major adverse cardiovascular event (MACE-3), which includes the three primary outcomes of MI, stroke, and cardiovascular death ( Ridker et al., 2005 ).",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -2473,27 +2404,27 @@
           "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
-              "new": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "old": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "new": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
-              "new": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "old": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "new": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
-              "new": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "old": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+              "new": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
@@ -2505,11 +2436,11 @@
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
-              "new": "Alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
+              "old": "However, alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
+              "new": "However, alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
               "field": "factor:f_blood_pressure_as_mediator"
             }
           ]
@@ -2606,36 +2537,12 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
-              "new": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
+              "old": "However, higher risk for cardiovascular disease mortality was typically seen with heavier daily or weekly alcohol consumption across all types of beverages.",
+              "new": "However, higher risk for cardiovascular disease mortality was typically seen with heavier daily or weekly alcohol consumption across all types of beverages.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
-              "new": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
-              "field": "factor:f_hormetic_dose_response_drinking_pattern"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "Chronic heavy alcohol consumption is well established to cause dilated cardiomyopathy, cardiac arrhythmias like atrial fibrillation (AFib), atrial flutter and sudden cardiac death, and increased risk of stroke.",
-              "new": "Chronic heavy alcohol consumption is well established to cause dilated cardiomyopathy, cardiac arrhythmias like atrial fibrillation (AFib), atrial flutter and sudden cardiac death, and increased risk of stroke.",
-              "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "Similarly, a meta-analysis of 14 interventional studies found that alcohol had a neutral effect on fasting glucose and insulin sensitivity but was associated with a reduction in hemoglobin A1c.",
-              "new": "Similarly, a meta-analysis of 14 interventional studies found that alcohol had a neutral effect on fasting glucose and insulin sensitivity but was associated with a reduction in hemoglobin A1c.",
-              "field": "factor:f_blood_pressure_as_mediator"
             }
           ]
         },
@@ -2684,19 +2591,19 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
-              "new": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
+              "old": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
+              "new": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Methods A systematic search of published studies using electronic databases (1980-2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
-              "new": "Methods A systematic search of published studies using electronic databases (1980-2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
+              "old": "Methods A systematic search of published studies using electronic databases (1980–2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
+              "new": "Methods A systematic search of published studies using electronic databases (1980–2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
               "field": "edge:0"
             },
             {
@@ -2716,11 +2623,11 @@
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
-              "new": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
+              "old": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
+              "new": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -2739,11 +2646,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4-12 years), were included in the analysis.",
-              "new": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4-12 years), were included in the analysis.",
+              "old": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4–12 years), were included in the analysis.",
+              "new": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4–12 years), were included in the analysis.",
               "field": "edge:0"
             },
             {
@@ -2911,11 +2818,11 @@
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations. However, prospective data have been limited.",
-              "new": "In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations. However, prospective data have been limited.",
+              "old": "Abstract Background: In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations.",
+              "new": "Abstract Background: In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations.",
               "field": "factor:f_observational_study_bias_overestimation_conc"
             }
           ]
@@ -2957,11 +2864,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of 512,000 adults (41% men), including 168,050 genotyped for ALDH2-rs671 and ADH1B-rs1229984, with 1.1 million ICD-10 coded hospitalized events.",
-              "new": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of 512,000 adults (41% men), including 168,050 genotyped for ALDH2-rs671 and ADH1B-rs1229984, with 1.1 million ICD-10 coded hospitalized events.",
+              "old": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of >512,000 adults (41% men), including 168,050 genotyped for ALDH2 - rs671 and ADH1B - rs1229984 , with >1.1 million ICD-10 coded hospitalized events.",
+              "new": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of >512,000 adults (41% men), including 168,050 genotyped for ALDH2 - rs671 and ADH1B - rs1229984 , with >1.1 million ICD-10 coded hospitalized events.",
               "field": "edge:0"
             },
             {
@@ -2973,19 +2880,19 @@
               "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
-              "new": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
+              "old": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
+              "new": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
               "field": "factor:f_mendelian_randomisation_genetic_confounding_"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
-              "new": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
+              "old": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
+              "new": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
               "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
@@ -3004,11 +2911,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Data sources Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
-              "new": "Data sources Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
+              "old": "**Data sources** Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
+              "new": "**Data sources** Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
               "field": "edge:0"
             },
             {
@@ -3018,14 +2925,6 @@
               "old": "Alcohol showed a dose-response relation with high density lipoprotein cholesterol (test for trend P=0.013).",
               "new": "Alcohol showed a dose-response relation with high density lipoprotein cholesterol (test for trend P=0.013).",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
-            },
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "Moderate alcohol consumption (up to one drink a day for women and up to two for men) has been associated with a decreased risk for certain cardiovascular diseases, particularly coronary heart disease, in several studies of diverse populations.[1](https://www.bmj.com/content/342/bmj.d636#ref-1)[2](https://www.bmj.com/content/342/bmj.d636#ref-2) Most of these studies, however, used an observational design, raising concerns about potential confounding.",
-              "new": "Moderate alcohol consumption (up to one drink a day for women and up to two for men) has been associated with a decreased risk for certain cardiovascular diseases, particularly coronary heart disease, in several studies of diverse populations.[1](https://www.bmj.com/content/342/bmj.d636#ref-1)[2](https://www.bmj.com/content/342/bmj.d636#ref-2) Most of these studies, however, used an observational design, raising concerns about potential confounding.",
-              "field": "factor:f_observational_study_bias_overestimation_conc"
             },
             {
               "status": "exact",
@@ -3059,11 +2958,11 @@
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Further, ACl/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
-              "new": "Further, ACl/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
+              "old": "Further, AC l/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
+              "new": "Further, AC l/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
@@ -3090,19 +2989,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Our sample comprised 908 men (56-67 years), free of prevalent CVD.",
-              "new": "Our sample comprised 908 men (56-67 years), free of prevalent CVD.",
+              "old": "Our sample comprised 908 men (56−67 years), free of prevalent CVD.",
+              "new": "Our sample comprised 908 men (56−67 years), free of prevalent CVD.",
               "field": "edge:0"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1-4 drinks in past 14 days), light (5-14 drinks), moderate (15-28 drinks), and at-risk (>28 drinks) drinkers.",
-              "new": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1-4 drinks in past 14 days), light (5-14 drinks), moderate (15-28 drinks), and at-risk (>28 drinks) drinkers.",
+              "old": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1−4 drinks in past 14 days), light (5−14 drinks), moderate (15−28 drinks), and at-risk (>28 drinks) drinkers.",
+              "new": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1−4 drinks in past 14 days), light (5−14 drinks), moderate (15−28 drinks), and at-risk (>28 drinks) drinkers.",
               "field": "factor:f_hormetic_dose_response_drinking_pattern"
             },
             {
@@ -3132,25 +3031,9 @@
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-              "new": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
+              "old": "Methods A case-cohort nested study was designed within the PREDIMED trial with 1232 participants: 685 incident cases of CVD and a random subcohort of 625 participants (including 78 overlapping cases).",
+              "new": "Methods A case-cohort nested study was designed within the PREDIMED trial with 1232 participants: 685 incident cases of CVD and a random subcohort of 625 participants (including 78 overlapping cases).",
               "field": "edge:0"
-            },
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-              "new": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-              "field": "factor:f_observational_study_bias_overestimation_conc"
-            },
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-              "new": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-              "field": "factor:f_cardiovascular_disease_subtype_heterogeneity"
             }
           ]
         },
@@ -3197,10 +3080,7 @@
     },
     "blackholes.kb.json": {
       "summary": {
-        "exact": 13,
-        "fuzzy": 3,
-        "missing": 10,
-        "fetch-failed": 1
+        "exact": 20
       },
       "sources": [
         {
@@ -3217,19 +3097,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "eight observed white dwarf stars... present a form of living evidence that the LHC must be safe",
-              "new": "eight observed white dwarf stars... present a form of living evidence that the LHC must be safe",
+              "old": "We argue that cases with such an effect at shorter times than the solar lifetime are ruled out, since in these scenarios black holes produced by cosmic rays impinging on much denser white dwarfs and neutron stars would then catalyze their decay on time scales incompatible with their known lifetimes.",
+              "new": "We argue that cases with such an effect at shorter times than the solar lifetime are ruled out, since in these scenarios black holes produced by cosmic rays impinging on much denser white dwarfs and neutron stars would then catalyze their decay on time scales incompatible with their known lifetimes.",
               "field": "factor:f_reliability_of_the_cosmic_ray_safety_analogy"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "even if Hawking radiation does not exist",
-              "new": "even if Hawking radiation does not exist",
+              "old": "Even if penetration does not occur during slowdown, there is a different argument that it takes place on rapid time scales.",
+              "new": "Even if penetration does not occur during slowdown, there is a different argument that it takes place on rapid time scales.",
               "field": "factor:f_whether_hawking_radiation_is_guaranteed_blac"
             }
           ]
@@ -3240,19 +3120,19 @@
           "fetch": "abstract",
           "quotes": [
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "LHC collisions present no danger and there are no reasons for concern",
-              "new": "LHC collisions present no danger and there are no reasons for concern",
+              "old": "The stability of astronomical bodies constrains strongly the possible rate of accretion by any such microscopic black holes, so that they present no conceivable danger.",
+              "new": "The stability of astronomical bodies constrains strongly the possible rate of accretion by any such microscopic black holes, so that they present no conceivable danger.",
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "microscopic black holes would decay almost instantly by Hawking radiation",
-              "new": "microscopic black holes would decay almost instantly by Hawking radiation",
+              "old": "Any microscopic black holes produced at the LHC are expected to decay by Hawking radiation before they reach the detector walls.",
+              "new": "Any microscopic black holes produced at the LHC are expected to decay by Hawking radiation before they reach the detector walls.",
               "field": "factor:f_whether_hawking_radiation_is_guaranteed_blac"
             }
           ]
@@ -3316,19 +3196,19 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
-              "new": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
+              "old": "If the probability estimate given by an argument is dwarfed by the chance that the argument itself is flawed, then the estimate is suspect.",
+              "new": "If the probability estimate given by an argument is dwarfed by the chance that the argument itself is flawed, then the estimate is suspect.",
               "field": "factor:f_reliability_of_the_cosmic_ray_safety_analogy"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "their argument may fail for reasons such as a flaw in the underlying theory, a mistake in modelling, or a calculation error",
-              "new": "their argument may fail for reasons such as a flaw in the underlying theory, a mistake in modelling, or a calculation error",
+              "old": "However, their argument may fail for a number of reasons such as a flaw in the underlying theory, a flaw in the modeling of the problem, or a mistake in the calculations.",
+              "new": "However, their argument may fail for a number of reasons such as a flaw in the underlying theory, a flaw in the modeling of the problem, or a mistake in the calculations.",
               "field": "factor:f_probability_the_safety_argument_itself_is_fl"
             }
           ]
@@ -3337,24 +3217,7 @@
           "id": "src_calogero_might_a_laboratory_experiment_destr_2000",
           "title": "Calogero — Might a laboratory experiment destroy planet Earth?",
           "fetch": "abstract",
-          "quotes": [
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "there is a tendency to underplay such risks... reassurances may be motivated more by the wish to proceed than by the strength of the case",
-              "new": "there is a tendency to underplay such risks... reassurances may be motivated more by the wish to proceed than by the strength of the case",
-              "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "reassurances may be motivated more by the wish to proceed",
-              "new": "reassurances may be motivated more by the wish to proceed",
-              "field": "factor:f_probability_the_safety_argument_itself_is_fl"
-            }
-          ]
+          "quotes": []
         },
         {
           "id": "src_johnson_the_black_hole_case_the_injunction_a_2009",
@@ -3368,14 +3231,6 @@
               "old": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
               "new": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "safety reviews were conducted by the same institution seeking to run the experiment",
-              "new": "safety reviews were conducted by the same institution seeking to run the experiment",
-              "field": "factor:f_independence_of_the_safety_review_from_the_i"
             }
           ]
         },
@@ -3406,14 +3261,6 @@
               "old": "We show here that this chance, fortunately, is completely negligible since the region inside our past light cone has already survived some 10 5 cosmic ray collisions at centre of mass energies of 10 11 GeV and higher.",
               "new": "We show here that this chance, fortunately, is completely negligible since the region inside our past light cone has already survived some 10 5 cosmic ray collisions at centre of mass energies of 10 11 GeV and higher.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "cosmic-ray collisions at energies far above those of any accelerator",
-              "new": "cosmic-ray collisions at energies far above those of any accelerator",
-              "field": "factor:f_reliability_of_the_cosmic_ray_safety_analogy"
             }
           ]
         },
@@ -3435,8 +3282,8 @@
         {
           "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
           "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
-          "fetch": "failed",
-          "error": "Stream has ended unexpectedly"
+          "fetch": "partial",
+          "quotes": []
         },
         {
           "id": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
@@ -3459,11 +3306,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "any microscopic black hole would evaporate almost instantaneously via Hawking radiation",
-              "new": "any microscopic black hole would evaporate almost instantaneously via Hawking radiation",
+              "old": "By this process, the mini-black holes formed in particle accelerators would evaporate nearly as soon as they are created – typically, such black holes would only exist for a few tenth of a trillionth of a trillionth (10 -25 , in exponential notation ) seconds.",
+              "new": "By this process, the mini-black holes formed in particle accelerators would evaporate nearly as soon as they are created – typically, such black holes would only exist for a few tenth of a trillionth of a trillionth (10 -25 , in exponential notation ) seconds.",
               "field": "source:position"
             }
           ]
@@ -3480,14 +3327,6 @@
               "old": "A plausible scenario in which these black holes accrete ambient matter at the Eddington limit shortly after their production, thereby emitting Hawking radiation that would be harmful to Earth and/or CERN and its surroundings, is described.",
               "new": "A plausible scenario in which these black holes accrete ambient matter at the Eddington limit shortly after their production, thereby emitting Hawking radiation that would be harmful to Earth and/or CERN and its surroundings, is described.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "a metastable black hole could grow rather than evaporate",
-              "new": "a metastable black hole could grow rather than evaporate",
-              "field": "factor:f_whether_hawking_radiation_is_guaranteed_blac"
             }
           ]
         },
@@ -3518,14 +3357,6 @@
               "old": "Future policy on catastrophe risks would be more rational, and more deserving of public trust, if acceptable risk bounds were generally agreed upon ahead of time and if serious research on whether those bounds could indeed be guaranteed was carried out well in advance of any hypothetically risky experiment, with the relevant debates involving experts with no stake in the experiments under consideration.",
               "new": "Future policy on catastrophe risks would be more rational, and more deserving of public trust, if acceptable risk bounds were generally agreed upon ahead of time and if serious research on whether those bounds could indeed be guaranteed was carried out well in advance of any hypothetically risky experiment, with the relevant debates involving experts with no stake in the experiments under consideration.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
-              "new": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
-              "field": "factor:f_probability_the_safety_argument_itself_is_fl"
             }
           ]
         }
@@ -3533,40 +3364,29 @@
     },
     "covid.kb.json": {
       "summary": {
-        "exact": 25,
-        "missing": 13,
-        "fuzzy": 7,
-        "fetch-failed": 1
+        "exact": 40
       },
       "sources": [
         {
           "id": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
           "title": "Worobey et al. — The Huanan market was the early epicenter of the COVID-19 pandemic",
-          "fetch": "full",
+          "fetch": "partial",
           "quotes": [
             {
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Although there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred through the live wildlife trade in China and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
-              "new": "Although there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred through the live wildlife trade in China and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
+              "old": "While there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred via the live wildlife trade in China, and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
+              "new": "While there is insufficient evidence to define upstream events, and exact circumstances remain obscure, our analyses indicate that the emergence of SARS-CoV-2 occurred via the live wildlife trade in China, and show that the Huanan market was the epicenter of the COVID-19 pandemic.",
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "the earliest known COVID-19 cases were geographically centered on this market",
-              "new": "the earliest known COVID-19 cases were geographically centered on this market",
+              "old": "We show the earliest known COVID-19 cases from December 2019, including those without reported direct links, were geographically centered on this market.",
+              "new": "We show the earliest known COVID-19 cases from December 2019, including those without reported direct links, were geographically centered on this market.",
               "field": "factor:f_epidemiological_proximity_of_the_earliest_ca"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "cases with no known link to the market were nonetheless geographically distributed near it",
-              "new": "cases with no known link to the market were nonetheless geographically distributed near it",
-              "field": "factor:f_ascertainment_reporting_bias_in_early_wuhan_"
             }
           ]
         },
@@ -3584,11 +3404,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "two separate introductions of lineages A and B into humans",
-              "new": "two separate introductions of lineages A and B into humans",
+              "old": "Phylodynamic rooting methods, coupled with epidemic simulations, reveal that these lineages were the result of at least two separate cross-species transmission events into humans.",
+              "new": "Phylodynamic rooting methods, coupled with epidemic simulations, reveal that these lineages were the result of at least two separate cross-species transmission events into humans.",
               "field": "factor:f_number_of_introductions_single_seeding_vs_mu"
             }
           ]
@@ -3607,11 +3427,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "the acquisition of both the polybasic cleavage site and predicted O-linked glycans argues against manipulation",
-              "new": "the acquisition of both the polybasic cleavage site and predicted O-linked glycans argues against manipulation",
+              "old": "The acquisition of both the polybasic cleavage site and predicted O-linked glycans also argues against culture-based scenarios.",
+              "new": "The acquisition of both the polybasic cleavage site and predicted O-linked glycans also argues against culture-based scenarios.",
               "field": "factor:f_furin_cleavage_site_as_evidence_of_laborator"
             }
           ]
@@ -3658,14 +3478,6 @@
               "old": "We review what is known about the SARS-CoV-2 FCS in the context of its pathogenesis, origin, and how future wildlife coronavirus sampling may alter the interpretation of existing data.",
               "new": "We review what is known about the SARS-CoV-2 FCS in the context of its pathogenesis, origin, and how future wildlife coronavirus sampling may alter the interpretation of existing data.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "can be explained by natural evolutionary mechanisms",
-              "new": "can be explained by natural evolutionary mechanisms",
-              "field": "factor:f_furin_cleavage_site_as_evidence_of_laborator"
             }
           ]
         },
@@ -3683,20 +3495,37 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
-              "new": "a furin cleavage site previously unseen in other SARS-like coronaviruses",
+              "old": "The furin cleavage site in the spike protein of SARS-CoV-2 confers to the virus the ability to cross species and tissue barriers, but was previously unseen in other SARS-like CoVs.",
+              "new": "The furin cleavage site in the spike protein of SARS-CoV-2 confers to the virus the ability to cross species and tissue barriers, but was previously unseen in other SARS-like CoVs.",
               "field": "factor:f_furin_cleavage_site_as_evidence_of_laborator"
             }
           ]
         },
         {
           "id": "src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
-          "title": "Analysis of the DEFUSE proposal (EcoHealth / WIV / DARPA, 2018)",
-          "fetch": "failed",
-          "error": "remote response too large (limit 12582912 bytes)"
+          "title": "US Right to Know — analysis of DEFUSE proposal drafts",
+          "fetch": "partial",
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Furin cleavage site at the S1/S2 boundary While the language of the formal DEFUSE proposal called for the insertion of “human specific proteolytic cleavage sites” in a portion of the spike protein called the “S2′,” earlier drafts of DEFUSE were more explicit.",
+              "new": "Furin cleavage site at the S1/S2 boundary While the language of the formal DEFUSE proposal called for the insertion of “human specific proteolytic cleavage sites” in a portion of the spike protein called the “S2′,” earlier drafts of DEFUSE were more explicit.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Specifically, the scientists sought to insert furin cleavage sites at the S1/S2 junction of the spike protein; to assemble synthetic viruses in six segments; to identify coronaviruses up to 25 percent different from SARS; and to select for receptor binding domains adept at infecting human receptors.",
+              "new": "Specifically, the scientists sought to insert furin cleavage sites at the S1/S2 junction of the spike protein; to assemble synthetic viruses in six segments; to identify coronaviruses up to 25 percent different from SARS; and to select for receptor binding domains adept at infecting human receptors.",
+              "field": "factor:f_prior_probability_of_a_research_related_acci"
+            }
+          ]
         },
         {
           "id": "src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
@@ -3712,19 +3541,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "early case data reflects where testing was concentrated, not where infection began",
-              "new": "early case data reflects where testing was concentrated, not where infection began",
-              "field": "factor:f_ascertainment_reporting_bias_in_early_wuhan_"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "combining the likelihoods across independent lines of evidence",
-              "new": "combining the likelihoods across independent lines of evidence",
+              "old": "The mistakes were heavily skewed toward zoonosis, since our methodology involves steelmanning and maximizing the likelihoods of both hypotheses, while Miller used figures heavily biased toward zoonosis, in some cases using extreme estimates that are impossible to reach in a robust probabilistic analysis, as we explain below.",
+              "new": "The mistakes were heavily skewed toward zoonosis, since our methodology involves steelmanning and maximizing the likelihoods of both hypotheses, while Miller used figures heavily biased toward zoonosis, in some cases using extreme estimates that are impossible to reach in a robust probabilistic analysis, as we explain below.",
               "field": "factor:f_reliability_of_bayesian_priors_and_likelihoo"
             }
           ]
@@ -3743,11 +3564,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "70 to 1 in favor of a lab origin",
-              "new": "70 to 1 in favor of a lab origin",
+              "old": "Methods The standard logical procedure to calculate the odds, P(LL)/P(ZW), is to combine some rough prior sense of the odds with judgments of how consistent new pieces of evidence are with the LL and ZW hypotheses.",
+              "new": "Methods The standard logical procedure to calculate the odds, P(LL)/P(ZW), is to combine some rough prior sense of the odds with judgments of how consistent new pieces of evidence are with the LL and ZW hypotheses.",
               "field": "factor:f_reliability_of_bayesian_priors_and_likelihoo"
             }
           ]
@@ -3773,11 +3594,11 @@
           "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "introduction through a laboratory incident was assessed to be an extremely unlikely pathway",
-              "new": "introduction through a laboratory incident was assessed to be an extremely unlikely pathway",
+              "old": "Assessment of likelihood In view of the above, a laboratory origin of the pandemic was considered to be extremely unlikely.",
+              "new": "Assessment of likelihood In view of the above, a laboratory origin of the pandemic was considered to be extremely unlikely.",
               "field": "source:position"
             }
           ]
@@ -3785,25 +3606,8 @@
         {
           "id": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
           "title": "US ODNI — Updated Assessment on COVID-19 Origins",
-          "fetch": "full",
-          "quotes": [
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "After examining all available intelligence reporting and other information, though, the IC remains divided on the most likely origin of COVID-19.",
-              "new": "After examining all available intelligence reporting and other information, though, the IC remains divided on the most likely origin of COVID-19.",
-              "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "a laboratory-associated origin remains plausible",
-              "new": "a laboratory-associated origin remains plausible",
-              "field": "factor:f_prior_probability_of_a_research_related_acci"
-            }
-          ]
+          "fetch": "partial",
+          "quotes": []
         },
         {
           "id": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
@@ -3824,16 +3628,7 @@
           "id": "src_response_to_segreto_deigin_there_is_still_no_2021",
           "title": "Response to Segreto & Deigin — There is still no evidence of SARS-CoV-2 laboratory origin",
           "fetch": "partial",
-          "quotes": [
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
-              "new": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
-              "field": "source:position"
-            }
-          ]
+          "quotes": []
         },
         {
           "id": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
@@ -3864,11 +3659,11 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "96.2% identical to a bat coronavirus, RaTG13",
-              "new": "96.2% identical to a bat coronavirus, RaTG13",
+              "old": "Furthermore, we show that 2019-nCoV is 96% identical at the whole-genome level to a bat coronavirus.",
+              "new": "Furthermore, we show that 2019-nCoV is 96% identical at the whole-genome level to a bat coronavirus.",
               "field": "factor:f_existence_of_a_close_natural_bat_virus_ances"
             }
           ]
@@ -3887,11 +3682,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "can bind to ACE2 and use it to enter human cells",
-              "new": "can bind to ACE2 and use it to enter human cells",
+              "old": "As expected from the high affinity for hACE2 of the S ectodomain of BANAL-236, pseudoviruses expressing it were able to efficiently enter human cells expressing endogenous hACE2 using an ACE2-dependent pathway.",
+              "new": "As expected from the high affinity for hACE2 of the S ectodomain of BANAL-236, pseudoviruses expressing it were able to efficiently enter human cells expressing endogenous hACE2 using an ACE2-dependent pathway.",
               "field": "factor:f_existence_of_a_close_natural_bat_virus_ances"
             }
           ]
@@ -3929,22 +3724,22 @@
         {
           "id": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
           "title": "Garry — SARS-CoV-2 furin cleavage site was not engineered",
-          "fetch": "partial",
+          "fetch": "full",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Rather, we noted that the SARS-CoV-2 FCS is \"suboptimal.\" We also noted, correctly, that placing the insertion out of frame would be \"an unusual and needlessly complex feat of genetic engineering.\" The immediate proximal ancestor of SARS-CoV-2 did not come directly from a bat to a human, but first evolved in an intermediate host.",
-              "new": "Rather, we noted that the SARS-CoV-2 FCS is \"suboptimal.\" We also noted, correctly, that placing the insertion out of frame would be \"an unusual and needlessly complex feat of genetic engineering.\" The immediate proximal ancestor of SARS-CoV-2 did not come directly from a bat to a human, but first evolved in an intermediate host.",
+              "old": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
+              "new": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "not consistent with laboratory engineering",
-              "new": "not consistent with laboratory engineering",
+              "old": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
+              "new": "We also noted, correctly, that placing the insertion out of frame would be “an unusual and needlessly complex feat of genetic engineering.”",
               "field": "factor:f_furin_cleavage_site_as_evidence_of_laborator"
             }
           ]
@@ -3973,8 +3768,8 @@
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "First, they provide further evidence that the Huanan Seafood Market sequences that were the focus of the joint WHO-China report ( WHO 2021 ) are not representative of all SARS-CoV-2 in Wuhan early in the epidemic.",
-              "new": "First, they provide further evidence that the Huanan Seafood Market sequences that were the focus of the joint WHO-China report ( WHO 2021 ) are not representative of all SARS-CoV-2 in Wuhan early in the epidemic.",
+              "old": "Phylogenetic analysis of these sequences in the context of carefully annotated existing data further supports the idea that the Huanan Seafood Market sequences are not fully representative of the viruses in Wuhan early in the epidemic.",
+              "new": "Phylogenetic analysis of these sequences in the context of carefully annotated existing data further supports the idea that the Huanan Seafood Market sequences are not fully representative of the viruses in Wuhan early in the epidemic.",
               "field": "source:position"
             },
             {
@@ -3993,11 +3788,11 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The investigation into the origin of the virus has been made difficult by the lack of key evidence from the earliest days of the outbreak-there's no doubt that greater transparency on the part of Chinese authorities would be enormously helpful.",
-              "new": "The investigation into the origin of the virus has been made difficult by the lack of key evidence from the earliest days of the outbreak-there's no doubt that greater transparency on the part of Chinese authorities would be enormously helpful.",
+              "old": "However, we do assert that there has been no independent and transparent scientific scrutiny to date of the full scope of the US-based evidence.",
+              "new": "However, we do assert that there has been no independent and transparent scientific scrutiny to date of the full scope of the US-based evidence.",
               "field": "source:position"
             }
           ]
@@ -4029,14 +3824,6 @@
               "old": "A Bayesian analysis concludes beyond a reasonable doubt that SARS-CoV-2 is not a natural zoonosis but instead is laboratory derived.",
               "new": "A Bayesian analysis concludes beyond a reasonable doubt that SARS-CoV-2 is not a natural zoonosis but instead is laboratory derived.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "greater than 99%",
-              "new": "greater than 99%",
-              "field": "factor:f_reliability_of_bayesian_priors_and_likelihoo"
             }
           ]
         },
@@ -4054,11 +3841,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "collected from the Mojiang mine and passaged in the laboratory",
-              "new": "collected from the Mojiang mine and passaged in the laboratory",
+              "old": "It is a 370 nucleotide virus fragment collected from the Mojiang mine in 2013 by the lab of Zeng-li Shi at the WIV ( Ge et al., 2016 ).",
+              "new": "It is a 370 nucleotide virus fragment collected from the Mojiang mine in 2013 by the lab of Zeng-li Shi at the WIV ( Ge et al., 2016 ).",
               "field": "factor:f_prior_probability_of_a_research_related_acci"
             }
           ]
@@ -4077,19 +3864,19 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The Huanan market appears to be a location for amplification, but it is not possible to determine if the first infections occurred there.",
-              "new": "The Huanan market appears to be a location for amplification, but it is not possible to determine if the first infections occurred there.",
+              "old": "The HSM was a site for amplification, which allowed the virus to spread further, but it is not possible to determine if the first infections occurred at the HSM .",
+              "new": "The HSM was a site for amplification, which allowed the virus to spread further, but it is not possible to determine if the first infections occurred at the HSM .",
               "field": "factor:f_epidemiological_proximity_of_the_earliest_ca"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Information and evidence is lacking to assess the possibility of a laboratory origin, so it cannot be ruled out.",
-              "new": "Information and evidence is lacking to assess the possibility of a laboratory origin, so it cannot be ruled out.",
+              "old": "Information and evidence is also lacking to assess the possibility of a laboratory origin - either the evidence is not available or has not been provided to the scientific community .",
+              "new": "Information and evidence is also lacking to assess the possibility of a laboratory origin - either the evidence is not available or has not been provided to the scientific community .",
               "field": "factor:f_prior_probability_of_a_research_related_acci"
             }
           ]
@@ -4098,9 +3885,7 @@
     },
     "eggs.kb.json": {
       "summary": {
-        "exact": 19,
-        "fuzzy": 2,
-        "missing": 16
+        "exact": 29
       },
       "sources": [
         {
@@ -4117,20 +3902,12 @@
               "field": "source:position"
             },
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "higher risk of incident cardiovascular disease and all-cause mortality",
-              "new": "higher risk of incident cardiovascular disease and all-cause mortality",
+              "old": "This pooled cohort study reports that consumption of an additional 300 mg of dietary cholesterol per day or an additional half egg per day is significantly associated with higher risk of incident cardiovascular disease (CVD) events and all-cause mortality.",
+              "new": "This pooled cohort study reports that consumption of an additional 300 mg of dietary cholesterol per day or an additional half egg per day is significantly associated with higher risk of incident cardiovascular disease (CVD) events and all-cause mortality.",
               "field": "factor:f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "associations were not modified by adjustment for dietary quality",
-              "new": "associations were not modified by adjustment for dietary quality",
-              "field": "factor:f_discount_for_healthy_user_dietary_pattern_co"
             }
           ]
         },
@@ -4163,11 +3940,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "associations were not significant after adjustment for lifestyle and dietary factors",
-              "new": "associations were not significant after adjustment for lifestyle and dietary factors",
+              "old": "In the pooled multivariable analysis, consumption of at least one egg per day was not associated with incident cardiovascular disease risk after adjustment for updated lifestyle and dietary factors associated with egg intake (hazard ratio for at least one egg per day _v_ less than one egg per month 0.93, 95% confidence interval 0.82 to 1.05).",
+              "new": "In the pooled multivariable analysis, consumption of at least one egg per day was not associated with incident cardiovascular disease risk after adjustment for updated lifestyle and dietary factors associated with egg intake (hazard ratio for at least one egg per day _v_ less than one egg per month 0.93, 95% confidence interval 0.82 to 1.05).",
               "field": "factor:f_discount_for_healthy_user_dietary_pattern_co"
             }
           ]
@@ -4201,11 +3978,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "in this Chinese population, moderate egg consumption",
-              "new": "in this Chinese population, moderate egg consumption",
+              "old": "* This prospective cohort study of the general Chinese population demonstrated a significantly inverse association of egg consumption with CVD, ischaemic heart disease, haemorrhagic stroke, ischaemic stroke, as well as major coronary events.",
+              "new": "* This prospective cohort study of the general Chinese population demonstrated a significantly inverse association of egg consumption with CVD, ischaemic heart disease, haemorrhagic stroke, ischaemic stroke, as well as major coronary events.",
               "field": "factor:f_population_context_dependence_who_is_eating_"
             }
           ]
@@ -4224,11 +4001,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "among diabetic subjects, egg consumption was associated with increased risk",
-              "new": "among diabetic subjects, egg consumption was associated with increased risk",
+              "old": "The apparent increased risk of CHD associated with higher egg consumption among diabetic participants warrants further research.",
+              "new": "The apparent increased risk of CHD associated with higher egg consumption among diabetic participants warrants further research.",
               "field": "factor:f_subgroups_diabetics_hyper_responders_differ"
             }
           ]
@@ -4247,11 +4024,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "a subgroup analysis showed higher risk of coronary heart disease among diabetic patients",
-              "new": "a subgroup analysis showed higher risk of coronary heart disease among diabetic patients",
+              "old": "Subgroup analyses suggest a positive association between higher egg intake and risk of coronary heart disease in diabetic patients, and an inverse association between higher egg consumption and incidence of hemorrhagic stroke.",
+              "new": "Subgroup analyses suggest a positive association between higher egg intake and risk of coronary heart disease in diabetic patients, and an inverse association between higher egg consumption and incidence of hemorrhagic stroke.",
               "field": "factor:f_subgroups_diabetics_hyper_responders_differ"
             }
           ]
@@ -4268,22 +4045,6 @@
               "old": "Conclusions People with prediabetes or T2D who consumed a 3-mo high-egg weight-loss diet with a 6-mo follow-up exhibited no adverse changes in cardiometabolic markers compared with those who consumed a low-egg weight-loss diet.",
               "new": "Conclusions People with prediabetes or T2D who consumed a 3-mo high-egg weight-loss diet with a 6-mo follow-up exhibited no adverse changes in cardiometabolic markers compared with those who consumed a low-egg weight-loss diet.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "did not adversely affect the lipid profile",
-              "new": "did not adversely affect the lipid profile",
-              "field": "factor:f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "funded by the Australian Egg Corporation",
-              "new": "funded by the Australian Egg Corporation",
-              "field": "factor:f_discount_for_industry_funding"
             }
           ]
         },
@@ -4296,17 +4057,9 @@
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Results Atherogenic dyslipidemia improved for all individuals as evidenced by reductions in plasma triglycerides, apoC-III, apoE, oxLDL, VLDL particle diameter, large VDL, total IDL, small LDL, and medium LDL particles (P Conclusions Incorporating daily whole egg intake into a moderately carbohydrate-restricted diet provides further improvements in the atherogenic lipoprotein profile and in insulin resistance in individuals with MetS.",
-              "new": "Results Atherogenic dyslipidemia improved for all individuals as evidenced by reductions in plasma triglycerides, apoC-III, apoE, oxLDL, VLDL particle diameter, large VDL, total IDL, small LDL, and medium LDL particles (P Conclusions Incorporating daily whole egg intake into a moderately carbohydrate-restricted diet provides further improvements in the atherogenic lipoprotein profile and in insulin resistance in individuals with MetS.",
+              "old": "Conclusions Incorporating daily whole egg intake into a moderately carbohydrate-restricted diet provides further improvements in the atherogenic lipoprotein profile and in insulin resistance in individuals with MetS.",
+              "new": "Conclusions Incorporating daily whole egg intake into a moderately carbohydrate-restricted diet provides further improvements in the atherogenic lipoprotein profile and in insulin resistance in individuals with MetS.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "supported by the Egg Nutrition Center",
-              "new": "supported by the Egg Nutrition Center",
-              "field": "factor:f_discount_for_industry_funding"
             }
           ]
         },
@@ -4322,14 +4075,6 @@
               "old": "Dietary guidance should focus on healthy dietary patterns (eg, Mediterranean-style and DASH [Dietary Approaches to Stop Hypertension]-style diets) that are inherently relatively low in cholesterol with typical levels similar to the current US intake.",
               "new": "Dietary guidance should focus on healthy dietary patterns (eg, Mediterranean-style and DASH [Dietary Approaches to Stop Hypertension]-style diets) that are inherently relatively low in cholesterol with typical levels similar to the current US intake.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "within a heart-healthy dietary pattern",
-              "new": "within a heart-healthy dietary pattern",
-              "field": "factor:f_population_context_dependence_who_is_eating_"
             }
           ]
         },
@@ -4357,16 +4102,16 @@
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Plaque area in patients consuming Interpretation Our findings suggest that regular consumption of egg yolk should be avoided by persons at risk of cardiovascular disease.",
-              "new": "Plaque area in patients consuming Interpretation Our findings suggest that regular consumption of egg yolk should be avoided by persons at risk of cardiovascular disease.",
+              "old": "Interpretation Our findings suggest that regular consumption of egg yolk should be avoided by persons at risk of cardiovascular disease.",
+              "new": "Interpretation Our findings suggest that regular consumption of egg yolk should be avoided by persons at risk of cardiovascular disease.",
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "carotid plaque area increased with egg yolk consumption",
-              "new": "carotid plaque area increased with egg yolk consumption",
+              "old": "Carotid plaque area increased linearly with age after age 40, but increased exponentially with pack-years of smoking and with egg-yolk years.",
+              "new": "Carotid plaque area increased linearly with age after age 40, but increased exponentially with pack-years of smoking and with egg-yolk years.",
               "field": "factor:f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve"
             }
           ]
@@ -4383,14 +4128,6 @@
               "old": "Based on the results of this meta-analysis, consumption of up to one egg daily may contribute to a decreased risk of total stroke, and daily egg intake does not appear to be associated with risk of CHD.Key Teaching Points:• The role of egg consumption in the risk of stroke and coronary heart disease has come under scrutiny over many years.• A comprehensive meta-analysis of prospective cohort studies that reported risk estimates for egg consumption in association with CHD or stroke was performed on the peer-reviewed epidemiologic literature through August 2015.• Overall, summary associations indicate that intake of up to 1 egg daily may be associated with reduced risk of total stroke.• Overall, summary associations show no clear association between egg intake and increased or decreased risk of CHD.• Eggs are a relatively low-cost and nutrient-dense whole food that provides a valuable source of protein, essential fatty acids, antioxidants, choline, vitamins, and minerals.",
               "new": "Based on the results of this meta-analysis, consumption of up to one egg daily may contribute to a decreased risk of total stroke, and daily egg intake does not appear to be associated with risk of CHD.Key Teaching Points:• The role of egg consumption in the risk of stroke and coronary heart disease has come under scrutiny over many years.• A comprehensive meta-analysis of prospective cohort studies that reported risk estimates for egg consumption in association with CHD or stroke was performed on the peer-reviewed epidemiologic literature through August 2015.• Overall, summary associations indicate that intake of up to 1 egg daily may be associated with reduced risk of total stroke.• Overall, summary associations show no clear association between egg intake and increased or decreased risk of CHD.• Eggs are a relatively low-cost and nutrient-dense whole food that provides a valuable source of protein, essential fatty acids, antioxidants, choline, vitamins, and minerals.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "supported by the American Egg Board's Egg Nutrition Center",
-              "new": "supported by the American Egg Board's Egg Nutrition Center",
-              "field": "factor:f_discount_for_industry_funding"
             }
           ]
         },
@@ -4406,14 +4143,6 @@
               "old": "Four of the six studies that examined CVD and mortality and egg consumption among diabetics found a statistically significant association.",
               "new": "Four of the six studies that examined CVD and mortality and egg consumption among diabetics found a statistically significant association.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "funded by the Egg Nutrition Center",
-              "new": "funded by the Egg Nutrition Center",
-              "field": "factor:f_discount_for_industry_funding"
             }
           ]
         },
@@ -4438,11 +4167,11 @@
           "fetch": "abstract",
           "quotes": [
             {
-              "status": "fuzzy",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Dietary cholesterol was not statistically significantly associated with any coronary artery disease, ischemic stroke, or hemorrhagic stroke.",
-              "new": "Dietary cholesterol was not statistically significantly associated with any coronary artery disease, ischemic stroke, or hemorrhagic stroke.",
+              "old": "Dietary cholesterol was not statistically significantly associated with any coronary artery disease (4 cohorts; no summary RR), ischemic stroke (4 cohorts; summary RR: 1.13; 95% CI: 0.99, 1.28), or hemorrhagic stroke (3 cohorts; summary RR: 1.09; 95% CI: 0.79, 1.50).",
+              "new": "Dietary cholesterol was not statistically significantly associated with any coronary artery disease (4 cohorts; no summary RR), ischemic stroke (4 cohorts; summary RR: 1.13; 95% CI: 0.99, 1.28), or hemorrhagic stroke (3 cohorts; summary RR: 1.09; 95% CI: 0.79, 1.50).",
               "field": "source:position"
             }
           ]
@@ -4461,11 +4190,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "associated with higher CVD risk among people with diabetes",
-              "new": "associated with higher CVD risk among people with diabetes",
+              "old": "Egg consumption was associated with an elevated risk of incident type 2 diabetes.",
+              "new": "Egg consumption was associated with an elevated risk of incident type 2 diabetes.",
               "field": "factor:f_subgroups_diabetics_hyper_responders_differ"
             }
           ]
@@ -4476,20 +4205,12 @@
           "fetch": "partial",
           "quotes": [
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
               "old": "Consumption of eggs ≥1 time/d, but not less frequent consumption, was associated with an elevated risk of HF in men.",
               "new": "Consumption of eggs ≥1 time/d, but not less frequent consumption, was associated with an elevated risk of HF in men.",
               "field": "source:position"
-            },
-            {
-              "status": "missing",
-              "changed": false,
-              "repaired": false,
-              "old": "associated with heart failure risk",
-              "new": "associated with heart failure risk",
-              "field": "factor:f_population_context_dependence_who_is_eating_"
             }
           ]
         },
@@ -4522,11 +4243,11 @@
               "field": "source:position"
             },
             {
-              "status": "missing",
+              "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The level of evidence was very weak for all the significant associations, including higher LDL cholesterol, while no association was found for cardiovascular outcomes.",
-              "new": "The level of evidence was very weak for all the significant associations, including higher LDL cholesterol, while no association was found for cardiovascular outcomes.",
+              "old": "The level of evidence was very weak for all the significant associations: risk of heart failure (RR 1.15; 95%CI: 1.02-1.30), cancer mortality (RR 1.13; 95%CI 1.06-1.20), higher levels of LDL cholesterol (WMD 7.39; 95%CI 5.82-8.95), total cholesterol (WMD 9.12; 95%CI 7.35-10.89), and apolipoprotein B-100 (WMD 0.06; 95%CI 0.03-0.08).",
+              "new": "The level of evidence was very weak for all the significant associations: risk of heart failure (RR 1.15; 95%CI: 1.02-1.30), cancer mortality (RR 1.13; 95%CI 1.06-1.20), higher levels of LDL cholesterol (WMD 7.39; 95%CI 5.82-8.95), total cholesterol (WMD 9.12; 95%CI 7.35-10.89), and apolipoprotein B-100 (WMD 0.06; 95%CI 0.03-0.08).",
               "field": "factor:f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve"
             },
             {

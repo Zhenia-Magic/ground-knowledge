@@ -525,7 +525,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "f9b666b5fc0da4265e72957ba2ccce81be871eb4e9e2a7ab5933696a7d051f21",
+            "textSha256": "ef346373d312edbe192e43754d285b9551f3e20326f772f8868640f0f444eb31",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7020057/",
             "reason": "verbatim-single-sentence",
@@ -539,17 +539,21 @@
         {
           "source": "src_cardiovascular_effects_of_alcohol_a_double_e_2019",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one 'likes' alcohol drinking.",
+          "quote": "Conclusion Optimal exposure to alcohol (light/moderate use) means that one needs to stay at the nadir of the J-shaped curve for alcohol use to avail oneself of possible cardioprotection, and this may not be an easy thing to accomplish and/or adhere to, especially if one \"likes\" alcohol drinking.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "50f3050943735f18c0857268827b7c1a05c328d7054326cb4292a6f6e35d563e",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/30735906/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "34e9c57cfd6e6f7ff85f04474e91ac20fe85f7a235dee6e3e13665274ceeac9d",
+            "normalizedCharStart": 1367,
+            "normalizedCharEnd": 1663,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -561,7 +565,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "2d41e78e26f03b0a4edbd1c597ecdb2a57e4c3dae0c2a9b2582e4d68ef7c656b",
+            "textSha256": "9590f7e5a707060304d5a7232f24de274c90c4fd58c17089421c10647f176789",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7571539/",
             "reason": "verbatim-single-sentence",
@@ -595,17 +599,21 @@
         {
           "source": "src_alcohol_consumption_and_risk_of_coronary_art_2015",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (P for nonlinearity <0.00).",
+          "quote": "In a dose response analysis, we observed a nonlinear association between alcohol consumption and risk of CAD (_P_ for nonlinearity <0.00).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "e3a6f429133eb9d7627a7fd3fc2acc3964e7a0f83cd2fc77b1dbbe48d0cd5a7b",
+            "status": "exact",
+            "textSha256": "da59b6fbc831c3740e7c30c8271eb8b789d367d16fcf867944d1333fa40808cf",
             "textDepth": "partial",
             "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0899900715004748",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "311720ecb212f393c88bea5c83abe8ee676797eb100b02062841f21e806de01e",
+            "normalizedCharStart": 2312,
+            "normalizedCharEnd": 2450,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -677,7 +685,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "bd31a40e0036cae6cc37f50b3c38ede32e473017d614035d892952b9c126abd8",
+            "textSha256": "74509579a9d72fda71d51b6ab11f5c67e855de5006302e26bf361b4d4e3ccc53",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41467-024-47632-7",
             "reason": "verbatim-single-sentence",
@@ -751,17 +759,21 @@
         {
           "source": "src_effects_of_acute_alcohol_consumption_on_card_2021",
           "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
-          "quote": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy.",
+          "quote": "Chronic heavy alcohol consumption can lead to systolic and diastolic dysfunction and left ventricular dilatation culminating in severe alcoholic cardiomyopathy [ 1 ].",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "8ab8659ee85b02e83d1e5abb2dcb825df907688d8c5cf66ef49eab982fe55283",
+            "status": "exact",
+            "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d9736aba6c1af27afeccd4876de48ea17932fc301c5d1dfa19d05f6c9dbb9e09",
+            "normalizedCharStart": 3340,
+            "normalizedCharEnd": 3506,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -785,22 +797,6 @@
           }
         },
         {
-          "source": "src_alcohol_intake_and_risk_of_hypertension_a_sy_2024",
-          "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-          "weight": "med",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "a51150b096dd125ebd4710c9a1bba39846a28bbf068c386ea3e7940a463f410c",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11251509/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
-        },
-        {
           "source": "src_alcohol_a_scoping_review_for_nordic_nutritio_2024",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
           "quote": "All-cause mortality is not increased with light to moderate alcohol intake in middle-aged and older adults who do not engage in binge drinking.",
@@ -809,7 +805,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1842c6d1fe4b842434a00a2ce57fd8399ea06ba62cc0f4db47dd9db1b5e59c0a",
+            "textSha256": "6baa8e22a30356f6d3b892a82569d7b564f73b1832f25afe56897fa59a383b21",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10989238/",
             "reason": "verbatim-single-sentence",
@@ -841,21 +837,6 @@
           }
         },
         {
-          "source": "src_alcohol_consumption_and_cardiovascular_healt_2022",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "557715197fbd63e53b15117531e0246e7c478fbe157e129867d40c427a3c00ae",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9529807/",
-            "reason": "not-found"
-          }
-        },
-        {
           "source": "src_prioritizing_health_uncorking_the_evidence_t_2026",
           "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
           "quote": "6,7 Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
@@ -864,7 +845,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8d541e5e1dd9e28a34dde79e2357c91c7f0c268fbdc894c4934afefb0b27134e",
+            "textSha256": "1a142f9799ea96c84c297825551f5ec580fd2c6316478596e328528bad3ef884",
             "textDepth": "partial",
             "sourceUrl": "https://www.acc.org/latest-in-cardiology/articles/2026/06/01/01/prioritizing-health-uncorking-the-evidence",
             "reason": "verbatim-single-sentence",
@@ -884,14 +865,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8c766bf66b3e5789a70dbe45f7649b7a6ec312506f8ad040069a6460a36c2d65",
+            "textSha256": "177783d46df85f6c0a75c237377bd2f23a858e5c79435c20ad5f5bf2ee5364b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348338/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "4b8dfe20c621ba4bf203035ffdcd02a469c49987392cdae5d0ee6142675d6aa6",
-            "normalizedCharStart": 3685,
-            "normalizedCharEnd": 3742,
+            "normalizedCharStart": 3687,
+            "normalizedCharEnd": 3744,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -984,7 +965,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "f2465ac34361f90fc646db1bb541aa855d76ecc8e266ec9c60b1468005fcf44d",
+            "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
             "reason": "verbatim-single-sentence",
@@ -1004,7 +985,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "5ba8fe1c565b177fdfcecdf628b20f46dd33ec5fa275d93ceb8a18d29bdb497c",
+            "textSha256": "45b4844a10dc4d9ca1d12f92bbf10f030eb209441ab3b6ff90b2a5db6687754c",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7408510/",
             "reason": "verbatim-single-sentence",
@@ -1038,33 +1019,41 @@
         {
           "source": "src_reduced_stress_related_neural_network_activi_2023",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Further, ACl/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
+          "quote": "Further, AC l/m associated with larger decreases in MACE risk among individuals with (vs without) prior anxiety (HR: 0.60 [95% CI: 0.50-0.72] vs 0.78 [95% CI: 0.73-0.80]; P interaction = 0.003).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "16cc1104f18c78cf174830f245abe13b2772406d82b17bc7582bafa986db870a",
+            "status": "exact",
+            "textSha256": "d693ba98cdd8417a4d06e1c4b60f43a2440c43e59700f395b44a4a60f4232a82",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jacc.org/doi/abs/10.1016/j.jacc.2023.04.015",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.961
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "50d028184b652b07add23f4edf9e87fe80acd450bebf371b429fe0db3f559cd7",
+            "normalizedCharStart": 1454,
+            "normalizedCharEnd": 1648,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_moderate_alcohol_use_is_associated_with_redu_2022",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1-4 drinks in past 14 days), light (5-14 drinks), moderate (15-28 drinks), and at-risk (>28 drinks) drinkers.",
+          "quote": "Participants were categorized into 6 groups: never drinkers, former drinkers, and very light (1−4 drinks in past 14 days), light (5−14 drinks), moderate (15−28 drinks), and at-risk (>28 drinks) drinkers.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "65d6cbcf5b0de7e07717626bf46040d6ba8ccb336f8120104cee5f69df24dbb0",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/35683983/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "9c44182e7249b21311bc0156644f8da70184e4ae952fdca61baffb1154f22c7a",
+            "normalizedCharStart": 368,
+            "normalizedCharEnd": 571,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1102,49 +1091,61 @@
         {
           "source": "src_benefits_and_risks_of_moderate_alcohol_consu_2019",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "This is why the cardiovascular benefits of low-moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
+          "quote": "This is why the cardiovascular benefits of low–moderate alcohol consumption are being questioned and perhaps might have been overestimated.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "f9b666b5fc0da4265e72957ba2ccce81be871eb4e9e2a7ab5933696a7d051f21",
+            "status": "exact",
+            "textSha256": "ef346373d312edbe192e43754d285b9551f3e20326f772f8868640f0f444eb31",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7020057/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "63eb8c20cb0d0b169be0fd4cf01caa8b59ed298283c489275acf80668653e193",
+            "normalizedCharStart": 2738,
+            "normalizedCharEnd": 2877,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_exploring_causal_associations_between_alcoho_2013",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)].",
+          "quote": "The positive association of alcohol with HDLc in the multivariable analyses [4.9% (4.7, 5.1)] appeared stronger than in the IV analyses [1.5% (-4.5, 7.4)], and the weak inverse association with fibrinogen in the multivariable analysis [-2.0% (-2.1, -1.8)] was not present in the IV analyses [0.6% (-3.8, 5.0)], but statistically the results for both of these could not be reliably distinguished from each other (P-values 0.21 and 0.32, respectively).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "078de93d0d4a5de591958af6087ecfe551dc1edcc0f8505268d87068ac385500",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23492672/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3343fa9f1f77179aed1f7c143305f1d355d8f113858c96f41b48375ff294886f",
+            "normalizedCharStart": 971,
+            "normalizedCharEnd": 1421,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_the_impact_of_alcohol_consumption_on_cardiov_2022",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be 'abstinent'.",
+          "quote": "Studies that claim alcohol can offer protection against cardiovascular disease are largely based on purely observational research, which fails to account for other factors, such as pre-existing conditions and a history of alcoholism in those considered to be “abstinent”.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "b550d0027304600dc26f4c30af494a3e4f5255c011ffbc4ad45569b11cc6d944",
+            "status": "exact",
+            "textSha256": "bf13207d7804b2ce4111a53e6d6bb77a52176c4cf83966919ad18ad665a2dc54",
             "textDepth": "partial",
             "sourceUrl": "https://world-heart-federation.org/news/no-amount-of-alcohol-is-good-for-the-heart-says-world-heart-federation/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "42dfaa7a11f38f4eaf40d78fd9629f9c0349aa8582eff802b4b59f56d174db8f",
+            "normalizedCharStart": 1384,
+            "normalizedCharEnd": 1655,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1156,7 +1157,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "0473afc7ce6638681f7eec8a2feadfa6920ee65e40292edba9aa40a9a0b5919c",
+            "textSha256": "3571e10dca92b2a50dd26acc387c9edf0168cd823f51dbac680da15a3862e64e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4803651/",
             "reason": "verbatim-single-sentence",
@@ -1170,33 +1171,41 @@
         {
           "source": "src_moderate_alcohol_use_and_reduced_mortality_r_2007",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and 'light' or 'moderate' drinkers to be at equal risk for all-cause and CHD mortality.",
+          "quote": "Our meta-analytic results indicate that the few studies without this error (i.e., those that did not contaminate the abstainer category with occasional or former drinkers) show abstainers and \"light\" or \"moderate\" drinkers to be at equal risk for all-cause and CHD mortality.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "1c622371f514f0400bb17e912fd3251249fca001e62300af4b4ffdceeb6173c3",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/17478320/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "36a50c9560ca0d085931762103d122675bede4f0f7a95e89839da9ed3b94d2ed",
+            "normalizedCharStart": 867,
+            "normalizedCharEnd": 1142,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_re_examining_the_relationship_between_alcoho_2019",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10-2.27] for men; AOR, 95% CI = 1.33 [1.02-1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43-2.97] for men; AOR, 95% CI = 1.51 [1.19-1.92] for women) more often had CHD than lifetime abstainers.",
+          "quote": "Current-drinker reducers (AOR, 95% CI = 1.57 [1.10–2.27] for men; AOR, 95% CI = 1.33 [1.02–1.72] for women) and former drinkers (AOR, 95% CI = 2.06 [1.43–2.97] for men; AOR, 95% CI = 1.51 [1.19–1.92] for women) more often had CHD than lifetime abstainers.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "2d41e78e26f03b0a4edbd1c597ecdb2a57e4c3dae0c2a9b2582e4d68ef7c656b",
+            "status": "exact",
+            "textSha256": "9590f7e5a707060304d5a7232f24de274c90c4fd58c17089421c10647f176789",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7571539/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "fa001e31817bfc280aa75b5ed05c82cdc58954ad6c4c1bc5d0b430d691f8bda2",
+            "normalizedCharStart": 3200,
+            "normalizedCharEnd": 3455,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1228,7 +1237,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1a3824dfa91f2eb35063624ae9445c9f80f00735768add6299b559127876f459",
+            "textSha256": "fa6ffd8ba7e7f350fdccc9ef57b836ed50e2e4fe4d3ba3fd162c4c24811147f2",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7067094/",
             "reason": "verbatim-single-sentence",
@@ -1248,31 +1257,35 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "94cbac46a236db1b98f5d49519da779efa7d9037545f822ad2e82619a0e3e593",
+            "textSha256": "362ca872d98e91b48c0802d5156bb39b022f4928cf3405cf296423903ae71fee",
             "textDepth": "partial",
             "sourceUrl": "https://www.nih.gov/news-events/news-releases/nih-end-funding-moderate-alcohol-cardiovascular-health-trial",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "6ffebbffb702ebf910fd7c66466b453c8db93f59e8137dc6292a6d947550a77c",
-            "normalizedCharStart": 3745,
-            "normalizedCharEnd": 3957,
+            "normalizedCharStart": 3641,
+            "normalizedCharEnd": 3853,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_alcohol_cardiovascular_disease_and_industry__2026",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "The fragmen[tation] ... and 99% of reviews were rated as critically low quality.",
+          "quote": "Study overlap was low (CCA 2.59%) and 99% of reviews were rated as critically low quality.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "c88b31a50b4b0695e812d884ca9e801a3b0b95262afeb15f9855ba96f947ead8",
+            "status": "exact",
+            "textSha256": "8e05eff0d173ad049c539ac585ad70e1d0c0c70b3b5812842be6443b31f871d9",
             "textDepth": "partial",
             "sourceUrl": "https://www.medrxiv.org/content/10.64898/2026.03.18.26348685v1.full",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.839
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "67039e0970e56805224ba804c1e808b5fd584d75da33a34afabcf99bd206c343",
+            "normalizedCharStart": 3863,
+            "normalizedCharEnd": 3953,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1284,7 +1297,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "915784cd445fc46731548dad093bd5ccfa79577b8368126062fbaf4ddb673608",
+            "textSha256": "1f10e0dfedaed655f93560edd5bfbfd57ec6b4a20ae1005457fa982a4f6d056e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8586735/",
             "reason": "verbatim-single-sentence",
@@ -1298,33 +1311,41 @@
         {
           "source": "src_has_industry_funding_biased_studies_of_the_p_2014",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
+          "quote": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "7c47e5136a34facd84c0d36df99496a8c8d4edd52d995a628d11fcf9a1f98225",
+            "status": "exact",
+            "textSha256": "8c54c4c454cb96e6d9a870ce4c287090d3930b106ca1b51921aa59e1a9c57188",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4441279/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c42fc370ebbb7a0e6417cf0f43e3e8a57edceec6882d2a0b2e839b67c5299308",
+            "normalizedCharStart": 2876,
+            "normalizedCharEnd": 3142,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_alcohol_consumption_and_risk_of_coronary_art_2015",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (P=0.762 for Begg's test and 0.172 for Egger's test).",
+          "quote": "Begg's and Egger's regression tests provided no evidence of substantial publication bias (_P_=0.762 for Begg's test and 0.172 for Egger's test).",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "e3a6f429133eb9d7627a7fd3fc2acc3964e7a0f83cd2fc77b1dbbe48d0cd5a7b",
+            "status": "exact",
+            "textSha256": "da59b6fbc831c3740e7c30c8271eb8b789d367d16fcf867944d1333fa40808cf",
             "textDepth": "partial",
             "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0899900715004748",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e4db08bc62356d5916b054cd65529380a8a034e19febffe78377934ed95f138e",
+            "normalizedCharStart": 2155,
+            "normalizedCharEnd": 2299,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1388,21 +1409,6 @@
           }
         },
         {
-          "source": "src_association_of_alcohol_consumption_with_sele_2011",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-          "weight": "med",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "131a987ca6e0bfb9ea4cb107f15905369af60bdc568890a6cd8e2370c96bee86",
-            "textDepth": "abstract",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/21343207/",
-            "reason": "crosses-structural-boundary"
-          }
-        },
-        {
           "source": "src_moderate_alcohol_use_and_reduced_mortality_r_2006",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
           "quote": "The studies judged to be error free found no significant all-cause or cardiac protection, suggesting that the cardiac protection afforded by alcohol may have been over-estimated.",
@@ -1431,7 +1437,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "bd31a40e0036cae6cc37f50b3c38ede32e473017d614035d892952b9c126abd8",
+            "textSha256": "74509579a9d72fda71d51b6ab11f5c67e855de5006302e26bf361b4d4e3ccc53",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41467-024-47632-7",
             "reason": "verbatim-single-sentence",
@@ -1471,7 +1477,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "bb36d002672928cf1dcf86eb3382ebbf57a0761a93e8476d7b73c814daac3bce",
+            "textSha256": "a4580a9f89d95195c10cd1241c15ca31fab9eb91e066bd19a88f5c93612123d2",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11578756/",
             "reason": "verbatim-single-sentence",
@@ -1485,47 +1491,41 @@
         {
           "source": "src_why_do_only_some_cohort_studies_find_health__2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Studies with lifetime selection biases may create misleading positive health associations. These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
+          "quote": "These biases pervade the field of alcohol epidemiology and can confuse communications about health risks.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "40222f382794b2c1e8a0702adf91a1a72bd2ba2c1c09920c5b62c9b94b4b3e20",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jsad.com/doi/10.15288/jsad.23-00283",
-            "reason": "crosses-structural-boundary"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "84b943e51ad89f388261e608fe6ec7758ec1974379c153bf3866f573019690c6",
+            "normalizedCharStart": 1852,
+            "normalizedCharEnd": 1957,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_association_of_habitual_alcohol_intake_with__2022",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
+          "quote": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "dacb55c4ec9d2b48cd56746652109cd2cc23bcf40939327d4039d2f4565751cf",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8956974/",
-            "reason": "not-found"
-          }
-        },
-        {
-          "source": "src_alcohol_intake_and_risk_of_hypertension_a_sy_2024",
-          "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "We conducted a systematic review and dose-response meta-analysis of nonexperimental cohort studies examining the association between alcohol intake and risk of hypertension.",
-          "weight": "high",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "a51150b096dd125ebd4710c9a1bba39846a28bbf068c386ea3e7940a463f410c",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11251509/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "344d3494ed99901232f207a83493a27bc5625ccac797a0146bfb8b90eb91eb8c",
+            "normalizedCharStart": 3407,
+            "normalizedCharEnd": 3682,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1537,7 +1537,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1842c6d1fe4b842434a00a2ce57fd8399ea06ba62cc0f4db47dd9db1b5e59c0a",
+            "textSha256": "6baa8e22a30356f6d3b892a82569d7b564f73b1832f25afe56897fa59a383b21",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10989238/",
             "reason": "verbatim-single-sentence",
@@ -1553,31 +1553,39 @@
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
           "quote": "A subset of studies examined associations of moderate alcohol consumption—with the risk of MI, stroke, and CVD death—with particular care to include people who never consumed alcohol as the reference group.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "9116c3a60282f9b061f893c7f2892234e89beba34fe010be164bb7ec83eb217c",
+            "status": "exact",
+            "textSha256": "11232d4393db16fb05c71b8101aabccf2b41b6f8cec2b225851337edbdca270f",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK614695/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "777b38e32a939d752905a12d730491d5f23c4e45144ec244861dd2cd274969db",
+            "normalizedCharStart": 3387,
+            "normalizedCharEnd": 3593,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_evaluating_the_relationship_between_alcohol__2020",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+          "quote": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "2df7ed40e594ed98aae4511a70e4e6beee79500de2ab010476a57563ed4455cb",
             "textDepth": "full",
             "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003410",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e7ac8ae3b62fce12f08097c2298659aaa1c83f626a0a2a4f8ad591550c75f0a2",
+            "normalizedCharStart": 3153,
+            "normalizedCharEnd": 3375,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1589,7 +1597,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8d541e5e1dd9e28a34dde79e2357c91c7f0c268fbdc894c4934afefb0b27134e",
+            "textSha256": "1a142f9799ea96c84c297825551f5ec580fd2c6316478596e328528bad3ef884",
             "textDepth": "partial",
             "sourceUrl": "https://www.acc.org/latest-in-cardiology/articles/2026/06/01/01/prioritizing-health-uncorking-the-evidence",
             "reason": "verbatim-single-sentence",
@@ -1609,14 +1617,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8c766bf66b3e5789a70dbe45f7649b7a6ec312506f8ad040069a6460a36c2d65",
+            "textSha256": "177783d46df85f6c0a75c237377bd2f23a858e5c79435c20ad5f5bf2ee5364b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348338/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "b11180f9a193c94362011b63dbfd73f6b895ca9e2f695dfa358d5273a7d21e29",
-            "normalizedCharStart": 2740,
-            "normalizedCharEnd": 2882,
+            "normalizedCharStart": 2742,
+            "normalizedCharEnd": 2884,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -1663,16 +1671,21 @@
         {
           "source": "src_longitudinal_study_of_alcohol_consumption_an_2017",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations. However, prospective data have been limited.",
+          "quote": "Abstract Background: In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "f2465ac34361f90fc646db1bb541aa855d76ecc8e266ec9c60b1468005fcf44d",
+            "status": "exact",
+            "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
-            "reason": "crosses-structural-boundary"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3e85658e542646c89f24b049613a8db36e00b898a865aa2ac2f84153a44c2b58",
+            "normalizedCharStart": 3152,
+            "normalizedCharEnd": 3353,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1684,34 +1697,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "3056f91f36274e1dc83675dd53e9d621261111446453b0f9afd2ce8310bf6968",
+            "textSha256": "046414bead343bae7225b2a62f4530a98933714ecfa75f580e3f1a6011c6201b",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "93e5ca07cafd250d1d70680de76fe3c26cd2d48c2662a1bdfd30c3263567d0ef",
-            "normalizedCharStart": 1978,
-            "normalizedCharEnd": 2132,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        },
-        {
-          "source": "src_effect_of_alcohol_consumption_on_biological__2011",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Moderate alcohol consumption (up to one drink a day for women and up to two for men) has been associated with a decreased risk for certain cardiovascular diseases, particularly coronary heart disease, in several studies of diverse populations.[1](https://www.bmj.com/content/342/bmj.d636#ref-1)[2](https://www.bmj.com/content/342/bmj.d636#ref-2) Most of these studies, however, used an observational design, raising concerns about potential confounding.",
-          "weight": "med",
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "541668e35f1036cdf14d9d73b914e016811447abfb79d290552cb1050da982f1",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.bmj.com/content/342/bmj.d636",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "86d20b195da69c4f9c9f71cf47abb0819fe054bb4a6b07624545cb2fac10b2c7",
-            "normalizedCharStart": 3310,
-            "normalizedCharEnd": 3763,
+            "normalizedCharStart": 1980,
+            "normalizedCharEnd": 2134,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -1724,14 +1717,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "16cc1104f18c78cf174830f245abe13b2772406d82b17bc7582bafa986db870a",
+            "textSha256": "d693ba98cdd8417a4d06e1c4b60f43a2440c43e59700f395b44a4a60f4232a82",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jacc.org/doi/abs/10.1016/j.jacc.2023.04.015",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "1e6a2914b3988711b67a35c5892684ac841ddfb98322539b8ebc4183509b0cf5",
-            "normalizedCharStart": 1686,
-            "normalizedCharEnd": 1788,
+            "normalizedCharStart": 1822,
+            "normalizedCharEnd": 1924,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -1754,26 +1747,6 @@
             "normalizedCharEnd": 1957,
             "normalization": "NFKC-typography-whitespace-v1"
           }
-        },
-        {
-          "source": "src_urinary_tartaric_acid_as_a_biomarker_of_wine_2024",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
-          "weight": "med",
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "facfe82c2a228f755645a3ce7ca31a79a8ca9c5f81fdf67869836a980e5bc5c2",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11704392/",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "7b659489d0a8d912de27fde5bc085be89a65622e851bfe99cabbd12329fa0d80",
-            "normalizedCharStart": 833,
-            "normalizedCharEnd": 975,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
         }
       ]
     },
@@ -1790,17 +1763,21 @@
         {
           "source": "src_cardiovascular_effects_of_alcohol_a_double_e_2019",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "However, the evidence of 'cardioprotection' conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
+          "quote": "However, the evidence of \"cardioprotection\" conferred by alcohol has also been refuted, due to lack of randomized controlled trials.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "50f3050943735f18c0857268827b7c1a05c328d7054326cb4292a6f6e35d563e",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/30735906/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8100ef3adddcf2df94ff93503919b742a90ed8318961684b36281e56de0b58ad",
+            "normalizedCharStart": 1664,
+            "normalizedCharEnd": 1796,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1812,14 +1789,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "b550d0027304600dc26f4c30af494a3e4f5255c011ffbc4ad45569b11cc6d944",
+            "textSha256": "bf13207d7804b2ce4111a53e6d6bb77a52176c4cf83966919ad18ad665a2dc54",
             "textDepth": "partial",
             "sourceUrl": "https://world-heart-federation.org/news/no-amount-of-alcohol-is-good-for-the-heart-says-world-heart-federation/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "f50b93d85003a19e0625895aa1be14f342a2890283daf02b7f9e0c053a6d9baf",
-            "normalizedCharStart": 1652,
-            "normalizedCharEnd": 1771,
+            "normalizedCharStart": 1656,
+            "normalizedCharEnd": 1775,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -1832,7 +1809,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "0473afc7ce6638681f7eec8a2feadfa6920ee65e40292edba9aa40a9a0b5919c",
+            "textSha256": "3571e10dca92b2a50dd26acc387c9edf0168cd823f51dbac680da15a3862e64e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4803651/",
             "reason": "verbatim-single-sentence",
@@ -1846,17 +1823,21 @@
         {
           "source": "src_moderate_alcohol_use_and_reduced_mortality_r_2007",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported 'light' or 'moderate' regular use of alcohol to be 'protective' against coronary heart disease.",
+          "quote": "We have provided recent evidence suggesting that a systematic error may be operating in prospective epidemiological mortality studies that have reported \"light\" or \"moderate\" regular use of alcohol to be \"protective\" against coronary heart disease.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "1c622371f514f0400bb17e912fd3251249fca001e62300af4b4ffdceeb6173c3",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/17478320/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "37e240aea6eda99dd03960a317a3049c21a8c642647f43c75d11c5d6e6e60900",
+            "normalizedCharStart": 109,
+            "normalizedCharEnd": 357,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1868,7 +1849,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1a3824dfa91f2eb35063624ae9445c9f80f00735768add6299b559127876f459",
+            "textSha256": "fa6ffd8ba7e7f350fdccc9ef57b836ed50e2e4fe4d3ba3fd162c4c24811147f2",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7067094/",
             "reason": "verbatim-single-sentence",
@@ -1882,17 +1863,21 @@
         {
           "source": "src_nih_to_end_funding_for_moderate_alcohol_and__2018",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol.",
+          "quote": "A multi-site randomized trial often is the best way to establish the evidence base about the benefits versus the risks of an intervention like moderate alcohol intake.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "94cbac46a236db1b98f5d49519da779efa7d9037545f822ad2e82619a0e3e593",
+            "status": "exact",
+            "textSha256": "362ca872d98e91b48c0802d5156bb39b022f4928cf3405cf296423903ae71fee",
             "textDepth": "partial",
             "sourceUrl": "https://www.nih.gov/news-events/news-releases/nih-end-funding-moderate-alcohol-cardiovascular-health-trial",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "556470e777d3ffd0240959c8496d069cf86e39e8ab2486cca1bb036a66db9230",
+            "normalizedCharStart": 3854,
+            "normalizedCharEnd": 4021,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -1904,7 +1889,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "c88b31a50b4b0695e812d884ca9e801a3b0b95262afeb15f9855ba96f947ead8",
+            "textSha256": "8e05eff0d173ad049c539ac585ad70e1d0c0c70b3b5812842be6443b31f871d9",
             "textDepth": "partial",
             "sourceUrl": "https://www.medrxiv.org/content/10.64898/2026.03.18.26348685v1.full",
             "reason": "verbatim-single-sentence",
@@ -1958,17 +1943,21 @@
         {
           "source": "src_alcohol_consumption_in_relation_to_cardiovas_2021",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Considering the heterogeneity in methodological quality of the included MR studies, it is not yet possible to draw conclusions on the causal role of moderate alcohol consumption on cardiometabolic health.",
+          "quote": "This makes it difficult to draw firm conclusions on the causal role of alcohol-in-moderation on cardiometabolic health.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "1403325109e5fbdca3de53d9b6694fedbeb32dbf2f2bdc17c7cab6f6589487b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9329419/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.76
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "92119d88856684415d6e8032d1a98fb47fa065c0ef3de1aaa723453c284349cd",
+            "normalizedCharStart": 48252,
+            "normalizedCharEnd": 48371,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2014,17 +2003,21 @@
         {
           "source": "src_why_do_only_some_cohort_studies_find_health__2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "'Higher-quality' studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
+          "quote": "\"Higher-quality\" studies had a mean cohort age of 55 years or younger, followed up beyond 55 years, and excluded former and occasional drinkers from abstainer reference groups.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "40222f382794b2c1e8a0702adf91a1a72bd2ba2c1c09920c5b62c9b94b4b3e20",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jsad.com/doi/10.15288/jsad.23-00283",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "57e2634baeee9f40bf037c2ec61acec8fc1075086aa61c2b3a0330847c8ef1e8",
+            "normalizedCharStart": 691,
+            "normalizedCharEnd": 867,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2036,14 +2029,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "9116c3a60282f9b061f893c7f2892234e89beba34fe010be164bb7ec83eb217c",
+            "textSha256": "11232d4393db16fb05c71b8101aabccf2b41b6f8cec2b225851337edbdca270f",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK614695/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "61ef465d4e14c544dc110093c65e7f25fa0ac80ea5bcb9d388f7adc4e380ca77",
-            "normalizedCharStart": 3622,
-            "normalizedCharEnd": 3856,
+            "normalizedCharStart": 3594,
+            "normalizedCharEnd": 3828,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -2121,16 +2114,21 @@
         {
           "source": "src_association_between_alcohol_and_cardiovascul_2014",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Association between alcohol and cardiovascular disease: Mendelian randomisation analysis based on individual participant data",
+          "quote": "This suggests that reduction of alcohol consumption, even for light to moderate drinkers, is beneficial for cardiovascular health.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "60ca9652ad5437418a12fce7b7c0bc26bfc237828ad04ba854a0cdf3354e58be",
+            "status": "exact",
+            "textSha256": "098f7dbbd99b19a1ab7e91bd737bdd976f4669fad94700d4836a332c50efef23",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4091648/",
-            "reason": "crosses-structural-boundary"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8433be68d5a4f676b4eda7bec957a89eccaa3ffa32f44c61bad85c20bebff008",
+            "normalizedCharStart": 57866,
+            "normalizedCharEnd": 57996,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2142,7 +2140,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1eacb2db2feb4ef9acc519b882e7e0fb17cfa89f805a3ca6aee5b0cc7d59147a",
+            "textSha256": "962cb3195d195f78d3ce72400691dd3532ba8a85567c155a357ae1f7edfd195a",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7299220/",
             "reason": "verbatim-single-sentence",
@@ -2156,32 +2154,41 @@
         {
           "source": "src_alcohol_use_and_cardiometabolic_risk_in_the__2021",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses.",
+          "quote": "Using the well-established ADH1B Arg47His variant (rs1229984) and up to 24 additional SNPs recently found to be associated with alcohol consumption in an independent dataset as instruments, we conducted two-stage least squares and inverse weighted variance MR analyses, both as one-sample analyses in the UK Biobank and as two-sample analyses in external consortia.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "9d2cd3011a6e3edf68b70d94343ff70890b7e6068dad9d997f788118abf60a64",
+            "status": "exact",
+            "textSha256": "aebe28b19018e33f23bcf5bffca66d39f70f944d03f895958334a257e24dc769",
             "textDepth": "partial",
             "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0255801",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ca90a07077a4c7a8f8528f35368c5ed0e9ca7eccf066ecc3ee3af2c8bc9e2634",
+            "normalizedCharStart": 689,
+            "normalizedCharEnd": 1054,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_alcohol_consumption_in_relation_to_cardiovas_2021",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Alcohol consumption in relation to cardiovascular diseases and mortality: a systematic review of Mendelian randomization studies",
+          "quote": "Six out of the nine studies (67%) that assessed cardiovascular disease as outcome reported null associations.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "1403325109e5fbdca3de53d9b6694fedbeb32dbf2f2bdc17c7cab6f6589487b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9329419/",
-            "reason": "crosses-structural-boundary"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0d13275c05d42adfe92f7f1eb535f6da7fdc73eb91e6e1747f509a3e0b81b439",
+            "normalizedCharStart": 28858,
+            "normalizedCharEnd": 28967,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2207,79 +2214,101 @@
         {
           "source": "src_exploring_causal_associations_of_alcohol_wit_2015",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Exploring causal associations of alcohol with cardiovascular and metabolic risk factors in a Chinese population using Mendelian randomization analysis",
+          "quote": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "0655fddc60f4640f277bedd9a87ed0bf9ea5191e58854d3757cba4f85f281dfa",
+            "status": "exact",
+            "textSha256": "d6c0026a23829cc313f55cac5b8fca996f544147771327bb5275136b8fb9d716",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4568464/",
-            "reason": "crosses-structural-boundary"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0fe2ab73ee76661778c4f037890057dc2cd573f160c249c3142b3cb9760f990c",
+            "normalizedCharStart": 23401,
+            "normalizedCharEnd": 23562,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_a_burden_of_proof_study_on_alcohol_consumpti_2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+          "quote": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "bd31a40e0036cae6cc37f50b3c38ede32e473017d614035d892952b9c126abd8",
+            "status": "exact",
+            "textSha256": "74509579a9d72fda71d51b6ab11f5c67e855de5006302e26bf361b4d4e3ccc53",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41467-024-47632-7",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "77f6b7278c4ad7e707393936c388c55517ef02e471936ed9051ecfccef3d8edf",
+            "normalizedCharStart": 1061,
+            "normalizedCharEnd": 1479,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_a_mendelian_randomization_study_of_alcohol_u_2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "A Mendelian randomization study of alcohol use and cardiometabolic disease risk in a multi-ancestry population from the Million Veteran Program.",
+          "quote": "Conclusions We replicate prior observational studies that show a U‐shaped association between alcohol consumption and cardiometabolic diseases, but MR findings show no causal association between these traits.",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "9ecb0bc23b1f1073ac3f94336984aec397d4f244757cb80bf1823786890bc9b3",
+            "status": "exact",
+            "textSha256": "b5ffafa12ba6255d328ac0c441691b31141177e10df99f74e3be15115d82d92c",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11629435/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "bfe955ca49ad86a1fd253aa6afcc0b8af7b399e19e8783e17a8c5572f52fec37",
+            "normalizedCharStart": 7601,
+            "normalizedCharEnd": 7809,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_alcohol_consumption_and_cardiovascular_disea_2022",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
+          "quote": "Short-term randomized controlled trials (RCT) have identified potentially beneficial effects of alcohol consumption on cardiovascular risk factors, but studies investigating genetic polymorphisms that influence alcohol consumption (i.e., Mendelian randomization) have yielded inconclusive results.",
           "weight": "med",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "035df3b9d8f7866bc56d7c8162e61c6780044d144aa305a03444ef5218886ec4",
             "textDepth": "full",
             "sourceUrl": "https://link.springer.com/article/10.1007/s11883-022-00992-1",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "340240d38ed368f08940135cdd2fe9935f7f22f3079f3f90cf92bde452b40871",
+            "normalizedCharStart": 599,
+            "normalizedCharEnd": 896,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_moderate_alcohol_use_and_cardiovascular_dise_2013",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Moderate Alcohol Use and Cardiovascular Disease from Mendelian Randomization.",
+          "quote": "Larger studies are needed to confirm the null associations with IHD, CVD and fasting glucose.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "836d7ee5b332d41cb244b5889812b73aa6a07b1d77e71e86a48cdbbd93da0744",
+            "status": "exact",
+            "textSha256": "317eb9537d3f88fcf7c487b37ada8be29237d51952a5a19b8f32fd1b965929ef",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3712994/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ecd8ef0d4dfcae946bf71cca47158862c9bb4b70bbc1956fea6b55a0df39fc7f",
+            "normalizedCharStart": 5806,
+            "normalizedCharEnd": 5899,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2291,7 +2320,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "bb36d002672928cf1dcf86eb3382ebbf57a0761a93e8476d7b73c814daac3bce",
+            "textSha256": "a4580a9f89d95195c10cd1241c15ca31fab9eb91e066bd19a88f5c93612123d2",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11578756/",
             "reason": "verbatim-single-sentence",
@@ -2311,7 +2340,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "59d83b14bc619cf72464794895bc3b57b73bc95722da45bb713e61fff04e621f",
+            "textSha256": "c912aa6f8780314d49ef8db7774228daf1a3527b8046d8e7d8ae36be49506600",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11480056/",
             "reason": "verbatim-single-sentence",
@@ -2325,16 +2354,21 @@
         {
           "source": "src_association_of_habitual_alcohol_intake_with__2022",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Using Mendelian randomization analyses, we found that genetically predicted habitual alcohol intake was associated with higher cardiovascular disease risk.",
+          "quote": "In linear mendelian randomization analyses, a 1-SD increase in genetically predicted alcohol consumption was associated with 1.3-fold (95% CI, 1.2-1.4) higher risk of hypertension (_P_< .001) and 1.4-fold (95% CI, 1.1-1.8) higher risk of coronary artery disease (_P_ = .006).",
           "weight": "high",
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "dacb55c4ec9d2b48cd56746652109cd2cc23bcf40939327d4039d2f4565751cf",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8956974/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "344d3494ed99901232f207a83493a27bc5625ccac797a0146bfb8b90eb91eb8c",
+            "normalizedCharStart": 3407,
+            "normalizedCharEnd": 3682,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2346,7 +2380,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1842c6d1fe4b842434a00a2ce57fd8399ea06ba62cc0f4db47dd9db1b5e59c0a",
+            "textSha256": "6baa8e22a30356f6d3b892a82569d7b564f73b1832f25afe56897fa59a383b21",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10989238/",
             "reason": "verbatim-single-sentence",
@@ -2360,17 +2394,21 @@
         {
           "source": "src_evaluating_the_relationship_between_alcohol__2020",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+          "quote": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "2df7ed40e594ed98aae4511a70e4e6beee79500de2ab010476a57563ed4455cb",
             "textDepth": "full",
             "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003410",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e7ac8ae3b62fce12f08097c2298659aaa1c83f626a0a2a4f8ad591550c75f0a2",
+            "normalizedCharStart": 3153,
+            "normalizedCharEnd": 3375,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2396,17 +2434,21 @@
         {
           "source": "src_alcohol_consumption_and_risks_of_more_than_2_2023",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
+          "quote": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "3056f91f36274e1dc83675dd53e9d621261111446453b0f9afd2ce8310bf6968",
+            "status": "exact",
+            "textSha256": "046414bead343bae7225b2a62f4530a98933714ecfa75f580e3f1a6011c6201b",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "b31b448aceb6f7de135fae876c007532596a70f4729144cc1831fcbd9d217083",
+            "normalizedCharStart": 1344,
+            "normalizedCharEnd": 1742,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -2424,17 +2466,21 @@
         {
           "source": "src_alcohol_consumption_and_cardiovascular_disea_2020_2",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68-1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77-1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56-1.90]; P =0.926).",
+          "quote": "There was no evidence of associations of genetically predicted alcohol consumption with heart failure (OR, 1.00 [95% CI, 0.68–1.47]; P =0.996), venous thromboembolism (OR, 1.04 [95% CI, 0.77–1.39]; P =0.810), and aortic valve stenosis (OR, 1.03 [95% CI, 0.56–1.90]; P =0.926).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "1eacb2db2feb4ef9acc519b882e7e0fb17cfa89f805a3ca6aee5b0cc7d59147a",
+            "status": "exact",
+            "textSha256": "962cb3195d195f78d3ce72400691dd3532ba8a85567c155a357ae1f7edfd195a",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7299220/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0c7371f59923d934039d7cfe36909ff314bf6661c6b1bcb82101cf04bc7118ac",
+            "normalizedCharStart": 5103,
+            "normalizedCharEnd": 5379,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2466,7 +2512,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "c88b31a50b4b0695e812d884ca9e801a3b0b95262afeb15f9855ba96f947ead8",
+            "textSha256": "8e05eff0d173ad049c539ac585ad70e1d0c0c70b3b5812842be6443b31f871d9",
             "textDepth": "partial",
             "sourceUrl": "https://www.medrxiv.org/content/10.64898/2026.03.18.26348685v1.full",
             "reason": "verbatim-single-sentence",
@@ -2480,17 +2526,21 @@
         {
           "source": "src_alcohol_cardiovascular_disease_and_industry__2021",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Those with industry funding were more likely to study broader outcomes such as 'cardiovascular disease' or 'coronary heart disease' as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]).",
+          "quote": "Those with industry funding were more likely to study broader outcomes such as ‘cardiovascular disease’ or ‘coronary heart disease’ as opposed to specific CVD issues such as hypertension or stroke (93% [13/14] versus 41% [19/46]) (chi-squared 12.4, p < 0.001) and have more included studies (mean of 29 versus 20).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "915784cd445fc46731548dad093bd5ccfa79577b8368126062fbaf4ddb673608",
+            "status": "exact",
+            "textSha256": "1f10e0dfedaed655f93560edd5bfbfd57ec6b4a20ae1005457fa982a4f6d056e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8586735/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c546d00ef6faf39ce185ee1536051eba0da9d3661835e515e82e6caa11948eaa",
+            "normalizedCharStart": 2982,
+            "normalizedCharEnd": 3296,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2502,31 +2552,35 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "7c47e5136a34facd84c0d36df99496a8c8d4edd52d995a628d11fcf9a1f98225",
+            "textSha256": "8c54c4c454cb96e6d9a870ce4c287090d3930b106ca1b51921aa59e1a9c57188",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4441279/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "fb8c23a4ad406e96b38374a871b47e2b2ca729ff51612bf7e75537c18929862c",
-            "normalizedCharStart": 2559,
-            "normalizedCharEnd": 2777,
+            "normalizedCharStart": 2569,
+            "normalizedCharEnd": 2787,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_alcohol_consumption_and_the_risk_of_incident_2022",
           "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
-          "quote": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
+          "quote": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "d04ae434e8a54c87fe901bdcbf8b11a332c7da5ea4f7ac22035460c626cd0d5f",
+            "status": "exact",
+            "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.882
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ba7e07e4bfc3eda66cbb8f476d7773e4c43aca6d4cdbf938dabc8499d6687192",
+            "normalizedCharStart": 3659,
+            "normalizedCharEnd": 3850,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2550,34 +2604,23 @@
           }
         },
         {
-          "source": "src_association_of_alcohol_consumption_with_sele_2011",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Association of alcohol consumption with selected cardiovascular disease outcomes: a systematic review and meta-analysis",
-          "weight": "high",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "131a987ca6e0bfb9ea4cb107f15905369af60bdc568890a6cd8e2370c96bee86",
-            "textDepth": "abstract",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/21343207/",
-            "reason": "crosses-structural-boundary"
-          }
-        },
-        {
           "source": "src_a_burden_of_proof_study_on_alcohol_consumpti_2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males.",
+          "quote": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "bd31a40e0036cae6cc37f50b3c38ede32e473017d614035d892952b9c126abd8",
+            "status": "exact",
+            "textSha256": "74509579a9d72fda71d51b6ab11f5c67e855de5006302e26bf361b4d4e3ccc53",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41467-024-47632-7",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "77f6b7278c4ad7e707393936c388c55517ef02e471936ed9051ecfccef3d8edf",
+            "normalizedCharStart": 1061,
+            "normalizedCharEnd": 1479,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2603,33 +2646,41 @@
         {
           "source": "src_alcohol_consumption_and_its_association_with_2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
+          "quote": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "bb36d002672928cf1dcf86eb3382ebbf57a0761a93e8476d7b73c814daac3bce",
+            "status": "exact",
+            "textSha256": "a4580a9f89d95195c10cd1241c15ca31fab9eb91e066bd19a88f5c93612123d2",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11578756/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.958
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c8f76262108bbd750c624d6a97ab6df5b486b9096056142ebe5a32dd88fe7eb1",
+            "normalizedCharStart": 3642,
+            "normalizedCharEnd": 3869,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_examining_the_causal_association_between_mod_2024",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables.",
+          "quote": "We aimed to examine the relation between alcohol consumption and cardiovascular risk factors using two genetic variants as instrumental variables: alcohol dehydrogenase 1B ( ADH1B ) rs1229984 and aldehyde dehydrogenase 2 ( ALDH2 ) rs671.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "59d83b14bc619cf72464794895bc3b57b73bc95722da45bb713e61fff04e621f",
+            "status": "exact",
+            "textSha256": "c912aa6f8780314d49ef8db7774228daf1a3527b8046d8e7d8ae36be49506600",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11480056/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "b58f23c974c9330d4b85486a950d8d17c312c6a963f34c960971ccd139669f27",
+            "normalizedCharStart": 3498,
+            "normalizedCharEnd": 3735,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2655,33 +2706,41 @@
         {
           "source": "src_effects_of_acute_alcohol_consumption_on_card_2021",
           "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
-          "quote": "Acute excessive alcohol intake has been repeatedly associated with the 'Holiday Heart Syndrome'. It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals.",
+          "quote": "It is characterized by the occurrence of supraventricular and ventricular arrhythmias in otherwise healthy individuals [ 2 ].",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "8ab8659ee85b02e83d1e5abb2dcb825df907688d8c5cf66ef49eab982fe55283",
+            "status": "exact",
+            "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1b0b2e1a218415a339a194de2aa0f7c48292ae05fb72f1b5388bf2413bd490c4",
+            "normalizedCharStart": 3604,
+            "normalizedCharEnd": 3729,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_cardiovascular_disease_review_of_evidence_on_2025",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "This chapter assesses the association of moderate alcohol consumption with the risk of MI, stroke, and CVD death.",
+          "quote": "CHOICE OF CVD OUTCOMES This chapter assesses the association of moderate alcohol consumption versus no alcohol consumption with the risk of experiencing a major adverse cardiovascular event (MACE-3), which includes the three primary outcomes of MI, stroke, and cardiovascular death ( Ridker et al., 2005 ).",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "9116c3a60282f9b061f893c7f2892234e89beba34fe010be164bb7ec83eb217c",
+            "status": "exact",
+            "textSha256": "11232d4393db16fb05c71b8101aabccf2b41b6f8cec2b225851337edbdca270f",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK614695/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7596503b99e7150ad0be6fdf52e87d08252711efe857d066f22f6dd4123ace7d",
+            "normalizedCharStart": 3829,
+            "normalizedCharEnd": 4135,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2725,21 +2784,6 @@
           }
         },
         {
-          "source": "src_alcohol_consumption_and_cardiovascular_healt_2022",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Chronic heavy alcohol consumption is well established to cause dilated cardiomyopathy, cardiac arrhythmias like atrial fibrillation (AFib), atrial flutter and sudden cardiac death, and increased risk of stroke.",
-          "weight": "high",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "557715197fbd63e53b15117531e0246e7c478fbe157e129867d40c427a3c00ae",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9529807/",
-            "reason": "not-found"
-          }
-        },
-        {
           "source": "src_prioritizing_health_uncorking_the_evidence_t_2026",
           "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
           "quote": "Beyond the Pipes: Alcohol's Influence From Pump to Periphery Chronic heavy alcohol consumption is well established to cause dilated cardiomyopathy, cardiac arrhythmias like atrial fibrillation (AFib), atrial flutter and sudden cardiac death, and increased risk of stroke.",
@@ -2748,7 +2792,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8d541e5e1dd9e28a34dde79e2357c91c7f0c268fbdc894c4934afefb0b27134e",
+            "textSha256": "1a142f9799ea96c84c297825551f5ec580fd2c6316478596e328528bad3ef884",
             "textDepth": "partial",
             "sourceUrl": "https://www.acc.org/latest-in-cardiology/articles/2026/06/01/01/prioritizing-health-uncorking-the-evidence",
             "reason": "verbatim-single-sentence",
@@ -2762,17 +2806,21 @@
         {
           "source": "src_the_cardioprotective_association_of_average__2012",
           "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
+          "quote": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "8c766bf66b3e5789a70dbe45f7649b7a6ec312506f8ad040069a6460a36c2d65",
+            "status": "exact",
+            "textSha256": "177783d46df85f6c0a75c237377bd2f23a858e5c79435c20ad5f5bf2ee5364b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348338/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.831
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "28ff99e698cacf8e44885101cabd5268a4f0f45ed718eece7d2c875041061bb8",
+            "normalizedCharStart": 3745,
+            "normalizedCharEnd": 3992,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2798,36 +2846,20 @@
         {
           "source": "src_alcohol_consumption_and_risks_of_more_than_2_2023",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Genotype-predicted mean alcohol intake was positively associated with established (n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated (n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis (n = 499; 2.30, 1.58–3.35), stroke (n = 12,176; 1.38, 1.27–1.49) and gout (n = 338; 2.33, 1.49–3.62), but not ischemic heart disease (n = 8,408; 1.04, 0.94–1.14).",
-          "weight": "high",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "3056f91f36274e1dc83675dd53e9d621261111446453b0f9afd2ce8310bf6968",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
-        },
-        {
-          "source": "src_urinary_tartaric_acid_as_a_biomarker_of_wine_2024",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
+          "quote": "Genotype-predicted mean alcohol intake was positively associated with established ( n = 28,564; 1.14, 1.09–1.20) and new alcohol-associated ( n = 16,138; 1.06, 1.01–1.12) diseases, and with specific diseases such as liver cirrhosis ( n = 499; 2.30, 1.58–3.35), stroke ( n = 12,176; 1.38, 1.27–1.49) and gout ( n = 338; 2.33, 1.49–3.62), but not ischemic heart disease ( n = 8,408; 1.04, 0.94–1.14).",
           "weight": "high",
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "facfe82c2a228f755645a3ce7ca31a79a8ca9c5f81fdf67869836a980e5bc5c2",
+            "textSha256": "046414bead343bae7225b2a62f4530a98933714ecfa75f580e3f1a6011c6201b",
             "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11704392/",
+            "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "7b659489d0a8d912de27fde5bc085be89a65622e851bfe99cabbd12329fa0d80",
-            "normalizedCharStart": 833,
-            "normalizedCharEnd": 975,
+            "quoteSha256": "b31b448aceb6f7de135fae876c007532596a70f4729144cc1831fcbd9d217083",
+            "normalizedCharStart": 1344,
+            "normalizedCharEnd": 1742,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -2865,80 +2897,61 @@
         {
           "source": "src_alcohol_use_and_cardiometabolic_risk_in_the__2021",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure.",
+          "quote": "A positive association with myocardial infarction did not replicate in multivariable analysis, with suggestive mediation through blood pressure; similarly, a positive association between alcohol use with type 2 diabetes was mitigated by BMI in multivariable analysis.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "9d2cd3011a6e3edf68b70d94343ff70890b7e6068dad9d997f788118abf60a64",
+            "status": "exact",
+            "textSha256": "aebe28b19018e33f23bcf5bffca66d39f70f944d03f895958334a257e24dc769",
             "textDepth": "partial",
             "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0255801",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0023eba7783b4ff026defad5cf1e23a4d17bbbc81596f469c67cfc323117113d",
+            "normalizedCharStart": 1476,
+            "normalizedCharEnd": 1743,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_exploring_causal_associations_between_alcoho_2013",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses].",
+          "quote": "Both confounder-adjusted multivariable and IV analyses suggested that a greater alcohol consumption among those who drank any alcohol resulted in a higher BP [mean difference in SBP per doubling of alcohol consumption among drinkers: 0.76 mmHg (95% CI: 0.63, 0.90) from multivariable analyses and 0.94 mmHg (-3.03, 4.69) from IV analyses; P-value for difference in these results = 0.95].",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "078de93d0d4a5de591958af6087ecfe551dc1edcc0f8505268d87068ac385500",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23492672/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
-        },
-        {
-          "source": "src_alcohol_intake_and_risk_of_hypertension_a_sy_2024",
-          "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Alcohol intake was positively associated with incident hypertension risk in a dose-response fashion, with no evidence of a threshold effect or J-shaped curve, indicating that even low alcohol intake increases hypertension risk.",
-          "weight": "high",
-          "verifiedQuote": "fuzzy",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "a51150b096dd125ebd4710c9a1bba39846a28bbf068c386ea3e7940a463f410c",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11251509/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4f1560698d2d0a6c06fea996d6131e61e485d6666a169634bf95a8a283490f5d",
+            "normalizedCharStart": 583,
+            "normalizedCharEnd": 970,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
           "source": "src_evaluating_the_relationship_between_alcohol__2020",
           "pos": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
-          "quote": "Alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
+          "quote": "However, alcohol was associated with and increased HDL-C, decreased TRG, and increased BP, which may indicate pathways through impact CVD risk, warranting further study.",
           "weight": "high",
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "2df7ed40e594ed98aae4511a70e4e6beee79500de2ab010476a57563ed4455cb",
             "textDepth": "full",
             "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003410",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
-          }
-        },
-        {
-          "source": "src_alcohol_consumption_and_cardiovascular_healt_2022",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
-          "quote": "Similarly, a meta-analysis of 14 interventional studies found that alcohol had a neutral effect on fasting glucose and insulin sensitivity but was associated with a reduction in hemoglobin A1c.",
-          "weight": "med",
-          "verifiedQuote": "missing",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "missing",
-            "textSha256": "557715197fbd63e53b15117531e0246e7c478fbe157e129867d40c427a3c00ae",
-            "textDepth": "partial",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9529807/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "da328f23a170f67c4714e26b90a5b3c1f9579c672b9b9d0d753d08e96ba947c3",
+            "normalizedCharStart": 3376,
+            "normalizedCharEnd": 3545,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -2994,7 +3007,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "744329c3a7291f610f9d7cdb445fe3d17ad183a4f668e31710ce5fdfacefd20c",
+            "textSha256": "ee451c2c875ee42e80d98e66d2e1e2f1e78a69361232038d7f9604c42173f4cc",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC28294/",
             "reason": "verbatim-single-sentence",
@@ -3241,14 +3254,14 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "bd4513f873a0667a8e10c7d8e08c2b19ac270422d0b1c72f30b246e3900bcfae",
+              "textSha256": "417c9b3906aa1a69176e95400d2c6f335c1258b29e1a59eeef396679f8c822eb",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4783255/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
               "quoteSha256": "4ca855ace0dc7935c0fffb38423ebff8a2281acb314cfe5ccf9da3e9a9df7ee2",
-              "normalizedCharStart": 3549,
-              "normalizedCharEnd": 3767,
+              "normalizedCharStart": 3553,
+              "normalizedCharEnd": 3771,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           }
@@ -3262,14 +3275,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "bd4513f873a0667a8e10c7d8e08c2b19ac270422d0b1c72f30b246e3900bcfae",
+            "textSha256": "417c9b3906aa1a69176e95400d2c6f335c1258b29e1a59eeef396679f8c822eb",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4783255/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "ea5c2d3f0a1238995857e52191bdfc20cc17c3bdec3a0fc183622b7fa9f32289",
-            "normalizedCharStart": 5036,
-            "normalizedCharEnd": 5236,
+            "normalizedCharStart": 5040,
+            "normalizedCharEnd": 5240,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -3302,14 +3315,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "6400a07417eb289828e69c6edcfce3bc7d78426f4f275d43bf51e2c1b37b407a",
+            "textSha256": "84f293baf5349521e72a6aa7e47d6173b0089ab08c87734f600d47b4c68c1ec2",
             "textDepth": "partial",
             "sourceUrl": "https://www.mja.com.au/journal/2013/198/8/j-curve-revisited-cardiovascular-benefits-moderate-alcohol-use-cannot-be",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "e79d88cdc0aaadfd17912b295fb92835cfdf480a0784e95940e3ca89a01d79fa",
-            "normalizedCharStart": 19648,
-            "normalizedCharEnd": 19772,
+            "normalizedCharStart": 19641,
+            "normalizedCharEnd": 19765,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -3343,7 +3356,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "f9b666b5fc0da4265e72957ba2ccce81be871eb4e9e2a7ab5933696a7d051f21",
+            "textSha256": "ef346373d312edbe192e43754d285b9551f3e20326f772f8868640f0f444eb31",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7020057/",
             "reason": "verbatim-single-sentence",
@@ -3438,17 +3451,21 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "Moderate drinking-defined as one to two drinks per day-has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
+          "quote": "Moderate drinking—defined as one to two drinks per day—has been linked to a lower risk of ischemic heart disease and stroke, indicating some protective effects.",
           "extractionConfidence": 0.2,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "514a2352d18d90303f25a2381d60c63d79665c81b0f14f0ff405463032288691",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11433171/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2558af16004626f6126933722c1d094b83cddbdeb2cee74e702eff7ada650ff2",
+            "normalizedCharStart": 63554,
+            "normalizedCharEnd": 63714,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -3501,14 +3518,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "60ca9652ad5437418a12fce7b7c0bc26bfc237828ad04ba854a0cdf3354e58be",
+            "textSha256": "098f7dbbd99b19a1ab7e91bd737bdd976f4669fad94700d4836a332c50efef23",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4091648/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "8433be68d5a4f676b4eda7bec957a89eccaa3ffa32f44c61bad85c20bebff008",
-            "normalizedCharStart": 57812,
-            "normalizedCharEnd": 57942,
+            "normalizedCharStart": 57866,
+            "normalizedCharEnd": 57996,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -3539,17 +3556,21 @@
         {
           "ref": "ds_large_scale_gwas_consortia_and_uk_biobank_me",
           "provenance": {
-            "quote": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on cardiovascular disease.",
+            "quote": "We used Mendelian randomization (MR) to predict the effect of alcohol consumption on 8 cardiovascular diseases.",
             "extractionConfidence": 0.35,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "1eacb2db2feb4ef9acc519b882e7e0fb17cfa89f805a3ca6aee5b0cc7d59147a",
+              "status": "exact",
+              "textSha256": "962cb3195d195f78d3ce72400691dd3532ba8a85567c155a357ae1f7edfd195a",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7299220/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 0.933
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "817fe1a34675199ecae978edc4e9001c00189e223ebf2373430e6ea19700c338",
+              "normalizedCharStart": 3774,
+              "normalizedCharEnd": 3885,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -3562,7 +3583,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1eacb2db2feb4ef9acc519b882e7e0fb17cfa89f805a3ca6aee5b0cc7d59147a",
+            "textSha256": "962cb3195d195f78d3ce72400691dd3532ba8a85567c155a357ae1f7edfd195a",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7299220/",
             "reason": "verbatim-single-sentence",
@@ -3600,17 +3621,21 @@
         {
           "ref": "ds_uk_biobank",
           "provenance": {
-            "quote": "This study used data are from the UK Biobank (www.ukbiobank.ac.uk) and legal constraints do not permit public sharing of the data.",
+            "quote": "Data Availability: This study used data are from the UK Biobank ( www.ukbiobank.ac.uk ) and legal constraints do not permit public sharing of the data.",
             "extractionConfidence": 0.95,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "9d2cd3011a6e3edf68b70d94343ff70890b7e6068dad9d997f788118abf60a64",
+              "status": "exact",
+              "textSha256": "aebe28b19018e33f23bcf5bffca66d39f70f944d03f895958334a257e24dc769",
               "textDepth": "partial",
               "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0255801",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "56772aa5fc231c1ecb2abd7143e9235f7063d9f77d663a7170f174357b20b626",
+              "normalizedCharStart": 3010,
+              "normalizedCharEnd": 3161,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -3623,7 +3648,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "9d2cd3011a6e3edf68b70d94343ff70890b7e6068dad9d997f788118abf60a64",
+            "textSha256": "aebe28b19018e33f23bcf5bffca66d39f70f944d03f895958334a257e24dc769",
             "textDepth": "partial",
             "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0255801",
             "reason": "verbatim-single-sentence",
@@ -3791,14 +3816,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "b550d0027304600dc26f4c30af494a3e4f5255c011ffbc4ad45569b11cc6d944",
+            "textSha256": "bf13207d7804b2ce4111a53e6d6bb77a52176c4cf83966919ad18ad665a2dc54",
             "textDepth": "partial",
             "sourceUrl": "https://world-heart-federation.org/news/no-amount-of-alcohol-is-good-for-the-heart-says-world-heart-federation/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "f50b93d85003a19e0625895aa1be14f342a2890283daf02b7f9e0c053a6d9baf",
-            "normalizedCharStart": 1652,
-            "normalizedCharEnd": 1771,
+            "normalizedCharStart": 1656,
+            "normalizedCharEnd": 1775,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -3837,7 +3862,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "0473afc7ce6638681f7eec8a2feadfa6920ee65e40292edba9aa40a9a0b5919c",
+              "textSha256": "3571e10dca92b2a50dd26acc387c9edf0168cd823f51dbac680da15a3862e64e",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4803651/",
               "reason": "verbatim-single-sentence",
@@ -3858,7 +3883,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "0473afc7ce6638681f7eec8a2feadfa6920ee65e40292edba9aa40a9a0b5919c",
+            "textSha256": "3571e10dca92b2a50dd26acc387c9edf0168cd823f51dbac680da15a3862e64e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4803651/",
             "reason": "verbatim-single-sentence",
@@ -3961,17 +3986,21 @@
         {
           "ref": "ds_national_epidemiologic_survey_on_alcohol_and",
           "provenance": {
-            "quote": "We designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
+            "quote": "To examine whether alcohol drinking during the past 12 months and heaviest drinking period were differentially associated with the risk of CHD, we designed a case-control study using a population-based health survey of U.S. adults conducted from 2012 to 2013.",
             "extractionConfidence": 0.95,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "2d41e78e26f03b0a4edbd1c597ecdb2a57e4c3dae0c2a9b2582e4d68ef7c656b",
+              "status": "exact",
+              "textSha256": "9590f7e5a707060304d5a7232f24de274c90c4fd58c17089421c10647f176789",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7571539/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "c84aeafe795313a88a800c2de2d6b0a2eed905c80d0bb46ac22ae3a37c18f7f7",
+              "normalizedCharStart": 2369,
+              "normalizedCharEnd": 2628,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -3984,7 +4013,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "2d41e78e26f03b0a4edbd1c597ecdb2a57e4c3dae0c2a9b2582e4d68ef7c656b",
+            "textSha256": "9590f7e5a707060304d5a7232f24de274c90c4fd58c17089421c10647f176789",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7571539/",
             "reason": "verbatim-single-sentence",
@@ -4116,7 +4145,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1a3824dfa91f2eb35063624ae9445c9f80f00735768add6299b559127876f459",
+            "textSha256": "fa6ffd8ba7e7f350fdccc9ef57b836ed50e2e4fe4d3ba3fd162c4c24811147f2",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7067094/",
             "reason": "verbatim-single-sentence",
@@ -4156,14 +4185,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "94cbac46a236db1b98f5d49519da779efa7d9037545f822ad2e82619a0e3e593",
+            "textSha256": "362ca872d98e91b48c0802d5156bb39b022f4928cf3405cf296423903ae71fee",
             "textDepth": "partial",
             "sourceUrl": "https://www.nih.gov/news-events/news-releases/nih-end-funding-moderate-alcohol-cardiovascular-health-trial",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "f5f38f606c5b85deea0cd52b03891d1817e0b084cca5f37aa125b3f6341d37b4",
-            "normalizedCharStart": 555,
-            "normalizedCharEnd": 656,
+            "normalizedCharStart": 529,
+            "normalizedCharEnd": 630,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -4209,7 +4238,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "c88b31a50b4b0695e812d884ca9e801a3b0b95262afeb15f9855ba96f947ead8",
+              "textSha256": "8e05eff0d173ad049c539ac585ad70e1d0c0c70b3b5812842be6443b31f871d9",
               "textDepth": "partial",
               "sourceUrl": "https://www.medrxiv.org/content/10.64898/2026.03.18.26348685v1.full",
               "reason": "verbatim-single-sentence",
@@ -4230,7 +4259,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "c88b31a50b4b0695e812d884ca9e801a3b0b95262afeb15f9855ba96f947ead8",
+            "textSha256": "8e05eff0d173ad049c539ac585ad70e1d0c0c70b3b5812842be6443b31f871d9",
             "textDepth": "partial",
             "sourceUrl": "https://www.medrxiv.org/content/10.64898/2026.03.18.26348685v1.full",
             "reason": "verbatim-single-sentence",
@@ -4272,7 +4301,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "915784cd445fc46731548dad093bd5ccfa79577b8368126062fbaf4ddb673608",
+              "textSha256": "1f10e0dfedaed655f93560edd5bfbfd57ec6b4a20ae1005457fa982a4f6d056e",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8586735/",
               "reason": "verbatim-single-sentence",
@@ -4293,7 +4322,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "915784cd445fc46731548dad093bd5ccfa79577b8368126062fbaf4ddb673608",
+            "textSha256": "1f10e0dfedaed655f93560edd5bfbfd57ec6b4a20ae1005457fa982a4f6d056e",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8586735/",
             "reason": "verbatim-single-sentence",
@@ -4343,14 +4372,14 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "7c47e5136a34facd84c0d36df99496a8c8d4edd52d995a628d11fcf9a1f98225",
+              "textSha256": "8c54c4c454cb96e6d9a870ce4c287090d3930b106ca1b51921aa59e1a9c57188",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4441279/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
               "quoteSha256": "08cede8363a643b67609a923b10aecd4701342b677b3318c4a94a036967db54c",
-              "normalizedCharStart": 2402,
-              "normalizedCharEnd": 2558,
+              "normalizedCharStart": 2412,
+              "normalizedCharEnd": 2568,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           }
@@ -4358,17 +4387,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97-1.17) for those without concern about industry funding compared with RR 0.88 (0.81-0.94)].",
+          "quote": "Whether studies find alcohol to be a risk factor or protective against incident stroke depends on whether or not there is possible industry funding [risk ratio (RR) 1.07 (0.97–1.17) for those without concern about industry funding compared with RR 0.88 (0.81–0.94)].",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "7c47e5136a34facd84c0d36df99496a8c8d4edd52d995a628d11fcf9a1f98225",
+            "status": "exact",
+            "textSha256": "8c54c4c454cb96e6d9a870ce4c287090d3930b106ca1b51921aa59e1a9c57188",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4441279/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c42fc370ebbb7a0e6417cf0f43e3e8a57edceec6882d2a0b2e839b67c5299308",
+            "normalizedCharStart": 2876,
+            "normalizedCharEnd": 3142,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -4408,17 +4441,21 @@
         {
           "ref": "ds_pooled_prospective_studies_on_alcohol_and_in",
           "provenance": {
-            "quote": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also appli[es to atrial fibrillation].",
+            "quote": "However, it remains unclear whether the protective effect of moderate alcohol consumption-that has been reported for various cardiovascular diseases also applies to the risk for new-onset AF.",
             "extractionConfidence": 0.7,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "d04ae434e8a54c87fe901bdcbf8b11a332c7da5ea4f7ac22035460c626cd0d5f",
+              "status": "exact",
+              "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 0.882
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "ba7e07e4bfc3eda66cbb8f476d7773e4c43aca6d4cdbf938dabc8499d6687192",
+              "normalizedCharStart": 3659,
+              "normalizedCharEnd": 3850,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -4431,7 +4468,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "d04ae434e8a54c87fe901bdcbf8b11a332c7da5ea4f7ac22035460c626cd0d5f",
+            "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
             "reason": "verbatim-single-sentence",
@@ -4481,7 +4518,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "e3a6f429133eb9d7627a7fd3fc2acc3964e7a0f83cd2fc77b1dbbe48d0cd5a7b",
+              "textSha256": "da59b6fbc831c3740e7c30c8271eb8b789d367d16fcf867944d1333fa40808cf",
               "textDepth": "partial",
               "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0899900715004748",
               "reason": "verbatim-single-sentence",
@@ -4502,7 +4539,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "e3a6f429133eb9d7627a7fd3fc2acc3964e7a0f83cd2fc77b1dbbe48d0cd5a7b",
+            "textSha256": "da59b6fbc831c3740e7c30c8271eb8b789d367d16fcf867944d1333fa40808cf",
             "textDepth": "partial",
             "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0899900715004748",
             "reason": "verbatim-single-sentence",
@@ -4664,17 +4701,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Exploring causal associations between alcohol and coronary heart disease risk factors in a Chinese population using Mendelian randomization analysis",
+          "quote": "Conclusion This study provides further evidence that the associations between alcohol consumption and increases in blood pressure and HDL cholesterol are causal.",
           "extractionConfidence": 0.3,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "0655fddc60f4640f277bedd9a87ed0bf9ea5191e58854d3757cba4f85f281dfa",
+            "status": "exact",
+            "textSha256": "d6c0026a23829cc313f55cac5b8fca996f544147771327bb5275136b8fb9d716",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4568464/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0fe2ab73ee76661778c4f037890057dc2cd573f160c249c3142b3cb9760f990c",
+            "normalizedCharStart": 23401,
+            "normalizedCharEnd": 23562,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -4771,17 +4812,21 @@
         {
           "ref": "ds_pooled_prospective_epidemiological_mortality",
           "provenance": {
-            "quote": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as 'abstainers' many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
+            "quote": "This meta-analysis of 54 published studies tested the extent to which a systematic misclassification error was committed by including as ‘abstainers’ many people who had reduced or stopped drinking, a phenomenon associated with ageing and ill health.",
             "extractionConfidence": 0.95,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "93c238a8f51490db742a139bf360be51bd177517554354d073f6ff74c27d5742",
               "textDepth": "abstract",
               "sourceUrl": "https://www.tandfonline.com/doi/abs/10.1080/16066350500497983",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "1fd9ec0588e02e8b286760e4c10135ff739ebc39d58b398ec1245b14951103a4",
+              "normalizedCharStart": 275,
+              "normalizedCharEnd": 525,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -4846,17 +4891,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk - specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males - while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
+          "quote": "Cohort and case-control data show low to moderate alcohol consumption is associated with decreased IHD risk – specifically, intake is inversely related to IHD and myocardial infarction morbidity in both sexes and IHD mortality in males – while pooled MR data show no association, confirming that self-reported versus genetically predicted alcohol use data yield conflicting findings about the alcohol-IHD relationship.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "bd31a40e0036cae6cc37f50b3c38ede32e473017d614035d892952b9c126abd8",
+            "status": "exact",
+            "textSha256": "74509579a9d72fda71d51b6ab11f5c67e855de5006302e26bf361b4d4e3ccc53",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41467-024-47632-7",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "77f6b7278c4ad7e707393936c388c55517ef02e471936ed9051ecfccef3d8edf",
+            "normalizedCharStart": 1061,
+            "normalizedCharEnd": 1479,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -4902,14 +4951,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "9ecb0bc23b1f1073ac3f94336984aec397d4f244757cb80bf1823786890bc9b3",
+            "textSha256": "b5ffafa12ba6255d328ac0c441691b31141177e10df99f74e3be15115d82d92c",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11629435/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "bfe955ca49ad86a1fd253aa6afcc0b8af7b399e19e8783e17a8c5572f52fec37",
-            "normalizedCharStart": 7597,
-            "normalizedCharEnd": 7805,
+            "normalizedCharStart": 7601,
+            "normalizedCharEnd": 7809,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -4969,17 +5018,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
+          "quote": "Results from our quantitative meta-analysis showed that drinkers with average intake of <30 g/day and no episodic heavy drinking had the lowest IHD risk (relative risk = 0.64, 95% confidence interval 0.53 to 0.71).",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "fd2d070547fb17430d0ead8167daadc45d47ad0efeccda504555664758607004",
             "textDepth": "full",
             "sourceUrl": "https://link.springer.com/article/10.1186/s12916-014-0182-6",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d3d04e48e5c03d76c72123cd11bc1fcbf30f179de7d2d588c9fa87cc4d188e1f",
+            "normalizedCharStart": 1824,
+            "normalizedCharEnd": 2038,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -5105,7 +5158,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "836d7ee5b332d41cb244b5889812b73aa6a07b1d77e71e86a48cdbbd93da0744",
+              "textSha256": "317eb9537d3f88fcf7c487b37ada8be29237d51952a5a19b8f32fd1b965929ef",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3712994/",
               "reason": "verbatim-single-sentence",
@@ -5126,7 +5179,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "836d7ee5b332d41cb244b5889812b73aa6a07b1d77e71e86a48cdbbd93da0744",
+            "textSha256": "317eb9537d3f88fcf7c487b37ada8be29237d51952a5a19b8f32fd1b965929ef",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3712994/",
             "reason": "verbatim-single-sentence",
@@ -5164,34 +5217,42 @@
         {
           "ref": "ds_pooled_mendelian_randomisation_studies_on_al",
           "provenance": {
-            "quote": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver and brain diseases.",
+            "quote": "To address these limitations, we conducted a systematic review of Mendelian Randomization (MR) studies examining the causal relationship between alcohol consumption and cancers, cardiovascular, liver, and neurological diseases.",
             "extractionConfidence": 0.7,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "bb36d002672928cf1dcf86eb3382ebbf57a0761a93e8476d7b73c814daac3bce",
+              "status": "exact",
+              "textSha256": "a4580a9f89d95195c10cd1241c15ca31fab9eb91e066bd19a88f5c93612123d2",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11578756/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 0.964
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "c8f76262108bbd750c624d6a97ab6df5b486b9096056142ebe5a32dd88fe7eb1",
+              "normalizedCharStart": 3642,
+              "normalizedCharEnd": 3869,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
       ],
       "provenance": {
         "position": {
-          "quote": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking.",
+          "quote": "These studies mostly showed non-significant associations between CHD and genetically predicted alcohol consumption when adjusted to smoking ( 40 , 104 ).",
           "extractionConfidence": 0.4,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "bb36d002672928cf1dcf86eb3382ebbf57a0761a93e8476d7b73c814daac3bce",
+            "status": "exact",
+            "textSha256": "a4580a9f89d95195c10cd1241c15ca31fab9eb91e066bd19a88f5c93612123d2",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11578756/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "49ce472b22a74eb13ffdf6a835fcd86ea13b596e092135b56ebd641a4b528a2d",
+            "normalizedCharStart": 100412,
+            "normalizedCharEnd": 100565,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -5222,17 +5283,21 @@
         {
           "ref": "ds_taiwan_biobank",
           "provenance": {
-            "quote": "Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study.",
+            "quote": "Methods Using data collected in the Taiwan Biobank—an ongoing, prospective, population-based cohort study—our analysis included 129,032 individuals (46,547 men and 82,485 women) with complete data on ADH1B rs1229984 and ALDH2 rs671 genotypes and alcohol drinking status.",
             "extractionConfidence": 0.7,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "59d83b14bc619cf72464794895bc3b57b73bc95722da45bb713e61fff04e621f",
+              "status": "exact",
+              "textSha256": "c912aa6f8780314d49ef8db7774228daf1a3527b8046d8e7d8ae36be49506600",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11480056/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "8aa785baa8ea3c3bcf4dde307855708f657bf25adfebf07904733ed6ec96d9b2",
+              "normalizedCharStart": 3736,
+              "normalizedCharEnd": 4006,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -5245,7 +5310,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "59d83b14bc619cf72464794895bc3b57b73bc95722da45bb713e61fff04e621f",
+            "textSha256": "c912aa6f8780314d49ef8db7774228daf1a3527b8046d8e7d8ae36be49506600",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11480056/",
             "reason": "verbatim-single-sentence",
@@ -5287,7 +5352,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "18d82607f22f8a2ac3e9855bfeac7beb7b551defdb67933c5c4145c5819a1ed0",
+            "textSha256": "78d2dbdce7d65f09863584d4e235a94c9ba54d19b99d422ba136c94abf571c5f",
             "textDepth": "partial",
             "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S1050173825000052",
             "reason": "verbatim-single-sentence",
@@ -5520,7 +5585,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "8ab8659ee85b02e83d1e5abb2dcb825df907688d8c5cf66ef49eab982fe55283",
+              "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
               "reason": "verbatim-single-sentence",
@@ -5541,7 +5606,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8ab8659ee85b02e83d1e5abb2dcb825df907688d8c5cf66ef49eab982fe55283",
+            "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
             "reason": "verbatim-single-sentence",
@@ -5611,17 +5676,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
+          "quote": "As predicted, studies with younger cohorts and separating former and occasional drinkers from abstainers estimated similar mortality risk for low-volume drinkers (RR = 0.98, 95% CI [0.87, 1.11]) as abstainers.",
           "extractionConfidence": 0.97,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "40222f382794b2c1e8a0702adf91a1a72bd2ba2c1c09920c5b62c9b94b4b3e20",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jsad.com/doi/10.15288/jsad.23-00283",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e48a45b9247f510dfae626e2373b3fe4608e2291a02e8666f276baec3393157a",
+            "normalizedCharStart": 1142,
+            "normalizedCharEnd": 1351,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -5711,7 +5780,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "a51150b096dd125ebd4710c9a1bba39846a28bbf068c386ea3e7940a463f410c",
+            "textSha256": "e9d24ff1acfd72065fabdd42716f9eb1452197d7aca85e9c06ae35b29d10ed3b",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11251509/",
             "reason": "verbatim-single-sentence",
@@ -5753,7 +5822,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "1842c6d1fe4b842434a00a2ce57fd8399ea06ba62cc0f4db47dd9db1b5e59c0a",
+              "textSha256": "6baa8e22a30356f6d3b892a82569d7b564f73b1832f25afe56897fa59a383b21",
               "textDepth": "partial",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10989238/",
               "reason": "verbatim-single-sentence",
@@ -5774,7 +5843,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1842c6d1fe4b842434a00a2ce57fd8399ea06ba62cc0f4db47dd9db1b5e59c0a",
+            "textSha256": "6baa8e22a30356f6d3b892a82569d7b564f73b1832f25afe56897fa59a383b21",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10989238/",
             "reason": "verbatim-single-sentence",
@@ -5811,15 +5880,19 @@
         "position": {
           "quote": "A subset of studies examined associations of moderate alcohol consumption—with the risk of MI, stroke, and CVD death—with particular care to include people who never consumed alcohol as the reference group.",
           "extractionConfidence": 0.45,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "9116c3a60282f9b061f893c7f2892234e89beba34fe010be164bb7ec83eb217c",
+            "status": "exact",
+            "textSha256": "11232d4393db16fb05c71b8101aabccf2b41b6f8cec2b225851337edbdca270f",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK614695/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "777b38e32a939d752905a12d730491d5f23c4e45144ec244861dd2cd274969db",
+            "normalizedCharStart": 3387,
+            "normalizedCharEnd": 3593,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -5852,17 +5925,21 @@
       ],
       "provenance": {
         "position": {
-          "quote": "We failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
+          "quote": "Evaluating the widest range of CVD risk factors and outcomes of any alcohol consumption or smoking MR study to date, we failed to find a cardioprotective impact of genetically predicted alcohol consumption on CVD outcomes.",
           "extractionConfidence": 0.98,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
+            "status": "exact",
             "textSha256": "2df7ed40e594ed98aae4511a70e4e6beee79500de2ab010476a57563ed4455cb",
             "textDepth": "full",
             "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003410",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 1.0
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e7ac8ae3b62fce12f08097c2298659aaa1c83f626a0a2a4f8ad591550c75f0a2",
+            "normalizedCharStart": 3153,
+            "normalizedCharEnd": 3375,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -6054,16 +6131,21 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "Across multiple cohorts, light consumption has been linked to lower cardiovascular risk, whereas higher intake is clearly associated with worsening hypertension.",
+          "quote": "However, higher risk for cardiovascular disease mortality was typically seen with heavier daily or weekly alcohol consumption across all types of beverages.",
           "extractionConfidence": 0.72,
-          "verifiedQuote": "missing",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "missing",
+            "status": "exact",
             "textSha256": "557715197fbd63e53b15117531e0246e7c478fbe157e129867d40c427a3c00ae",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9529807/",
-            "reason": "not-found"
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d000cc605af0c0c99b530cab0306d4a83f3d698155443000c9ff64405bb782e7",
+            "normalizedCharStart": 1051,
+            "normalizedCharEnd": 1207,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -6115,7 +6197,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "8d541e5e1dd9e28a34dde79e2357c91c7f0c268fbdc894c4934afefb0b27134e",
+            "textSha256": "1a142f9799ea96c84c297825551f5ec580fd2c6316478596e328528bad3ef884",
             "textDepth": "partial",
             "sourceUrl": "https://www.acc.org/latest-in-cardiology/articles/2026/06/01/01/prioritizing-health-uncorking-the-evidence",
             "reason": "verbatim-single-sentence",
@@ -6156,34 +6238,42 @@
         {
           "ref": "ds_pooled_observational_studies_on_alcohol_and_",
           "provenance": {
-            "quote": "Methods A systematic search of published studies using electronic databases (1980-2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
+            "quote": "Methods A systematic search of published studies using electronic databases (1980–2010) identified 44 observational studies (case-control or cohort) reporting a relative risk measure for average alcohol intake in relation to IHD risk.",
             "extractionConfidence": 0.95,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "8c766bf66b3e5789a70dbe45f7649b7a6ec312506f8ad040069a6460a36c2d65",
+              "status": "exact",
+              "textSha256": "177783d46df85f6c0a75c237377bd2f23a858e5c79435c20ad5f5bf2ee5364b9",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348338/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "692d47687a9e25ab8f908e6af263f9bed095d427514e64212d25abf36a504205",
+              "normalizedCharStart": 3079,
+              "normalizedCharEnd": 3313,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
       ],
       "provenance": {
         "position": {
-          "quote": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogene[ity was found].",
+          "quote": "Although some form of a cardioprotective association was confirmed in all strata, substantial heterogeneity across studies remained unexplained and confidence intervals were relatively wide, in particular for average consumption of 1–2 drinks/day.",
           "extractionConfidence": 0.75,
-          "verifiedQuote": "fuzzy",
+          "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "fuzzy",
-            "textSha256": "8c766bf66b3e5789a70dbe45f7649b7a6ec312506f8ad040069a6460a36c2d65",
+            "status": "exact",
+            "textSha256": "177783d46df85f6c0a75c237377bd2f23a858e5c79435c20ad5f5bf2ee5364b9",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3348338/",
-            "reason": "paraphrase-or-altered-text",
-            "similarity": 0.831
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "28ff99e698cacf8e44885101cabd5268a4f0f45ed718eece7d2c875041061bb8",
+            "normalizedCharStart": 3745,
+            "normalizedCharEnd": 3992,
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
@@ -6216,17 +6306,21 @@
         {
           "ref": "ds_pooled_nonexperimental_cohort_studies_on_alc",
           "provenance": {
-            "quote": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4-12 years), were included in the analysis.",
+            "quote": "Seven studies, with 19 548 participants and a median follow-up of 5.3 years (range, 4–12 years), were included in the analysis.",
             "extractionConfidence": 0.85,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "38c8456795c80df48e0032191d7744dd9b987783e32dc69c046704f52f388481",
               "textDepth": "abstract",
               "sourceUrl": "https://www.ahajournals.org/doi/10.1161/HYPERTENSIONAHA.123.21224",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "af8a8068313617423e82b5e02e07ec0d4e8e1a1ad62ce1877857e9718e784bcb",
+              "normalizedCharStart": 740,
+              "normalizedCharEnd": 867,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -6490,7 +6584,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "f2465ac34361f90fc646db1bb541aa855d76ecc8e266ec9c60b1468005fcf44d",
+              "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
               "reason": "verbatim-single-sentence",
@@ -6511,7 +6605,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "f2465ac34361f90fc646db1bb541aa855d76ecc8e266ec9c60b1468005fcf44d",
+            "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
             "reason": "verbatim-single-sentence",
@@ -6554,7 +6648,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "5ba8fe1c565b177fdfcecdf628b20f46dd33ec5fa275d93ceb8a18d29bdb497c",
+            "textSha256": "45b4844a10dc4d9ca1d12f92bbf10f030eb209441ab3b6ff90b2a5db6687754c",
             "textDepth": "partial",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7408510/",
             "reason": "verbatim-single-sentence",
@@ -6760,17 +6854,21 @@
         {
           "ref": "ds_chinese_population_cohort_nanjing_medical_un",
           "provenance": {
-            "quote": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of 512,000 adults (41% men), including 168,050 genotyped for ALDH2-rs671 and ADH1B-rs1229984, with 1.1 million ICD-10 coded hospitalized events.",
+            "quote": "We investigated the associations of alcohol consumption with 207 diseases in the 12-year China Kadoorie Biobank of >512,000 adults (41% men), including 168,050 genotyped for ALDH2 - rs671 and ADH1B - rs1229984 , with >1.1 million ICD-10 coded hospitalized events.",
             "extractionConfidence": 0.92,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
-              "textSha256": "3056f91f36274e1dc83675dd53e9d621261111446453b0f9afd2ce8310bf6968",
+              "status": "exact",
+              "textSha256": "046414bead343bae7225b2a62f4530a98933714ecfa75f580e3f1a6011c6201b",
               "textDepth": "partial",
               "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "909b2cea077ba7923a3aa98eda650e84f99645780b96d8b907f481aad17a761f",
+              "normalizedCharStart": 741,
+              "normalizedCharEnd": 1004,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -6783,14 +6881,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "3056f91f36274e1dc83675dd53e9d621261111446453b0f9afd2ce8310bf6968",
+            "textSha256": "046414bead343bae7225b2a62f4530a98933714ecfa75f580e3f1a6011c6201b",
             "textDepth": "partial",
             "sourceUrl": "https://www.nature.com/articles/s41591-023-02383-8",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "93e5ca07cafd250d1d70680de76fe3c26cd2d48c2662a1bdfd30c3263567d0ef",
-            "normalizedCharStart": 1978,
-            "normalizedCharEnd": 2132,
+            "normalizedCharStart": 1980,
+            "normalizedCharEnd": 2134,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -6827,17 +6925,21 @@
         {
           "ref": "ds_pooled_prospective_cohorts_medline_1950_2009",
           "provenance": {
-            "quote": "Data sources Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
+            "quote": "**Data sources** Medline (1950 to October 2009) and Embase (1980 to October 2009) without limits.",
             "extractionConfidence": 0.85,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "541668e35f1036cdf14d9d73b914e016811447abfb79d290552cb1050da982f1",
               "textDepth": "partial",
               "sourceUrl": "https://www.bmj.com/content/342/bmj.d636",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "cda13472a8d290f922945b4f4524cedc61168fb13baa9074fd8d40fad0f68328",
+              "normalizedCharStart": 1677,
+              "normalizedCharEnd": 1774,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -6898,7 +7000,7 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "16cc1104f18c78cf174830f245abe13b2772406d82b17bc7582bafa986db870a",
+              "textSha256": "d693ba98cdd8417a4d06e1c4b60f43a2440c43e59700f395b44a4a60f4232a82",
               "textDepth": "abstract",
               "sourceUrl": "https://www.jacc.org/doi/abs/10.1016/j.jacc.2023.04.015",
               "reason": "verbatim-single-sentence",
@@ -6919,14 +7021,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "16cc1104f18c78cf174830f245abe13b2772406d82b17bc7582bafa986db870a",
+            "textSha256": "d693ba98cdd8417a4d06e1c4b60f43a2440c43e59700f395b44a4a60f4232a82",
             "textDepth": "abstract",
             "sourceUrl": "https://www.jacc.org/doi/abs/10.1016/j.jacc.2023.04.015",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "26c7d111db214daef5dabd2ffbe3114e632c31307699b25e994a888aab45fde8",
-            "normalizedCharStart": 1513,
-            "normalizedCharEnd": 1685,
+            "normalizedCharStart": 1649,
+            "normalizedCharEnd": 1821,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -6961,17 +7063,21 @@
         {
           "ref": "ds_vietnam_era_twin_study_of_aging_vetsa",
           "provenance": {
-            "quote": "Our sample comprised 908 men (56-67 years), free of prevalent CVD.",
+            "quote": "Our sample comprised 908 men (56−67 years), free of prevalent CVD.",
             "extractionConfidence": 0.7,
-            "verifiedQuote": "fuzzy",
+            "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
-              "status": "fuzzy",
+              "status": "exact",
               "textSha256": "65d6cbcf5b0de7e07717626bf46040d6ba8ccb336f8120104cee5f69df24dbb0",
               "textDepth": "abstract",
               "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/35683983/",
-              "reason": "paraphrase-or-altered-text",
-              "similarity": 1.0
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "64a34a4779d384909691f45086a585a0844bc18bb043dfedb76d2b8422e2bff3",
+              "normalizedCharStart": 301,
+              "normalizedCharEnd": 367,
+              "normalization": "NFKC-typography-whitespace-v1"
             }
           }
         }
@@ -7032,20 +7138,20 @@
         {
           "ref": "ds_predimed_trial_cohort",
           "provenance": {
-            "quote": "Urinary tartaric acid as a biomarker of wine consumption and cardiovascular risk: the PREDIMED trial Inés Domínguez-López Inés Domínguez-López",
+            "quote": "Methods A case-cohort nested study was designed within the PREDIMED trial with 1232 participants: 685 incident cases of CVD and a random subcohort of 625 participants (including 78 overlapping cases).",
             "extractionConfidence": 0.3,
             "verifiedQuote": "exact",
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "facfe82c2a228f755645a3ce7ca31a79a8ca9c5f81fdf67869836a980e5bc5c2",
+              "textSha256": "b4e2819365855258b6ae15d11d000905d962a7c70214452f4388a3d8cc55e95b",
               "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11704392/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
-              "quoteSha256": "7b659489d0a8d912de27fde5bc085be89a65622e851bfe99cabbd12329fa0d80",
-              "normalizedCharStart": 833,
-              "normalizedCharEnd": 975,
+              "quoteSha256": "a1ec8caafae36b48ee8b1c4a7fb15c1118954ca471556f8554c5ebd3147e9efb",
+              "normalizedCharStart": 15088,
+              "normalizedCharEnd": 15288,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           }
@@ -7059,7 +7165,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "facfe82c2a228f755645a3ce7ca31a79a8ca9c5f81fdf67869836a980e5bc5c2",
+            "textSha256": "b4e2819365855258b6ae15d11d000905d962a7c70214452f4388a3d8cc55e95b",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11704392/",
             "reason": "verbatim-single-sentence",
@@ -8995,7 +9101,7 @@
       "version": 118,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T00:35:24.869186+00:00",
+      "ts": "2026-07-13T01:28:12.232406+00:00",
       "sources": 67
     }
   ],

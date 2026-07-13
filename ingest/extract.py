@@ -6,11 +6,13 @@ required only if you actually feed those formats. See requirements.txt.
 """
 import io
 import http.client
+import html as html_lib
 import ipaddress
 import json
 import os
 import re
 import socket
+import ssl
 import time
 import urllib.error
 import urllib.parse
@@ -136,10 +138,25 @@ class _SafeHTTPSHandler(urllib.request.HTTPSHandler):
         return self.do_open(_SafeHTTPSConnection, req, context=self._context)
 
 
+def _verified_ssl_context():
+    """Use Python's trust store plus the OS bundle when the framework build misses it.
+
+    The python.org macOS build can point OpenSSL at its private, stale bundle while command-line
+    tools correctly use ``/etc/ssl/cert.pem``.  Loading the OS bundle *in addition* preserves
+    certificate verification; this is not an insecure retry and never disables hostname checks.
+    """
+    context = ssl.create_default_context()
+    system_bundle = "/etc/ssl/cert.pem"
+    if os.path.isfile(system_bundle) and not os.environ.get("SSL_CERT_FILE"):
+        context.load_verify_locations(cafile=system_bundle)
+    return context
+
+
 # Ignore ambient HTTP(S)_PROXY settings: a proxy would perform its own DNS lookup and undo the
 # address pinning above. Every request and redirect goes through the safe connection handlers.
 _SAFE_OPENER = urllib.request.build_opener(
-    urllib.request.ProxyHandler({}), _SafeHTTPHandler(), _SafeHTTPSHandler(),
+    urllib.request.ProxyHandler({}), _SafeHTTPHandler(), _SafeHTTPSHandler(
+        context=_verified_ssl_context()),
     _SafeRedirectHandler())
 
 
@@ -166,7 +183,7 @@ def _reader_proxy(target):
                            timeout=45)
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError):
         return None
-    return raw.decode("utf-8", "ignore")
+    return html_lib.unescape(raw.decode("utf-8", "ignore"))
 
 
 def _title_from_text(txt):
@@ -570,8 +587,13 @@ def _fallback(target):
 
 def _strip_html(html):
     html = re.sub(r"(?is)<(script|style|nav|header|footer|aside)[^>]*>.*?</\1>", " ", html)
-    text = re.sub(r"(?s)<[^>]+>", " ", html)
-    text = re.sub(r"&[a-z]+;", " ", text)
+    # A tag starts with a letter, slash, or declaration marker.  The old ``<[^>]+>`` pattern
+    # mistook effect-size prose such as ``<1 egg/week ... >7 eggs/week`` for markup, deleted the
+    # intervening sentence, and could join it to the conclusion.
+    text = re.sub(r"(?s)</?[A-Za-z][^>]*>|<![^>]*>|<\?[^>]*\?>", " ", html)
+    # Decode both named and numeric entities.  Dropping ``&amp;`` and retaining ``&#x02014;``
+    # produced excerpts that were technically exact to the scraper but visibly not quotations.
+    text = html_lib.unescape(text)
     text = re.sub(r"[ \t]+", " ", text)
     return re.sub(r"\n\s*\n\s*\n+", "\n\n", text).strip()
 
@@ -586,6 +608,13 @@ def clean_url(u):
     and trim stray punctuation. Models routinely return links this way inside JSON fields,
     which would otherwise look like a local path and fail to fetch."""
     u = (u or "").strip()
+    # A genuinely bare URL may contain balanced parentheses in a DOI/PII path.  Running it through
+    # the markdown-oriented regex below used to truncate, for example,
+    # ``.../S0002-9165(23)13738-5/fulltext`` at ``(23`` and fetch an unrelated journal page.
+    if re.match(r"^https?://\S+$", u, re.I):
+        while u and u[-1] in ".,;":
+            u = u[:-1]
+        return u
     m = re.search(r"\((https?://[^)\s]+)\)", u)   # markdown [text](https://…)
     if m:
         return m.group(1)

@@ -221,13 +221,12 @@ def write_markdown_report(cases, output):
             counts[key] = 0
         for item in kb.get("sources", []):
             provenance = (item.get("provenance") or {}).get("position") or {}
-            if not provenance.get("quote"):
-                continue
-            status = "exact" if is_verified_exact(provenance) else provenance.get("verifiedQuote") or "unchecked"
-            counts[status] = counts.get(status, 0) + 1
-            aggregate[status] = aggregate.get(status, 0) + 1
-            if status != "exact":
-                non_exact.append((path.name, status, item.get("title"), item.get("url")))
+            if provenance.get("quote"):
+                status = "exact" if is_verified_exact(provenance) else provenance.get("verifiedQuote") or "unchecked"
+                counts[status] = counts.get(status, 0) + 1
+                aggregate[status] = aggregate.get(status, 0) + 1
+                if status != "exact":
+                    non_exact.append((path.name, status, item.get("title"), item.get("url")))
             all_provenance = [p for p in (item.get("provenance") or {}).values()
                               if isinstance(p, dict) and p.get("quote")]
             all_provenance += [edge["provenance"] for edge in item.get("restsOn") or []
@@ -255,7 +254,7 @@ def write_markdown_report(cases, output):
     for case, status, title, url in non_exact:
         lines.append("- `{}` · **{}** · [{}]({})".format(case, status, title or "Untitled", url or "#"))
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    output.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
 def main():
