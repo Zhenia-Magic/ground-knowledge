@@ -429,8 +429,9 @@ def manage_html(qid, get_question):
         <p class="desc">These are the case's <b>proposed</b> evidence bases — each worth <b>zero</b> to
         the headline independent-base count until it is grounded. <b>Confirm</b> a base you have checked
         to admit it (it then enters the count), or <b>merge</b> a proposed base that is the same data
-        under a different name <b>into an existing confirmed base</b>. Merging two confirmed bases (or
-        un-confirming / renaming) is done in the CLI. Each action is logged with your admin identity.</p>
+        under a different name <b>into an existing grounded base</b> (one you confirmed, or one a
+        fetched source's exact quote already verifies). Merging two grounded bases (or un-confirming /
+        renaming) is done in the CLI. Each action is logged with your admin identity.</p>
         <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
         <div id="dsdup"></div>
         <div id="dss"></div></div>
@@ -464,6 +465,8 @@ def manage_html(qid, get_question):
       document.getElementById('gate').innerHTML='';
       document.getElementById('panel').style.display='';
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
+      try{const s=await fetch('/api/admin/dataset-status',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
+        window.__dsStatus=((await s.json()).status)||{};}catch(e){window.__dsStatus={};}
       renderReview(kb);
       const srcs=kb.sources||[];
       document.getElementById('srcs').innerHTML = srcs.length? srcs.map(s=>`
@@ -473,23 +476,27 @@ def manage_html(qid, get_question):
         : '<div class="empty">No sources yet.</div>';
       renderDatasets(kb);
     }
-    const dsConfirmed=d=>d.confirmed===true||(d.confirmation&&d.confirmation.status==='confirmed');
+    // admission status mirrors the report: a base is GROUNDED (counts) if a curator confirmed it OR a
+    // fetched source's exact quote verifies it; only truly proposed bases are worth zero and triageable.
+    const dsStatusOf=d=>(window.__dsStatus&&window.__dsStatus[d.id])
+        || ((d.confirmed===true||(d.confirmation&&d.confirmation.status==='confirmed'))?'curator':'proposed');
+    const dsGrounded=d=>dsStatusOf(d)!=='proposed';
     function renderDatasets(kb){
       window.__kb=kb;
       const ds=kb.datasets||[], wrap=document.getElementById('dss'), dup=document.getElementById('dsdup');
-      const conf=ds.filter(dsConfirmed).length, proposed=ds.filter(d=>!dsConfirmed(d));
+      const grounded=ds.filter(dsGrounded).length, proposed=ds.filter(d=>!dsGrounded(d));
       document.getElementById('dscount').innerHTML = ds.length
-        ? `<span class="why" style="font-weight:400">— ${proposed.length} proposed · ${conf} confirmed</span>` : '';
+        ? `<span class="why" style="font-weight:400">— ${proposed.length} proposed · ${grounded} grounded</span>` : '';
       if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';dup.innerHTML='';return;}
       if(!proposed.length){
-        wrap.innerHTML=`<div class="empty">All ${ds.length} evidence bases are confirmed — nothing to triage here. Un-confirm, rename, or merge confirmed bases from the CLI.</div>`;
+        wrap.innerHTML=`<div class="empty">All ${ds.length} evidence bases are grounded — nothing to triage here. Un-confirm, rename, or merge grounded bases from the CLI.</div>`;
         dup.innerHTML=''; return;
       }
-      const cliNote=conf?`<div class="why" style="padding:2px 6px 12px">${conf} confirmed base${conf===1?'':'s'} not shown — manage those in the CLI.</div>`:'';
+      const cliNote=grounded?`<div class="why" style="padding:2px 6px 12px">${grounded} grounded base${grounded===1?'':'s'} not shown (already counted) — manage those in the CLI.</div>`:'';
       wrap.innerHTML=cliNote+proposed.map(d=>{
         return `<div class="cand dsrow"><div style="flex:1;min-width:180px"><b>${E(d.label||d.id)}</b>
           <span class="why">${E(d.kind||'dataset')}</span> <span class="rev-badge queued">proposed · 0 weight</span></div>
-          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this proposed base into an existing confirmed base (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
+          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this proposed base into an existing grounded base (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
           <button class="btn sm" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button></div>`;
       }).join('');
       renderDupes(kb);
@@ -500,8 +507,8 @@ def manage_html(qid, get_question):
       let pairs=[];
       try{const r=await fetch('/api/admin/suggest-duplicates',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
         pairs=((await r.json()).dataset)||[];}catch(e){box.innerHTML='';return;}
-      const ds=kb.datasets||[], isc=id=>{const d=ds.find(x=>x.id===id);return d&&dsConfirmed(d);};
-      pairs=pairs.filter(p=>isc(p.a.ref)!==isc(p.b.ref));   // only proposed↔confirmed pairs (fold proposed into the confirmed base)
+      const ds=kb.datasets||[], isc=id=>{const d=ds.find(x=>x.id===id);return d&&dsGrounded(d);};
+      pairs=pairs.filter(p=>isc(p.a.ref)!==isc(p.b.ref));   // only proposed↔grounded pairs (fold proposed into the grounded base)
       if(!pairs.length){box.innerHTML='';return;}
       box.innerHTML=`<div class="toast warn" style="margin-bottom:10px"><b>Possible duplicates.</b>
         These labels look like the same evidence base — merge so one cohort isn't counted as two independent bases.</div>`
@@ -524,13 +531,16 @@ def manage_html(qid, get_question):
     // Searchable "Merge into…" combobox — vanilla, styled to match the portal. Delegated listeners
     // are attached once; each row's .combo carries its dataset id in data-ds.
     function comboMenuHtml(srcId,q){
-      // portal only merges a PROPOSED base INTO an existing CONFIRMED one; confirmed↔confirmed is CLI.
+      // portal only merges a PROPOSED base INTO an existing GROUNDED one; grounded↔grounded is CLI.
       const ds=(window.__kb&&window.__kb.datasets)||[], ql=(q||'').trim().toLowerCase();
-      const confirmed=ds.filter(o=>o.id!==srcId && dsConfirmed(o));
-      if(!confirmed.length)return '<div class="combo-empty">No confirmed base yet — confirm one first, then merge into it.</div>';
-      const hits=confirmed.filter(o=>!ql||String(o.label||o.id).toLowerCase().includes(ql));
-      if(!hits.length)return '<div class="combo-empty">No matching confirmed base</div>';
-      return hits.slice(0,40).map(o=>`<div class="combo-opt" role="option" data-id="${E(o.id)}">${E(o.label||o.id)}${o.kind?` <span class="why">${E(o.kind)}</span>`:''}</div>`).join('');
+      const grounded=ds.filter(o=>o.id!==srcId && dsGrounded(o));
+      if(!grounded.length)return '<div class="combo-empty">No grounded base yet — confirm one first, then merge into it.</div>';
+      const hits=grounded.filter(o=>!ql||String(o.label||o.id).toLowerCase().includes(ql));
+      if(!hits.length)return '<div class="combo-empty">No matching grounded base</div>';
+      return hits.slice(0,40).map(o=>{
+        const via=dsStatusOf(o)==='verified'?'via source quote':'confirmed';
+        return `<div class="combo-opt" role="option" data-id="${E(o.id)}">${E(o.label||o.id)} <span class="why">${via}</span></div>`;
+      }).join('');
     }
     function fillCombo(combo){ if(!combo)return;
       const inp=combo.querySelector('.combo-in'), menu=combo.querySelector('.combo-menu');
@@ -576,7 +586,7 @@ def manage_html(qid, get_question):
     }
     async function confirmAllProposed(btn){
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
-      const todo=(kb.datasets||[]).filter(d=>!dsConfirmed(d));
+      const todo=(kb.datasets||[]).filter(d=>!dsGrounded(d));
       if(!todo.length){alert('Every dataset is already confirmed.');return;}
       if(!confirm('Confirm '+todo.length+' proposed evidence base'+(todo.length===1?'':'s')+' as real, identified datasets? Only do this after checking them.'))return;
       btn.disabled=true; let done=0, dup=0, err=0;

@@ -646,7 +646,7 @@ function headline(c){
     return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
       <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
       <span class="indtrackcol"><span class="indtrack" title="${raw} sources collapse to ${nb.toFixed(1)} distinct evidence bases"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
-      <span class="indval"><b>${nb.toFixed(1)}</b> confirmed base${nb===1?"":"s"} <span class="collapse">of ${raw} src</span>${proposed}</span>
+      <span class="indval"><b>${nb.toFixed(1)}</b> independent base${nb===1?"":"s"} <span class="collapse">of ${raw} src</span>${proposed}</span>
     </div>`;
   }).join("");
   let takeaway="";
@@ -915,7 +915,7 @@ function renderIndependenceView(){
         const how=cb.method==="verified-edge"||cb.method==="verified-edge-legacy-single"
           ? `verified edge${sm?" · "+shortLabel(sm.title,36):cb.source?" · "+cb.source:""}`
           : `curator${who?" · "+who:""}${sm?" · support: "+shortLabel(sm.title,36):""}`;
-        notes.push(`confirmed: ${how}${cb.ts?" · "+String(cb.ts).slice(0,10):""}`);
+        notes.push(`grounded: ${how}${cb.ts?" · "+String(cb.ts).slice(0,10):""}`);
         if(cb.note) notes.push(`reason: ${shortLabel(cb.note,90)}`);
       }
       return `<tr><td>${esc(b.label)}</td><td style="color:var(--muted);white-space:nowrap;">${esc(kindLabel)}</td>
@@ -925,7 +925,7 @@ function renderIndependenceView(){
     const mixTypes=(p.evidenceMix||[]).slice(0,6).map(m=>`${esc(m.evidence)} ×${m.count}`).join(" · ");
     const mix=`<div class="ind-mix"><b>${p.raw}</b> source${p.raw===1?"":"s"} by type${mixTypes?` <span class="mixtypes">— ${mixTypes}</span>`:""}<span class="infoicon" title="The ${p.raw} sources under this position, broken down by evidence type — a quality signal to read ALONGSIDE the independent-bases count. The bases table below counts distinct evidence roots, not sources: sources sharing a dataset (or echoing as reviews) collapse into one base, so this by-source list is longer than the table. nEff is a count of roots, never a quality score.">?</span></div>`;
     const sec=p.collapsedSecondary>1?`<div class="ind-note">${p.collapsedSecondary} secondary sources (reviews / commentary / statements) counted as <b>one</b> voice — echo doesn't add independence.</div>`:"";
-    const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence and contribute <b>zero</b> to the confirmed-bases count.</div>`:"";
+    const circ=(p.circular&&p.circular.length)?`<div class="ind-note warn">⚠ circular corroboration — ${p.circular.length} citation loop${p.circular.length>1?"s":""} that bottom out in no primary evidence and contribute <b>zero</b> to the independent-bases count.</div>`:"";
     let method="";
     const ma=methodByPos[p.id];
     if(ma&&ma.top){
@@ -941,11 +941,11 @@ function renderIndependenceView(){
     return `<div class="indpos">
         <div class="ph"><span style="width:9px;height:9px;border-radius:2px;background:${p.hue};display:inline-block;"></span>
           <span class="plabel">${esc(p.label)}</span>
-          <span class="peff">${p.nEff.toFixed(1)} confirmed independent base${p.nEff.toFixed(1)==="1.0"?"":"s"} from ${p.raw} source${p.raw===1?"":"s"}${p.provisionalCount?` <span class="collapse">+ ${p.provisionalCount} proposed/unverified</span>`:""}
-            <span class="infoicon" title="Effective count of distinct CONFIRMED evidentiary roots. Each confirmed root counts ONCE -- at half weight if only reviews mention it, half again if only animal / in-vitro studies rest on it -- no matter how many sources pile onto it. Proposed roots remain visible below but contribute zero until a fetched dependency quote verifies them or a curator explicitly confirms them.">?</span>
+          <span class="peff">${p.nEff.toFixed(1)} independent base${p.nEff.toFixed(1)==="1.0"?"":"s"} from ${p.raw} source${p.raw===1?"":"s"}${p.provisionalCount?` <span class="collapse">+ ${p.provisionalCount} proposed/unverified</span>`:""}
+            <span class="infoicon" title="Effective count of distinct GROUNDED evidentiary roots. Each grounded root counts ONCE -- at half weight if only reviews mention it, half again if only animal / in-vitro studies rest on it -- no matter how many sources pile onto it. A root is grounded when a fetched dependency quote verifies it OR a curator explicitly confirms it; proposed roots remain visible below but contribute zero until then.">?</span>
           </span></div>
         ${mix}
-        <div class="tbl-wrap"><table><colgroup><col style="width:46%"><col style="width:16%"><col style="width:12%"><col style="width:26%"></colgroup><thead><tr><th class="nosort">Base</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Weight <span class="infoicon" title="How much of this position's sourcing rests on this base: 1 per source, halved (0.5x) if the dataset is only known through a secondary review rather than a primary source citing it directly, and halved again if every source resting on it is an animal or in-vitro study. Unverified proposed roots have weight zero until confirmed. This drives the concentration warning. The independent-bases count above counts each confirmed base ONCE at its strength, however many sources lean on it.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
+        <div class="tbl-wrap"><table><colgroup><col style="width:46%"><col style="width:16%"><col style="width:12%"><col style="width:26%"></colgroup><thead><tr><th class="nosort">Base</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Weight <span class="infoicon" title="How much of this position's sourcing rests on this base: 1 per source, halved (0.5x) if the dataset is only known through a secondary review rather than a primary source citing it directly, and halved again if every source resting on it is an animal or in-vitro study. Unverified proposed roots have weight zero until grounded. This drives the concentration warning. The independent-bases count above counts each grounded base ONCE at its strength, however many sources lean on it.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
         ${sec}${circ}${method}
       </div>`;
   }).join("");

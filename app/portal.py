@@ -110,6 +110,25 @@ def _admin_suggest_duplicates(qid):
     return {"dataset": curate.suggest_duplicates(q["kb"]).get("dataset", [])}
 
 
+def _admin_dataset_status(qid):
+    """Per-dataset admission status for the manage UI, mirroring what the report actually counts so
+    the two views agree: 'curator' (a curator confirmed it), 'verified' (auto-admitted because a
+    fetched source's exact quote names it), or 'proposed' (contributes zero to the headline). A base
+    admitted by quote is grounded even without a curator record, so it must not read as proposed."""
+    from engine import roots as _roots
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    cb = _roots.resolve(q["kb"]).get("confirmed_by", {})
+    out = {}
+    for d in q["kb"].get("datasets", []):
+        rec = cb.get("ds:" + d["id"])
+        out[d["id"]] = ("proposed" if not rec
+                        else "verified" if str(rec.get("method", "")).startswith("verified-edge")
+                        else "curator")
+    return {"status": out}
+
+
 def _admin_review_resolve(qid, item_id, kind, action, position=None):
     """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
     (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
@@ -438,6 +457,8 @@ class Handler(BaseHTTPRequestHandler):
                     body.get("dst") or body.get("into")))
             if p[2] == "suggest-duplicates":
                 return self._send(200, _admin_suggest_duplicates(body.get("id")))
+            if p[2] == "dataset-status":
+                return self._send(200, _admin_dataset_status(body.get("id")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()
