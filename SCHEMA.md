@@ -39,7 +39,11 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                  "population": [ { "label", "aliases": [..] } ],   //   tag vocabularies
                  "funding":    [ { "label", "aliases": [..] } ] }, // closed funder categories
   "factors":   [ { "id", "label", "weights": {posId: high|med|low|n/a},   // cell = MODE of the
+                                //   exact-verified claims only; an unverified proposal cannot vote
                    "rationale", "provenance": [{source, pos, quote, verifiedQuote?}] } ],
+  "contextSources": [ { ...source citation/provenance fields..., "role": "factor-only" } ],
+                                //   optional methodological/context evidence referenced by factors;
+                                //   deliberately excluded from position, distribution, and root counts
   "sources":   [ { "id", "title", "year", "url",
                    "authors": [ "name", ... ],               // citation metadata (Zotero import/export)
                    "venue", "citations", "retracted",        // evidence-quality signals (from the fetch)
@@ -125,6 +129,12 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    both in scope in the same process (the automated `--ai` / API paths). Deltas built from a
    pasted-back chatbot response never have the original doc in scope, so they get `textDepth:
    "unknown"` and no `verifiedQuote` rather than a guessed value.
+
+   Factor claims follow the same trust rule. `engine/merge._recompute_factor_cell` admits a
+   source's high/medium/low vote only when `is_verified_exact` binds its displayed sentence to the
+   fetched-text hash. Unverified wording remains in provenance for review but cannot create a crux
+   cell. A `contextSources` record can support a methodological factor (for example, a funding-bias
+   review) without being misrepresented as a position source or inflating independence metrics.
 
    Dependency provenance is stricter than ordinary field provenance: every dataset edge carries its
    own quote, and root admission requires both a text match and that the quote name the edge's

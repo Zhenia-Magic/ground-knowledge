@@ -408,7 +408,7 @@ function pct(x){return Math.round(x*100)+"%";}
 function cur(){return DATA.cases[state.caseId];}
 function maps(kb){
   const pos={},ds={},src={}; kb.positions.forEach(p=>pos[p.id]=p); kb.datasets.forEach(d=>ds[d.id]=d);
-  kb.sources.forEach(s=>src[s.id]=s);
+  [...kb.sources,...(kb.contextSources||[])].forEach(s=>src[s.id]=s);
   return {pos,ds,src};
 }
 // A checkmark is a cryptographic audit claim, not shorthand for "we fetched some text".  Only
@@ -443,7 +443,7 @@ function excerptHtml(quote,p,cls="q"){
 function factorDetailHtml(kb, f, activePos){
   const {src}=maps(kb);
   const groups=activePos.map(p=>{
-    const rows=(f.provenance||[]).filter(pr=>pr.pos===p.id&&(pr.quote||src[pr.source]));
+    const rows=(f.provenance||[]).filter(pr=>pr.pos===p.id&&verifiedExact(pr));
     if(!rows.length) return "";
     const items=rows.map(pr=>{
       const s=src[pr.source]||{};
@@ -454,7 +454,7 @@ function factorDetailHtml(kb, f, activePos){
     return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(p.shortLabel||shortLabel(p.label))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
   }).join("");
   const rat=f.rationale?`<div style="margin-bottom:8px;">${esc(f.rationale)}</div>`:"";
-  return rat+(groups||'<span style="color:var(--faint)">No per-source quotes recorded for this factor yet — they accrue as sources are ingested.</span>');
+  return rat+(groups||'<span style="color:var(--faint)">No exact source sentence supports a weight for this factor yet; unverified claims are excluded from the matrix.</span>');
 }
 // Human label for one restsOn entry: a dataset's label, or — for a src:<id> derivation edge —
 // the cited source's title (never the raw id).

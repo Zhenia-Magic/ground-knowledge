@@ -7,6 +7,7 @@ import unittest
 
 from engine.merge import merge_delta, _position_dup
 from engine.schema import empty_kb
+from engine.verify import apply_quote_verification
 from ingest.pipeline import is_nonscholarly
 
 
@@ -14,6 +15,14 @@ def _delta(title, position):
     slug = title.replace(" ", "-")
     return {"source": {"title": title, "year": 2020, "url": "https://ex.org/" + slug,
                        "position": position, "evidence": "Observational", "restsOn": []}}
+
+
+def _verified_factor(label, weight):
+    quote = "This complete source sentence directly supports the factor claim."
+    claim = {"factor": label, "weight": weight, "quote": quote, "rationale": "r"}
+    apply_quote_verification(claim, quote, source_title="Different article title",
+                             text_depth="full", source_url="https://ex.org/source")
+    return claim
 
 
 class PositionGuardTests(unittest.TestCase):
@@ -82,7 +91,7 @@ class FactorWeightDerivationTests(unittest.TestCase):
     def _fw(self, title, w):
         return {"source": {"title": title, "year": 2020, "url": "https://x/" + title,
                            "position": "NEW:P", "evidence": "Observational", "restsOn": []},
-                "factorWeights": [{"factor": "A crux", "weight": w, "quote": "q", "rationale": "r"}]}
+                "factorWeights": [_verified_factor("A crux", w)]}
 
     def test_cell_is_mode_not_last_writer(self):
         kb = empty_kb("t", "q")
@@ -103,6 +112,16 @@ class FactorWeightDerivationTests(unittest.TestCase):
         f["provenance"] = [pr for pr in f["provenance"] if pr["source"] == keep]
         recompute_factor_weights(kb)
         self.assertEqual(f["weights"][pos], "high")
+
+    def test_unverified_factor_claim_is_auditable_but_cannot_create_a_cell(self):
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "a", "year": 2020, "url": "https://x/a",
+                     "position": "NEW:P", "evidence": "Observational", "restsOn": []},
+                     "factorWeights": [{"factor": "A crux", "weight": "high",
+                                        "quote": "model-authored wording"}]})
+        factor = kb["factors"][0]
+        self.assertEqual(factor["weights"], {})
+        self.assertEqual(factor["provenance"][0]["quote"], "model-authored wording")
 
 
 class TwoPassRefTests(unittest.TestCase):
@@ -187,7 +206,7 @@ class SourceRemovalTests(unittest.TestCase):
                  "url": "https://x/irrelevant", "position": "NEW:Yes",
                  "evidence": "Observational", "funding": "Undisclosed", "population": "—",
                  "restsOn": ["NEW:Only dataset"]},
-                 "factorWeights": [{"factor": "Crux", "weight": "low", "quote": "q"}]}
+                 "factorWeights": [_verified_factor("Crux", "low")]}
         merge_delta(kb, first)
         sid = kb["sources"][0]["id"]
         merge_delta(kb, {"source": {"title": "Commentary", "year": 2021,

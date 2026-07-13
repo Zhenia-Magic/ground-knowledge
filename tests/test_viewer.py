@@ -3,7 +3,8 @@ import os
 import unittest
 
 from app.web import viewer_html
-from engine.assess import cruxes
+from engine.assess import cruxes, distribution
+from engine.verify import is_verified_exact
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
 
@@ -56,6 +57,24 @@ class QuoteBadgeCopyTests(unittest.TestCase):
         self.assertIn("a.textSha256&&a.quoteSha256", template)
         self.assertNotIn('textDepth==="full"?\'<span class="okicon"', template)
         self.assertIn("Stored summary — not verified verbatim", template)
+
+
+class FactorEvidenceContractTests(unittest.TestCase):
+    def test_every_shipped_factor_cell_has_an_exact_source_sentence(self):
+        for case in ("177f5ec738c9.kb.json", "51fb332b4e96.kb.json", "blackholes.kb.json",
+                     "covid.kb.json", "eggs.kb.json"):
+            kb = _kb(case)
+            for factor in kb.get("factors", []):
+                for pos_id in factor.get("weights", {}):
+                    claims = [p for p in factor.get("provenance", [])
+                              if p.get("pos") == pos_id and is_verified_exact(p)]
+                    self.assertTrue(claims, "{}: {} / {}".format(case, factor["label"], pos_id))
+
+    def test_factor_only_context_source_does_not_inflate_egg_position_counts(self):
+        kb = _kb("eggs.kb.json")
+        self.assertEqual(len(kb.get("contextSources", [])), 1)
+        self.assertEqual(sum(item["count"] for item in distribution(kb)), len(kb["sources"]))
+        self.assertNotIn(kb["contextSources"][0]["id"], {s["id"] for s in kb["sources"]})
 
 
 class CoverageSummaryTests(unittest.TestCase):

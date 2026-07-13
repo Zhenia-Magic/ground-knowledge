@@ -207,10 +207,24 @@
           }
         },
         {
-          "source": "src_violent_video_game_effects_remain_a_societal_2017",
+          "source": "src_finding_common_ground_in_meta_analysis_wars__2019",
           "pos": "pos_increases_aggression",
-          "quote": "",
-          "weight": "low"
+          "quote": "Ultimately, even in light of potential methodological problems, suboptimal reproducibility, and researcher degrees of freedom, as noted by de Vrieze (2018) , we believe that these conflicting meta-analyses in fact provide considerable consensus in favor of consistent, but small, detrimental effects of violent video games on aggressive behavior.",
+          "weight": "low",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f11decc734d9c806c2dc67d67aa45905cc744584e8c981fad107eed528e4d5ac",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f5730d93177e67e3b32e176e338e0514b30bf4e1ac9b5a85067378899fcf9162",
+            "normalizedCharStart": 14373,
+            "normalizedCharEnd": 14719,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -264,22 +278,22 @@
           }
         },
         {
-          "source": "src_lacko_machackova_smahel_does_violence_in_vid_2024",
+          "source": "src_reexamining_the_findings_of_the_american_psy_2020",
           "pos": "pos_no_clear_effect",
-          "weight": "low",
-          "quote": "At the within-person level, two hypotheses were examined: the selection effect (effects of changes in aggression/empathy on changes in VVG) and the desensitization effect (effects of changes in VVG on alterations in aggression/empathy).",
+          "weight": "med",
+          "quote": "The current analysis revealed negligible relationships between violent games and aggressive or prosocial behavior, small relationships with aggressive affect and cognitions, and stronger relationships with desensitization.",
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
+            "textSha256": "e80ddc9280df3f4a7d779bf71dfa01bd0f9fbf0557bd9f1acf466be2d81bfc51",
             "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
+            "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1745691620927666",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "211e0d85f15e2d2f7807991f73e729ab47fe3da99f4c99bc962bdae36b8edeaa",
-            "normalizedCharStart": 1028,
-            "normalizedCharEnd": 1264,
+            "quoteSha256": "8c36ef407aea8d001ae12e8676cf1b8b3b5f8da5e65e9589535850063eee1b99",
+            "normalizedCharStart": 1040,
+            "normalizedCharEnd": 1262,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }

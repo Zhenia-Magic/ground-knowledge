@@ -135,9 +135,9 @@
       "label": "Reliability of the cosmic-ray safety analogy",
       "weights": {
         "pos_no_risk_lhc_collisions_are_safe": "high",
-        "pos_residual_concern_the_safety_argument_has_wea": "med"
+        "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
-      "rationale": "The entire empirical safety case rests on cosmic-ray-produced black holes not having already destroyed dense stars.",
+      "rationale": "The safety case treats the survival of dense stars as a decisive empirical bound; the residual-concern case disputes whether that bound excludes all plausible micro-black-hole scenarios.",
       "provenance": [
         {
           "source": "src_giddings_mangano_astrophysical_implications__2008",
@@ -160,22 +160,22 @@
           }
         },
         {
-          "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
+          "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
-          "quote": "If the probability estimate given by an argument is dwarfed by the chance that the argument itself is flawed, then the estimate is suspect.",
-          "weight": "med",
+          "quote": "Therefore the astrophysical argument of G & M fails to exclude the existence of mBHs in scenario 3 that are dangerous not because they accrete the whole Earth but because of their intense Hawking radiation.",
+          "weight": "high",
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
-            "textDepth": "abstract",
-            "sourceUrl": "https://arxiv.org/abs/0810.5515",
+            "textSha256": "200333bde37f1507e083f8b90cf7d3608fb1b429575d555e8618bcf89d63dfe8",
+            "textDepth": "partial",
+            "sourceUrl": "https://ar5iv.labs.arxiv.org/html/0808.1415",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "efdd6fcbfd1b1c207251c35cd70d82a1cfa528f59b564942154dae53d32a2c95",
-            "normalizedCharStart": 895,
-            "normalizedCharEnd": 1034,
+            "quoteSha256": "fcfc3c3c8527edb2d7ad7caa68b93c91f76fe850c0d376418781325c52080497",
+            "normalizedCharStart": 20318,
+            "normalizedCharEnd": 20524,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -183,33 +183,13 @@
     },
     {
       "id": "f_whether_hawking_radiation_is_guaranteed_blac",
-      "label": "Whether Hawking radiation is guaranteed (black-hole evaporation)",
+      "label": "Whether Hawking radiation guarantees harmless prompt evaporation",
       "weights": {
         "pos_no_risk_lhc_collisions_are_safe": "high",
         "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
-      "rationale": "Deliberately builds a safety argument that does not depend on Hawking evaporation.",
+      "rationale": "The safety assessment expects microscopic black holes to evaporate before reaching the detector walls; the residual-concern scenario argues that Hawking radiation could instead persist and be dangerous.",
       "provenance": [
-        {
-          "source": "src_giddings_mangano_astrophysical_implications__2008",
-          "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "Even if penetration does not occur during slowdown, there is a different argument that it takes place on rapid time scales.",
-          "weight": "high",
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
-            "textDepth": "full",
-            "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "51ee1185b7371aee342ebac56c5491ed54c2a153ff1f0a34efc0af1beb52c904",
-            "normalizedCharStart": 116760,
-            "normalizedCharEnd": 116883,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        },
         {
           "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
@@ -227,6 +207,26 @@
             "quoteSha256": "77e510ba0dc56af1c9ac0b7e4f9257676df3c34ca503706dbc70f63df11cc5b1",
             "normalizedCharStart": 1083,
             "normalizedCharEnd": 1211,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
+          "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
+          "pos": "pos_residual_concern_the_safety_argument_has_wea",
+          "quote": "If black holes are described by scenario 3 the Hawking radiation from collider-produced black holes might be dangerous.",
+          "weight": "high",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "200333bde37f1507e083f8b90cf7d3608fb1b429575d555e8618bcf89d63dfe8",
+            "textDepth": "partial",
+            "sourceUrl": "https://ar5iv.labs.arxiv.org/html/0808.1415",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "368e4306ff70a12e97cc62771d38c3feafd911661a68d3d14af64f557a7c7812",
+            "normalizedCharStart": 21323,
+            "normalizedCharEnd": 21442,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -266,10 +266,52 @@
       "id": "f_independence_of_the_safety_review_from_the_i",
       "label": "Independence of the safety review from the institution running the experiment",
       "weights": {
+        "pos_no_risk_lhc_collisions_are_safe": "high",
         "pos_residual_concern_the_safety_argument_has_wea": "high"
       },
-      "rationale": "Conflict-of-interest concern about self-assessment.",
-      "provenance": []
+      "rationale": "The no-risk case emphasizes review by external scientists; the residual-concern case argues that credible oversight requires experts with no stake in the experiment.",
+      "provenance": [
+        {
+          "source": "src_cern_the_safety_of_the_lhc_public_statement_2008",
+          "pos": "pos_no_risk_lhc_collisions_are_safe",
+          "quote": "The report was reviewed carefully by the Scientific Policy Committee (SPC), a body composed of 20 independent external scientists that advises the CERN Council on scientific matters.",
+          "weight": "high",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e0bcba1f53a04815f9ca545a42831a9b6e8e845981fccf7a8077a7eaffbb65e2",
+            "textDepth": "partial",
+            "sourceUrl": "https://home.cern/cern-reiterates-safety-of-lhc-on-eve-of-first-beam/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "629bd7fcea2306e89a0bcd63d9e93e38396da517629f8efa7b4bbdf2bcb0cd0c",
+            "normalizedCharStart": 2348,
+            "normalizedCharEnd": 2530,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
+          "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
+          "pos": "pos_residual_concern_the_safety_argument_has_wea",
+          "quote": "Future policy on catastrophe risks would be more rational, and more deserving of public trust, if acceptable risk bounds were generally agreed upon ahead of time and if serious research on whether those bounds could indeed be guaranteed was carried out well in advance of any hypothetically risky experiment, with the relevant debates involving experts with no stake in the experiments under consideration.",
+          "weight": "high",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d186fcfef076943455dafb09ccb55f58b8a239ac699b1ab0b8ad85f480e76d0b",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "6a340ed75c69c7a2076afbe01f2a48dfc2446ad875dcd2ce24b2cc1bdffb10ea",
+            "normalizedCharStart": 1729,
+            "normalizedCharEnd": 2135,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      ]
     }
   ],
   "sources": [
@@ -837,7 +879,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "ba32e15c6af51c389b720ded1b2f9a1505a93674a17b395bafb1f9ccfd62a666",
+            "textSha256": "0a42d59b93ae08faea5a2728254c1dfdd0ccebc94c45543a05fad2c7c2619761",
             "textDepth": "partial",
             "sourceUrl": "https://www.einstein-online.info/en/spotlight/accelerators_bh/",
             "reason": "verbatim-single-sentence",
@@ -1528,7 +1570,7 @@
       "version": 27,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T02:09:38.192126+00:00",
+      "ts": "2026-07-13T20:50:35.127002+00:00",
       "sources": 15
     }
   ],

@@ -24,6 +24,11 @@ from ingest.extract import extract_text  # noqa: E402
 DEFAULT_CASES = sorted((ROOT / "cases").glob("*.kb.json"))
 
 
+def _case_sources(kb):
+    """All quote-bearing records; context sources never enter position/root metrics."""
+    return list(kb.get("sources", [])) + list(kb.get("contextSources", []))
+
+
 def _cache_path(cache_dir, url):
     return pathlib.Path(cache_dir) / (hashlib.sha256(url.encode()).hexdigest() + ".json.gz")
 
@@ -110,32 +115,39 @@ def audit_case(path, fetched, repair_threshold):
     kb = json.loads(path.read_text(encoding="utf-8"))
     factors = _all_factor_provenance(kb)
     rows = []
-    for source in kb.get("sources", []):
+    for source in _case_sources(kb):
         url = source.get("url")
         fetch = fetched.get(url) if url else None
-        if not fetch or not fetch.get("ok"):
-            source["textDepth"] = "unknown"
-            for _, provenance in _source_quote_objects(source, factors):
-                _strip_status(provenance)
-            legacy = (source.get("provenance") or {}).get("restsOn")
-            _strip_status(legacy)
-            rows.append({"id": source.get("id"), "title": source.get("title"), "fetch": "failed",
-                         "error": (fetch or {}).get("error", "missing URL")})
-            continue
-
-        doc = fetch["doc"]
-        source["textDepth"] = doc.get("kind", "unknown")
+        doc = fetch.get("doc") if fetch and fetch.get("ok") else None
+        source["textDepth"] = doc.get("kind", "unknown") if doc else "unknown"
         quote_rows = []
         for field, provenance in _source_quote_objects(source, factors):
-            result = _audit_provenance(provenance, doc, source.get("title"), repair_threshold)
+            # A quotation may have been checked against an accessible full-text mirror while the
+            # canonical source URL remains an abstract/landing page. Re-audit against that recorded
+            # text URL instead of silently downgrading a real full-text quote to "missing".
+            prior = provenance.get("quoteVerification") or {}
+            quote_url = prior.get("sourceUrl") or url
+            quote_fetch = fetched.get(quote_url) if quote_url else None
+            quote_doc = quote_fetch.get("doc") if quote_fetch and quote_fetch.get("ok") else None
+            if quote_doc:
+                result = _audit_provenance(
+                    provenance, quote_doc, source.get("title"), repair_threshold)
+            else:
+                _strip_status(provenance)
+                result = {"status": "fetch-failed", "changed": False,
+                          "error": (quote_fetch or {}).get("error", "missing quote source URL")}
             result["field"] = field
             quote_rows.append(result)
-        legacy = _migrate_legacy_dependency(source, doc, repair_threshold)
+        legacy = _migrate_legacy_dependency(source, doc, repair_threshold) if doc else None
+        if not doc:
+            _strip_status((source.get("provenance") or {}).get("restsOn"))
         if legacy:
             legacy["field"] = "legacy:restsOn"
             quote_rows.append(legacy)
         rows.append({"id": source.get("id"), "title": source.get("title"),
-                     "fetch": doc.get("kind", "unknown"), "quotes": quote_rows})
+                     "fetch": doc.get("kind", "unknown") if doc else "failed",
+                     "error": None if doc else (fetch or {}).get("error", "missing URL"),
+                     "quotes": quote_rows})
 
     # Re-running an audit replaces its prior audit marker; source history remains elsewhere and a
     # verification refresh should not manufacture a chain of content-change versions.
@@ -282,7 +294,14 @@ def main():
     urls = []
     for path in cases:
         kb = json.loads(path.read_text(encoding="utf-8"))
-        urls.extend(s.get("url") for s in kb.get("sources", []) if s.get("url"))
+        factor_map = _all_factor_provenance(kb)
+        for source in _case_sources(kb):
+            if source.get("url"):
+                urls.append(source["url"])
+            for _, provenance in _source_quote_objects(source, factor_map):
+                quote_url = (provenance.get("quoteVerification") or {}).get("sourceUrl")
+                if quote_url:
+                    urls.append(quote_url)
     urls = sorted(set(urls))
     fetched = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:

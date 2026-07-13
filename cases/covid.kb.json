@@ -184,6 +184,46 @@
       "rationale": "Argues the market centering is not merely a surveillance artifact.",
       "provenance": [
         {
+          "source": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
+          "pos": "pos_laboratory_associated_origin",
+          "quote": "The wet market connection, the major point of similarity with the SARS1 and MERS epidemics, was soon broken: Chinese researchers found earlier cases in Wuhan with no link to the wet market.",
+          "weight": "high",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "499a17c17d4227c767d7358c85c85a4c74a0d716c2d29f902de43e4e4f11e991",
+            "textDepth": "partial",
+            "sourceUrl": "https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e97f9f3f985f837a144a3f59d33f2ae73907a9ff55a6bafd23226de51e52c4fd",
+            "normalizedCharStart": 3368,
+            "normalizedCharEnd": 3557,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
+          "source": "src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "pos": "pos_zoonotic_spillover_at_the_huanan_market",
+          "quote": "We show the earliest known COVID-19 cases from December 2019, including those without reported direct links, were geographically centered on this market.",
+          "weight": "low",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "fad50fe971863e7abb07d075f7b8e7091c25ff3989322b143b1afa2aad411a5d",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9348750/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "488d4a2ea0b9519823f3d32056dedac4da748b378771c5dd83a24150a17cf079",
+            "normalizedCharStart": 585,
+            "normalizedCharEnd": 738,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
           "source": "src_bloom_recovery_of_deleted_deep_sequencing_da_2021",
           "pos": "pos_undetermined_unresolved",
           "quote": "Phylogenetic analysis of these sequences in the context of carefully annotated existing data further supports the idea that the Huanan Seafood Market sequences are not fully representative of the viruses in Wuhan early in the epidemic.",
@@ -302,6 +342,26 @@
             "quoteSha256": "bf6b964761303e7447ec7717998bb2855417300ed7d70414efdbb29f6d682f16",
             "normalizedCharStart": 5069,
             "normalizedCharEnd": 5208,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
+          "source": "src_who_sago_independent_assessment_of_the_origi_2025",
+          "pos": "pos_undetermined_unresolved",
+          "quote": "To evaluate hypothesis #4, of a deliberate manipulation of the virus in a laboratory and subsequent biosafety breach, SAGO analysed the genome structure of the virus and publications and reports addressing the likelihood of manipulation through reverse-genetics but did not find scientific evidence supporting this hypothesis over evidence that these mutations and recombination events also occur in coronaviruses in nature .",
+          "weight": "low",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5ba4bc5062d8305e04e44c3f37746894c3520cae047dc649d55687f8b7fd0349",
+            "textDepth": "full",
+            "sourceUrl": "https://cdn.who.int/media/docs/default-source/documents/epp/sago/independent-assessment-of-the-origins-of-sars-cov-2-by-sago.pdf?sfvrsn=b0f90ad4_6&download=true",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d4d6a159fb57982f190131f9339785add19dfb54dc432ecdbd1fc9429c011508",
+            "normalizedCharStart": 18363,
+            "normalizedCharEnd": 18788,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }

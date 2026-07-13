@@ -186,6 +186,26 @@
       "rationale": "Weights hard clinical endpoints from large pooled cohorts.",
       "provenance": [
         {
+          "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "Conclusions People with prediabetes or T2D who consumed a 3-mo high-egg weight-loss diet with a 6-mo follow-up exhibited no adverse changes in cardiometabolic markers compared with those who consumed a low-egg weight-loss diet.",
+          "weight": "low",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "cbe03405dd51c7e4f7cf3e4a93ead807a19b9ddbbf779324d14e70e583387b95",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "normalizedCharStart": 1628,
+            "normalizedCharEnd": 1855,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
           "source": "src_zhong_et_al_associations_of_dietary_choleste_2019",
           "pos": "pos_increases_risk",
           "quote": "This pooled cohort study reports that consumption of an additional 300 mg of dietary cholesterol per day or an additional half egg per day is significantly associated with higher risk of incident cardiovascular disease (CVD) events and all-cause mortality.",
@@ -257,22 +277,42 @@
       "rationale": "Claims the association survives confounding adjustment.",
       "provenance": [
         {
-          "source": "src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+          "source": "src_zhuang_et_al_egg_cholesterol_consumption_and_2021",
+          "pos": "pos_increases_risk",
+          "quote": "Study limitations include its observational nature, reliance on participant self-report, and residual confounding despite extensive adjustment for acknowledged dietary and lifestyle risk factors.",
+          "weight": "low",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "98afbfc905af4d6c4540a8b6390feb09c45324c539fa0a6e3f45f10b0b6e463e",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3e992c548edd3e6fab2520d726e6cdc75f37c54c7e77453dcab49a953310c62c",
+            "normalizedCharStart": 2336,
+            "normalizedCharEnd": 2531,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
+        {
+          "source": "src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
           "pos": "pos_no_association",
-          "quote": "In the pooled multivariable analysis, consumption of at least one egg per day was not associated with incident cardiovascular disease risk after adjustment for updated lifestyle and dietary factors associated with egg intake (hazard ratio for at least one egg per day _v_ less than one egg per month 0.93, 95% confidence interval 0.82 to 1.05).",
+          "quote": "After adjustment for age, smoking, and other potential CHD risk factors, we found no evidence of an overall significant association between egg consumption and risk of CHD or stroke in either men or women.",
           "weight": "high",
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "6796a6a2fe37f9fb7b62ae4376c77f3eea4d19dc427dab10249b7a546c93f12c",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.bmj.com/content/368/bmj.m513",
+            "textSha256": "403e3bdf9bbc1963eee6a80b3d0a8a3c70834e5a9411f4ddc179c22874720f4f",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "03f1127491cbdef739c1e3eaf78d44a5345d2ef6e6bc418fbc842558ebaaa98c",
-            "normalizedCharStart": 3447,
-            "normalizedCharEnd": 3791,
+            "quoteSha256": "aeda52433893d22b48a73e16342df26f625158002cb5cd38d1f8fefb5695bc1d",
+            "normalizedCharStart": 1148,
+            "normalizedCharEnd": 1353,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -287,6 +327,26 @@
       },
       "rationale": "A different population and background diet flips the direction of association.",
       "provenance": [
+        {
+          "source": "src_fuller_et_al_diabegg_high_vs_low_egg_diet_in_2018",
+          "pos": "pos_context_dependent_depends_on_the_person",
+          "quote": "Conclusions People with prediabetes or T2D who consumed a 3-mo high-egg weight-loss diet with a 6-mo follow-up exhibited no adverse changes in cardiometabolic markers compared with those who consumed a low-egg weight-loss diet.",
+          "weight": "med",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "cbe03405dd51c7e4f7cf3e4a93ead807a19b9ddbbf779324d14e70e583387b95",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "normalizedCharStart": 1628,
+            "normalizedCharEnd": 1855,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        },
         {
           "source": "src_qin_et_al_egg_consumption_and_cardiovascular_2018",
           "pos": "pos_no_association",
@@ -359,26 +419,6 @@
           }
         },
         {
-          "source": "src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
-          "pos": "pos_no_association",
-          "quote": "Subgroup analyses suggest a positive association between higher egg intake and risk of coronary heart disease in diabetic patients, and an inverse association between higher egg consumption and incidence of hemorrhagic stroke.",
-          "weight": "high",
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "48d7fb38899b6e680da2fa538f560f25efd4ff1472b5cb6192e6f2d0572ecd3b",
-            "textDepth": "partial",
-            "sourceUrl": "https://www.bmj.com/content/346/bmj.e8539",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "07d348d98b8aa4701f9ea3ad6f90a0cf6ee6f70cfb9723aa19f6838547a93e52",
-            "normalizedCharStart": 36068,
-            "normalizedCharEnd": 36294,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        },
-        {
           "source": "src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
           "pos": "pos_context_dependent_depends_on_the_person",
           "quote": "Egg consumption was associated with an elevated risk of incident type 2 diabetes.",
@@ -401,15 +441,79 @@
       ]
     },
     {
-      "id": "f_discount_for_industry_funding",
-      "label": "Discount for industry funding",
+      "id": "f_industry_funding_as_a_source_quality_concern",
+      "label": "Industry funding as a source-quality concern",
       "weights": {
-        "pos_context_dependent_depends_on_the_person": "low",
-        "pos_no_association": "low",
         "pos_increases_risk": "high"
       },
-      "rationale": "Industry-funded RCT concluding eggs are safe for diabetics.",
-      "provenance": []
+      "rationale": "A systematic review found that industry-funded egg-intervention papers were substantially more likely to describe cholesterol increases favorably, so the caution camp treats funding as a material interpretation risk.",
+      "provenance": [
+        {
+          "source": "src_barnard_et_al_industry_funding_and_cholester_2020",
+          "pos": "pos_increases_risk",
+          "quote": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+          "weight": "high",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d14e4ce2fc97d6c99902632de9b7beb45976b073db7f3da79cbc821e24f9226a",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/33786032/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "819f2a5b00314fd077aa765e3a5c05a9a2f925eceaaca30e426a80ee9f1cb72e",
+            "normalizedCharStart": 1199,
+            "normalizedCharEnd": 1459,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      ]
+    }
+  ],
+  "contextSources": [
+    {
+      "id": "src_barnard_et_al_industry_funding_and_cholester_2020",
+      "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review",
+      "year": 2020,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33786032/",
+      "authors": [
+        "Neal D. Barnard",
+        "M. Blaire Long",
+        "Jennifer M. Ferguson",
+        "Rosendo Flores",
+        "Hana Kahleova"
+      ],
+      "venue": "American Journal of Lifestyle Medicine",
+      "citations": null,
+      "retracted": false,
+      "evidence": "Evidence-synthesis",
+      "funding": "Advocacy",
+      "population": "Egg/cholesterol intervention literature (211 articles)",
+      "confidence": "moderate",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+          "extractionConfidence": 1.0,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d14e4ce2fc97d6c99902632de9b7beb45976b073db7f3da79cbc821e24f9226a",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/33786032/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "819f2a5b00314fd077aa765e3a5c05a9a2f925eceaaca30e426a80ee9f1cb72e",
+            "normalizedCharStart": 1199,
+            "normalizedCharEnd": 1459,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "textDepth": "abstract",
+      "role": "factor-only; excluded from position and independence counts"
     }
   ],
   "sources": [
@@ -2071,12 +2175,5 @@
       "sources": 20
     }
   ],
-  "refused": [
-    {
-      "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review",
-      "url": "https://doi.org/10.1177/1559827619892198",
-      "reason": "Funding-bias review does not itself estimate whether eggs change CVD risk; retained findings belong in methodological discussion, not a position tally.",
-      "sourceId": "src_barnard_et_al_industry_funding_and_cholester_2020"
-    }
-  ]
+  "refused": []
 }

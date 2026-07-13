@@ -5,6 +5,15 @@ import time
 import unittest
 
 from ingest import ensemble, llm
+from engine.verify import apply_quote_verification
+
+
+def _verified_factor(label, weight):
+    quote = "This complete source sentence directly supports the factor claim."
+    claim = {"factor": label, "weight": weight, "quote": quote}
+    apply_quote_verification(claim, quote, source_title="Different article title",
+                             text_depth="full", source_url="https://ex.org/source")
+    return claim
 
 
 def _d(position, evidence="Observational", funding="Academic/institutional",
@@ -377,9 +386,9 @@ class MergeGuardTests(unittest.TestCase):
             "title": "Weighted", "year": 2020, "url": "https://ex.org/w",
             "position": "NEW:Increases", "evidence": "Observational", "restsOn": []},
             "factorWeights": [
-                {"factor": "Publication bias", "weight": "medium"},
-                {"factor": "Methodological quality", "weight": "High"},
-                {"factor": "Cultural context", "weight": "Moderate"}]})
+                _verified_factor("Publication bias", "medium"),
+                _verified_factor("Methodological quality", "High"),
+                _verified_factor("Cultural context", "Moderate")]})
         w = {f["label"]: list(f["weights"].values())[0] for f in self.kb["factors"]}
         self.assertEqual(w["Publication bias"], "med")
         self.assertEqual(w["Methodological quality"], "high")

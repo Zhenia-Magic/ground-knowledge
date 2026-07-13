@@ -17,6 +17,8 @@ import datetime
 import urllib.parse
 from collections import Counter
 
+from engine.verify import is_verified_exact
+
 HUES = ["#2E8B6F", "#B4502E", "#586A7A", "#8a6510", "#2f6296", "#7a4fa3"]
 
 
@@ -501,9 +503,11 @@ def merge_delta(kb, delta):
         # store THIS source's asserted weight ON its provenance claim, then derive the position cell
         # from all claims -- not last-writer-wins. So "high then low" no longer silently stores low,
         # and dropping a source re-derives the cell (recompute_factor_weights).
-        factor.setdefault("provenance", []).append(
-            {"source": sid, "pos": pos_id, "weight": _snap_weight(fw["weight"]),
-             "quote": fw.get("quote", ""), "verifiedQuote": fw.get("verifiedQuote")})
+        claim = {"source": sid, "pos": pos_id, "weight": _snap_weight(fw["weight"]),
+                 "quote": fw.get("quote", ""), "verifiedQuote": fw.get("verifiedQuote")}
+        if isinstance(fw.get("quoteVerification"), dict):
+            claim["quoteVerification"] = dict(fw["quoteVerification"])
+        factor.setdefault("provenance", []).append(claim)
         _recompute_factor_cell(factor, pos_id)
 
     kb["meta"]["version"] = version
@@ -520,11 +524,16 @@ _WEIGHT_ORDER = {"high": 3, "med": 2, "low": 1, "n/a": 0}
 
 
 def _recompute_factor_cell(factor, pos_id):
-    """Derive factor.weights[pos] from the MODE of every provenance claim's asserted weight for that
-    position -- the cell reflects the balance of sources, not whoever wrote last. Order-independent;
-    on a tie the STRONGER weight wins (high > med > low) so a split never silently downgrades."""
+    """Derive a cell only from claims with a deterministically verified source sentence.
+
+    A model or paste-back client may propose an importance weight and wording, but neither is
+    evidence until the wording is found verbatim in fetched text. Keeping the unverified claim in
+    provenance makes it auditable and repairable; excluding its vote prevents an unsupported
+    ``high`` cell from appearing in the crux matrix. Among admitted claims the cell is the mode,
+    not last-writer-wins; ties prefer the stronger weight.
+    """
     votes = [pr.get("weight") for pr in factor.get("provenance", [])
-             if pr.get("pos") == pos_id and pr.get("weight")]
+             if pr.get("pos") == pos_id and pr.get("weight") and is_verified_exact(pr)]
     if not votes:
         factor.setdefault("weights", {}).pop(pos_id, None)
         return
