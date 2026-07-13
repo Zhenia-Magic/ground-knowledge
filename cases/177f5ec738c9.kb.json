@@ -42,11 +42,6 @@
       "aliases": []
     },
     {
-      "id": "ds_german_adolescent_cohort_2010",
-      "label": "German Adolescent Cohort 2010",
-      "aliases": []
-    },
-    {
       "id": "ds_canadian_high_school_longitudinal_video_game",
       "label": "Canadian high school longitudinal video game cohort",
       "aliases": []
@@ -111,11 +106,6 @@
       ]
     },
     {
-      "id": "ds_pubmed_database_analysis_of_1980_2013_public",
-      "label": "PubMed database analysis of 1980-2013 publications",
-      "aliases": []
-    },
-    {
       "id": "ds_anderson_dill_vvg",
       "label": "Anderson & Dill video-game aggression studies (lab + field)",
       "aliases": []
@@ -140,50 +130,94 @@
           "source": "src_reexamining_the_findings_of_the_american_psy_2020",
           "pos": "pos_no_clear_effect",
           "quote": "Effect sizes appeared to be elevated because of non‑best‑practices and researcher‑expectancy effects, particularly for experimental studies.",
+          "weight": "high",
           "verifiedQuote": "fuzzy",
-          "weight": "high"
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "e80ddc9280df3f4a7d779bf71dfa01bd0f9fbf0557bd9f1acf466be2d81bfc51",
+            "textDepth": "abstract",
+            "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1745691620927666",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_violent_video_game_effects_on_aggression_emp_2010",
           "pos": "pos_increases_aggression",
           "quote": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
+          "weight": "low",
           "verifiedQuote": "missing",
-          "weight": "low"
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "410b3fa8e8760446c449303c75392e40fd40467f1206b1686d402b5152f26024",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192553/",
+            "reason": "not-found"
+          }
         },
         {
           "source": "src_much_ado_about_nothing_the_misestimation_and_2010",
           "pos": "pos_no_clear_effect",
           "quote": "Included many studies that do not relate well to serious aggression, an apparently biased sample of unpublished studies, and a \"best practices\" analysis that appears unreliable and does not consider the impact of unstandardized aggression measures on the inflation of effect size estimates.",
-          "verifiedQuote": "exact",
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "49b2fa2d46038e301c96fc58298fa18136ce7aabfd423e42a5c53efb0b3cc5d4",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192554/",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_twenty_five_years_of_research_on_violence_in_2013",
           "pos": "pos_no_clear_effect",
-          "quote": "better empirical research and more conservative and careful statements by scholars",
+          "quote": "Rather, indulgence in such claims risked damage to the credibility of games effects research, credibility which can only be restored through better empirical research and more conservative and careful statements by scholars.",
+          "weight": "high",
           "verifiedQuote": "exact",
-          "weight": "high"
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "044d9bb13dfa5d807f1bc0f6f71424758e5ef7d9880e116376ca08a9715f9bae",
+            "textDepth": "abstract",
+            "sourceUrl": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000147",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2e7d7b5d0a648f2f06cdfa67f7a2c187761f14a7aad2b0385d5771a739e25fef",
+            "normalizedCharStart": 716,
+            "normalizedCharEnd": 940,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_overstated_evidence_for_short_term_effects_o_2017",
           "pos": "pos_no_clear_effect",
-          "quote": "experiments meeting the original authors' criteria for methodological quality do not yield larger adjusted effects than other experiments, but instead yield larger indications of bias",
+          "quote": "Third, experiments meeting the original authors' criteria for methodological quality do not yield larger adjusted effects than other experiments, but instead yield larger indications of bias, indicating that perhaps they were selected for significance.",
+          "weight": "high",
           "verifiedQuote": "exact",
-          "weight": "high"
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "172d20bec007e0fd000702691542dde8fa1f889138f74a2d53eb6243f920253c",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1037/bul0000074",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "13dadbba4e1067001fcb72d23d6be4bdee64c84394c1babd8baddeb7143b64b0",
+            "normalizedCharStart": 1283,
+            "normalizedCharEnd": 1535,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_violent_video_game_effects_remain_a_societal_2017",
           "pos": "pos_increases_aggression",
           "quote": "",
-          "verifiedQuote": null,
           "weight": "low"
-        },
-        {
-          "source": "src_possible_biases_of_researchers_attitudes_tow_2016",
-          "pos": "pos_no_clear_effect",
-          "quote": "Such biases have been suggested in the literature concerning video games, which might cause a disconnect between the studies’ findings and their interpretations in the public and professional literatures.",
-          "verifiedQuote": "fuzzy",
-          "weight": "high"
         }
       ]
     },
@@ -200,29 +234,47 @@
           "source": "src_finding_common_ground_in_meta_analysis_wars__2019",
           "pos": "pos_increases_aggression",
           "quote": "effects ... are almost always quite small.",
+          "weight": "high",
           "verifiedQuote": "fuzzy",
-          "weight": "high"
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "db32ded757ef1d6fe4357800549f5b2cf21136d9b93ab52767ba2023be710c5f",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_apa_task_force_report_on_violent_video_games_2020",
           "pos": "pos_increases_aggression",
           "quote": "The small and reliable relationship ... the effect sizes reported ... were interpreted by the author as “minimal” but not null effects.",
-          "verifiedQuote": "fuzzy",
-          "weight": "high"
-        },
-        {
-          "source": "src_possible_biases_of_researchers_attitudes_tow_2016",
-          "pos": "pos_no_clear_effect",
-          "quote": "The positive linear trend of positive-attitude publications.",
-          "verifiedQuote": "exact",
-          "weight": "med"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "d63d9b81994d212436c5304726e51193d207a96b118389d5ea2b88f51abcf0ff",
+            "textDepth": "full",
+            "sourceUrl": "https://www.apa.org/about/policy/violent-video-games.pdf",
+            "reason": "not-found"
+          }
         },
         {
           "source": "src_lacko_machackova_smahel_does_violence_in_vid_2024",
           "pos": "pos_no_clear_effect",
           "weight": "low",
           "quote": "Within-person effects of changes in violent-game exposure on aggression were statistically insignificant.",
-          "verifiedQuote": "fuzzy"
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
+            "reason": "not-found"
+          }
         }
       ]
     }
@@ -249,12 +301,20 @@
         "position": {
           "quote": "The current meta-analysis by Anderson and his colleagues is the best yet in proving beyond a reasonable doubt that exposure to video game violence increases the risk that the observer will behave more aggressively and violently in the future.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "See the article \" Violent video game effects on aggression, empathy, and prosocial behavior in eastern and western countries: a meta-analytic review.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "4ab02bcde91343c17145d860909133d24e39d22ff8a5f44869c0bbe0340467c1",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2848956/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f1cd78ecba9882ecc5398d6755665a6bcec4dfcbb6e494edb1eb802860447ee4",
+            "normalizedCharStart": 4815,
+            "normalizedCharEnd": 5057,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 1,
@@ -296,18 +356,38 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_ferguson_and_kilburn_2009_meta_analysis"
+        {
+          "ref": "ds_ferguson_and_kilburn_2009_meta_analysis",
+          "provenance": {
+            "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14-.29).",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "131b135b8c040dca6ea74bdc1e4d85b79c169ac7631312cad5e9544c45aa7e59",
+              "textDepth": "full",
+              "sourceUrl": "https://www.apa.org/pi/families/review-video-games.pdf",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "The research demonstrates a consistent relation between violent video game use and increases in aggressive behavior, aggressive cognitions, and aggressive affect and decreases in prosocial behavior, empathy, and sensitivity to aggression.",
           "extractionConfidence": 1.0,
-          "verifiedQuote": "fuzzy"
-        },
-        "restsOn": {
-          "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "131b135b8c040dca6ea74bdc1e4d85b79c169ac7631312cad5e9544c45aa7e59",
+            "textDepth": "full",
+            "sourceUrl": "https://www.apa.org/pi/families/review-video-games.pdf",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 2,
@@ -343,18 +423,42 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_przybylski_and_weinstein_2019_registered_rep"
+        {
+          "ref": "ds_przybylski_and_weinstein_2019_registered_rep",
+          "provenance": {
+            "quote": "A large sample of British adolescent participants (n = 1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "4fa86833e8579c2dbbe2a80400b3301a1b06ef40c2a611360d1f5c90bcbe6943",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1098/rsos.171474",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Results did not support this prediction, nor did they support the idea that the relationship between these factors follows a nonlinear parabolic function.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "1004) aged 14 and 15 years and an equal number of their carers were interviewed.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "4fa86833e8579c2dbbe2a80400b3301a1b06ef40c2a611360d1f5c90bcbe6943",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1098/rsos.171474",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "a1b0d9c89774519f003e1bbb1158af64071af6f2c3997dbfef4538d2c64129e8",
+            "normalizedCharStart": 659,
+            "normalizedCharEnd": 813,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 3,
@@ -397,18 +501,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_przybylski_and_weinstein_2019_registered_rep"
+        {
+          "ref": "ds_przybylski_and_weinstein_2019_registered_rep",
+          "provenance": {
+            "quote": "One recent failure to replicate established violent video game effects (Przybylski and Weinstein 2019) has made its data set publicly available, thereby offering a unique opportunity to examine the hypothesis that methodological and statistical problems underlie some replication failures.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "ea3c48e9c88593c460c47f44eba2702b46b62a8bab286476841a5648faec7bd9",
+              "textDepth": "abstract",
+              "sourceUrl": "https://onlinelibrary.wiley.com/doi/full/10.1002/ab.70042",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7d974b5b5e0bd2d271f4901680505a9e1626a6018073bbddd9a8f925b0bff8d4",
+              "normalizedCharStart": 504,
+              "normalizedCharEnd": 793,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Overall, results demonstrate that conceptual misunderstandings of aggression, poor measures regarding both aggression and video game violence exposure, and inappropriate statistical procedures contributed to the initially reported null results.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "One recent failure to replicate established violent video game effects (Przybylski and Weinstein 2019) has made its data set publicly available, thereby offering a unique opportunity to examine the hypothesis that methodological and statistical problems underlie some replication failures.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ea3c48e9c88593c460c47f44eba2702b46b62a8bab286476841a5648faec7bd9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://onlinelibrary.wiley.com/doi/full/10.1002/ab.70042",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "fd2a1353963356d37c7fe2d659e46d6436bbe3a6a4c6d806abdf62256bd66ea5",
+            "normalizedCharStart": 1356,
+            "normalizedCharEnd": 1600,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 4,
@@ -445,18 +577,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_m_ller_and_krah_german_adolescent_cohort"
+        {
+          "ref": "ds_m_ller_and_krah_german_adolescent_cohort",
+          "provenance": {
+            "quote": "A total of 295 German adolescents completed the measures of violent video game usage, endorsement of aggressive norms, hostile attribution bias, and physical as well as indirect/relational aggression cross-sectionally, and a subsample of N=143 was measured again 30 months later.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "71e9775085e8e573ec93c8889dd11f5c00af8dbb05fc6afb293b965e8b98405e",
+              "textDepth": "abstract",
+              "sourceUrl": "https://onlinelibrary.wiley.com/doi/10.1002/ab.20290",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "6a3938a7384621524057c0dd5789081698681fbb211c2ed1763c541e43cfd73c",
+              "normalizedCharStart": 233,
+              "normalizedCharEnd": 512,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Longitudinal analyses using path analysis showed that violence exposure at T1 predicted physical (but not indirect/relational) aggression 30 months later, whereas aggression at T1 was unrelated to later video game use.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "A total of 295 German adolescents completed the measures of violent video game usage, endorsement of aggressive norms, hostile attribution bias, and physical as well as indirect/relational aggression cross-sectionally, and a subsample of N=143 was measured again 30 months later.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "71e9775085e8e573ec93c8889dd11f5c00af8dbb05fc6afb293b965e8b98405e",
+            "textDepth": "abstract",
+            "sourceUrl": "https://onlinelibrary.wiley.com/doi/10.1002/ab.20290",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "daabcd2fd418f6e50beeed24179aaeeb3155cfc9b43dd0c55356df766e22ed15",
+            "normalizedCharStart": 842,
+            "normalizedCharEnd": 1060,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 5,
@@ -472,57 +632,6 @@
         "positionVote": {
           "pos_increases_aggression": 3
         }
-      }
-    },
-    {
-      "id": "src_longitudinal_effects_of_media_violence_on_ag_2010",
-      "title": "Longitudinal effects of media violence on aggression and empathy among German adolescents",
-      "year": 2010,
-      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0193397310000833",
-      "authors": [
-        "Barbara Krahé",
-        "Ingrid Möller"
-      ],
-      "venue": "Journal of Applied Developmental Psychology",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_increases_aggression",
-      "evidence": "Observational",
-      "funding": "Government/public",
-      "population": "Children and adolescents",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_german_adolescent_cohort_2010"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "Self-reports of habitual violent media usage were related to self-reports of physical and relational aggression and empathy over a period of twelve months.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "The longitudinal design of the study also enabled us to examine the “selection hypothesis”, postulating that the more aggressive individuals selectively develop a preference for violent media.",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
-        }
-      },
-      "addedIn": 6,
-      "textDepth": "partial",
-      "modelAgreement": {
-        "models": 3,
-        "positionAgreement": 1.0,
-        "flagged": false,
-        "disagreedFields": [
-          "funding"
-        ],
-        "positionVote": {
-          "pos_increases_aggression": 3
-        }
-      },
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:51:36.088013+00:00",
-        "method": "catalogue+manual-full-text"
       }
     },
     {
@@ -544,18 +653,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_canadian_high_school_longitudinal_video_game"
+        {
+          "ref": "ds_canadian_high_school_longitudinal_video_game",
+          "provenance": {
+            "quote": "Adolescents (N = 1,492, 50.8% female) were surveyed annually from Grade 9 to Grade 12 about their video game play and aggressive behaviors.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "59e95e937b00ba46abadc78287803915c69f0d87edfab75049d9e3de34c70c31",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/22040315/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "557857321305d25d621e91e22f9d17dffaed126f47602422763acdb61308da86",
+              "normalizedCharStart": 639,
+              "normalizedCharEnd": 778,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Sustained violent video game play was significantly related to steeper increases in adolescents' trajectory of aggressive behavior over time.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Adolescents (N = 1,492, 50.8% female) were surveyed annually from Grade 9 to Grade 12 about their video game play and aggressive behaviors.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "59e95e937b00ba46abadc78287803915c69f0d87edfab75049d9e3de34c70c31",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/22040315/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2d874fccf61d2dbcb4b6a6b737f3fc5e4ea7517a47ab54be29bde34cbe2cd27b",
+            "normalizedCharStart": 942,
+            "normalizedCharEnd": 1083,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 7,
@@ -604,7 +741,20 @@
         "position": {
           "quote": "Overall, longitudinal studies do not appear to support substantive long-term links between aggressive game content and youth aggression.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "113be7904ccfeec0c69a4e7bea3262cb7cfe161eab1e78f3a26e2af1ee2c98c2",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1098/rsos.200373",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3b90db24647d9dc6adafd76d08bee1aade0be0ebb8dba57f656891770e623ab2",
+            "normalizedCharStart": 1463,
+            "normalizedCharEnd": 1599,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 10,
@@ -651,18 +801,46 @@
       "population": "Adults",
       "confidence": "high",
       "restsOn": [
-        "ds_k_hn_et_al_2_month_gta_v_rct"
+        {
+          "ref": "ds_k_hn_et_al_2_month_gta_v_rct",
+          "provenance": {
+            "quote": "Our participants played the violent video game Grand Theft Auto V, the non-violent video game The Sims 3 or no game at all for 2 months on a daily basis.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "7736968bbac8377d079205aa02733a98cfba9f0344f874eff28cb84d6fddcdc5",
+              "textDepth": "partial",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6756088/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7aacc8c9a99681083e483c210d7f3490ea770bbcf8e3bb64433b1e5dd1ef8c97",
+              "normalizedCharStart": 4445,
+              "normalizedCharEnd": 4598,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
-          "quote": "In fact, only three tests of the 208 statistical tests performed showed a significant interaction pattern that would be in line with this hypothesis.",
+          "quote": "Since at least ten significant effects would be expected purely by chance, we conclude that there were no detrimental effects of violent video gameplay.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Our participants played the violent video game Grand Theft Auto V, the non-violent video game The Sims 3 or no game at all for 2 months on a daily basis.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "7736968bbac8377d079205aa02733a98cfba9f0344f874eff28cb84d6fddcdc5",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6756088/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "009b8e0973f0d1c01de2bd95b01bafc7c51ffc67f041443430e257eda7da5c2d",
+            "normalizedCharStart": 49683,
+            "normalizedCharEnd": 49835,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 13,
@@ -696,18 +874,42 @@
       "population": "Adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_greitemeyer_mturk_longitudinal_egocentric_ne"
+        {
+          "ref": "ds_greitemeyer_mturk_longitudinal_egocentric_ne",
+          "provenance": {
+            "quote": "At Time 1, there were 2,502 participants (1,376 females, 1,126 males; mean age = 35.7 years, SD = 11.8).",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "0ed1acd1769dca79c4f0ccada08a34c3b70e218e2f340e2cc7b9810589135719",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6790614/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "daea1afd3bb64c2e7e1de06ca2ab9812c812d333b78bb2c674f2a9ead74e57a3",
+              "normalizedCharStart": 11269,
+              "normalizedCharEnd": 11373,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
-          "quote": "Mediation analyses showed that friends’ aggression at Time 1 accounted for the impact of friends’ amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
+          "quote": "Mediation analyses showed that friends' aggression at Time 1 accounted for the impact of friends' amount of violent video game play at Time 1 on the participant's aggression at Time 2.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "At Time 1, there were 2,502 participants (1,376 females, 1,126 males; mean age = 35.7 years, SD = 11.8).",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "0ed1acd1769dca79c4f0ccada08a34c3b70e218e2f340e2cc7b9810589135719",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6790614/",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 14,
@@ -751,18 +953,42 @@
       "population": "Adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_delhove_and_greitemeyer_2023_aggression_cont"
+        {
+          "ref": "ds_delhove_and_greitemeyer_2023_aggression_cont",
+          "provenance": {
+            "quote": "The present experimental study aims to test whether exposure to violent video games increases aggression levels in players and whether this increased aggression spreads among their social network.",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "3ae12f406b46e139daf1dac6c0b2027fda21f3976d9670ba22393746cc8d0a30",
+              "textDepth": "abstract",
+              "sourceUrl": "https://www.tandfonline.com/doi/full/10.1080/15534510.2023.2277476",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "4ba361ba7d245a5018b1b2d33263ca466aae2511e10a549557835706573e2564",
+              "normalizedCharStart": 208,
+              "normalizedCharEnd": 404,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
-          "quote": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player’s aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player’s aggression are aggressive toward a neutral person.",
+          "quote": "Results showed that aggression after video game play is indeed contagious and that not only victims of the player's aggression retaliate or are aggressive toward a neutral person (i.e., displaced aggression), but that even mere observers of the player's aggression are aggressive toward a neutral person.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "The present experimental study aims to test whether exposure to violent video games increases aggression levels in players and whether this increased aggression spreads among their social network.",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "3ae12f406b46e139daf1dac6c0b2027fda21f3976d9670ba22393746cc8d0a30",
+            "textDepth": "abstract",
+            "sourceUrl": "https://www.tandfonline.com/doi/full/10.1080/15534510.2023.2277476",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 15,
@@ -810,12 +1036,20 @@
         "position": {
           "quote": "The current analysis revealed negligible relationships between violent games and aggressive or prosocial behavior, small relationships with aggressive affect and cognitions, and stronger relationships with desensitization.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In the current article, we attempt a reevaluation of the 2015 technical report meta-analysis.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e80ddc9280df3f4a7d779bf71dfa01bd0f9fbf0557bd9f1acf466be2d81bfc51",
+            "textDepth": "abstract",
+            "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1745691620927666",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8c36ef407aea8d001ae12e8676cf1b8b3b5f8da5e65e9589535850063eee1b99",
+            "normalizedCharStart": 1040,
+            "normalizedCharEnd": 1262,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 16,
@@ -854,12 +1088,20 @@
         "position": {
           "quote": "Whereas violent video games increase aggression and aggression-related variables and decrease prosocial outcomes, prosocial video games have the opposite effects.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Data from 98 independent studies with 36,965 participants revealed that for both violent video games and prosocial video games, there was a significant association with social outcomes.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "c778baaec866468b1801861a0b7b10fe11a17a7bcebd1e3efac4f1b6abf4e393",
+            "textDepth": "abstract",
+            "sourceUrl": "https://journals.sagepub.com/doi/full/10.1177/0146167213520459",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "167c7f09ceb123e51a70f816de30e4a412efe67717436d56102a9c7506f26cc9",
+            "normalizedCharStart": 546,
+            "normalizedCharEnd": 708,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 17,
@@ -887,23 +1129,29 @@
       "venue": "European Psychologist",
       "citations": 26,
       "retracted": false,
-      "position": "pos_no_clear_effect",
+      "position": "pos_increases_aggression",
       "evidence": "Narrative/Commentary",
       "funding": "Undisclosed",
       "population": "—",
       "confidence": "unstated",
       "restsOn": [
-        "ds_elson_and_ferguson_2013"
+        "ds_elson_and_ferguson_2013",
+        "src:src_twenty_five_years_of_research_on_violence_in_2013"
       ],
       "provenance": {
         "position": {
-          "quote": "there is no systematic evidence for a link between violent video game play and aggression.",
+          "quote": "This commentary argues that, rather than providing an \"exhaustive review,\" Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "",
-          "extractionConfidence": 0.0
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "11ebaf9df72bdd6cf4fd41ece607c7cb49490f5199b372f3a809aaaf1f54ca20",
+            "textDepth": "abstract",
+            "sourceUrl": "https://econtent.hogrefe.com/doi/10.1027/1016-9040/a000165",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 18,
@@ -939,18 +1187,47 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_elson_and_ferguson_2013"
+        {
+          "ref": "ds_elson_and_ferguson_2013",
+          "provenance": {
+            "quote": "In this comment on Elson and Ferguson (2013) , areas of agreement are noted in terms of the need to thoroughly and scientifically document the boundary conditions under which violent video games most impact players.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "30d7b5f0dab98e88f50daa50d1d61caeb2a384f52f19c5bc5f5338f65bc32d8b",
+              "textDepth": "abstract",
+              "sourceUrl": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000166",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "357b6416be375cd038a960d937bad74e723699295cbe306e2ea081ef0131193c",
+              "normalizedCharStart": 88,
+              "normalizedCharEnd": 303,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        },
+        "src:src_twenty_five_years_of_research_on_violence_in_2013"
       ],
       "provenance": {
         "position": {
           "quote": "However it is argued, in contrast to Elson and Ferguson, that violent media generally (and violent video games specifically) can and do increase the likelihood of aggressive behavior and desensitization to violence, and are linked to increases in aggressive attitudes and beliefs.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In this comment on Elson and Ferguson (2013) , areas of agreement are noted in terms of the need to thoroughly and scientifically document the boundary conditions under which violent video games most impact players.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "30d7b5f0dab98e88f50daa50d1d61caeb2a384f52f19c5bc5f5338f65bc32d8b",
+            "textDepth": "abstract",
+            "sourceUrl": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000166",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c2fc46a93193f81c5889ba6c2ab00a5792bd87c11696cf8d92370bccae48a4f5",
+            "normalizedCharStart": 304,
+            "normalizedCharEnd": 584,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 19,
@@ -985,18 +1262,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_angrybirdsmeta_ferguson2015"
+        {
+          "ref": "ds_angrybirdsmeta_ferguson2015",
+          "provenance": {
+            "quote": "This article responds to five comments on my \"Angry Birds\" meta-analysis of video game influences on children (Ferguson, 2015, this issue).",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5a37b8942f2225c9ba94d26cb85ccb409f11a2ce0d0e39307c6e50a6256bfc8b",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1177/1745691615593353",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "077b6defc029b0526c80cf832b11855d26711c5a3aa1a0b843541b067cba5317",
+              "normalizedCharStart": 49,
+              "normalizedCharEnd": 188,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Further evidence is also provided to support the contention that publication bias remains problematic in video game literature.",
           "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "This article responds to five comments on my \"Angry Birds\" meta-analysis of video game influences on children (Ferguson, 2015, this issue).",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5a37b8942f2225c9ba94d26cb85ccb409f11a2ce0d0e39307c6e50a6256bfc8b",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1177/1745691615593353",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "a4682de580fa4b9c7739d8ac05ac16caf5b8c449b72b3a84aeb3d6b6ea2345fe",
+            "normalizedCharStart": 989,
+            "normalizedCharEnd": 1116,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 20,
@@ -1039,12 +1344,20 @@
         "position": {
           "quote": "Despite a variety of methodological weaknesses in his meta-analysis, Ferguson (2015, this issue) presents evidence to support the positive association between violent media consumption and a number of poor developmental outcomes.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "This has included significant interest in the role played by media in children's development with a good deal of emphasis on how violent media spark and shape aggressive behavior in children and adolescents.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "8c51450688eb36d6e0d01268772659d9d2ed98b39f651aa6ee513271c04fe3ca",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26386004/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d66b39d421a98e876267f0d9f14038087067740b005c08885d017ca0ea3a14ec",
+            "normalizedCharStart": 537,
+            "normalizedCharEnd": 766,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 21,
@@ -1087,12 +1400,15 @@
         "position": {
           "quote": "Although C. J. Ferguson and J. Kilburn believe that the effects we obtained are trivial in size, they are larger than many effects that are deemed sufficiently large to warrant action in medical and violence domains.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In this article we reply to C. J. Ferguson and J. Kilburn’s (2010) critique of our meta-analysis on violent video game effects (C. A. Anderson et al., 2010).",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "c7a957dffd22aa4da926706b1af8b217cbee74c449a1ecf94f8423d3fd6c05e9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1037/a0018718",
+            "reason": "crosses-structural-boundary"
+          }
         }
       },
       "addedIn": 22,
@@ -1128,18 +1444,46 @@
       "population": "Children and adolescents",
       "confidence": "unstated",
       "restsOn": [
-        "ds_sherry_2001_violent_video_game_meta_analysis"
+        {
+          "ref": "ds_sherry_2001_violent_video_game_meta_analysis",
+          "provenance": {
+            "quote": "This study cumulates findings across existing empirical research on the effects of violent video games to estimate overall effect size and discern important trends and moderating variables.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "a6eb3276982aca49285c6d80b0d07d1d9aec287265a24841e9d6d75b517dca75",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1111/j.1468-2958.2001.tb00787.x",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "1fd1b73ad29c01fef3e7d777bbc701cf69cfabfd98b47f073ee546b3ac8a188b",
+              "normalizedCharStart": 231,
+              "normalizedCharEnd": 420,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Results suggest there is a smaller effect of violent video games on aggression than has been found with television violence on aggression.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "This study cumulates findings across existing empirical research on the effects of violent video games to estimate overall effect size and discern important trends and moderating variables.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a6eb3276982aca49285c6d80b0d07d1d9aec287265a24841e9d6d75b517dca75",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1111/j.1468-2958.2001.tb00787.x",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "802c9ef4ff5777d71a4d0752c5d6746373e1851041dfea7d5b6010dd40435ca1",
+            "normalizedCharStart": 421,
+            "normalizedCharEnd": 559,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 23,
@@ -1181,11 +1525,20 @@
         "position": {
           "quote": "People who played a violent video game described the main character as behaving more aggressively, thinking more aggressive thoughts, and feeling more angry than did people who played a nonviolent video game.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "",
-          "extractionConfidence": 0.0
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "713a0c426148f9ad505ee95c122a4df42bb29a1b9f59b4f6a3a094f836d7ed33",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1177/014616702237649",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "011a9ef46c0427c936421c498b27c193692f27d7f74aee10f18a134061785de5",
+            "normalizedCharStart": 744,
+            "normalizedCharEnd": 952,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 24,
@@ -1229,13 +1582,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "These results question the common belief that violent-video-game exposure causes violent acts.",
+          "quote": "Although males were more aggressive than females, neither randomized exposure to violent-video-game conditions nor previous real-life exposure to violent video games caused any differences in aggression.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "",
-          "extractionConfidence": 0.0
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5df20692a055ce09245fb985a7ebaebe5284516760d507b34c2730f3e82033a7",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1177/0093854807311719",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "882127ebd0d9796d8cb1f69da0b88773521ff419b5f5fab392cfeef85aadbfab",
+            "normalizedCharStart": 279,
+            "normalizedCharEnd": 482,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 25,
@@ -1273,18 +1635,46 @@
       "population": "Children and adolescents",
       "confidence": "unstated",
       "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent"
+        {
+          "ref": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+          "provenance": {
+            "quote": "Analyses also reveal that exposure to violent video games increases physiological arousal and aggression-related thoughts and feelings.",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5575550d7374756547990b525f5c1ea8c2e76270b1baceff9bc46dd3e29836e2",
+              "textDepth": "abstract",
+              "sourceUrl": "https://journals.sagepub.com/doi/10.1111/1467-9280.00366",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "68ef4623f06905c3ce31f8f0455b4552a034283d3242084215ffeec33c8d2cc5",
+              "normalizedCharStart": 600,
+              "normalizedCharEnd": 735,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "A metaanalytic review of the video-game research literature reveals that violent video games increase aggressive behavior in children and young adults.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Analyses also reveal that exposure to violent video games increases physiological arousal and aggression-related thoughts and feelings.",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5575550d7374756547990b525f5c1ea8c2e76270b1baceff9bc46dd3e29836e2",
+            "textDepth": "abstract",
+            "sourceUrl": "https://journals.sagepub.com/doi/10.1111/1467-9280.00366",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "abe3d3bd83190e2fda30cfe449260ea2428043b648ad2e213798d04e04f07d7c",
+            "normalizedCharStart": 326,
+            "normalizedCharEnd": 477,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 26,
@@ -1320,18 +1710,46 @@
       "population": "Adults",
       "confidence": "high",
       "restsOn": [
-        "ds_anderson_dill_vvg"
+        {
+          "ref": "ds_anderson_dill_vvg",
+          "provenance": {
+            "quote": "In Study 2, laboratory exposure to a graphically violent video game increased aggressive thoughts and behavior.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "2ed3aef04708fa0feb6463be36f5f4a6f2f19cbbccb87fc014773ff4bd351fd8",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/10794380/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "c4fe11873371c31785f43068beace869dbc3a59fe7fdd91898f0319d7cbdf0ed",
+              "normalizedCharStart": 478,
+              "normalizedCharEnd": 589,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Study 1 found that real-life violent video game play was positively related to aggressive behavior and delinquency.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In Study 2, laboratory exposure to a graphically violent video game increased aggressive thoughts and behavior.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "2ed3aef04708fa0feb6463be36f5f4a6f2f19cbbccb87fc014773ff4bd351fd8",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/10794380/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2f07eb86f40d3948fd2818f133e3e6f305efe957748921fc99967eccce683911",
+            "normalizedCharStart": 172,
+            "normalizedCharEnd": 287,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 27,
@@ -1374,18 +1792,46 @@
       "population": "Children and adolescents",
       "confidence": "high",
       "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent"
+        {
+          "ref": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+          "provenance": {
+            "quote": "Meta-analytic procedures were used to test the effects of violent video games on aggressive behavior, aggressive cognition, aggressive affect, physiological arousal, empathy/desensitization, and prosocial behavior.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "410b3fa8e8760446c449303c75392e40fd40467f1206b1686d402b5152f26024",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192553/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "e52d47c9a77e170a576aa179fcc1f85bb17df6bdd5ddad6c23cfc4a675e4ca47",
+              "normalizedCharStart": 132,
+              "normalizedCharEnd": 346,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "The evidence strongly suggests that exposure to violent video games is a causal risk factor for increased aggressive behavior, aggressive cognition, and aggressive affect and for decreased empathy and prosocial behavior.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Meta-analytic procedures were used to test the effects of violent video games on aggressive behavior, aggressive cognition, aggressive affect, physiological arousal, empathy/desensitization, and prosocial behavior.",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "410b3fa8e8760446c449303c75392e40fd40467f1206b1686d402b5152f26024",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192553/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "cbaabc3410463b19334546c740b79f1ab4caee8a28e897e0309af83cfd5765d7",
+            "normalizedCharStart": 1048,
+            "normalizedCharEnd": 1268,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 28,
@@ -1424,12 +1870,20 @@
         "position": {
           "quote": "Despite a number of methodological flaws that all appear likely to inflate effect size estimates, the final estimate of r = .15 is still indicative of only weak effects.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In a new meta-analysis, C. A. Anderson et al. (2010) questioned these findings.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "49b2fa2d46038e301c96fc58298fa18136ce7aabfd423e42a5c53efb0b3cc5d4",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20192554/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3bd5b40d3403f904d4ef814569d65a712962c4fe2d14f86c4081f9949c0fc471",
+            "normalizedCharStart": 1141,
+            "normalizedCharEnd": 1310,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 29,
@@ -1440,54 +1894,6 @@
         "flagged": false,
         "disagreedFields": [
           "confidence",
-          "population"
-        ],
-        "positionVote": {
-          "pos_no_clear_effect": 3
-        }
-      }
-    },
-    {
-      "id": "src_the_public_health_risks_of_media_violence_a__2009",
-      "title": "The public health risks of media violence: a meta-analytic review.",
-      "year": 2009,
-      "url": "https://doi.org/10.1016/j.jpeds.2008.11.033",
-      "authors": [
-        "Ferguson, C. J.",
-        "Kilburn, J."
-      ],
-      "venue": "The Journal of pediatrics",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_clear_effect",
-      "evidence": "Meta-analysis",
-      "funding": "Academic/institutional",
-      "population": "Children and adolescents",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_ferguson_and_kilburn_2009_meta_analysis"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "Results from the current analysis do not support the conclusion that media violence leads to aggressive behavior.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Once corrected for publication bias, studies of media violence effects provided little support for the hypothesis that media violence is associated with higher aggression.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        }
-      },
-      "addedIn": 30,
-      "textDepth": "abstract",
-      "modelAgreement": {
-        "models": 3,
-        "positionAgreement": 1.0,
-        "flagged": false,
-        "disagreedFields": [
-          "confidence",
-          "funding",
           "population"
         ],
         "positionVote": {
@@ -1512,18 +1918,46 @@
       "population": "Children and adolescents",
       "confidence": "high",
       "restsOn": [
-        "ds_angrybirdsmeta_ferguson2015"
+        {
+          "ref": "ds_angrybirdsmeta_ferguson2015",
+          "provenance": {
+            "quote": "In the current analysis, I sought to address this gap by focusing on studies of video game influences on child and adolescent samples.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "780acc11976d746bec1b3795319113320071dc916dfb8986685172bfac0facde",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1177/1745691615592234",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "f926350a28f6dcec7e012dbf7fee74dc5043f756196ddd83025323a4e773e578",
+              "normalizedCharStart": 612,
+              "normalizedCharEnd": 746,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "Overall, results from 101 studies suggest that video game influences on increased aggression (r = .06), reduced prosocial behavior (r = .04), reduced academic performance (r = -.01), depressive symptoms (r = .04), and attention deficit symptoms (r = .03) are minimal.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "In the current analysis, I sought to address this gap by focusing on studies of video game influences on child and adolescent samples.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "780acc11976d746bec1b3795319113320071dc916dfb8986685172bfac0facde",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1177/1745691615592234",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "06882274e6befd15c45bb71815cbbf23456ae8f9136e595e6e576036c938ebea",
+            "normalizedCharStart": 911,
+            "normalizedCharEnd": 1178,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 31,
@@ -1560,18 +1994,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_angrybirdsmeta_ferguson2015"
+        {
+          "ref": "ds_angrybirdsmeta_ferguson2015",
+          "provenance": {
+            "quote": "In response to the concerns raised by researchers about the appropriateness of the meta-analytical methods used by Ferguson; we decided to reanalyze the data and discuss two major misconceptions about meta-analysis.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "28859a5585d8d6acc83dbb21aa3c86aa86b04222467968c08bff4a978cb783e3",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27217253/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "55dcb50d6b0e132fb9b273e09de1aa63fdc82f04a4cdcf9ea8cb2b75df990a0c",
+              "normalizedCharStart": 184,
+              "normalizedCharEnd": 399,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "There was a significant yet very small effect on aggressive behavior of exposure to both general, rp = 0.062, 95% CI [0.012, 0.112], and violent, rp = 0.055, 95% CI [0.019, 0.091], video games.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "we decided to reanalyze the data and discuss two major misconceptions about meta-analysis.",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "28859a5585d8d6acc83dbb21aa3c86aa86b04222467968c08bff4a978cb783e3",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27217253/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d01ff87844ab0dc1a7f124d54a8616b282a9648b3edc4dc7aa4ffd34051dbab8",
+            "normalizedCharStart": 1063,
+            "normalizedCharEnd": 1256,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 32,
@@ -1612,12 +2074,20 @@
         "position": {
           "quote": "Ferguson's comprehensive meta-analysis provides convincing data that violent video games have almost no effect on children's aggression.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Ferguson's comprehensive meta-analysis provides convincing data that violent video games have almost no effect on children's aggression.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "855e1ee5411fc8aae27880addf6b82d61eb84ba62b61ed4f5149599634b087c9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26386003/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c3dd98e930c90bff63c7e1fbd50bb3407697df9ae7f473c2df72e83b2ea0b263",
+            "normalizedCharStart": 57,
+            "normalizedCharEnd": 193,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 33,
@@ -1652,19 +2122,25 @@
       "funding": "Undisclosed",
       "population": "—",
       "confidence": "moderate",
-      "restsOn": [
-        "src:src_restoring_the_spirit_of_fair_play_in_the_deb_2013"
-      ],
+      "restsOn": [],
       "provenance": {
         "position": {
           "quote": "Empirical evidence regarding the impact of violent digital games on player aggression is, at best, mixed and cannot support unambiguous claims that such games are harmful or represent a public health crisis.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "We review 25 years of experimental, cross-sectional, longitudinal, and meta-analytical research in this field.",
-          "extractionConfidence": 0.4,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "044d9bb13dfa5d807f1bc0f6f71424758e5ef7d9880e116376ca08a9715f9bae",
+            "textDepth": "abstract",
+            "sourceUrl": "https://econtent.hogrefe.com/doi/abs/10.1027/1016-9040/a000147",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d769723543c3a12be8158e3c1ce1d272b62142e4f0dd7ba7711df2d4fb557dd9",
+            "normalizedCharStart": 508,
+            "normalizedCharEnd": 715,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 34,
@@ -1700,18 +2176,46 @@
       "population": "Adults",
       "confidence": "high",
       "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent"
+        {
+          "ref": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+          "provenance": {
+            "quote": "In the present manuscript, we reexamine their meta-analysis using a wider array of techniques for detecting bias and adjusting effect sizes.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "172d20bec007e0fd000702691542dde8fa1f889138f74a2d53eb6243f920253c",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1037/bul0000074",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "06ec3633d61df7ababd33aafba8168533d32c53cc36e7a56897fe04cb2d5fe3a",
+              "normalizedCharStart": 609,
+              "normalizedCharEnd": 749,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
-          "quote": "after adjustment for bias, the effects of violent games on aggressive behavior in experimental research are estimated as being very small, and estimates of effects on aggressive affect are much reduced.",
+          "quote": "Second, after adjustment for bias, the effects of violent games on aggressive behavior in experimental research are estimated as being very small, and estimates of effects on aggressive affect are much reduced.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "we reexamine their meta-analysis using a wider array of techniques for detecting bias and adjusting effect sizes.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "172d20bec007e0fd000702691542dde8fa1f889138f74a2d53eb6243f920253c",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1037/bul0000074",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "a912973305ddad0a0cc4ed44440d81a94dfa8a2929bbdfe17be5832d67902250",
+            "normalizedCharStart": 979,
+            "normalizedCharEnd": 1189,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 35,
@@ -1757,18 +2261,46 @@
       "population": "Adults",
       "confidence": "high",
       "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent"
+        {
+          "ref": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+          "provenance": {
+            "quote": "Because publication bias is a potential a problem in any scientific domain, we used a comprehensive sensitivity analysis battery to examine the influence of publication bias and outliers on the experimental effects reported by Anderson et al.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "9cbd083fca317633d3d51b77ab8f3ecfbb475b8fab7f885619f5b07f7dad951c",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/28639811/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "2a94135f122eedbedbeb8f26873a6bc2f6ad11147b7ba38234051427edc50b83",
+              "normalizedCharStart": 942,
+              "normalizedCharEnd": 1184,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
           "quote": "We therefore conclude that violent video game effects should remain a societal concern.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "we used a comprehensive sensitivity analysis battery to examine the influence of publication bias and outliers on the experimental effects reported by Anderson et al.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "9cbd083fca317633d3d51b77ab8f3ecfbb475b8fab7f885619f5b07f7dad951c",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/28639811/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "763c1d4820e9b700e06a9985b32679f8fbd9e55b5d08d87236230ed246ecf081",
+            "normalizedCharStart": 1809,
+            "normalizedCharEnd": 1896,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 36,
@@ -1791,7 +2323,7 @@
       "id": "src_metaanalysis_of_the_relationship_between_vio_2018",
       "title": "Metaanalysis of the relationship between violent video game play and physical aggression over time",
       "year": 2018,
-      "url": "https://www.pnas.org/doi/10.1073/pnas.1611617114",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6176643/",
       "authors": [
         "Prescott, A. T.",
         "Sargent, J. D.",
@@ -1808,18 +2340,26 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "On the basis of this metaanalysis, we conclude that playing violent video games is associated with greater levels of overt physical aggression over time, after accounting for prior aggression.",
+          "quote": "Conclusion On the basis of this metaanalysis, we conclude that playing violent video games is associated with greater levels of overt physical aggression over time, after accounting for prior aggression.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "missing"
-        },
-        "restsOn": {
-          "quote": "The search strategy identified 24 studies with over 17,000 participants and time lags ranging from 3 months to 4 years.",
-          "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "83ea3aab663e07d0b5f8fe0f1d6696c019219d105d3dfcdc81b8d4154e539802",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6176643/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "b33028deb0314a59bf63ac8202c71079ff8b16e107c19d53a0784c05cafae9e7",
+            "normalizedCharStart": 35085,
+            "normalizedCharEnd": 35288,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 37,
-      "textDepth": "abstract",
+      "textDepth": "partial",
       "modelAgreement": {
         "models": 3,
         "positionAgreement": 1.0,
@@ -1855,12 +2395,20 @@
         "position": {
           "quote": "Consequently, we confirm the results of other meta-analyses, with the added finding of a peak of effect sizes in early adolescence.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "A random-effects meta-analysis with 30 effect sizes from 21 studies (N = 15,836) yielded a significant and relevant positive effect of VVG on subsequent physically aggressive behavior (r = .21).",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "fb14b811c0e3af24c05a1b073e1e439da5b144da0d06adbdcf76871ebf84b455",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1080/15213269.2021.1980729",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2e9d48b05896be9688dcfec9b9ac2cd106528e2655117f9b8bc8b5f0b61d7052",
+            "normalizedCharStart": 1059,
+            "normalizedCharEnd": 1190,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 38,
@@ -1906,12 +2454,20 @@
         "position": {
           "quote": "Despite seemingly conflicting results for the statistical significance of the pooled estimates in different meta-analyses of video-game studies, all of the meta-analyses do in fact point to the conclusion that, in the vast majority of settings, violent video games do increase aggressive behavior but that these effects are almost always quite small.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "For three prominent meta-analyses on violent video games ( Anderson et al., 2010 ; Ferguson, 2015 ; Prescott et al., 2018 ), we meta-analytically estimated 1 the percentage of effects that surpass standardized effect-size thresholds of q = 0, 0.10, and 0.20",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "db32ded757ef1d6fe4357800549f5b2cf21136d9b93ab52767ba2023be710c5f",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f5fc923643f4eed3e4f5158b0c2c3138b90ce5c59430f1cc566f62256b6bcf46",
+            "normalizedCharStart": 2680,
+            "normalizedCharEnd": 3030,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 39,
@@ -1939,55 +2495,6 @@
       }
     },
     {
-      "id": "src_violent_video_games_and_real_world_violence__2014",
-      "title": "Violent video games and real-world violence: Rhetoric versus data.",
-      "year": 2014,
-      "url": "https://www.semanticscholar.org/paper/Violent-video-games-and-real-world-violence:-versus-Markey-Markey/12a2177f6f623387c2b8877878bf6433ce6bc50b",
-      "authors": [
-        "Markey, P.",
-        "Markey, C. N.",
-        "French, J. E."
-      ],
-      "venue": "Psychology of popular media culture",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_clear_effect",
-      "evidence": "Observational",
-      "funding": "Undisclosed",
-      "population": "Adults",
-      "confidence": "low",
-      "restsOn": [],
-      "provenance": {
-        "position": {
-          "quote": "Laboratory and correlational studies often find a link between violent video games and minor or benign forms of aggressive behaviors (e.g., exposing an opponent to an unpleasant noise).",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Based on national violent crime rates and video game sales data, little correlation exists between video game sales and violent crime.",
-          "extractionConfidence": 0.8,
-          "verifiedQuote": "missing"
-        }
-      },
-      "addedIn": 40,
-      "textDepth": "partial",
-      "modelAgreement": {
-        "models": 3,
-        "positionAgreement": 0.67,
-        "flagged": false,
-        "disagreedFields": [
-          "confidence",
-          "evidence",
-          "funding",
-          "population"
-        ],
-        "positionVote": {
-          "pos_no_clear_effect": 2,
-          "pos_increases_aggression": 1
-        }
-      }
-    },
-    {
       "id": "src_evidence_for_publication_bias_in_video_game__2007",
       "title": "Evidence for publication bias in video game violence effects literature: A meta-analytic review",
       "year": 2007,
@@ -2004,18 +2511,46 @@
       "population": "Children and adolescents",
       "confidence": "moderate",
       "restsOn": [
-        "ds_ds_american_psychological_association_2015_t"
+        {
+          "ref": "ds_ds_american_psychological_association_2015_t",
+          "provenance": {
+            "quote": "Results indicated that publication bias does exist for experimental studies of aggressive behavior, as well as for non-experimental studies of aggressive behavior and aggressive thoughts.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "8ac50703cdc4ece33dbd3adbee9ec788a4093a795689f25e3bd5f5ae09bbe60b",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S1359178907000055",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7b40078ee59b855a8867657ebdbd76bb7cf62986a2eb3e88b7a3bbcaa98b030c",
+              "normalizedCharStart": 3864,
+              "normalizedCharEnd": 4051,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
       ],
       "provenance": {
         "position": {
-          "quote": "Results of this analysis indicate some concerns for the extant literature on video game violence effects. Publication bias issues emerge for both experimental and non-experimental studies of aggressive behaviors.",
+          "quote": "Publication bias issues emerge for both experimental and non-experimental studies of aggressive behaviors.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "Results indicated that publication bias does exist for experimental studies of aggressive behavior, as well as for non-experimental studies of aggressive behavior and aggressive thoughts.",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "8ac50703cdc4ece33dbd3adbee9ec788a4093a795689f25e3bd5f5ae09bbe60b",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S1359178907000055",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "090dcb8e98f68807cc56a808a92c5c713ee89961b08d1be217abb05a61c82765",
+            "normalizedCharStart": 8268,
+            "normalizedCharEnd": 8374,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 42,
@@ -2055,9 +2590,21 @@
         "position": {
           "quote": "It is concluded that the extreme focus on general aggression effects is not supported by the current literature, and that social science's focus on general aggression effects distracts from research on specific at‐risk populations, and potential positive uses of some violent video games.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {}
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e390d1ba11be2e5418b0be740e02c9595c485a86bf17e5131289b605c4899d81",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1111/j.1751-9004.2009.00175.x",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "70e78483aefcdcdfe2037c6c9df46932c9843776d7ec0816fa86221d91b5accc",
+            "normalizedCharStart": 493,
+            "normalizedCharEnd": 781,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
       },
       "addedIn": 43,
       "textDepth": "abstract",
@@ -2105,12 +2652,16 @@
         "position": {
           "quote": "The Task Force's general conclusion is that the bulk of recent evidence converges with the 2015 Task Force: There is a small and reliable relationship between violent video game exposure and aggressive outcomes.",
           "extractionConfidence": 0.95,
-          "verifiedQuote": "fuzzy"
-        },
-        "restsOn": {
-          "quote": "three meta-analyses, published between January 2014 and April 2019 (Ferguson, 2015a; Greitemeyer & Mügge, 2014; Prescott, Sargent, & Hull, 2018), provide further evidence for a small, reliable effect of exposure to violent video games on aggressive outcomes in laboratory experiments and cross-sectional and longitudinal studies.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "d63d9b81994d212436c5304726e51193d207a96b118389d5ea2b88f51abcf0ff",
+            "textDepth": "full",
+            "sourceUrl": "https://www.apa.org/about/policy/violent-video-games.pdf",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 44,
@@ -2126,102 +2677,6 @@
         ],
         "positionVote": {
           "pos_increases_aggression": 2
-        }
-      }
-    },
-    {
-      "id": "src_selling_violent_video_game_solutions_a_look__2017",
-      "title": "Selling violent video game solutions: A look inside the APA's internal notes leading to the creation of the APA's 2005 resolution on violence in video games and interactive media",
-      "year": 2017,
-      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0160252717301450",
-      "authors": [
-        "Ferguson, C."
-      ],
-      "venue": "Aggression and Violent Behavior",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_clear_effect",
-      "evidence": "Narrative/Commentary",
-      "funding": "Academic/institutional",
-      "population": "—",
-      "confidence": "unstated",
-      "restsOn": [
-        "src:src_technical_report_on_the_review_of_the_violen_2015"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "This has been both because the courts have concluded the research is unable to support the contention that violent video games cause aggression as well as",
-          "extractionConfidence": 0.55,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "The result of the Task Force's efforts was an August 13, 2015, press release “confirming” the link between violent video games",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
-        }
-      },
-      "addedIn": 45,
-      "textDepth": "partial",
-      "modelAgreement": {
-        "models": 2,
-        "positionAgreement": 1.0,
-        "flagged": false,
-        "disagreedFields": [],
-        "positionVote": {
-          "pos_no_clear_effect": 1
-        }
-      }
-    },
-    {
-      "id": "src_possible_biases_of_researchers_attitudes_tow_2016",
-      "title": "Possible Biases of Researchers’ Attitudes Toward Video Games: Publication Trends Analysis of the Medical Literature (1980–2013)",
-      "year": 2016,
-      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4969552/",
-      "authors": [
-        "Segev, A.",
-        "Rovner, M.",
-        "Appel, D. I.",
-        "Abrams, A. W.",
-        "Rotem, M.",
-        "Bloch, Y."
-      ],
-      "venue": "Journal of Medical Internet Research",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_clear_effect",
-      "evidence": "Evidence-synthesis",
-      "funding": "Undisclosed",
-      "population": "General population",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_pubmed_database_analysis_of_1980_2013_public"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "These dichotomous views of video games may drive professionals to choose a dichotomous stance, either positive or negative, on video games.",
-          "extractionConfidence": 0.85,
-          "verifiedQuote": "exact"
-        },
-        "restsOn": {
-          "quote": "",
-          "extractionConfidence": 0
-        }
-      },
-      "addedIn": 46,
-      "textDepth": "partial",
-      "modelAgreement": {
-        "models": 3,
-        "positionAgreement": 0.5,
-        "flagged": true,
-        "disagreedFields": [
-          "confidence",
-          "evidence",
-          "population",
-          "position"
-        ],
-        "positionVote": {
-          "pos_no_clear_effect": 1,
-          "NEW:No clear direction on direct causal link but highlights researcher biases": 1
         }
       }
     },
@@ -2248,19 +2703,41 @@
           "ref": "ds_czech_adolescent_violent_game_longitudinal_p",
           "provenance": {
             "quote": "Drawing on a representative sample of 3010 Czech adolescents aged 13–17, data were collected over four waves to measure physical and verbal aggression.",
-            "verifiedQuote": "exact"
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 0.973
+            }
           }
         }
       ],
       "provenance": {
         "position": {
-          "quote": "All desensitization effects were statistically insignificant; the findings challenge violent video games as a significant contributor to heightened aggression in adolescents.",
+          "quote": "All desensitization effects were statistically insignificant.",
           "extractionConfidence": 0.97,
-          "verifiedQuote": "fuzzy"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a1727161faafac556842b60780837484db1b200f128d93d27d52e295629137bb",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.chb.2024.108341",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1624b9a285be8a1709588beae4423f2e94c37d60364cf1f47159ccc68a1de25f",
+            "normalizedCharStart": 1265,
+            "normalizedCharEnd": 1326,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 54,
-      "textDepth": "full",
+      "textDepth": "abstract",
       "fundingDetails": [
         "European Union co-financing: Research of Excellence on Digital Technologies and Wellbeing CZ.02.01.01/00/22_008/0004583"
       ]
@@ -3145,7 +3622,46 @@
         }
       ],
       "ts": "2026-07-12T13:51:36.088832+00:00"
+    },
+    {
+      "version": 55,
+      "action": "quote-reaudit",
+      "method": "verbatim-sentence-v2",
+      "ts": "2026-07-13T00:34:19.927721+00:00",
+      "sources": 37
     }
   ],
-  "pendingReview": []
+  "pendingReview": [],
+  "refused": [
+    {
+      "title": "Violent video games and real-world violence: Rhetoric versus data.",
+      "url": "https://www.semanticscholar.org/paper/Violent-video-games-and-real-world-violence:-versus-Markey-Markey/12a2177f6f623387c2b8877878bf6433ce6bc50b",
+      "reason": "The study tests violent-crime trends, not the case question's aggression outcome; its text concedes a possible link with minor aggression.",
+      "sourceId": "src_violent_video_games_and_real_world_violence__2014"
+    },
+    {
+      "title": "Longitudinal effects of media violence on aggression and empathy among German adolescents",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0193397310000833",
+      "reason": "Combined film, television, and game exposure cannot isolate the video-game exposure asked by this case.",
+      "sourceId": "src_longitudinal_effects_of_media_violence_on_ag_2010"
+    },
+    {
+      "title": "The public health risks of media violence: a meta-analytic review.",
+      "url": "https://doi.org/10.1016/j.jpeds.2008.11.033",
+      "reason": "Mixed-media meta-analysis does not provide a game-specific estimate for this case.",
+      "sourceId": "src_the_public_health_risks_of_media_violence_a__2009"
+    },
+    {
+      "title": "Selling violent video game solutions: A look inside the APA's internal notes leading to the creation of the APA's 2005 resolution on violence in video games and interactive media",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0160252717301450",
+      "reason": "Institutional-policy history and court treatment, not evidence of a causal aggression effect.",
+      "sourceId": "src_selling_violent_video_game_solutions_a_look__2017"
+    },
+    {
+      "title": "Possible Biases of Researchers’ Attitudes Toward Video Games: Publication Trends Analysis of the Medical Literature (1980–2013)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4969552/",
+      "reason": "Bibliometric researcher-attitudes study with no aggression outcome; belongs in methodological context rather than an effect position.",
+      "sourceId": "src_possible_biases_of_researchers_attitudes_tow_2016"
+    }
+  ]
 }

@@ -96,7 +96,10 @@ multiplying via paraphrase as a case grows):
   BOILERPLATE line (publication dates, "Accepted for Publication: …", author lists, "a literature
   search was conducted from …"). If the text has no sentence stating the finding, set
   extractionConfidence ≤ 0.3 and quote the closest real statement, or leave the quote empty — never
-  pad it with boilerplate.
+  pad it with boilerplate. Copy that one sentence CHARACTER-FOR-CHARACTER, including its original
+  case, punctuation, numbers, and qualifiers. Never join two passages, never concatenate a title
+  with an abstract sentence, and never put a paraphrase or model-written summary in `quote`. If an
+  exact sentence cannot be copied, leave `quote` empty and explain the limitation in the rationale.
 - Quote RELEVANCE, not just presence: the quote must directly support the SPECIFIC position
   assigned, not merely be a true sentence somewhere in the paper. Don't stretch a tangential
   finding to justify a position it doesn't actually state. If no passage genuinely states this

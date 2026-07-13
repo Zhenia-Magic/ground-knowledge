@@ -80,8 +80,8 @@ def manual_corrections(source):
             ],
             "provenance": {"position": {
                 "quote": "There is no conclusive evidence on the role of egg in CVD risk; possible protection at moderate intake and increased heart-failure risk at high intake both require stronger evidence.",
-                "extractionConfidence": 0.97, "verifiedQuote": "fuzzy"}},
-            "textDepth": "full",
+                "extractionConfidence": 0.97}},
+            "textDepth": "unknown",
         })
         return "corrected unrelated PubMed link/quote and restored the actual Godos meta-analysis"
     if sid == "src_spence_jenkins_davignon_egg_yolk_consumption_2010":
@@ -118,7 +118,8 @@ def manual_corrections(source):
             "url": "https://doi.org/10.1016/j.cell.2024.08.010", "venue": "Cell",
             "provenance": {"position": {
                 "quote": "Market-linked SARS-CoV-2 genetic diversity is consistent with market emergence, and wildlife DNA was identified in SARS-CoV-2-positive samples from a wildlife stall.",
-                "extractionConfidence": 0.97, "verifiedQuote": "fuzzy"}},
+                "extractionConfidence": 0.97}},
+            "textDepth": "unknown",
         })
         return "replaced a preprint PubMed link and an irrelevant SARS-CoV-1 excerpt with the 2024 Cell article and finding"
     if sid == "src_emergence_of_the_spike_furin_cleavage_site_i_2022":
@@ -129,17 +130,17 @@ def manual_corrections(source):
             "url": "https://doi.org/10.1093/molbev/msab327",
             "provenance": {"position": {
                 "quote": "Without access to the full set of viral sequences available before the emergence of SARS-CoV-2, it is difficult to know what novel cleavage sites were characterized and how they were introduced.",
-                "extractionConfidence": 0.96, "verifiedQuote": "fuzzy"}},
-            "textDepth": "full",
+                "extractionConfidence": 0.96}},
+            "textDepth": "unknown",
         })
         return "removed the false 'natural-evolution account' gloss and restored the paper's genuinely unresolved conclusion"
     if sid == "src_kent_a_critical_look_at_risk_assessments_for_2004":
         source.update({
             "url": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
-            "authors": ["Adrian Kent"], "venue": "Risk Analysis", "textDepth": "abstract",
+            "authors": ["Adrian Kent"], "venue": "Risk Analysis", "textDepth": "unknown",
             "provenance": {"position": {
                 "quote": "The costs of small risks of catastrophe have been significantly underestimated; acceptable risk bounds should be agreed before hypothetically risky experiments.",
-                "extractionConfidence": 0.96, "verifiedQuote": "fuzzy"}},
+                "extractionConfidence": 0.96}},
         })
         return "replaced an arXiv page-header excerpt with the published abstract finding"
     if sid == "src_alcohol_consumption_and_cardiovascular_disea_2024":

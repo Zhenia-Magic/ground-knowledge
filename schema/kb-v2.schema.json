@@ -118,7 +118,8 @@
                     "type": "object",
                     "properties": {
                       "quote": {"type": "string"},
-                      "verifiedQuote": {"enum": ["exact", "fuzzy", "missing"]}
+                      "verifiedQuote": {"enum": ["exact", "fuzzy", "missing"]},
+                      "quoteVerification": {"$ref": "#/$defs/quoteVerification"}
                     },
                     "additionalProperties": true
                   }
@@ -130,6 +131,25 @@
         },
         "provenance": {"type": "object"},
         "textDepth": {"enum": ["full", "abstract", "partial", "unknown"]}
+      },
+      "additionalProperties": true
+    },
+    "quoteVerification": {
+      "type": "object",
+      "description": "deterministic audit record; only verbatim-sentence-v2 exact records with a checked-text hash are trusted",
+      "required": ["method", "status", "textSha256", "textDepth"],
+      "properties": {
+        "method": {"const": "verbatim-sentence-v2"},
+        "status": {"enum": ["exact", "fuzzy", "missing"]},
+        "textSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "quoteSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "textDepth": {"enum": ["full", "abstract", "partial", "unknown"]},
+        "sourceUrl": {"type": "string"},
+        "normalizedCharStart": {"type": "integer"},
+        "normalizedCharEnd": {"type": "integer"},
+        "normalization": {"type": "string"},
+        "reason": {"type": "string"},
+        "similarity": {"type": "number", "minimum": 0, "maximum": 1}
       },
       "additionalProperties": true
     }

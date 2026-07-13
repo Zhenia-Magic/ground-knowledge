@@ -119,22 +119,8 @@ def _strip_unverifiable_trust_fields(delta):
     endpoint never fetches anything server-side, so a client could otherwise self-declare
     "textDepth": "full", "verifiedQuote": "exact" on a fabricated quote with nothing to check
     it against. Strip rather than trust."""
-    src = delta.get("source")
-    if isinstance(src, dict):
-        src.pop("textDepth", None)
-        for prov in (src.get("provenance") or {}).values():
-            if isinstance(prov, dict):
-                prov.pop("verifiedQuote", None)
-        # per-edge restsOn quotes ride on the untrusted paste-back path too: a client must not be
-        # able to self-declare an edge object's dependency quote as verified (engine/roots confirms
-        # a root only through a server-verified edge). Strip it exactly like field provenance.
-        for entry in src.get("restsOn") or []:
-            if isinstance(entry, dict) and isinstance(entry.get("provenance"), dict):
-                entry["provenance"].pop("verifiedQuote", None)
-    for fw in delta.get("factorWeights") or []:
-        if isinstance(fw, dict):
-            fw.pop("verifiedQuote", None)
-    return delta
+    from engine.verify import strip_untrusted_verification
+    return strip_untrusted_verification(delta)
 
 
 def _norm_delta(it):

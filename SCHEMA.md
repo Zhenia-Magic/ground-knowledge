@@ -53,15 +53,17 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                    "restsOn": [datasetId | "src:sourceId"          // evidentiary roots: datasets
                                 //   AND/OR other sources (derivation edges) -> independence +
                                 //   circular-corroboration detection (see MECHANISM.md).
-                     | {ref: datasetId, provenance: {quote, verifiedQuote}} ],  // OR an EDGE OBJECT
+                     | {ref: datasetId, provenance: {quote, verifiedQuote,
+                                                     quoteVerification?}} ],  // OR an EDGE OBJECT
                                 //   carrying THIS edge's own dependency quote, so a verified quote
                                 //   confirms only the one dataset it annotates -- never a sibling
                                 //   edge, never an inherited root (engine/roots._edges)
                    "textDepth",                    // full | abstract | partial | unknown -- how
                                 //   much of the source the labeller actually saw (engine/verify.py)
-                   "provenance": { field: {quote, extractionConfidence, verifiedQuote?} },
-                                //   verifiedQuote: exact | fuzzy | missing -- read together with
-                                //   textDepth, never alone (see problem 3 below)
+                   "provenance": { field: {quote, extractionConfidence, verifiedQuote?,
+                                            quoteVerification?} },
+                                // exact is trusted only with a verbatim-sentence-v2 record and
+                                // checked-text SHA-256. fuzzy means altered/paraphrased, NOT verified.
                    "modelAgreement"?: { models, positionAgreement, flagged,   // multi-model ensemble
                                         disagreedFields, positionVote, proposals },  //   report (ingest/ensemble.py)
                    "addedIn": version } ],                    // powers the diff
@@ -110,9 +112,15 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    paywall's abstract-only landing page. Every fetched doc is honestly tagged with a `kind`
    (`full` / `abstract` / `partial`), copied onto the source as `textDepth`.
 
-   `engine/verify.py::match_quote(quote, text)` then checks each provenance quote against that
-   **same fetched text** — not against "the true paper," which the tool may not have — and
-   records `exact` / `fuzzy` / `missing` as `verifiedQuote`. This is wired into `_carry_meta`
+   `engine/verify.py::ground_quote(quote, text)` then checks each provenance quote against that
+   **same fetched text** — not against "the true paper," which the tool may not have. `exact` has
+   a deliberately narrow meaning: one verbatim non-title sentence in one source-text segment. The
+   verifier canonicalizes a verbatim fragment to its complete sentence and records a
+   `quoteVerification` object with method `verbatim-sentence-v2`, text depth, source URL, normalized
+   character offsets, and separate SHA-256 hashes of the checked text and displayed sentence. The
+   quote hash means editing wording after verification immediately invalidates the checkmark.
+   `fuzzy` means altered/paraphrased/cross-boundary and is explicitly **not** a
+   verified quotation; `missing` means not found in the material checked. This is wired into `_carry_meta`
    in `ingest/pipeline.py`, the one place a freshly fetched doc and its LLM-produced delta are
    both in scope in the same process (the automated `--ai` / API paths). Deltas built from a
    pasted-back chatbot response never have the original doc in scope, so they get `textDepth:
@@ -124,12 +132,12 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    does not confirm them. A legacy source-level dependency quote is honored only when there is exactly
    one direct dataset; with multiple datasets it is ambiguous and confirms none.
 
-   The crucial reading rule, enforced in `engine/assess.py::quote_audit`: **never read
-   `verifiedQuote` without `textDepth`.** A `missing` quote on a `full`-text source is a real
-   red flag — the labeller asserted something the fetched document doesn't support — and is
-   what `quote_audit` counts as a warning. The identical `missing` verdict on an `abstract` or
-   `unknown` source is expected background noise (the quote may be true, drawn from body text
-   the tool never had) and is reported only as coverage, never as a warning.
+   The crucial reading rule, enforced in `engine/assess.py::quote_audit` and
+   `engine/verify.py::is_verified_exact`: **a checkmark requires the current method plus the checked
+   text hash.** Old/manual `verifiedQuote: exact` flags do not pass. Every fuzzy, missing, or unchecked
+   excerpt is surfaced and rendered as a stored summary without quotation marks. Text depth explains
+   what was checked; it never turns an unchecked excerpt into a verified quote. Only current audited
+   exact dependency quotes may automatically admit an evidence root.
 
 4. **Open schema (interoperability vs nuance).** A small fixed *core* the metrics operate on
    (source, position, dataset, factor, edge) plus *open vocabularies* as tags (`evidence`,

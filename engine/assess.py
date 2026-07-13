@@ -274,17 +274,25 @@ def method_audit(kb):
 
 
 def quote_audit(kb):
-    """Whether each source's quotes are grounded in the text actually fetched for it (see
-    engine/verify.py, SCHEMA.md `textDepth`/`provenance[field].verifiedQuote`).
+    """Audit every stored source, dependency, and factor quotation.
 
-    A quote that fails to verify on a FULL-text source is a real red flag: the labeller said
-    something the fetched document doesn't support. The same failure on an abstract-only or
-    unknown-depth source is expected noise -- the quote may well be true, drawn from body text
-    the tool never had -- so it is reported as coverage, not counted as a warning. Nothing here
-    is guessed for sources ingested before this existed: they default to textDepth 'unknown'
-    and are excluded from both the warning and the depth-coverage denominator."""
-    by_pos = {p["id"]: {"raw": 0, "depthKnown": 0, "full": 0, "unverifiedFull": 0}
+    Exact means a current ``verbatim-sentence-v2`` record with the checked-text hash. ``fuzzy`` is
+    an altered/paraphrased passage, not a verified quote; an old hand-authored ``exact`` flag with no
+    v2 record is ``unchecked``.  All non-exact excerpts are surfaced regardless of text depth.  A
+    missing body passage on an abstract-only fetch may be understandable, but it is still not honest
+    to render it with quotation marks or a checkmark.
+    """
+    from .verify import is_verified_exact
+    by_pos = {p["id"]: {"raw": 0, "depthKnown": 0, "full": 0, "unverifiedFull": 0,
+                         "quotes": 0, "exact": 0, "altered": 0, "missing": 0,
+                         "unchecked": 0}
               for p in kb["positions"]}
+    factor_quotes = {}
+    for factor in kb.get("factors", []):
+        for claim in factor.get("provenance", []):
+            if claim.get("source") and claim.get("quote"):
+                factor_quotes.setdefault(claim["source"], []).append(
+                    ("factor:" + factor.get("id", "?"), claim))
     flagged = []
     for s in kb["sources"]:
         pid = s["position"]
@@ -292,18 +300,32 @@ def quote_audit(kb):
             continue
         by_pos[pid]["raw"] += 1
         depth = s.get("textDepth", "unknown")
-        if depth == "unknown":
-            continue
-        by_pos[pid]["depthKnown"] += 1
-        if depth != "full":
-            continue
-        by_pos[pid]["full"] += 1
-        bad = [f for f, prov in (s.get("provenance") or {}).items()
-               if isinstance(prov, dict) and prov.get("verifiedQuote") == "missing"]
+        if depth != "unknown":
+            by_pos[pid]["depthKnown"] += 1
+        if depth == "full":
+            by_pos[pid]["full"] += 1
+        quotes = [("source:" + field, prov) for field, prov in (s.get("provenance") or {}).items()
+                  if isinstance(prov, dict) and prov.get("quote")]
+        quotes += [("edge:{}".format(i), edge.get("provenance"))
+                   for i, edge in enumerate(s.get("restsOn") or []) if isinstance(edge, dict)
+                   and isinstance(edge.get("provenance"), dict)
+                   and edge["provenance"].get("quote")]
+        quotes += factor_quotes.get(s.get("id"), [])
+        bad = []
+        for field, prov in quotes:
+            by_pos[pid]["quotes"] += 1
+            if is_verified_exact(prov):
+                by_pos[pid]["exact"] += 1
+                continue
+            status = prov.get("verifiedQuote")
+            bucket = "altered" if status == "fuzzy" else "missing" if status == "missing" else "unchecked"
+            by_pos[pid][bucket] += 1
+            bad.append(field)
         if bad:
-            by_pos[pid]["unverifiedFull"] += 1
+            if depth == "full":
+                by_pos[pid]["unverifiedFull"] += 1
             flagged.append({"id": s["id"], "title": s.get("title"), "position": pid,
-                            "fields": bad})
+                            "fields": bad, "textDepth": depth})
     positions = []
     for p in kb["positions"]:
         c = by_pos[p["id"]]
@@ -645,12 +667,13 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
             "label": p["label"] if p else f["position"], "hue": p["hue"] if p else "#8a6510",
             "badge": "unverified quote{}".format("" if len(flagged) == 1 else "s"),
             "headline": "Unverified quote{}.".format("" if len(flagged) == 1 else "s"),
-            "detail": ('{} source{} {} a provenance quote that does not match the full text '
-                       'fetched for {} — e.g. "{}". Not a guess about missing text: this is '
-                       'fetched full text the quote should match and does not.').format(
+            "detail": ('{} source{} {} stored quote wording without a current verbatim audit '
+                       'against hashed fetched text — e.g. "{}". It may be altered, absent from '
+                       'the fetched material, or a legacy unchecked excerpt; it is shown as a '
+                       'summary rather than inside quotation marks until reverified.').format(
                            len(flagged), "" if len(flagged) == 1 else "s",
                            "has" if len(flagged) == 1 else "have",
-                           "it" if len(flagged) == 1 else "them", f.get("title") or f["id"]),
+                           f.get("title") or f["id"]),
         })
 
     wcand = [p for p in ca["positions"] if p["weak"]]

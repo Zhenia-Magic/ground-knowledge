@@ -16,7 +16,7 @@ import sys
 from .extract import extract_text
 from . import llm
 from . import ensemble
-from engine.verify import match_quote
+from engine.verify import apply_quote_verification
 
 # --- Shared, strengthened extraction contract (one place, used by all three prompts) ---------
 # These hints + rules exist to PREVENT entity proliferation: positions, datasets, factors and
@@ -105,7 +105,10 @@ _RULES = """Rules (apply to each source):
   …"), author lists, "a literature search was conducted from …", "this review summarises …" — these
   state no finding. If the fetched text genuinely contains no sentence stating the finding (e.g. only
   metadata came through), set extractionConfidence ≤ 0.3 and quote the closest real statement, or
-  leave the quote empty — never pad it with boilerplate.
+  leave the quote empty — never pad it with boilerplate. Copy exactly ONE sentence
+  CHARACTER-FOR-CHARACTER, including original case, punctuation, numbers, and qualifiers. Never
+  join two passages, concatenate a title with an abstract sentence, or put a paraphrase/model-written
+  summary in quote. If an exact sentence cannot be copied, leave quote empty and explain why.
 - Quote RELEVANCE, not just quote presence: the quote must directly support the SPECIFIC position
   assigned, not merely be a true, well-formed sentence from the paper. Do not stretch a tangential
   or partial finding to justify a position it does not actually state. If, after reading the whole
@@ -481,9 +484,11 @@ def _carry_meta(delta, doc, verify_text=None):
         # remove any model-supplied trust flag rather than reviving the legacy path.
         if field == "restsOn" and isinstance(prov, dict):
             prov.pop("verifiedQuote", None)
+            prov.pop("quoteVerification", None)
             continue
         if isinstance(prov, dict) and prov.get("quote"):
-            prov["verifiedQuote"] = match_quote(prov["quote"], text)
+            apply_quote_verification(prov, text, source_title=src.get("title"),
+                                     text_depth=src["textDepth"], source_url=src.get("url"))
     # Dependency quotes are PER EDGE. Verifying them here, while the fetched text and the exact
     # model-visible slice are both in scope, is the only path that may promote a proposed root.
     # A sibling edge without its own quote remains provisional in engine/roots.py.
@@ -492,10 +497,12 @@ def _carry_meta(delta, doc, verify_text=None):
             continue
         prov = edge.get("provenance")
         if isinstance(prov, dict) and prov.get("quote"):
-            prov["verifiedQuote"] = match_quote(prov["quote"], text)
+            apply_quote_verification(prov, text, source_title=src.get("title"),
+                                     text_depth=src["textDepth"], source_url=src.get("url"))
     for fw in delta.get("factorWeights", []):
         if fw.get("quote"):
-            fw["verifiedQuote"] = match_quote(fw["quote"], text)
+            apply_quote_verification(fw, text, source_title=src.get("title"),
+                                     text_depth=src["textDepth"], source_url=src.get("url"))
     # ensemble disagreement -> this delta will be routed to HUMAN review (engine/review.py);
     # carry the abstract/lead of what the models actually read, so the reviewer sees it too.
     if (src.get("modelAgreement") or {}).get("flagged"):

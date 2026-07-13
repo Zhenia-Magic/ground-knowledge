@@ -383,21 +383,45 @@ function maps(kb){
   kb.sources.forEach(s=>src[s.id]=s);
   return {pos,ds,src};
 }
+// A checkmark is a cryptographic audit claim, not shorthand for "we fetched some text".  Only
+// the current verifier, run against hashed source text, may create it.  Legacy/manual exact flags
+// deliberately render as unchecked until they are re-audited.
+function verifiedExact(p){
+  const a=(p||{}).quoteVerification||{};
+  return !!(p&&p.verifiedQuote==="exact"&&a.method==="verbatim-sentence-v2"&&
+    a.status==="exact"&&a.textSha256&&a.quoteSha256);
+}
+function quoteState(p){
+  if(verifiedExact(p)) return "exact";
+  if((p||{}).verifiedQuote==="fuzzy") return "altered";
+  if((p||{}).verifiedQuote==="missing") return "missing";
+  return "unchecked";
+}
+function quoteBadge(p){
+  const st=quoteState(p);
+  if(st==="exact") return '<span class="okicon" title="verbatim sentence verified against hashed fetched text">✓</span>';
+  if(st==="altered") return '<span class="flagicon" title="altered or paraphrased passage — not a verified quotation">⚠</span>';
+  if(st==="missing") return '<span class="flagicon" title="passage not found in the fetched text">⚠</span>';
+  return '<span class="flagicon" title="stored wording has not been checked against fetched text">?</span>';
+}
+function excerptHtml(quote,p,cls="q"){
+  if(!quote) return "";
+  if(verifiedExact(p)) return `<div class="${cls}">“${esc(quote)}”</div>`;
+  return `<div class="${cls}"><span class="wl">Stored summary — not verified verbatim</span><br>${esc(quote)}</div>`;
+}
 // Expanded factor row: the factor's rationale, then — per position — the sources that actually
 // weighed this factor, each with its verbatim quote and quote-verification badge. This is the
 // crux layer "showing its work": the disagreement in each camp's own words, auditable per edge.
 function factorDetailHtml(kb, f, activePos){
   const {src}=maps(kb);
-  const vq=v=>v==="exact"?'<span class="okicon" title="quote verified in fetched text">✓</span>'
-    :v==="fuzzy"?'<span class="okicon" title="quote verified (fuzzy match in fetched text)">≈</span>':"";
   const groups=activePos.map(p=>{
     const rows=(f.provenance||[]).filter(pr=>pr.pos===p.id&&(pr.quote||src[pr.source]));
     if(!rows.length) return "";
     const items=rows.map(pr=>{
       const s=src[pr.source]||{};
       const title=s.title?shortLabel(s.title,72)+(s.year?" ("+s.year+")":""):(pr.source||"");
-      return `<div class="fpq"><div class="fpq-src">${esc(title)} ${vq(pr.verifiedQuote)}</div>`+
-        (pr.quote?`<div class="q" style="margin:2px 0 0">“${esc(pr.quote)}”</div>`:"")+`</div>`;
+      return `<div class="fpq"><div class="fpq-src">${esc(title)} ${pr.quote?quoteBadge(pr):""}</div>`+
+        (pr.quote?excerptHtml(pr.quote,pr,"q"):"")+`</div>`;
     }).join("");
     return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(p.shortLabel||shortLabel(p.label))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
   }).join("");
@@ -453,9 +477,11 @@ function confBadge(conf, posLabel){
 }
 
 function quoteWarnHtml(pq, textDepth){
-  return (pq.verifiedQuote==="missing" && textDepth==="full")
-    ? `<span class="conf low" title="This quote does not match the full text we fetched for this source.">⚠ quote not found in fetched text</span>`
-    : "";
+  const st=quoteState(pq);
+  if(st==="exact") return `<span class="conf" title="Exact sentence checked against fetched ${esc(textDepth||"source")} text; audit record includes the checked-text hash.">✓ verified verbatim</span>`;
+  if(st==="altered") return `<span class="conf low" title="The wording only approximately matches source text and must not be presented as a quotation.">⚠ altered or paraphrased — not a verified quote</span>`;
+  if(st==="missing") return `<span class="conf low" title="This wording was not found in the fetched ${esc(textDepth||"source")} text.">⚠ not found in fetched text</span>`;
+  return `<span class="conf low" title="No current hashed verification record exists for this wording.">? not checked against source text</span>`;
 }
 
 // ONE renderer for every warning kind (concentration / method-monoculture / quote /
@@ -577,7 +603,7 @@ function filteredSources(kb){
     if(state.filter.fu && (s.funding||"Undisclosed")!==state.filter.fu) return false;
     if(state.filter.flagged){
       const pq=((s.provenance||{}).position)||{};
-      if(!(pq.verifiedQuote==="missing" && s.textDepth==="full")) return false;
+      if(!pq.quote || verifiedExact(pq)) return false;
     }
     return true;
   });
@@ -672,7 +698,7 @@ function renderCoverageView(){
     let bv=k==="p"?pos[y.position].label:y[{t:"title",y:"year",ev:"evidence",ds:"restsOn"}[k]||k];
     if(k==="ds"){av=(x.restsOn||[]).length;bv=(y.restsOn||[]).length;}
     if(k==="flag"){
-      const fv=s=>{const pq=((s.provenance||{}).position)||{}; return (pq.verifiedQuote==="missing"&&s.textDepth==="full")?2:(s.textDepth==="full"?0:1);};
+      const fv=s=>{const pq=((s.provenance||{}).position)||{}; return pq.quote&&!verifiedExact(pq)?2:verifiedExact(pq)?0:1;};
       av=fv(x);bv=fv(y);
     }
     if(typeof av==="string") return av.localeCompare(bv)*state.sort.dir;
@@ -694,19 +720,18 @@ function renderCoverageView(){
   let body;
   if(state.display==="table"){
     const COLS=[["t","Title"],["y","Year"],["p","Position"],["ev","Evidence"],["ds","Datasets"],["flag","Check"]];
-    const HEADINFO={flag:"Per-source checks (empty = nothing to flag). ✓ full text was fetched, so the quote is verifiable. ⚠ the source's quote was NOT found in the fetched full text — a real red flag. ⚖ the labelling models disagreed on this source's position (resolve it under “Needs review”). Blank means abstract-only: there was no full text to check the quote against."};
+    const HEADINFO={flag:"Quote audit: ✓ means a verbatim sentence was checked against hashed fetched text. ⚠ means altered/paraphrased or not found. ? means not yet checked. Fetching text by itself never earns a checkmark. ⚖ means labelling models disagreed."};
     const thead=COLS.map(([k,l])=>`<th data-sort="${k}">${esc(l)}${HEADINFO[k]?` <span class="infoicon" title="${esc(HEADINFO[k])}">?</span>`:""}${state.sort.key===k?(state.sort.dir<0?" ↓":" ↑"):""}</th>`).join("");
     const trs=visible.map(s=>{
       const p=pos[s.position], open=state.expanded.has(s.id);
       const rests=(s.restsOn||[]).map(id=>restLabel(kb,id));
       const dsLabel=rests.length?esc(rests[0])+(rests.length>1?" +"+(rests.length-1):""):"—";
       const pq=((s.provenance||{}).position)||{};
-      const missing=pq.verifiedQuote==="missing"&&s.textDepth==="full";
+      const qstate=quoteState(pq);
       const modelSplit=(s.modelAgreement||{}).flagged;
       const splitTip=modelSplit?Object.entries(s.modelAgreement.positionVote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · "):"";
-      const icon=missing?'<i class="flagicon" title="quote not found in the fetched full text — a red flag">⚠</i>'
-        :modelSplit?`<i class="flagicon" title="labelling models disagreed on the position — votes: ${esc(splitTip)} (resolve under Needs review)">⚖</i>`
-        :(s.textDepth==="full"?'<span class="okicon" title="full text fetched — quote is verifiable">✓</span>':'');
+      const icon=pq.quote?quoteBadge(pq)
+        :modelSplit?`<i class="flagicon" title="labelling models disagreed on the position — votes: ${esc(splitTip)} (resolve under Needs review)">⚖</i>`:"";
       let detail="";
       if(open){
         const quote=cleanQuote(pq.quote,s.title);
@@ -723,7 +748,7 @@ function renderCoverageView(){
             <div class="metarow">${venueBits.length?venueBits.join(" · ")+" · ":""}${esc(s.funding||"Undisclosed")} · conf: ${esc(s.confidence)}${depthLabel?" · "+esc(depthLabel):""}${pip}
               ${s.retracted?' <span class="tag retr">⚠ RETRACTED</span>':""}${isNew?` <span class="tag new">added v${s.addedIn}</span>`:""}</div>
             ${fundingLine}
-            ${quote?`<div class="q">“${esc(quote)}”</div>${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}`:""}
+            ${quote?`${excerptHtml(quote,pq)}${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}`:""}
             ${modelSplit?`<div style="color:var(--ochre)">⚖ labelling models disagreed — votes: ${esc(splitTip)}; the highest-confidence model's label is shown.</div>`:""}
             ${rests.length?`<div>rests on: ${rests.map(esc).join(", ")}</div>`:""}
           </td></tr>`;
@@ -751,7 +776,7 @@ function renderCoverageView(){
       const fundingLine=(s.fundingDetails||[]).length?`<div class="venue">Funding detail: ${s.fundingDetails.map(esc).join(" · ")}</div>`:"";
       const pq=((s.provenance||{}).position)||{};
       const quote=cleanQuote(pq.quote,s.title);
-      const quoteBox=quote?`<div class="why"><span class="wl">Filed under “${esc(p.shortLabel||shortLabel(p.label))}” because</span><q>${esc(quote)}</q>${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}</div>`:"";
+      const quoteBox=quote?`<div class="why"><span class="wl">Filed under “${esc(p.shortLabel||shortLabel(p.label))}” because</span>${verifiedExact(pq)?`<q>${esc(quote)}</q>`:`<div class="q"><span class="wl">Stored summary — not verified verbatim</span><br>${esc(quote)}</div>`}${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}</div>`:"";
       return `<div class="card${s.retracted?" retracted":""}" style="border-left-color:${p.hue}">
           <div class="ct"><div class="titlewrap"><span class="title">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`:esc(s.title)}</span></div><span class="yr">${esc(s.year||"")}</span></div>
           ${venueLine}

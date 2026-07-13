@@ -221,7 +221,7 @@ def research_prompt(cid, k):
     return {"prompt": build_research_prompt(_read(_case_path(cid)), k=int(k or 20))}
 
 
-def _merge_list(cid, deltas):
+def _merge_list(cid, deltas, verification_trusted=False):
     """Merge a list of deltas one at a time. Returns per-source result dicts with recomputed
     diff lines — never raises; per-item errors are reported in the result. A delta whose
     ensemble labelling had NO majority position is NOT merged: it is queued for the human's
@@ -230,6 +230,9 @@ def _merge_list(cid, deltas):
     path = _case_path(cid)
     results = []
     for d in deltas:
+        if not verification_trusted:
+            from engine.verify import strip_untrusted_verification
+            d = strip_untrusted_verification(d)
         title = (d.get("source") or {}).get("title") if isinstance(d, dict) else None
         try:
             kb = _read(path)
@@ -395,7 +398,7 @@ def extract_op(cid, urls, apply, batch=None, max_text=None):
                 "misaligned; check results.".format(len(arr), len(group)))
         for delta, doc in zip(arr, group):
             _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
-        res = _merge_list(cid, arr)  # persists to disk immediately → resume-safe
+        res = _merge_list(cid, arr, verification_trusted=True)  # fetched and checked locally
         added = sum(1 for r in res if r.get("status") == "added")
         log("  batch {}/{}: +{} added".format(n, nbatches, added))
         results += res
@@ -442,7 +445,7 @@ def add_file_op(cid, filename, b64, apply):
     delta = _parse_json(llm.complete(build_extract_prompt(kb, doc)))
     delta.setdefault("source", {}).setdefault("title", doc["title"])
     _carry_meta(delta, doc)                    # verify position + per-edge quotes against uploaded text
-    return {"mode": "auto", "results": _merge_list(cid, [delta])}
+    return {"mode": "auto", "results": _merge_list(cid, [delta], verification_trusted=True)}
 
 
 def _counts(kb):

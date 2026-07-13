@@ -3,10 +3,18 @@
 Mirrors the worked examples and adversarial cases in MECHANISM.md, so the spec and the code
 can't drift apart silently.
 """
+import hashlib
 import unittest
 
 from engine.assess import independence, method_audit, quote_audit, warnings, weighted_distribution
 from engine.roots import resolve, tier_of
+
+
+def _verified(quote):
+    """A provenance record that could only have come from the strict verifier."""
+    return {"quote": quote, "verifiedQuote": "exact", "quoteVerification": {
+        "method": "verbatim-sentence-v2", "status": "exact", "textSha256": "a" * 64,
+        "quoteSha256": hashlib.sha256(quote.strip().encode()).hexdigest()}}
 
 
 def _kb(sources, positions=("X", "Y"), vocab_evidence=None):
@@ -23,8 +31,7 @@ def _s(sid, pos, evidence, rests, textDepth="full"):
     s = {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
          "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
     if rests:
-        s["provenance"] = {"restsOn": {"quote": "verified dependency for " + sid,
-                                         "verifiedQuote": "exact"}}
+        s["provenance"] = {"restsOn": _verified("verified dependency for " + sid)}
     return s
 
 
@@ -269,14 +276,19 @@ class ProvisionalRootTests(unittest.TestCase):
         srcs = [_s("paste", "X", "Observational", ["D"], textDepth="unknown")]
         self.assertAlmostEqual(self._neff(srcs), 0.0, places=6)   # quarantined
         fetched = _s("fetched", "X", "Observational", ["D"], textDepth="full")
-        fetched["provenance"] = {"restsOn": {"quote": "we used cohort D",
-                                                "verifiedQuote": "exact"}}
+        fetched["provenance"] = {"restsOn": _verified("we used cohort D")}
         srcs.append(fetched)
         self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)   # a fetched source confirms D
 
     def test_fetch_without_verified_dependency_quote_does_not_confirm_root(self):
         src = _s("fetched", "X", "Observational", ["D"], textDepth="full")
-        src["provenance"] = {"position": {"quote": "supports X", "verifiedQuote": "exact"}}
+        src["provenance"] = {"position": _verified("supports X")}
+        self.assertAlmostEqual(self._neff([src]), 0.0, places=6)
+
+    def test_hand_authored_exact_flag_without_current_hash_does_not_confirm_root(self):
+        src = _s("fetched", "X", "Observational", [], textDepth="full")
+        src["restsOn"] = [{"ref": "D", "provenance": {
+            "quote": "We used cohort D.", "verifiedQuote": "exact"}}]
         self.assertAlmostEqual(self._neff([src]), 0.0, places=6)
 
     def test_curator_confirmed_dataset_is_full_strength(self):
@@ -310,8 +322,7 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         # D1 carries a verified per-edge quote; D2 is a bare sibling edge on the SAME fetched source.
         # Only D1 is admitted; D2 stays provisional — one quote no longer admits ten datasets.
         s = self._src("a", "X",
-                      [{"ref": "D1", "provenance": {"quote": "we analysed cohort D1",
-                                                     "verifiedQuote": "exact"}},
+                      [{"ref": "D1", "provenance": _verified("we analysed cohort D1")},
                        "D2"])
         kb = _kb([s])
         kb["datasets"] = [{"id": "D1", "label": "D1", "aliases": []},
@@ -329,8 +340,8 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         # copying it onto D2 must not admit D2 merely because the sentence is verbatim text.
         q = "We analysed the D1 cohort."
         s = self._src("a", "X", [
-            {"ref": "D1", "provenance": {"quote": q, "verifiedQuote": "exact"}},
-            {"ref": "D2", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+            {"ref": "D1", "provenance": _verified(q)},
+            {"ref": "D2", "provenance": _verified(q)},
         ])
         kb = _kb([s])
         kb["datasets"] = [{"id": "D1", "label": "D1", "aliases": []},
@@ -341,8 +352,7 @@ class PerEdgeConfirmationTests(unittest.TestCase):
 
     def test_generic_methods_word_cannot_name_a_new_root(self):
         q = "This cohort included 400 adults."
-        s = self._src("a", "X", [{"ref": "D", "provenance": {
-            "quote": q, "verifiedQuote": "exact"}}])
+        s = self._src("a", "X", [{"ref": "D", "provenance": _verified(q)}])
         kb = _kb([s])
         kb["datasets"] = [{"id": "D", "label": "Cohort", "aliases": []}]
         self.assertEqual(independence(kb)[0]["nEff"], 0)
@@ -350,8 +360,7 @@ class PerEdgeConfirmationTests(unittest.TestCase):
 
     def test_synthesized_two_letter_acronym_cannot_bind_ordinary_prose(self):
         q = "Mr. Smith reported no adverse events."
-        s = self._src("a", "X", [{"ref": "D", "provenance": {
-            "quote": q, "verifiedQuote": "exact"}}])
+        s = self._src("a", "X", [{"ref": "D", "provenance": _verified(q)}])
         kb = _kb([s])
         kb["datasets"] = [{"id": "D", "label": "Medical Review", "aliases": []}]
         self.assertEqual(independence(kb)[0]["nEff"], 0)
@@ -359,8 +368,8 @@ class PerEdgeConfirmationTests(unittest.TestCase):
     def test_unlearned_acronym_split_admits_at_most_one_root(self):
         q = "We analyzed the Nurses Health Study (NHS) cohort."
         s = self._src("a", "X", [
-            {"ref": "full", "provenance": {"quote": q, "verifiedQuote": "exact"}},
-            {"ref": "short", "provenance": {"quote": q, "verifiedQuote": "exact"}},
+            {"ref": "full", "provenance": _verified(q)},
+            {"ref": "short", "provenance": _verified(q)},
         ])
         kb = _kb([s])
         kb["datasets"] = [{"id": "full", "label": "Nurses Health Study", "aliases": []},
@@ -373,14 +382,14 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         # Back-compat source-level dependency provenance is safe only for ONE direct dataset. With
         # siblings it is ambiguous, so neither root is admitted; new ingestion uses edge objects.
         s = self._src("a", "X", ["D1", "D2"], provenance={
-            "restsOn": {"quote": "one generic dependency sentence", "verifiedQuote": "exact"}})
+            "restsOn": _verified("one generic dependency sentence")})
         res = resolve(_kb([s]))
         self.assertEqual(res["provisional"], {"ds:D1", "ds:D2"})
         self.assertAlmostEqual({p["id"]: p for p in independence(_kb([s]))}["X"]["nEff"], 0.0)
 
     def test_legacy_source_level_quote_still_confirms_one_direct_dataset(self):
         s = self._src("a", "X", ["D"], provenance={
-            "restsOn": {"quote": "we used D", "verifiedQuote": "exact"}})
+            "restsOn": _verified("we used D")})
         res = resolve(_kb([s]))
         self.assertNotIn("ds:D", res["provisional"])
         self.assertEqual(res["confirmed_by"]["ds:D"]["method"], "verified-edge-legacy-single")
@@ -391,8 +400,7 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         # has no direct verified edge and must stay quarantined.
         study = self._src("study", "X", ["D"], depth="unknown")
         review = self._src("review", "X",
-                           [{"ref": "src:study", "provenance": {"quote": "as the study showed",
-                                                                 "verifiedQuote": "exact"}}],
+                           [{"ref": "src:study", "provenance": _verified("as the study showed")}],
                            depth="full")
         res = resolve(_kb([study, review]))
         self.assertIn("ds:D", res["provisional"])                   # NOT confirmed via the citation

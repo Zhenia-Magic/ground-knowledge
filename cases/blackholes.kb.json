@@ -64,7 +64,7 @@
         "by": "Evgeniia",
         "ts": "2026-07-11T23:28:50-03:00",
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
-        "source": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000"
+        "source": "src_blaizot_et_al_study_of_potentially_dangerous_2003"
       },
       "kind": "experiment"
     },
@@ -143,29 +143,47 @@
           "source": "src_giddings_mangano_astrophysical_implications__2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "eight observed white dwarf stars... present a form of living evidence that the LHC must be safe",
-          "verifiedQuote": null,
-          "weight": "high"
-        },
-        {
-          "source": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000",
-          "pos": "pos_no_risk_lhc_collisions_are_safe",
-          "quote": "cosmic rays have been bombarding astronomical bodies for billions of years",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "the cosmic-ray argument relies on assumptions that could themselves be mistaken",
-          "verifiedQuote": null,
-          "weight": "med"
+          "weight": "med",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0810.5515",
+            "reason": "not-found"
+          }
         },
         {
           "source": "src_hut_rees_how_stable_is_our_vacuum_cosmic_ray_1983",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "cosmic-ray collisions at energies far above those of any accelerator",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "2d0d1055497be5fac6658a11a293cca19721655be1b395b1290c21d492564b73",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.nature.com/articles/302508a0",
+            "reason": "not-found"
+          }
         }
       ]
     },
@@ -182,29 +200,47 @@
           "source": "src_giddings_mangano_astrophysical_implications__2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "even if Hawking radiation does not exist",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "microscopic black holes would decay almost instantly by Hawking radiation",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/pdf/0806.3414",
+            "reason": "not-found"
+          }
         },
         {
           "source": "src_plaga_on_the_potential_catastrophic_risk_fro_2008",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "a metastable black hole could grow rather than evaporate",
-          "verifiedQuote": null,
-          "weight": "high"
-        },
-        {
-          "source": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001",
-          "pos": "pos_no_risk_lhc_collisions_are_safe",
           "weight": "high",
-          "quote": "The analysis assumes prompt Hawking evaporation into Standard Model particles.",
-          "verifiedQuote": "fuzzy"
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "8f43d900a69b3d6fa1e65a16a0bd7e5c670f6c14a405cc9e6139bf95d5ce4acc",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0808.1415",
+            "reason": "not-found"
+          }
         }
       ]
     },
@@ -220,22 +256,47 @@
           "source": "src_ord_hillerbrand_sandberg_probing_the_improba_2010",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "their argument may fail for reasons such as a flaw in the underlying theory, a mistake in modelling, or a calculation error",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0810.5515",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 0.754
+          }
         },
         {
           "source": "src_calogero_might_a_laboratory_experiment_destr_2000",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "reassurances may be motivated more by the wish to proceed",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "374108c470656f6c5f065c8601ecf180fd92e938c69998b27a146963a8b5d7e6",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1179/030801800679224",
+            "reason": "not-found"
+          }
         },
         {
           "source": "src_kent_a_critical_look_at_risk_assessments_for_2004",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "do not adequately account for the probability that the underlying arguments are themselves mistaken",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "d186fcfef076943455dafb09ccb55f58b8a239ac699b1ab0b8ad85f480e76d0b",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
+            "reason": "not-found"
+          }
         }
       ]
     },
@@ -251,8 +312,16 @@
           "source": "src_johnson_the_black_hole_case_the_injunction_a_2009",
           "pos": "pos_residual_concern_the_safety_argument_has_wea",
           "quote": "safety reviews were conducted by the same institution seeking to run the experiment",
-          "verifiedQuote": null,
-          "weight": "high"
+          "weight": "high",
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "6a519f52604c791d822f3f61a30aa6aa04d13309087629cee1d4c4988d82c43d",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0912.5480",
+            "reason": "not-found"
+          }
         }
       ]
     }
@@ -281,9 +350,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "We also comment on relevant lifetimes for astronomical objects that capture primordial black holes.",
+          "quote": "In short, this study finds no basis for concerns that TeV-scale black holes from the LHC could pose a risk to Earth on time scales shorter than the Earth's natural lifetime.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a9b91dc5f83b4d2b54611ab5fa3192f4779d3508ed810538ae9a61222e8affd0",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.78.035009",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "395f4639075ffe106d1996b476726489a4508f1c75bf4fe416ef8892cc7bbf1f",
+            "normalizedCharStart": 1037,
+            "normalizedCharEnd": 1210,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 1,
@@ -298,7 +380,7 @@
       "id": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
       "title": "LHC Safety Assessment Group (LSAG) — Review of the Safety of LHC Collisions",
       "year": 2008,
-      "url": "https://cern.ch/lsag/LSAG-Report.pdf",
+      "url": "https://arxiv.org/pdf/0806.3414",
       "authors": [
         "John Ellis",
         "Gian Giudice",
@@ -321,11 +403,20 @@
       "provenance": {
         "position": {
           "quote": "LHC collisions present no danger and there are no reasons for concern",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/pdf/0806.3414",
+            "reason": "not-found"
+          }
         }
       },
       "addedIn": 2,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077520+00:00",
@@ -358,12 +449,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "nature has already conducted the LHC experimental programme about 10^31 times... and the planets, Sun and stars still exist",
-          "extractionConfidence": 0.85
+          "quote": "The stability of astronomical bodies constrains strongly the possible rate of accretion by any such microscopic black holes, so that they present no conceivable danger.",
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0806.3414",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5ae3f6de7aff284d447b13fc1e98a3224e4accbe647f51bb5d672b06a456e30a",
+            "normalizedCharStart": 1351,
+            "normalizedCharEnd": 1519,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 3,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.701851+00:00",
@@ -391,12 +496,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "a black hole... emits particles as if it were a hot body... and would eventually evaporate",
-          "extractionConfidence": 0.75
+          "quote": "This thermal emission leads to a slow decrease in the mass of the black hole and to its eventual disappearance: any primordial black hole of mass less than about 10 15 g would have evaporated by now.",
+          "extractionConfidence": 0.75,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "80e08f546fcdc3b74eb60d95fd8d07ab7d43d15ab122fd45cd434443b3255ca4",
+            "textDepth": "partial",
+            "sourceUrl": "https://link.springer.com/article/10.1007/BF02345020",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7d4d82fa644045186f6f6653ab1cdc1c8532e8233af5423b492defa60daae2a3",
+            "normalizedCharStart": 710,
+            "normalizedCharEnd": 909,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 4,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077552+00:00",
@@ -426,87 +545,29 @@
       ],
       "provenance": {
         "position": {
-          "quote": "even under the most pessimistic assumptions, any black hole produced at the LHC is harmless",
-          "extractionConfidence": 0.8
+          "quote": "In this paper we summarize the most straight forward arguments that are necessary to rule out such doomsday scenarios.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "bbd46ede1ce7786e0b7ae8b181786c93e27e9ae2ca61e688973e8bed85a61d4f",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0807.3349",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "805e998ed8e75dd45eaac891baf9af215cfa49ff1cbd80c637e7e9bbadfa2bc4",
+            "normalizedCharStart": 377,
+            "normalizedCharEnd": 495,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 5,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077568+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
-      "id": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000",
-      "title": "Jaffe, Busza, Sandweiss, Wilczek — Review of speculative disaster scenarios at RHIC",
-      "year": 2000,
-      "url": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.72.1125",
-      "authors": [
-        "R. L. Jaffe",
-        "W. Busza",
-        "F. Wilczek",
-        "J. Sandweiss"
-      ],
-      "venue": "Reviews of Modern Physics",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_risk_lhc_collisions_are_safe",
-      "evidence": "Evidence-synthesis",
-      "funding": "Academic/institutional",
-      "population": "—",
-      "confidence": "high",
-      "restsOn": [
-        "ds_strangelet_stability_calculations_rhic",
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "we argue that dangerous strangelets are very unlikely... the continued existence of the Moon and other astronomical bodies gives strong empirical bounds",
-          "extractionConfidence": 0.85
-        }
-      },
-      "addedIn": 6,
-      "textDepth": "unknown",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:51:36.077585+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
-      "id": "src_dar_de_r_jula_heinz_will_relativistic_heavy__1999",
-      "title": "Dar, De Rújula, Heinz — Will relativistic heavy ion colliders destroy our planet?",
-      "year": 1999,
-      "url": "https://arxiv.org/abs/hep-ph/9910471",
-      "authors": [
-        "Arnon Dar",
-        "A. De Rújula",
-        "Ulrich Heinz"
-      ],
-      "venue": "Physics Letters B",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_risk_lhc_collisions_are_safe",
-      "evidence": "Mechanistic",
-      "funding": "Academic/institutional",
-      "population": "—",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "cosmic ray collisions... would have destroyed the Moon long ago if such a catastrophe were possible",
-          "extractionConfidence": 0.8
-        }
-      },
-      "addedIn": 7,
-      "textDepth": "unknown",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:51:36.077601+00:00",
         "method": "catalogue+manual-full-text"
       }
     },
@@ -533,9 +594,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Probing the Improbable: Methodological Challenges for Risks with Low Probabilities and High Stakes Some risks have extremely high stakes.",
+          "quote": "Using the risk estimates from the Large Hadron Collider as a test case, we show how serious the problem can be when it comes to catastrophic risks and how best to address it.",
           "extractionConfidence": 0.9,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "186d85de518ea34f78c68b358b69a984845e4a22b12c1277618cadfd9bad3c43",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0810.5515",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "70f8ab07ab422dbdd7031667f7b54f84519459a91dfc63bda598c11ab233ed89",
+            "normalizedCharStart": 1158,
+            "normalizedCharEnd": 1332,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 8,
@@ -550,7 +624,7 @@
       "id": "src_calogero_might_a_laboratory_experiment_destr_2000",
       "title": "Calogero — Might a laboratory experiment destroy planet Earth?",
       "year": 2000,
-      "url": "https://www.tandfonline.com/doi/abs/10.1080/030186600605041",
+      "url": "https://doi.org/10.1179/030801800679224",
       "authors": [
         "Francesco Calogero"
       ],
@@ -568,11 +642,20 @@
       "provenance": {
         "position": {
           "quote": "there is a tendency to underplay such risks... reassurances may be motivated more by the wish to proceed than by the strength of the case",
-          "extractionConfidence": 0.7
+          "extractionConfidence": 0.7,
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "374108c470656f6c5f065c8601ecf180fd92e938c69998b27a146963a8b5d7e6",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1179/030801800679224",
+            "reason": "not-found"
+          }
         }
       },
       "addedIn": 9,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.701966+00:00",
@@ -598,12 +681,26 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "the plaintiffs argued that the safety reviews were conducted by the same institution seeking to run the experiment",
-          "extractionConfidence": 0.6
+          "quote": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
+          "extractionConfidence": 0.6,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "6a519f52604c791d822f3f61a30aa6aa04d13309087629cee1d4c4988d82c43d",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0912.5480",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2f74e9c84d45ee4233f47cac54c550006e39df2f93a789d2560993cf736d5478",
+            "normalizedCharStart": 588,
+            "normalizedCharEnd": 709,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 11,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.701983+00:00",
@@ -614,7 +711,7 @@
       "id": "src_cern_the_safety_of_the_lhc_public_statement_2008",
       "title": "CERN — The Safety of the LHC (public statement)",
       "year": 2008,
-      "url": "https://home.web.cern.ch/science/accelerators/large-hadron-collider/safety-lhc",
+      "url": "https://home.cern/cern-reiterates-safety-of-lhc-on-eve-of-first-beam/",
       "authors": [
         "CERN"
       ],
@@ -631,12 +728,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the LHC is safe; whatever the LHC will do, nature has already done many times over during the lifetime of the Earth",
-          "extractionConfidence": 0.8
+          "quote": "A report published today in the peer reviewed Journal of Physics G: Nuclear and Particle Physics provides comprehensive evidence that safety fears about the Large Hadron Collider (LHC) are unfounded.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "013d4077013f5a1e10a66caa6a6338aa913554e47d7180fa67ee68d2ec571a89",
+            "textDepth": "partial",
+            "sourceUrl": "https://home.cern/cern-reiterates-safety-of-lhc-on-eve-of-first-beam/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4dec0c63cc156a151c142b512a4235121e76eb5c465df1f8abf059343e1dd539",
+            "normalizedCharStart": 203,
+            "normalizedCharEnd": 402,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 12,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702000+00:00",
@@ -665,12 +776,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "cosmic-ray collisions at energies far above those of any accelerator have been occurring throughout the history of the universe without catastrophe",
-          "extractionConfidence": 0.85
+          "quote": "We show here that this chance, fortunately, is completely negligible since the region inside our past light cone has already survived some 10 5 cosmic ray collisions at centre of mass energies of 10 11 GeV and higher.",
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "2d0d1055497be5fac6658a11a293cca19721655be1b395b1290c21d492564b73",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.nature.com/articles/302508a0",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "7e6bf75147d763cb2d4e85f5d2540902d8df5dd217808d8b19c5a86a963142e3",
+            "normalizedCharStart": 1863,
+            "normalizedCharEnd": 2080,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 13,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702017+00:00",
@@ -699,12 +824,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the fact that our planet has survived for billions of years places an empirical upper bound on the rate of such catastrophes",
-          "extractionConfidence": 0.8
+          "quote": "Here we derive a new upper bound of one per billion years (99.9% confidence level) for the exogenous terminal-catastrophe rate that is free of such selection bias, using calculations based on the relatively late formation time of Earth.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "fb2f7c6444eb73eaec3cc8a5ffdde92a484762b0a90d399298fc72a6a370de36",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.nature.com/articles/438754a",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f6578cdfe4fd1e1d22956e8084604a35b5954b8ae5cffeaa99ecd06eb7b8891b",
+            "normalizedCharStart": 789,
+            "normalizedCharEnd": 1025,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 14,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077686+00:00",
@@ -715,7 +854,7 @@
       "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
       "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
       "year": 2003,
-      "url": "https://cds.cern.ch/record/613175",
+      "url": "https://cds.cern.ch/record/613175/files/CERN-2003-001.pdf",
       "authors": [
         "J.-P. Blaizot",
         "J. Iliopoulos",
@@ -773,12 +912,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the accretion time for any black hole produced at the LHC is far longer than the age of the universe",
-          "extractionConfidence": 0.8
+          "quote": "Based on this analysis, we argue against the possibility of catastrophic black hole growth at the LHC.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "fd2113668f22249416a46c9271fa455b82b9853747a1266025d2841584b2f1e8",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0901.2948",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "6e605dfb0718ea7b3d5427cc5a7b28a261af995520755cbf97d81c8b03570276",
+            "normalizedCharStart": 621,
+            "normalizedCharEnd": 723,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 16,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702068+00:00",
@@ -789,7 +942,7 @@
       "id": "src_cavagli_particle_accelerators_as_black_hole__2010",
       "title": "Cavaglià — Particle accelerators as black hole factories?",
       "year": 2010,
-      "url": "https://arxiv.org/abs/1004.4058",
+      "url": "https://www.einstein-online.info/en/spotlight/accelerators_bh/",
       "authors": [
         "Marco Cavaglià"
       ],
@@ -807,11 +960,20 @@
       "provenance": {
         "position": {
           "quote": "any microscopic black hole would evaporate almost instantaneously via Hawking radiation",
-          "extractionConfidence": 0.75
+          "extractionConfidence": 0.75,
+          "verifiedQuote": "missing",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "missing",
+            "textSha256": "c9c69388066cc96a8fa3391b453cff11f58fd8c726a03e8e89e3bc48fbc1521f",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.einstein-online.info/en/spotlight/accelerators_bh/",
+            "reason": "not-found"
+          }
         }
       },
       "addedIn": 17,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702084+00:00",
@@ -841,7 +1003,20 @@
         "position": {
           "quote": "A plausible scenario in which these black holes accrete ambient matter at the Eddington limit shortly after their production, thereby emitting Hawking radiation that would be harmful to Earth and/or CERN and its surroundings, is described.",
           "extractionConfidence": 0.7,
-          "verifiedQuote": "exact"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "8f43d900a69b3d6fa1e65a16a0bd7e5c670f6c14a405cc9e6139bf95d5ce4acc",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0808.1415",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "9b491c99e8a7b8c0d8710b7d18a748daa53f11d772aa5aa4d1ec4583cf615424",
+            "normalizedCharStart": 308,
+            "normalizedCharEnd": 547,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 18,
@@ -874,12 +1049,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "the scenario proposed is inconsistent with the empirical constraints from white dwarfs and neutron stars",
-          "extractionConfidence": 0.8
+          "quote": "We comment on inconsistency of this proposed scenario.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ad9f3878a4cbb43bbb7d407428d249115da4413cb5116480b92ffa0f3e9c213c",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/0808.4087",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "a3f9b2975c6c278e371510a9eba1a9ce5bfeccd52c562e7f7bb31a827213181a",
+            "normalizedCharStart": 214,
+            "normalizedCharEnd": 268,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 19,
-      "textDepth": "unknown",
+      "textDepth": "abstract",
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.702118+00:00",
@@ -907,9 +1096,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "The costs of small risks of catastrophe have been significantly underestimated; acceptable risk bounds should be agreed before hypothetically risky experiments.",
+          "quote": "Future policy on catastrophe risks would be more rational, and more deserving of public trust, if acceptable risk bounds were generally agreed upon ahead of time and if serious research on whether those bounds could indeed be guaranteed was carried out well in advance of any hypothetically risky experiment, with the relevant debates involving experts with no stake in the experiments under consideration.",
           "extractionConfidence": 0.96,
-          "verifiedQuote": "fuzzy"
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d186fcfef076943455dafb09ccb55f58b8a239ac699b1ab0b8ad85f480e76d0b",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1111/j.0272-4332.2004.00419.x",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "6a340ed75c69c7a2076afbe01f2a48dfc2446ad875dcd2ce24b2cc1bdffb10ea",
+            "normalizedCharStart": 1729,
+            "normalizedCharEnd": 2135,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 20,
@@ -919,47 +1121,6 @@
         "ts": "2026-07-12T13:51:36.077772+00:00",
         "method": "catalogue+manual-full-text"
       }
-    },
-    {
-      "id": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001",
-      "title": "Dimopoulos & Landsberg — Black Holes at the Large Hadron Collider",
-      "year": 2001,
-      "url": "https://doi.org/10.1103/PhysRevLett.87.161602",
-      "authors": [
-        "Savas Dimopoulos",
-        "Greg Landsberg"
-      ],
-      "venue": "Physical Review Letters",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_risk_lhc_collisions_are_safe",
-      "evidence": "Mechanistic",
-      "funding": "Government/public",
-      "population": "Hypothetical TeV-scale microscopic black holes",
-      "confidence": "moderate",
-      "restsOn": [
-        {
-          "ref": "ds_hawking_radiation_black_hole_evaporation",
-          "provenance": {
-            "quote": "The correlation between the black-hole mass and its temperature, deduced from the energy spectrum of the decay products, can test Hawking's evaporation law.",
-            "verifiedQuote": "exact"
-          }
-        }
-      ],
-      "provenance": {
-        "position": {
-          "quote": "The decays of the black holes into final states with prompt, hard photons, electrons, or muons provide a clean signature with low background.",
-          "extractionConfidence": 0.97,
-          "verifiedQuote": "exact"
-        }
-      },
-      "addedIn": 25,
-      "textDepth": "full",
-      "fundingDetails": [
-        "U.S. Department of Energy grant DE-FG02-91ER40688",
-        "U.S. National Science Foundation grant PHY-9870115",
-        "Alfred P. Sloan Foundation"
-      ]
     }
   ],
   "vocab": {
@@ -1485,6 +1646,33 @@
         }
       ],
       "ts": "2026-07-12T13:54:20.702160+00:00"
+    },
+    {
+      "version": 27,
+      "action": "quote-reaudit",
+      "method": "verbatim-sentence-v2",
+      "ts": "2026-07-13T00:35:29.291944+00:00",
+      "sources": 17
+    }
+  ],
+  "refused": [
+    {
+      "title": "Jaffe, Busza, Sandweiss, Wilczek — Review of speculative disaster scenarios at RHIC",
+      "url": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.72.1125",
+      "reason": "RHIC strangelet analysis, not evidence about LHC-created black holes.",
+      "sourceId": "src_jaffe_busza_sandweiss_wilczek_review_of_spec_2000"
+    },
+    {
+      "title": "Dar, De Rújula, Heinz — Will relativistic heavy ion colliders destroy our planet?",
+      "url": "https://arxiv.org/abs/hep-ph/9910471",
+      "reason": "RHIC strangelet analysis, not evidence about LHC-created black holes.",
+      "sourceId": "src_dar_de_r_jula_heinz_will_relativistic_heavy__1999"
+    },
+    {
+      "title": "Dimopoulos & Landsberg — Black Holes at the Large Hadron Collider",
+      "url": "https://doi.org/10.1103/PhysRevLett.87.161602",
+      "reason": "Collider-production/detection paper with no safety conclusion; Hawking evaporation is already represented by its direct theoretical source.",
+      "sourceId": "src_dimopoulos_landsberg_black_holes_at_the_larg_2001"
     }
   ]
 }

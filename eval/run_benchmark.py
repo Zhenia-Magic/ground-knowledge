@@ -114,7 +114,7 @@ def adversarial_invariance(kb):
     # actually names may be admitted.
     kb_edge = copy.deepcopy(kb)
     anchor = "Benchmark verified anchor for " + kb["meta"]["id"]
-    quote = "Methods: We analyzed the {} as the primary evidence base for this study.".format(anchor)
+    quote = "We analyzed the {} as the primary evidence base for this study.".format(anchor)
     edge_delta = _src("edge_binding", target, "Observational", [
         {"ref": "NEW:" + anchor, "provenance": {"quote": quote, "extractionConfidence": 0.9}},
         {"ref": "NEW:Fabricated sibling for " + kb["meta"]["id"],

@@ -261,8 +261,11 @@ def _review_prompt(kb_path, delta):
         return delta
 
 
-def _apply_delta(kb_path, delta):
+def _apply_delta(kb_path, delta, verification_trusted=False):
     from engine import review
+    if not verification_trusted:
+        from engine.verify import strip_untrusted_verification
+        delta = strip_untrusted_verification(delta)
     if review.needs_review(delta):
         delta = _review_prompt(kb_path, delta)
         if delta is None:
@@ -291,12 +294,12 @@ def _apply_delta(kb_path, delta):
     return True
 
 
-def _merge_deltas(kb_path, deltas):
+def _merge_deltas(kb_path, deltas, verification_trusted=False):
     """Merge a list of deltas one at a time (each recomputes + diffs against the prior KB)."""
     from engine.merge import resolve_pending_refs
     added = 0
     for d in deltas:
-        if _apply_delta(kb_path, d):
+        if _apply_delta(kb_path, d, verification_trusted=verification_trusted):
             added += 1
         print("")
     # second pass: resolve NEW-SRC forward references now that the whole batch is present (so a
@@ -564,7 +567,7 @@ def cmd_ingest(args):
         dpath = os.path.join(ROOT, "cases", "delta-" + dpath + ".json")
         write_json(dpath, delta)
         print("delta → " + dpath)
-        _apply_delta(args.kb, delta)
+        _apply_delta(args.kb, delta, verification_trusted=True)
         if getattr(args, "build", False):
             _build_viewer([args.kb])
     else:
@@ -659,7 +662,7 @@ def _extract_and_report(kb_path, targets, batch, max_text, apply_, build, succes
     if dpath:
         write_json(dpath, deltas)
         print("deltas → {} ({} source(s))\n".format(dpath, len(deltas)))
-    added = _merge_deltas(kb_path, deltas)
+    added = _merge_deltas(kb_path, deltas, verification_trusted=True)
     print(success_msg.format(added=added, total=len(deltas), kb=kb_path))
     if build:
         _build_viewer([kb_path])
@@ -749,7 +752,7 @@ def cmd_harvest(args):
     if args.batch > 1:
         # fewer LLM calls: extract several sources per call (trims per-source text)
         deltas = ingest_batch(urls, read_json(args.kb), batch=args.batch, max_text=args.max_text)
-        added = _merge_deltas(args.kb, deltas)
+        added = _merge_deltas(args.kb, deltas, verification_trusted=True)
     else:
         # one call per source, full text — highest extraction fidelity
         added = 0
@@ -760,7 +763,7 @@ def cmd_harvest(args):
             except SystemExit as e:
                 print("  skipped (extract/LLM failed): {}\n".format(e))
                 continue
-            if _apply_delta(args.kb, delta):
+            if _apply_delta(args.kb, delta, verification_trusted=True):
                 added += 1
             print("")
     print("Harvest complete: {} source(s) added to {}.".format(added, args.kb))
@@ -865,7 +868,8 @@ def cmd_deepen(args):
             break
         print("  ingesting {} new candidate(s)…".format(len(urls)))
         added = _merge_deltas(args.kb, ingest_batch(urls, read_json(args.kb),
-                                                    batch=args.batch, max_text=args.max_text))
+                                                    batch=args.batch, max_text=args.max_text),
+                                verification_trusted=True)
         total_added += added
         remaining = find_gaps(read_json(args.kb))
         spent = "  ~${:.2f} spent".format(llm.usage()["usd"]) if budget else ""

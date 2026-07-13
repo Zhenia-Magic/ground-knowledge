@@ -2,13 +2,14 @@
 _carry_meta, engine/merge.py's textDepth/verifiedQuote passthrough, and engine/assess.py's
 quote_audit. See SCHEMA.md (textDepth, provenance[field].verifiedQuote) and MECHANISM.md.
 """
+import hashlib
 import unittest
 from unittest import mock
 
 from engine.assess import quote_audit
 from engine.merge import merge_delta
 from engine.schema import empty_kb
-from engine.verify import match_quote
+from engine.verify import apply_quote_verification, ground_quote, is_verified_exact, match_quote
 from ingest.pipeline import _carry_meta, _prompt_text, build_batch_extract_prompt
 
 TEXT = """Title of Paper
@@ -34,11 +35,17 @@ FABRICATED_QUOTE = "the study found that heavy drinking triples the risk of stro
 class MatchQuoteTests(unittest.TestCase):
     def test_exact_substring_after_normalization(self):
         self.assertEqual(match_quote(EXACT_QUOTE, TEXT), "exact")
-        self.assertEqual(match_quote(EXACT_QUOTE.upper(), TEXT), "exact")
+        # Case changes are alterations, not verbatim quotation.
+        self.assertEqual(match_quote(EXACT_QUOTE.upper(), TEXT), "fuzzy")
         self.assertEqual(match_quote("  " + EXACT_QUOTE.replace("\n", "   "), TEXT), "exact")
 
     def test_near_verbatim_paraphrase_is_fuzzy(self):
         self.assertEqual(match_quote(FUZZY_QUOTE, TEXT), "fuzzy")
+
+    def test_changed_dash_or_curly_quote_is_not_exact(self):
+        text = "The interval was 0.14–0.29 and the authors called it “small but consistent.”"
+        altered = 'The interval was 0.14-0.29 and the authors called it "small but consistent."'
+        self.assertEqual(match_quote(altered, text), "fuzzy")
 
     def test_fabricated_quote_is_missing(self):
         self.assertEqual(match_quote(FABRICATED_QUOTE, TEXT), "missing")
@@ -55,6 +62,30 @@ class MatchQuoteTests(unittest.TestCase):
     def test_empty_quote_or_text_is_missing(self):
         self.assertEqual(match_quote("", TEXT), "missing")
         self.assertEqual(match_quote(EXACT_QUOTE, ""), "missing")
+
+    def test_title_plus_abstract_join_is_never_exact(self):
+        text = ("The Huanan market was the early epicenter of the COVID-19 pandemic\n\n"
+                "Understanding how severe acute respiratory syndrome coronavirus 2 emerged in "
+                "2019 is critical to preventing zoonotic outbreaks.")
+        joined = ("The Huanan market was the early epicenter of the COVID-19 pandemic "
+                  "Understanding how severe acute respiratory syndrome coronavirus 2 emerged in "
+                  "2019 is critical to preventing zoonotic outbreaks.")
+        self.assertEqual(ground_quote(joined, text,
+                         source_title="The Huanan market was the early epicenter of the COVID-19 pandemic")
+                         ["status"], "fuzzy")
+
+    def test_exact_result_has_hashed_audit_and_canonical_sentence(self):
+        result = ground_quote(EXACT_QUOTE, TEXT, text_depth="full")
+        self.assertEqual(result["method"], "verbatim-sentence-v2")
+        self.assertEqual(len(result["textSha256"]), 64)
+        self.assertTrue(result["quote"].endswith("sick-quitter effect."))
+
+    def test_editing_wording_after_verification_invalidates_exact_status(self):
+        provenance = {"quote": EXACT_QUOTE}
+        apply_quote_verification(provenance, TEXT, text_depth="full")
+        self.assertTrue(is_verified_exact(provenance))
+        provenance["quote"] += " altered"
+        self.assertFalse(is_verified_exact(provenance))
 
 
 class CarryMetaVerificationTests(unittest.TestCase):
@@ -74,7 +105,9 @@ class CarryMetaVerificationTests(unittest.TestCase):
             "evidence": {"quote": FABRICATED_QUOTE, "extractionConfidence": "high"},
         }}}
         _carry_meta(delta, {"kind": "full", "text": TEXT})
-        self.assertEqual(delta["source"]["provenance"]["position"]["verifiedQuote"], "exact")
+        position = delta["source"]["provenance"]["position"]
+        self.assertEqual(position["verifiedQuote"], "exact")
+        self.assertTrue(is_verified_exact(position))
         self.assertEqual(delta["source"]["provenance"]["evidence"]["verifiedQuote"], "missing")
 
     def test_verifies_each_dependency_edge_against_doc_text(self):
@@ -191,7 +224,11 @@ class MergeCarriesVerificationTests(unittest.TestCase):
         merge_delta(kb, {"source": {
             "title": "A paper", "position": "NEW:Yes", "evidence": "Observational",
             "funding": "Undisclosed", "population": "—", "textDepth": "full",
-            "provenance": {"position": {"quote": EXACT_QUOTE, "verifiedQuote": "exact"}},
+            "provenance": {"position": {"quote": EXACT_QUOTE, "verifiedQuote": "exact",
+                "quoteVerification": {"method": "verbatim-sentence-v2", "status": "exact",
+                                      "textSha256": "a" * 64,
+                                      "quoteSha256": hashlib.sha256(
+                                          " ".join(EXACT_QUOTE.split()).encode()).hexdigest()}}},
         }, "factorWeights": [{"factorLabel": "F", "weight": "high",
                                "quote": FABRICATED_QUOTE, "verifiedQuote": "missing"}]})
         src = kb["sources"][0]
@@ -216,6 +253,10 @@ class QuoteAuditTests(unittest.TestCase):
 
     def _src(self, sid, depth, verified=None):
         prov = {"position": {"quote": "q", "verifiedQuote": verified}} if verified else {}
+        if verified == "exact":
+            prov["position"]["quoteVerification"] = {
+                "method": "verbatim-sentence-v2", "status": "exact", "textSha256": "a" * 64,
+                "quoteSha256": hashlib.sha256(b"q").hexdigest()}
         return {"id": sid, "position": "X", "title": sid, "textDepth": depth, "provenance": prov}
 
     def test_unverified_quote_on_full_text_source_is_flagged(self):
@@ -227,13 +268,13 @@ class QuoteAuditTests(unittest.TestCase):
         self.assertEqual(len(qa["flagged"]), 1)
         self.assertEqual(qa["flagged"][0]["id"], "s1")
 
-    def test_missing_quote_on_abstract_source_is_not_flagged(self):
+    def test_missing_quote_on_abstract_source_is_still_flagged_as_not_a_quote(self):
         kb = self._kb_with([self._src("s1", "abstract", "missing")])
         qa = quote_audit(kb)
         pos = qa["positions"][0]
         self.assertEqual(pos["full"], 0)
         self.assertEqual(pos["unverifiedFull"], 0)
-        self.assertEqual(qa["flagged"], [])
+        self.assertEqual(len(qa["flagged"]), 1)
 
     def test_unknown_depth_excluded_from_depth_known_count(self):
         kb = self._kb_with([self._src("s1", "unknown"), self._src("s2", "full", "exact")])

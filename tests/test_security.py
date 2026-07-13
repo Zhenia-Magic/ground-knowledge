@@ -147,27 +147,35 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
     def test_strips_spoofed_text_depth_and_verified_quote_from_full_delta(self):
         d = _norm_delta({"source": {
             "title": "t", "position": "NEW:Yes", "textDepth": "full",
-            "provenance": {"position": {"quote": "fabricated", "verifiedQuote": "exact"}},
+            "textAudit": {"sha256": "spoofed"},
+            "provenance": {"position": {"quote": "fabricated", "verifiedQuote": "exact",
+                "quoteVerification": {"method": "verbatim-sentence-v2", "status": "exact",
+                                      "textSha256": "a" * 64, "quoteSha256": "b" * 64}}},
         }, "factorWeights": [{"factorLabel": "F", "weight": "high", "quote": "x",
-                              "verifiedQuote": "exact"}]})
-        self.assertNotIn("textDepth", d["source"])
+                              "verifiedQuote": "exact", "quoteVerification": {"spoofed": True}}]})
+        self.assertEqual(d["source"]["textDepth"], "unknown")
+        self.assertNotIn("textAudit", d["source"])
         self.assertNotIn("verifiedQuote", d["source"]["provenance"]["position"])
+        self.assertNotIn("quoteVerification", d["source"]["provenance"]["position"])
         self.assertNotIn("verifiedQuote", d["factorWeights"][0])
+        self.assertNotIn("quoteVerification", d["factorWeights"][0])
 
     def test_strips_spoofed_verified_quote_from_restsOn_edge_object(self):
         # per-edge dependency quotes ride the untrusted paste-back path too: a client must not be
         # able to self-declare an edge object's quote as verified and mint a confirmed root.
         d = _norm_delta({"source": {
             "title": "t", "position": "NEW:Yes",
-            "restsOn": [{"ref": "ds_x", "provenance": {"quote": "fabricated", "verifiedQuote": "exact"}}],
+            "restsOn": [{"ref": "ds_x", "provenance": {"quote": "fabricated",
+                "verifiedQuote": "exact", "quoteVerification": {"spoofed": True}}}],
         }, "factorWeights": []})
         self.assertNotIn("verifiedQuote", d["source"]["restsOn"][0]["provenance"])
+        self.assertNotIn("quoteVerification", d["source"]["restsOn"][0]["provenance"])
 
     def test_strips_spoofed_fields_from_bare_source_delta(self):
         d = _norm_delta({"title": "t", "position": "NEW:Yes", "textDepth": "full",
                          "provenance": {"position": {"quote": "fabricated",
                                                       "verifiedQuote": "exact"}}})
-        self.assertNotIn("textDepth", d["source"])
+        self.assertEqual(d["source"]["textDepth"], "unknown")
         self.assertNotIn("verifiedQuote", d["source"]["provenance"]["position"])
 
     def test_end_to_end_apply_delta_never_persists_spoofed_verification(self):

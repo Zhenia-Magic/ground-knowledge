@@ -24,6 +24,7 @@ and passing root admission (the labelling prompt requires the per-edge evidence)
 back-compat but are no longer produced.
 """
 import re
+from .verify import is_verified_exact
 
 # Evidence-base kinds. Empirical bases carry data (population, samples) and take the empirical
 # discounts; theoretical bases are derivations/claims and must not be halved for 'non-human'
@@ -142,8 +143,8 @@ def _specific_identity_label(label):
 def _quote_identifies_dataset(kb, dataset_id, quote):
     """Conservative identity check for a verified dependency quote.
 
-    `verifiedQuote` proves only that the sentence occurs in fetched text. It does NOT prove that the
-    sentence names the proposed root. Require the quote to contain a sufficiently specific canonical
+    A current hashed `verbatim-sentence-v2` record proves only that the sentence occurs in fetched
+    text. It does NOT prove that the sentence names the proposed root. Require the quote to contain a sufficiently specific canonical
     label or an EXPLICIT learned alias before that edge may admit the root. We deliberately do not
     synthesise acronyms: "Medical Review" -> "MR" would match ordinary "Mr. Smith" prose. Generic
     wording such as "we used the cohort" stays visible but provisional for a curator.
@@ -236,7 +237,8 @@ def _edges(source):
     """Split a source's restsOn into (dataset ids, source ids, edge_provenance).
 
     A restsOn entry is EITHER a bare string ref, OR an edge object carrying its own dependency
-    quote: {"ref": "<id>", "provenance": {"quote": "...", "verifiedQuote": "exact"}}. Both are
+    quote: {"ref": "<id>", "provenance": {"quote": "...", "verifiedQuote": "exact",
+    "quoteVerification": {...}}}. Both are
     accepted so per-edge verification is auditable without breaking string-only KBs. Source edges
     are stored as 'src:<id>'; everything else is a dataset root. Case-insensitive prefix check:
     merge.py always normalizes to lowercase, but a hand-authored/seed KB writing "SRC:<id>" should
@@ -406,7 +408,7 @@ def resolve(kb):
     # one of two auditable ways:
     #   (1) curator confirmation — the dataset carries a confirmation record (or legacy confirmed:true);
     #   (2) verified edge — a source that was really FETCHED (textDepth full/abstract/partial) carries a
-    #       dependency quote that matched the fetched text FOR THAT SPECIFIC DATASET EDGE.
+    #       dependency quote with a current hashed verbatim-sentence-v2 audit FOR THAT SPECIFIC EDGE.
     # Two things are deliberately NOT enough, closing the old whitewash where one source-level quote
     # admitted every dataset a source touched:
     #   * an INHERITED root (reached only through a src:<id> citation edge) is never confirmed by the
@@ -434,8 +436,7 @@ def resolve(kb):
         # of them — one generic sentence must never whitewash every sibling edge. New ingestion
         # always attaches provenance to the specific edge object below.
         legacy = (s.get("provenance") or {}).get("restsOn")
-        if isinstance(legacy, dict) and ("verifiedQuote" in legacy or "quote" in legacy) \
-                and legacy.get("verifiedQuote") in {"exact", "fuzzy"} and len(direct) == 1:
+        if isinstance(legacy, dict) and is_verified_exact(legacy) and len(direct) == 1:
             rk = next(iter(direct))
             if rk not in confirmed_by:
                 confirmed_by[rk] = {"method": "verified-edge-legacy-single", "source": s["id"]}
@@ -444,7 +445,7 @@ def resolve(kb):
             if ref_key.startswith("src:"):
                 continue                                       # a citation edge cannot self-confirm
             rk = "ds:" + ref_key
-            if rk in direct and ep.get("verifiedQuote") in {"exact", "fuzzy"} \
+            if rk in direct and is_verified_exact(ep) \
                     and _quote_identifies_dataset(kb, ref_key, ep.get("quote")):
                 if rk not in confirmed_by:
                     confirmed_by[rk] = {"method": "verified-edge", "source": s["id"]}

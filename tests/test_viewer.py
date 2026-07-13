@@ -9,7 +9,8 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 
 
 def _kb(case):
-    return json.load(open(os.path.join(ROOT, "cases", case), encoding="utf-8"))
+    with open(os.path.join(ROOT, "cases", case), encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def _cruxes(case):
@@ -45,6 +46,16 @@ class DivergenceCopyTests(unittest.TestCase):
         self.assertIn("SHARED PIVOT", html)
         self.assertIn("pivotbadge", html)
         self.assertNotIn("weigh very differently — that is where the real disagreement", html)
+
+
+class QuoteBadgeCopyTests(unittest.TestCase):
+    def test_full_text_alone_never_creates_a_checkmark(self):
+        with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as handle:
+            template = handle.read()
+        self.assertIn('a.method==="verbatim-sentence-v2"', template)
+        self.assertIn("a.textSha256&&a.quoteSha256", template)
+        self.assertNotIn('textDepth==="full"?\'<span class="okicon"', template)
+        self.assertIn("Stored summary — not verified verbatim", template)
 
 
 if __name__ == "__main__":
