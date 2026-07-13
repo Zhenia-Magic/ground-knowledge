@@ -79,6 +79,37 @@ def _admin_confirm_dataset(qid, dataset_ref, confirmed=True, by="portal-admin", 
     return {"ok": True, "version": v, "summary": res.get("summary")}
 
 
+def _admin_merge_dataset(qid, src_ref, dst_ref):
+    """Curator folds one dataset into another (same evidence base under two names): restsOn edges are
+    repointed, the folded name is learned as an alias, and the surviving root keeps/gains confirmation
+    (engine/curate.merge_datasets). This is what restores an honest independence reading when one
+    cohort was split under two spellings. Admin moderation."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    try:
+        res = curate.merge_datasets(kb, src_ref, dst_ref)
+    except (ValueError, KeyError) as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"])
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v, "summary": res.get("summary")}
+
+
+def _admin_suggest_duplicates(qid):
+    """Advisory list of dataset pairs whose labels look like the same evidence base, so a curator can
+    merge without hunting. Suggestions only — never auto-merged (engine/curate.suggest_duplicates)."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    return {"dataset": curate.suggest_duplicates(q["kb"]).get("dataset", [])}
+
+
 def _admin_review_resolve(qid, item_id, kind, action, position=None):
     """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
     (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
@@ -401,6 +432,12 @@ class Handler(BaseHTTPRequestHandler):
                     body.get("id"), body.get("dataset") or body.get("datasetId"),
                     body.get("confirmed", True), body.get("by") or "portal-admin",
                     body.get("source"), body.get("note"), body.get("allowSimilar", False)))
+            if p[2] == "merge-dataset":
+                return self._send(200, _admin_merge_dataset(
+                    body.get("id"), body.get("src") or body.get("from"),
+                    body.get("dst") or body.get("into")))
+            if p[2] == "suggest-duplicates":
+                return self._send(200, _admin_suggest_duplicates(body.get("id")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()

@@ -421,6 +421,7 @@ def manage_html(qid, get_question):
         evidence base</b>. Confirm the ones you have checked; they then enter the count. Un-confirm to
         send one back. Each action is logged with your admin identity.</p>
         <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
+        <div id="dsdup"></div>
         <div id="dss"></div></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
@@ -463,21 +464,50 @@ def manage_html(qid, get_question):
     }
     const dsConfirmed=d=>d.confirmed===true||(d.confirmation&&d.confirmation.status==='confirmed');
     function renderDatasets(kb){
+      window.__kb=kb;
       const ds=kb.datasets||[], wrap=document.getElementById('dss');
       const conf=ds.filter(dsConfirmed).length;
       document.getElementById('dscount').innerHTML = ds.length
         ? `<span class="why" style="font-weight:400">— ${conf} of ${ds.length} confirmed</span>` : '';
-      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';return;}
+      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';document.getElementById('dsdup').innerHTML='';return;}
       wrap.innerHTML=ds.slice().sort((a,b)=>dsConfirmed(a)-dsConfirmed(b)).map(d=>{
         const ok=dsConfirmed(d);
         const by=(d.confirmation&&d.confirmation.by)?` · ${E(d.confirmation.by)}`:'';
         const badge=ok?`<span class="rev-badge merged">confirmed${by}</span>`
                       :'<span class="rev-badge queued">proposed · 0 weight</span>';
+        const opts=ds.filter(o=>o.id!==d.id).map(o=>`<option value="${E(o.id)}">${E(o.label||o.id)}</option>`).join('');
         return `<div class="cand"><div style="flex:1"><b>${E(d.label||d.id)}</b>
           <span class="why">${E(d.kind||'dataset')}</span> ${badge}</div>
+          <select class="dsmg" title="fold this base into another (same data, different name)" onchange="if(this.value)mergeDataset('${E(d.id)}',this.value,this)"><option value="">Merge into…</option>${opts}</select>
           ${ok?`<button class="btn ghost" onclick="confirmDataset('${E(d.id)}',false,this)">Un-confirm</button>`
               :`<button class="btn" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button>`}</div>`;
       }).join('');
+      renderDupes(kb);
+    }
+    async function renderDupes(kb){
+      const box=document.getElementById('dsdup'); if(!box)return;
+      let pairs=[];
+      try{const r=await fetch('/api/admin/suggest-duplicates',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
+        pairs=((await r.json()).dataset)||[];}catch(e){box.innerHTML='';return;}
+      if(!pairs.length){box.innerHTML='';return;}
+      const ds=kb.datasets||[], isc=id=>{const d=ds.find(x=>x.id===id);return d&&dsConfirmed(d);};
+      box.innerHTML=`<div class="toast warn" style="margin-bottom:10px"><b>Possible duplicates.</b>
+        These labels look like the same evidence base — merge so one cohort isn't counted as two independent bases.</div>`
+        + pairs.map(p=>{
+          const keep=(isc(p.b.ref)&&!isc(p.a.ref))?p.b:p.a, fold=(keep===p.a)?p.b:p.a;
+          return `<div class="cand"><div style="flex:1"><b>${E(fold.label)}</b>
+            <span class="why">→</span> <b>${E(keep.label)}</b>
+            <span class="why">· ${E(p.reason)} · ${p.sim}</span></div>
+            <button class="btn ghost" onclick="mergeDataset('${E(fold.ref)}','${E(keep.ref)}',null)">Merge</button></div>`;
+        }).join('');
+    }
+    async function mergeDataset(srcId,dstId,el){
+      const ds=(window.__kb&&window.__kb.datasets)||[], nm=id=>{const d=ds.find(x=>x.id===id);return d?(d.label||d.id):id;};
+      if(!confirm('Merge “'+nm(srcId)+'” into “'+nm(dstId)+'”?\\n\\nSources resting on “'+nm(srcId)+'” are repointed to “'+nm(dstId)+'”, the old name is kept as an alias, and “'+nm(srcId)+'” is removed.')){ if(el)el.value=''; return; }
+      const r=await fetch('/api/admin/merge-dataset',{method:'POST',headers:H(),body:JSON.stringify({id:QID,src:srcId,dst:dstId})});
+      const j=await r.json();
+      if(j.error){alert(j.error); if(el)el.value=''; return;}
+      render();
     }
     async function confirmDataset(dsId,confirmed,btn,extra){
       if(btn)btn.disabled=true;
