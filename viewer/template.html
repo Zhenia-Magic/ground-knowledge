@@ -125,6 +125,19 @@
     min-width:0;padding:0 8px;border:0;background:transparent;}
   .seg:hover{filter:brightness(1.1);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);}
   .seg.dim{opacity:.32;}
+  .cmphead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .cmphead b{font-size:13.5px;}
+  .cmphead span{font-size:12px;color:var(--muted);}
+  .compact-summary .distrib{height:30px;}
+  .compact-summary .splitlabel{margin:12px 0 6px;}
+  .compact-summary .splitlabel:first-of-type{margin-top:0;}
+  .compact-summary .indrow{padding:4px 0;}
+  .cmpinsight{margin:9px 0 0;padding-top:9px;border-top:1px solid var(--line);font-size:12px;
+    color:var(--muted);line-height:1.4;}
+  .cmphelp{margin-top:7px;font-size:11.5px;color:var(--muted);}
+  .cmphelp summary{cursor:pointer;color:var(--faint);}
+  .cmphelp div{margin-top:7px;line-height:1.5;max-width:90ch;}
+  .cmphelp .risk-link{margin:0 0 0 4px;padding:2px 6px;font-size:11px;}
   .takeaway{font-size:13.5px;background:var(--flag-bg);border-left:3px solid var(--flag);
     border-radius:0 8px 8px 0;padding:10px 14px;margin:14px 0 2px;}
   .method-alert{background:var(--ochre-bg);border:1px solid #E3CD99;border-left:4px solid var(--ochre);
@@ -136,6 +149,13 @@
   .risk-link:hover{background:#FFF8E8;}
   .warn-src{background:#fff;border:1px solid #E3CD99;border-radius:7px;padding:7px 10px;
     margin:7px 0 0;font-size:12.5px;line-height:1.45;}
+  .warnlines{margin-top:12px;border-top:1px solid var(--line);padding-top:7px;}
+  .warnline{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;
+    padding:5px 3px;font-size:11.5px;color:var(--muted);}
+  .warnline+.warnline{border-top:1px solid var(--line);}
+  .warnline .warnmark{color:var(--ochre);font-size:11px;}
+  .warnline b{color:var(--ink);font-weight:600;}
+  .warnline .risk-link{margin:0;padding:3px 7px;font-size:10.5px;white-space:nowrap;}
   .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--muted);}
   .legend .key{display:inline-flex;flex-wrap:wrap;align-items:center;gap:7px;cursor:pointer;
     transition:color .12s;border:0;background:transparent;font:inherit;padding:0;
@@ -312,6 +332,8 @@
     .main{padding:18px 16px 50px;}
     .panel{padding:14px 14px;}
     .cards{grid-template-columns:1fr;} .bs-grid{grid-template-columns:1fr;}
+    .compact-summary .indrow{grid-template-columns:minmax(110px,1fr) minmax(80px,1fr);gap:5px 10px;}
+    .compact-summary .indval{grid-column:1/-1;padding-left:17px;}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
@@ -501,16 +523,14 @@ function warningsHtml(warnings, mode){
     "method-monoculture":"Potential shared-method bias", quote:"Unverified quote",
     "low-confidence":"Weak quote grounding", "model-disagreement":"Labelling models disagreed"};
   const detailed = mode==="detailed";
+  if(!detailed){
+    const rows=(warnings||[]).map(w=>{
+      const label=w.positionId?(w.label||""):(w.headline||"").replace(/[.]$/g,"");
+      return `<div class="warnline"><span class="warnmark">⚠</span><span><b>${esc(kicker[w.kind]||w.badge)}</b>${label?` · ${esc(label)}`:""}</span><button class="risk-link" data-view="independence">Details</button></div>`;
+    }).join("");
+    return rows?`<div class="warnlines">${rows}</div>`:"";
+  }
   return (warnings||[]).map(w=>{
-    if(!detailed && w.kind==="model-disagreement"){
-      // concise front-page version: the fact that matters (they're still counted) + a pointer
-      return `<div class="method-alert">
-        <div class="risk-kicker">${esc(kicker[w.kind])}</div>
-        <div>${esc(w.headline)} The highest-confidence model's label was used, and they <b>remain
-        in every count</b> under that label (⚖ in the table below). Check them before weighing.</div>
-        <button class="risk-link" data-view="independence">See the split votes</button>
-      </div>`;
-    }
     const srcs=detailed?(w.sources||[]).map(s=>{
       const vote=Object.entries(s.vote||{}).map(([k,n])=>`${voteLabel(k)} (${n})`).join(" · ");
       return `<div class="warn-src"><b>${esc(shortLabel(s.title,80))}</b><br>
@@ -615,13 +635,9 @@ function filteredSources(kb){
 
 function headline(c){
   const {kb,assessment:a}=c, {pos}=maps(kb);
-  const warningBadges={};
-  (a.warnings||[]).forEach(w=>(warningBadges[w.positionId]=warningBadges[w.positionId]||[]).push(w));
-  // Always render every position so the bar keeps summing to 100% -- a deselected position
-  // dims in place rather than being removed, which would silently re-derive percentages over
-  // a smaller base. A length-aware heuristic decides whether the full label fits a segment,
-  // falling back to just the percentage (full label always in the title= tooltip) so text
-  // never spills into a neighbouring segment.
+  // Keep the two quantities in separate charts. Source count is a 100% share; independence is an
+  // absolute small-multiples chart on one shared nEff scale. Overlaying them made the source tally
+  // look like a denominator of nEff even though they answer different questions.
   const bar=(rows,pctKey,sizeKey,tipFn)=>rows.map(d=>{
     const label=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
     const p=d[pctKey]||0;
@@ -632,37 +648,26 @@ function headline(c){
   }).join("");
   const bar1=bar(a.distribution,"pct","count",d=>`${d.label} — ${d.count} sources`);
   const wd=a.weightedDistribution||[];
-  // Independence is shown as ABSOLUTE distinct-base counts per position on a shared scale — NOT as a
-  // cross-position 100% share. A normalized share made a position with more (but weaker) argument-
-  // roots look "more supported" than a concentrated consensus, which nEff never claims to measure.
-  // One bar per position, sized by its distinct-bases count (nEff) on a SHARED absolute scale — a
-  // uniform full-width track behind each so it reads as a standard bar chart, never a cross-position
-  // 100% share. The source count and the collapse live in the value text and the takeaway below.
   const maxEff=Math.max(1,...wd.map(d=>d.weight||0));
-  const rawById={}; a.distribution.forEach(d=>rawById[d.id]=d);
   const indepRows=wd.map(d=>{
     const nb=d.weight||0, raw=d.raw||0, fillPct=Math.max(2,Math.round(nb/maxEff*100));
     const proposed=d.provisionalCount?` <span class="collapse">+ ${d.provisionalCount} proposed/unverified</span>`:"";
     return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
       <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
-      <span class="indtrackcol"><span class="indtrack" title="${raw} sources collapse to ${nb.toFixed(1)} distinct evidence bases"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
-      <span class="indval"><b>${nb.toFixed(1)}</b> independent base${nb===1?"":"s"} <span class="collapse">of ${raw} src</span>${proposed}</span>
+      <span class="indtrackcol"><span class="indtrack" title="${nb.toFixed(1)} distinct evidence bases from ${raw} sources"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
+      <span class="indval"><b>${nb.toFixed(1)}</b> independent base${nb===1?"":"s"} <span class="collapse">from ${raw} src</span>${proposed}</span>
     </div>`;
   }).join("");
-  let takeaway="";
+  let insight="";
   if(wd.length){
     let big=null;
     wd.forEach(w=>{if(!w.raw)return; const ratio=w.weight/w.raw;
       if(big===null||ratio<big.ratio) big={label:w.label,raw:w.raw,nb:w.weight,ratio};});
-    takeaway = (big && big.raw>=3 && big.nb<big.raw*0.6)
-      ? `<div class="takeaway"><b>${esc(big.label)}</b> lists ${big.raw} sources but rests on only <b>${big.nb.toFixed(1)}</b> distinct evidence bases — much of its apparent support is correlated (shared datasets, review echo, or re-analysis of the same evidence).</div>`
-      : `<div class="takeaway">Each position's sources reduce to a similar number of distinct evidence bases — no side's support is dominated by re-used data.</div>`;
+    insight = (big && big.raw>=3 && big.nb<big.raw*0.6)
+      ? `<div class="cmpinsight">Largest collapse: <b>${esc(big.label)}</b>, ${big.raw} sources → <b>${big.nb.toFixed(1)} bases</b>.</div>`
+      : `<div class="cmpinsight">No position is dominated by repeated use of the same evidence.</div>`;
   }
   const warnHtml=warningsHtml(a.warnings, "compact");
-  const legend=a.distribution.map(d=>{
-    const badges=(warningBadges[d.id]||[]).map(w=>`<span class="riskbadge">${esc(w.badge)}</span>`).join("");
-    return `<button class="key" data-pos="${d.id}"><span class="dot" style="background:${d.hue}"></span>${esc(d.label)} <span style="font-family:var(--mono);color:var(--faint)">(${d.count})</span>${badges}</button>`;
-  }).join("");
   let skewHtml="";
   if(a.fundingSkew){
     const f=a.fundingSkew, parts=[];
@@ -681,16 +686,15 @@ function headline(c){
       <ul>${items}</ul>
       <div class="refnote">Recorded for transparency and excluded from every metric — a wrongly-dropped source is visible here rather than silently gone. Re-admit one by re-ingesting it or removing it from the case's <code>refused</code> list.</div></details>`;
   }
-  return `<div class="panel">
-      <div class="subnote">Two views of the same evidence: <b>how many sources</b> take each side, then <b>how many distinct evidence bases</b> each side actually rests on once shared data, echo, and re-analysis collapse.</div>
-      <div class="splitlabel"><span class="num">1</span> By source count <span class="q">— the naïve tally · click a segment to isolate it</span></div>
+  return `<div class="panel compact-summary">
+      <div class="cmphead"><b>Two views of the evidence</b><span>source volume first, independence second</span></div>
+      <div class="splitlabel"><span class="num">1</span> Source count <span class="q">— share of listed sources · click a segment to filter</span></div>
       <div class="distrib">${bar1}</div>
-      ${wd.length?`<div class="splitlabel"><span class="num">2</span> Distinct independent evidence bases <span class="q">— each side's sources collapsed to their evidentiary roots</span></div>
-      <div class="indeprows">${indepRows}</div>
-      ${takeaway}
-      <div class="qualnote">These are <b>absolute counts of distinct evidence bases</b> per position — shown on a shared scale, <b>not</b> as competing shares. This is a <b>diagnostic of how concentrated each side's evidence is, not a score of which side is correct</b>: more distinct bases does not mean better supported — one decisive study can outweigh several weak arguments. See <button class="risk-link" data-view="independence">Independence &amp; bias</button> for each position's evidence mix.</div>`:""}
+      ${wd.length?`<div class="splitlabel"><span class="num">2</span> Independent evidence bases <span class="q">— absolute counts after shared data, echo, and re-analysis collapse</span></div>
+      <div class="indeprows">${indepRows}</div>${insight}
+      <details class="cmphelp"><summary>How to read these two charts</summary><div>The first bar shows how the listed sources divide across positions. The second chart separately shows the absolute number of distinct evidence bases behind each position, on a shared scale. Independence diagnoses concentration, <b>not which position is correct</b>—one decisive study can outweigh several weak arguments.<button class="risk-link" data-view="independence">Inspect the bases</button></div></details>`:""}
       ${warnHtml}
-      <div class="legend">${legend}</div>${skewHtml}${refusedHtml}
+      ${skewHtml}${refusedHtml}
     </div>`;
 }
 

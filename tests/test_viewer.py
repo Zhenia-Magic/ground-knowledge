@@ -58,5 +58,18 @@ class QuoteBadgeCopyTests(unittest.TestCase):
         self.assertIn("Stored summary — not verified verbatim", template)
 
 
+class CoverageSummaryTests(unittest.TestCase):
+    def test_coverage_keeps_source_count_and_independence_separate(self):
+        with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as handle:
+            template = handle.read()
+        self.assertIn("Two views of the evidence", template)
+        self.assertIn('class="distrib"', template)
+        self.assertIn('class="indeprows"', template)
+        self.assertIn('class="indtrack"', template)
+        self.assertNotIn('class="cmpraw"', template)
+        self.assertNotIn('class="cmpbase"', template)
+        self.assertNotIn("Two views of the same evidence", template)
+
+
 if __name__ == "__main__":
     unittest.main()
