@@ -387,7 +387,22 @@
       ],
       "provenance": {
         "position": {
-          "extractionConfidence": 1.0
+          "quote": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
+          "extractionConfidence": 1.0,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "131b135b8c040dca6ea74bdc1e4d85b79c169ac7631312cad5e9544c45aa7e59",
+            "textDepth": "full",
+            "sourceUrl": "https://www.apa.org/pi/families/review-video-games.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "aed83779a52004a05466d414ea608bc07ee27ae5f21382951f35d74569bd5008",
+            "normalizedCharStart": 11753,
+            "normalizedCharEnd": 11947,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 2,
@@ -1385,48 +1400,6 @@
         "disagreedFields": [
           "confidence",
           "funding"
-        ],
-        "positionVote": {
-          "pos_increases_aggression": 3
-        }
-      }
-    },
-    {
-      "id": "src_much_ado_about_something_violent_video_game__2010",
-      "title": "Much ado about something: Violent video game effects and a school of red herring: Reply to Ferguson and Kilburn (2010).",
-      "year": 2010,
-      "url": "https://doi.org/10.1037/a0018718",
-      "authors": [
-        "Bushman, B. J.",
-        "Rothstein, H. R.",
-        "Anderson, C. A."
-      ],
-      "venue": "Psychological Bulletin",
-      "citations": 101,
-      "retracted": false,
-      "position": "pos_increases_aggression",
-      "evidence": "Evidence-synthesis",
-      "funding": "Undisclosed",
-      "population": "Children and adolescents",
-      "confidence": "high",
-      "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent"
-      ],
-      "provenance": {
-        "position": {
-          "extractionConfidence": 0.9
-        }
-      },
-      "addedIn": 22,
-      "textDepth": "abstract",
-      "modelAgreement": {
-        "models": 3,
-        "positionAgreement": 1.0,
-        "flagged": false,
-        "disagreedFields": [
-          "confidence",
-          "evidence",
-          "population"
         ],
         "positionVote": {
           "pos_increases_aggression": 3
@@ -3641,8 +3614,8 @@
       "version": 55,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T01:28:11.120417+00:00",
-      "sources": 37
+      "ts": "2026-07-13T02:09:38.096039+00:00",
+      "sources": 36
     }
   ],
   "pendingReview": [],

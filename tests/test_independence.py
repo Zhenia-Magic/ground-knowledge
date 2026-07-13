@@ -30,8 +30,9 @@ def _s(sid, pos, evidence, rests, textDepth="full"):
     # a quote field is present; explicit missing-edge cases override provenance below.
     s = {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
          "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
+    s["provenance"] = {"position": _verified("verified position for " + sid)}
     if rests:
-        s["provenance"] = {"restsOn": _verified("verified dependency for " + sid)}
+        s["provenance"]["restsOn"] = _verified("verified dependency for " + sid)
     return s
 
 

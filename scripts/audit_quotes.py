@@ -208,6 +208,7 @@ def write_markdown_report(cases, output):
              "Generated from the current case files by `scripts/audit_quotes.py`.", "",
              "A checkmark means one complete verbatim sentence was found in one fetched-text "
              "segment and is bound to both the displayed-sentence hash and checked-text hash. "
+             "It verifies the text match, not whether the sentence entails the assigned position. "
              "`fuzzy`, `missing`, and `unchecked` wording is not rendered as a quotation and cannot "
              "automatically confirm an evidence root.", "",
              "| Case | Sources | Position exact | Fuzzy | Missing | Unchecked |", "|---|---:|---:|---:|---:|---:|"]
@@ -227,6 +228,10 @@ def write_markdown_report(cases, output):
                 aggregate[status] = aggregate.get(status, 0) + 1
                 if status != "exact":
                     non_exact.append((path.name, status, item.get("title"), item.get("url")))
+            elif item.get("position"):
+                counts["missing"] += 1
+                aggregate["missing"] += 1
+                non_exact.append((path.name, "missing", item.get("title"), item.get("url")))
             all_provenance = [p for p in (item.get("provenance") or {}).values()
                               if isinstance(p, dict) and p.get("quote")]
             all_provenance += [edge["provenance"] for edge in item.get("restsOn") or []

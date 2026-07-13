@@ -304,7 +304,9 @@ def quote_audit(kb):
             by_pos[pid]["depthKnown"] += 1
         if depth == "full":
             by_pos[pid]["full"] += 1
-        quotes = [("source:" + field, prov) for field, prov in (s.get("provenance") or {}).items()
+        source_provenance = s.get("provenance") or {}
+        position_provenance = source_provenance.get("position") or {}
+        quotes = [("source:" + field, prov) for field, prov in source_provenance.items()
                   if isinstance(prov, dict) and prov.get("quote")]
         quotes += [("edge:{}".format(i), edge.get("provenance"))
                    for i, edge in enumerate(s.get("restsOn") or []) if isinstance(edge, dict)
@@ -312,6 +314,13 @@ def quote_audit(kb):
                    and edge["provenance"].get("quote")]
         quotes += factor_quotes.get(s.get("id"), [])
         bad = []
+        # The position is itself a substantive claim about the source.  Earlier migrations could
+        # remove an unsupported quote while preserving the old classification, which made the
+        # source look fully auditable even though readers could not see why it belonged in that
+        # camp.  Count that as missing grounding; a dependency/factor quote is not a substitute.
+        if not position_provenance.get("quote"):
+            by_pos[pid]["missing"] += 1
+            bad.append("source:position (absent)")
         for field, prov in quotes:
             by_pos[pid]["quotes"] += 1
             if is_verified_exact(prov):

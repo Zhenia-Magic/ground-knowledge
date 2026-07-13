@@ -72,8 +72,11 @@ majority vote is combined deterministically — `ingest/ensemble.py`) records:
      (`SRC:<id>` or `NEW-SRC:<title>`) — this is how we capture citation/derivation and catch
      circularity;
    - nothing (the list is empty) — the source is **ungrounded**.
-4. **Provenance quote** — the verbatim sentence that justifies the position (already in schema;
-   also what the *verification* pass checks).
+4. **Provenance quote** — the verbatim sentence offered to justify the position. The deterministic
+   verification pass checks only that the sentence is exact source text; it cannot prove that the
+   sentence entails the position. That second judgement is recorded separately as labelling
+   confidence. A positioned source with no position excerpt is an explicit audit failure, not a
+   quote-less but otherwise fully grounded classification.
 
 > **Labelling principle for `restsOn`:** tag what the source *actually leans on*, even for reviews.
 > A review of the proximal-origin paper **rests on the proximal-origin dataset** — say so, and it

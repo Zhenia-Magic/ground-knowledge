@@ -825,54 +825,6 @@
       }
     },
     {
-      "id": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
-      "title": "Chan & Zhan — The Emergence of the Spike Furin Cleavage Site in SARS-CoV-2",
-      "year": 2022,
-      "url": "https://doi.org/10.1093/molbev/msab327",
-      "authors": [
-        "Yujia Alina Chan",
-        "Shing Hei Zhan"
-      ],
-      "venue": "Molecular Biology and Evolution",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_undetermined_unresolved",
-      "evidence": "Mechanistic",
-      "funding": "Academic/institutional",
-      "population": "SARS-CoV-2 genome",
-      "confidence": "moderate",
-      "restsOn": [
-        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
-      ],
-      "provenance": {
-        "position": {
-          "quote": "We review what is known about the SARS-CoV-2 FCS in the context of its pathogenesis, origin, and how future wildlife coronavirus sampling may alter the interpretation of existing data.",
-          "extractionConfidence": 0.96,
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "56639595a9a4f41b51df7c6f26d30583e04282db20b895a6bde90a44cd3f7b6a",
-            "textDepth": "abstract",
-            "sourceUrl": "https://doi.org/10.1093/molbev/msab327",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "69364e2ea5f2723c914090c37b9fd01f1f023b6de0e1cb18c0fc994f3c6fe7da",
-            "normalizedCharStart": 553,
-            "normalizedCharEnd": 737,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        }
-      },
-      "addedIn": 6,
-      "textDepth": "abstract",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:54:20.699508+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
       "id": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
       "title": "Segreto & Deigin — The genetic structure of SARS-CoV-2 does not rule out a laboratory origin",
       "year": 2021,
@@ -1157,36 +1109,6 @@
       }
     },
     {
-      "id": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
-      "title": "US ODNI — Updated Assessment on COVID-19 Origins",
-      "year": 2023,
-      "url": "https://www.dni.gov/files/ODNI/documents/assessments/Declassified-Assessment-on-COVID-19-Origins.pdf",
-      "authors": [
-        "Office of the Director of National Intelligence"
-      ],
-      "venue": "U.S. ODNI",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_undetermined_unresolved",
-      "evidence": "Expert advisory",
-      "funding": "Government/public",
-      "population": "—",
-      "confidence": "low",
-      "restsOn": [],
-      "provenance": {
-        "position": {
-          "extractionConfidence": 0.75
-        }
-      },
-      "addedIn": 13,
-      "textDepth": "partial",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:54:20.699632+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
       "id": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
       "title": "Wade — The origin of COVID: Did people or nature open Pandora's box at Wuhan?",
       "year": 2021,
@@ -1255,7 +1177,22 @@
       ],
       "provenance": {
         "position": {
-          "extractionConfidence": 0.75
+          "quote": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
+          "extractionConfidence": 0.75,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "694889e527a447a3e938857421cbb285829b8e76aff1acff63aef0f9a414bd64",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8646886/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "48cb69c2d92e815889a12c89de09405574d5f8d86f18836037c201810c75ccda",
+            "normalizedCharStart": 3383,
+            "normalizedCharEnd": 3536,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 15,
@@ -1892,14 +1829,14 @@
     },
     {
       "id": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
-      "title": "Latham & Wilson — The Mojiang Miners Passage hypothesis for the origin of SARS-CoV-2",
+      "title": "Latham & Wilson — A Proposed Origin for SARS-CoV-2 and the COVID-19 Pandemic",
       "year": 2020,
       "url": "https://jonathanlatham.net/a-proposed-origin-for-sars-cov-2-and-the-covid-19-pandemic/",
       "authors": [
-        "Monali C. Rahalkar",
-        "Rahul A. Bahulikar"
+        "Jonathan Latham",
+        "Allison Wilson"
       ],
-      "venue": "Current Science",
+      "venue": "Independent Science News",
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
@@ -1912,8 +1849,8 @@
       ],
       "provenance": {
         "position": {
-          "quote": "The origin of SARS-CoV-2 that we propose below is based on the case histories of these miners and their hospital treatment.",
-          "extractionConfidence": 0.55,
+          "quote": "We do not propose a specifically genetically engineered or biowarfare origin for the virus but the theory does propose an essential causative role in the pandemic for scientific research carried out by the laboratory of Zheng-li Shi at the WIV; thus also explaining Wuhan as the location of the epicentre.",
+          "extractionConfidence": 0.9,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
@@ -1923,9 +1860,9 @@
             "sourceUrl": "https://jonathanlatham.net/a-proposed-origin-for-sars-cov-2-and-the-covid-19-pandemic/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "339ace68c2a74a251560b1b45426b5da3d4c749241eda486c03eb318a831ed2a",
-            "normalizedCharStart": 1616,
-            "normalizedCharEnd": 1739,
+            "quoteSha256": "86ead5d66db31732b1c89da7b4f8bf571a7a9b901e80a92694934f8c3bdf288b",
+            "normalizedCharStart": 2809,
+            "normalizedCharEnd": 3114,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -1958,7 +1895,6 @@
         "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
         "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
         "src:src_who_china_joint_study_on_the_origins_of_sars_2021",
-        "src:src_us_odni_updated_assessment_on_covid_19_origi_2023",
         "src:src_harrison_sachs_a_call_for_an_independent_inq_2022"
       ],
       "provenance": {
@@ -2718,8 +2654,8 @@
       "version": 35,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T01:28:12.740961+00:00",
-      "sources": 28
+      "ts": "2026-07-13T02:11:56.197587+00:00",
+      "sources": 26
     }
   ],
   "refused": [

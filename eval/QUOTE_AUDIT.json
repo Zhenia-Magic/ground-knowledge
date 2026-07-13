@@ -1,11 +1,11 @@
 {
   "method": "verbatim-sentence-v2",
   "automaticFuzzyRepair": false,
-  "generated": "2026-07-13T01:28:10.992954+00:00",
+  "generated": "2026-07-13T02:11:56.312246+00:00",
   "cases": {
     "177f5ec738c9.kb.json": {
       "summary": {
-        "exact": 62,
+        "exact": 63,
         "empty": 1
       },
       "sources": [
@@ -29,6 +29,14 @@
           "title": "Technical Report on the Review of the Violent Video Game Literature",
           "fetch": "full",
           "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
+              "new": "All four meta-analyses reported an adverse effect of violent video game use on aggressive outcomes, with an effect size greater than zero and a narrow range of unadjusted effect sizes (.14–.29).",
+              "field": "source:position"
+            },
             {
               "status": "exact",
               "changed": false,
@@ -328,12 +336,6 @@
               "field": "source:position"
             }
           ]
-        },
-        {
-          "id": "src_much_ado_about_something_violent_video_game__2010",
-          "title": "Much ado about something: Violent video game effects and a school of red herring: Reply to Ferguson and Kilburn (2010).",
-          "fetch": "abstract",
-          "quotes": []
         },
         {
           "id": "src_the_effects_of_violent_video_games_on_aggres_2001",
@@ -3217,19 +3219,13 @@
           "id": "src_calogero_might_a_laboratory_experiment_destr_2000",
           "title": "Calogero — Might a laboratory experiment destroy planet Earth?",
           "fetch": "abstract",
-          "quotes": []
-        },
-        {
-          "id": "src_johnson_the_black_hole_case_the_injunction_a_2009",
-          "title": "Johnson — The Black Hole Case: The Injunction Against the End of the World (Wagner & Sancho lawsuit)",
-          "fetch": "abstract",
           "quotes": [
             {
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
-              "new": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
+              "old": "Recently some concerns have been raised about the possibility that a high energy ion–ion colliding beam experiment such as the one which has just begun at Brookhaven National Laboratory in the USA, or a similar one that is planned to begin some years hence at CERN in Geneva, might have cataclysmic consequences, hypothetically amounting to the disappearance of planet earth, although the probability of this happening is of course tiny.",
+              "new": "Recently some concerns have been raised about the possibility that a high energy ion–ion colliding beam experiment such as the one which has just begun at Brookhaven National Laboratory in the USA, or a similar one that is planned to begin some years hence at CERN in Geneva, might have cataclysmic consequences, hypothetically amounting to the disappearance of planet earth, although the probability of this happening is of course tiny.",
               "field": "source:position"
             }
           ]
@@ -3278,12 +3274,6 @@
               "field": "source:position"
             }
           ]
-        },
-        {
-          "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
-          "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
-          "fetch": "partial",
-          "quotes": []
         },
         {
           "id": "src_casadio_fabi_harms_on_the_catastrophic_black_2010",
@@ -3467,21 +3457,6 @@
           ]
         },
         {
-          "id": "src_emergence_of_the_spike_furin_cleavage_site_i_2022",
-          "title": "Chan & Zhan — The Emergence of the Spike Furin Cleavage Site in SARS-CoV-2",
-          "fetch": "abstract",
-          "quotes": [
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "We review what is known about the SARS-CoV-2 FCS in the context of its pathogenesis, origin, and how future wildlife coronavirus sampling may alter the interpretation of existing data.",
-              "new": "We review what is known about the SARS-CoV-2 FCS in the context of its pathogenesis, origin, and how future wildlife coronavirus sampling may alter the interpretation of existing data.",
-              "field": "source:position"
-            }
-          ]
-        },
-        {
           "id": "src_segreto_deigin_the_genetic_structure_of_sars_2021",
           "title": "Segreto & Deigin — The genetic structure of SARS-CoV-2 does not rule out a laboratory origin",
           "fetch": "abstract",
@@ -3604,12 +3579,6 @@
           ]
         },
         {
-          "id": "src_us_odni_updated_assessment_on_covid_19_origi_2023",
-          "title": "US ODNI — Updated Assessment on COVID-19 Origins",
-          "fetch": "partial",
-          "quotes": []
-        },
-        {
           "id": "src_wade_the_origin_of_covid_did_people_or_natur_2021",
           "title": "Wade — The origin of COVID: Did people or nature open Pandora's box at Wuhan?",
           "fetch": "partial",
@@ -3628,7 +3597,16 @@
           "id": "src_response_to_segreto_deigin_there_is_still_no_2021",
           "title": "Response to Segreto & Deigin — There is still no evidence of SARS-CoV-2 laboratory origin",
           "fetch": "partial",
-          "quotes": []
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
+              "new": "We also explain why existing genetic data, viral diversity and past human history suggest that a natural origin of the virus is the most likely scenario.",
+              "field": "source:position"
+            }
+          ]
         },
         {
           "id": "src_scott_alexander_i_watched_15_hours_of_covid__2024",
@@ -3829,15 +3807,15 @@
         },
         {
           "id": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020",
-          "title": "Latham & Wilson — The Mojiang Miners Passage hypothesis for the origin of SARS-CoV-2",
+          "title": "Latham & Wilson — A Proposed Origin for SARS-CoV-2 and the COVID-19 Pandemic",
           "fetch": "partial",
           "quotes": [
             {
               "status": "exact",
               "changed": false,
               "repaired": false,
-              "old": "The origin of SARS-CoV-2 that we propose below is based on the case histories of these miners and their hospital treatment.",
-              "new": "The origin of SARS-CoV-2 that we propose below is based on the case histories of these miners and their hospital treatment.",
+              "old": "We do not propose a specifically genetically engineered or biowarfare origin for the virus but the theory does propose an essential causative role in the pandemic for scientific research carried out by the laboratory of Zheng-li Shi at the WIV; thus also explaining Wuhan as the location of the epicentre.",
+              "new": "We do not propose a specifically genetically engineered or biowarfare origin for the virus but the theory does propose an essential causative role in the pandemic for scientific research carried out by the laboratory of Zheng-li Shi at the WIV; thus also explaining Wuhan as the location of the epicentre.",
               "field": "source:position"
             },
             {

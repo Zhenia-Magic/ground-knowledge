@@ -64,7 +64,7 @@
         "by": "Evgeniia",
         "ts": "2026-07-11T23:28:50-03:00",
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
-        "source": "src_blaizot_et_al_study_of_potentially_dangerous_2003"
+        "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008"
       },
       "kind": "experiment"
     },
@@ -592,7 +592,22 @@
       ],
       "provenance": {
         "position": {
-          "extractionConfidence": 0.7
+          "quote": "Recently some concerns have been raised about the possibility that a high energy ion–ion colliding beam experiment such as the one which has just begun at Brookhaven National Laboratory in the USA, or a similar one that is planned to begin some years hence at CERN in Geneva, might have cataclysmic consequences, hypothetically amounting to the disappearance of planet earth, although the probability of this happening is of course tiny.",
+          "extractionConfidence": 0.7,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "374108c470656f6c5f065c8601ecf180fd92e938c69998b27a146963a8b5d7e6",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1179/030801800679224",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "34f73b51a0cd4e11fa4a921ec412576afdab4fc9cd01d19d102aecb4028a2f0f",
+            "normalizedCharStart": 52,
+            "normalizedCharEnd": 489,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 9,
@@ -600,51 +615,6 @@
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.701966+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
-      "id": "src_johnson_the_black_hole_case_the_injunction_a_2009",
-      "title": "Johnson — The Black Hole Case: The Injunction Against the End of the World (Wagner & Sancho lawsuit)",
-      "year": 2009,
-      "url": "https://arxiv.org/abs/0912.5480",
-      "authors": [
-        "Eric E. Johnson"
-      ],
-      "venue": "Legal analysis / arXiv",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_residual_concern_the_safety_argument_has_wea",
-      "evidence": "Narrative/Commentary",
-      "funding": "Undisclosed",
-      "population": "—",
-      "confidence": "low",
-      "restsOn": [],
-      "provenance": {
-        "position": {
-          "quote": "Next, the article explores the daunting challenges the case presents to equity, evidence, and law-and-economics analysis.",
-          "extractionConfidence": 0.6,
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "6a519f52604c791d822f3f61a30aa6aa04d13309087629cee1d4c4988d82c43d",
-            "textDepth": "abstract",
-            "sourceUrl": "https://arxiv.org/abs/0912.5480",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "2f74e9c84d45ee4233f47cac54c550006e39df2f93a789d2560993cf736d5478",
-            "normalizedCharStart": 588,
-            "normalizedCharEnd": 709,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        }
-      },
-      "addedIn": 11,
-      "textDepth": "abstract",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:54:20.701983+00:00",
         "method": "catalogue+manual-full-text"
       }
     },
@@ -788,44 +758,6 @@
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077686+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
-      "id": "src_blaizot_et_al_study_of_potentially_dangerous_2003",
-      "title": "Blaizot et al. — Study of potentially dangerous events during heavy-ion collisions at the LHC",
-      "year": 2003,
-      "url": "https://cds.cern.ch/record/613175/files",
-      "authors": [
-        "J.-P. Blaizot",
-        "J. Iliopoulos",
-        "J. Madsen",
-        "G. G. Ross",
-        "P. Sonderegger",
-        "H.-J. Specht"
-      ],
-      "venue": "CERN Yellow Reports",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_risk_lhc_collisions_are_safe",
-      "evidence": "Evidence-synthesis",
-      "funding": "Government/public",
-      "population": "—",
-      "confidence": "high",
-      "restsOn": [
-        "ds_strangelet_stability_calculations_rhic",
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
-      ],
-      "provenance": {
-        "position": {
-          "extractionConfidence": 0.85
-        }
-      },
-      "addedIn": 15,
-      "textDepth": "partial",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:54:20.702052+00:00",
         "method": "catalogue+manual-full-text"
       }
     },
@@ -1596,8 +1528,8 @@
       "version": 27,
       "action": "quote-reaudit",
       "method": "verbatim-sentence-v2",
-      "ts": "2026-07-13T01:28:12.350461+00:00",
-      "sources": 17
+      "ts": "2026-07-13T02:09:38.192126+00:00",
+      "sources": 15
     }
   ],
   "refused": [

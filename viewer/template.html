@@ -399,7 +399,7 @@ function quoteState(p){
 }
 function quoteBadge(p){
   const st=quoteState(p);
-  if(st==="exact") return '<span class="okicon" title="verbatim sentence verified against hashed fetched text">✓</span>';
+  if(st==="exact") return '<span class="okicon" title="exact text match against hashed fetched text; this does not by itself validate the position label">✓</span>';
   if(st==="altered") return '<span class="flagicon" title="altered or paraphrased passage — not a verified quotation">⚠</span>';
   if(st==="missing") return '<span class="flagicon" title="passage not found in the fetched text">⚠</span>';
   return '<span class="flagicon" title="stored wording has not been checked against fetched text">?</span>';
@@ -478,7 +478,7 @@ function confBadge(conf, posLabel){
 
 function quoteWarnHtml(pq, textDepth){
   const st=quoteState(pq);
-  if(st==="exact") return `<span class="conf" title="Exact sentence checked against fetched ${esc(textDepth||"source")} text; audit record includes the checked-text hash.">✓ verified verbatim</span>`;
+  if(st==="exact") return `<span class="conf" title="Exact sentence checked against fetched ${esc(textDepth||"source")} text. This verifies the wording only; the separate labelling-confidence value concerns whether it supports the assigned position.">✓ exact text match only</span>`;
   if(st==="altered") return `<span class="conf low" title="The wording only approximately matches source text and must not be presented as a quotation.">⚠ altered or paraphrased — not a verified quote</span>`;
   if(st==="missing") return `<span class="conf low" title="This wording was not found in the fetched ${esc(textDepth||"source")} text.">⚠ not found in fetched text</span>`;
   return `<span class="conf low" title="No current hashed verification record exists for this wording.">? not checked against source text</span>`;

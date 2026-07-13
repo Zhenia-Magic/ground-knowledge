@@ -313,6 +313,14 @@ class QuoteAuditTests(unittest.TestCase):
         self.assertEqual(pos["full"], 1)
         self.assertEqual(pos["unverifiedFull"], 0)
 
+    def test_position_without_excerpt_is_missing_and_flagged(self):
+        kb = self._kb_with([self._src("s1", "full")])
+        qa = quote_audit(kb)
+        pos = qa["positions"][0]
+        self.assertEqual(pos["missing"], 1)
+        self.assertEqual(pos["unverifiedFull"], 1)
+        self.assertEqual(qa["flagged"][0]["fields"], ["source:position (absent)"])
+
 
 class ConfidenceAuditTests(unittest.TestCase):
     """confidence_audit is the OTHER quote-quality axis: quote_audit asks 'is this quote real

@@ -137,7 +137,12 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    text hash.** Old/manual `verifiedQuote: exact` flags do not pass. Every fuzzy, missing, or unchecked
    excerpt is surfaced and rendered as a stored summary without quotation marks. Text depth explains
    what was checked; it never turns an unchecked excerpt into a verified quote. Only current audited
-   exact dependency quotes may automatically admit an evidence root.
+   exact dependency quotes may automatically admit an evidence root. Textual verification is not
+   semantic verification: the checkmark means only that the displayed sentence occurs verbatim in
+   the hashed fetched text. `extractionConfidence` is the separate, fallible judgement that the
+   sentence supports its assigned field. A positioned source with no `provenance.position.quote` is
+   therefore counted as missing position grounding and surfaced by `quote_audit`, even if it has
+   exact dependency or factor excerpts.
 
 4. **Open schema (interoperability vs nuance).** A small fixed *core* the metrics operate on
    (source, position, dataset, factor, edge) plus *open vocabularies* as tags (`evidence`,
