@@ -71,6 +71,17 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .cand{display:flex;gap:9px;align-items:flex-start;padding:8px 6px;border-top:1px solid var(--line);border-radius:6px;transition:background .12s;}
 .cand:hover{background:#fafbfc;}
 .cand label{font-size:14px;cursor:pointer;} .cand .why{color:var(--faint);font-size:12px;font-family:var(--mono);}
+.dsrow{align-items:center;flex-wrap:wrap;}
+.combo{position:relative;flex:0 0 200px;min-width:150px;}
+.combo-in{width:100%;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;color:var(--ink);}
+.combo-in::placeholder{color:var(--faint);}
+.combo-in:focus{outline:none;border-color:var(--chrome);box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.combo-menu{position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;max-height:240px;overflow:auto;background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;box-shadow:0 8px 24px rgba(0,0,0,.14);display:none;padding:4px;}
+.combo-menu.open{display:block;}
+.combo-opt{padding:8px 10px;border-radius:6px;font-size:13px;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.combo-opt:hover,.combo-opt.active{background:#f2f4f6;}
+.combo-opt .why{color:var(--faint);font-size:11px;font-family:var(--mono);}
+.combo-empty{padding:9px 10px;color:var(--muted);font-size:12.5px;}
 textarea{width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:10px;min-height:120px;font-family:var(--mono);font-size:12px;}
 .toast{margin-top:10px;font-size:13px;color:var(--muted);} .toast.ok{color:#2E8B6F;} .toast.warn{color:var(--ochre);}
 .log{background:#0d0f13;color:#cfe;border-radius:8px;padding:10px;font-family:var(--mono);font-size:12px;white-space:pre-wrap;margin-top:10px;display:none;}
@@ -475,14 +486,14 @@ def manage_html(qid, get_question):
         const by=(d.confirmation&&d.confirmation.by)?` · ${E(d.confirmation.by)}`:'';
         const badge=ok?`<span class="rev-badge merged">confirmed${by}</span>`
                       :'<span class="rev-badge queued">proposed · 0 weight</span>';
-        const opts=ds.filter(o=>o.id!==d.id).map(o=>`<option value="${E(o.id)}">${E(o.label||o.id)}</option>`).join('');
-        return `<div class="cand"><div style="flex:1"><b>${E(d.label||d.id)}</b>
+        return `<div class="cand dsrow"><div style="flex:1;min-width:180px"><b>${E(d.label||d.id)}</b>
           <span class="why">${E(d.kind||'dataset')}</span> ${badge}</div>
-          <select class="dsmg" title="fold this base into another (same data, different name)" onchange="if(this.value)mergeDataset('${E(d.id)}',this.value,this)"><option value="">Merge into…</option>${opts}</select>
-          ${ok?`<button class="btn ghost" onclick="confirmDataset('${E(d.id)}',false,this)">Un-confirm</button>`
-              :`<button class="btn" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button>`}</div>`;
+          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this base into another (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
+          ${ok?`<button class="btn ghost sm" onclick="confirmDataset('${E(d.id)}',false,this)">Un-confirm</button>`
+              :`<button class="btn sm" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button>`}</div>`;
       }).join('');
       renderDupes(kb);
+      setupCombo();
     }
     async function renderDupes(kb){
       const box=document.getElementById('dsdup'); if(!box)return;
@@ -508,6 +519,41 @@ def manage_html(qid, get_question):
       const j=await r.json();
       if(j.error){alert(j.error); if(el)el.value=''; return;}
       render();
+    }
+    // Searchable "Merge into…" combobox — vanilla, styled to match the portal. Delegated listeners
+    // are attached once; each row's .combo carries its dataset id in data-ds.
+    function comboMenuHtml(srcId,q){
+      const ds=(window.__kb&&window.__kb.datasets)||[], ql=(q||'').trim().toLowerCase();
+      const hits=ds.filter(o=>o.id!==srcId && (!ql||String(o.label||o.id).toLowerCase().includes(ql)));
+      if(!hits.length)return '<div class="combo-empty">No matching evidence base</div>';
+      return hits.slice(0,40).map(o=>`<div class="combo-opt" role="option" data-id="${E(o.id)}">${E(o.label||o.id)}${o.kind?` <span class="why">${E(o.kind)}</span>`:''}</div>`).join('');
+    }
+    function fillCombo(combo){ if(!combo)return;
+      const inp=combo.querySelector('.combo-in'), menu=combo.querySelector('.combo-menu');
+      menu.innerHTML=comboMenuHtml(combo.dataset.ds, inp.value); menu.classList.add('open'); }
+    function openCombo(combo){ if(!combo)return; closeAllCombos(combo); fillCombo(combo); }
+    function closeAllCombos(except){ const keep=except&&except.querySelector('.combo-menu');
+      document.querySelectorAll('.combo-menu.open').forEach(m=>{ if(m!==keep){m.classList.remove('open');
+        m.querySelectorAll('.combo-opt.active').forEach(o=>o.classList.remove('active'));} }); }
+    function comboKey(e){ const combo=e.target.closest('.combo'); if(!combo)return;
+      const menu=combo.querySelector('.combo-menu'), opts=[...menu.querySelectorAll('.combo-opt')];
+      let i=opts.findIndex(o=>o.classList.contains('active'));
+      if(e.key==='ArrowDown'){e.preventDefault(); if(!menu.classList.contains('open'))return openCombo(combo); i=Math.min(opts.length-1,i+1);}
+      else if(e.key==='ArrowUp'){e.preventDefault(); i=Math.max(0,i-1);}
+      else if(e.key==='Enter'){ if(i>=0&&opts[i]){e.preventDefault(); chooseCombo(combo,opts[i].dataset.id);} return; }
+      else if(e.key==='Escape'){ menu.classList.remove('open'); return; }
+      else return;
+      opts.forEach(o=>o.classList.remove('active')); if(opts[i]){opts[i].classList.add('active'); opts[i].scrollIntoView({block:'nearest'});}
+    }
+    function chooseCombo(combo,dstId){ if(!combo||!dstId)return; closeAllCombos(); mergeDataset(combo.dataset.ds,dstId,combo.querySelector('.combo-in')); }
+    function setupCombo(){ if(window.__comboReady)return; window.__comboReady=1;
+      const isIn=t=>t&&t.classList&&t.classList.contains('combo-in');
+      document.addEventListener('focusin',e=>{ if(isIn(e.target))openCombo(e.target.closest('.combo')); });
+      document.addEventListener('input',e=>{ if(isIn(e.target))fillCombo(e.target.closest('.combo')); });
+      document.addEventListener('keydown',e=>{ if(isIn(e.target))comboKey(e); });
+      document.addEventListener('click',e=>{ const opt=e.target.closest('.combo-opt');
+        if(opt){chooseCombo(opt.closest('.combo'),opt.dataset.id);return;}
+        if(!e.target.closest('.combo'))closeAllCombos(); });
     }
     async function confirmDataset(dsId,confirmed,btn,extra){
       if(btn)btn.disabled=true;
