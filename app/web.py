@@ -426,11 +426,12 @@ def manage_html(qid, get_question):
         position or drop the paper.</p>
         <div id="revs"></div></div>
       <div class="panel"><h2>Evidence bases <span id="dscount"></span></h2>
-        <p class="desc">A dataset stays <b>proposed</b> — worth <b>zero</b> to the headline
-        independent-base count — until it is grounded one of two ways: an ingested source names it
-        with a verified-exact quote, or <b>you, as curator, vouch that it is a real, identified
-        evidence base</b>. Confirm the ones you have checked; they then enter the count. Un-confirm to
-        send one back. Each action is logged with your admin identity.</p>
+        <p class="desc">These are the case's <b>proposed</b> evidence bases — each worth <b>zero</b> to
+        the headline independent-base count until it is grounded. <b>Confirm</b> a base you have checked
+        to admit it (it then enters the count), or <b>merge</b> a base that is the same data under a
+        different name into an existing one. A base drops off this list once confirmed; un-confirming,
+        renaming, and other curation on confirmed bases is done in the CLI. Each action is logged with
+        your admin identity.</p>
         <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
         <div id="dsdup"></div>
         <div id="dss"></div></div>
@@ -476,21 +477,21 @@ def manage_html(qid, get_question):
     const dsConfirmed=d=>d.confirmed===true||(d.confirmation&&d.confirmation.status==='confirmed');
     function renderDatasets(kb){
       window.__kb=kb;
-      const ds=kb.datasets||[], wrap=document.getElementById('dss');
-      const conf=ds.filter(dsConfirmed).length;
+      const ds=kb.datasets||[], wrap=document.getElementById('dss'), dup=document.getElementById('dsdup');
+      const conf=ds.filter(dsConfirmed).length, proposed=ds.filter(d=>!dsConfirmed(d));
       document.getElementById('dscount').innerHTML = ds.length
-        ? `<span class="why" style="font-weight:400">— ${conf} of ${ds.length} confirmed</span>` : '';
-      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';document.getElementById('dsdup').innerHTML='';return;}
-      wrap.innerHTML=ds.slice().sort((a,b)=>dsConfirmed(a)-dsConfirmed(b)).map(d=>{
-        const ok=dsConfirmed(d);
-        const by=(d.confirmation&&d.confirmation.by)?` · ${E(d.confirmation.by)}`:'';
-        const badge=ok?`<span class="rev-badge merged">confirmed${by}</span>`
-                      :'<span class="rev-badge queued">proposed · 0 weight</span>';
+        ? `<span class="why" style="font-weight:400">— ${proposed.length} proposed · ${conf} confirmed</span>` : '';
+      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';dup.innerHTML='';return;}
+      if(!proposed.length){
+        wrap.innerHTML=`<div class="empty">All ${ds.length} evidence bases are confirmed — nothing to triage here. Un-confirm, rename, or merge confirmed bases from the CLI.</div>`;
+        dup.innerHTML=''; return;
+      }
+      const cliNote=conf?`<div class="why" style="padding:2px 6px 12px">${conf} confirmed base${conf===1?'':'s'} not shown — manage those in the CLI.</div>`:'';
+      wrap.innerHTML=cliNote+proposed.map(d=>{
         return `<div class="cand dsrow"><div style="flex:1;min-width:180px"><b>${E(d.label||d.id)}</b>
-          <span class="why">${E(d.kind||'dataset')}</span> ${badge}</div>
-          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this base into another (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
-          ${ok?`<button class="btn ghost sm" onclick="confirmDataset('${E(d.id)}',false,this)">Un-confirm</button>`
-              :`<button class="btn sm" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button>`}</div>`;
+          <span class="why">${E(d.kind||'dataset')}</span> <span class="rev-badge queued">proposed · 0 weight</span></div>
+          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this proposed base into an existing one (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
+          <button class="btn sm" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button></div>`;
       }).join('');
       renderDupes(kb);
       setupCombo();
@@ -500,8 +501,9 @@ def manage_html(qid, get_question):
       let pairs=[];
       try{const r=await fetch('/api/admin/suggest-duplicates',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
         pairs=((await r.json()).dataset)||[];}catch(e){box.innerHTML='';return;}
-      if(!pairs.length){box.innerHTML='';return;}
       const ds=kb.datasets||[], isc=id=>{const d=ds.find(x=>x.id===id);return d&&dsConfirmed(d);};
+      pairs=pairs.filter(p=>!isc(p.a.ref)||!isc(p.b.ref));   // only pairs that involve a proposed base
+      if(!pairs.length){box.innerHTML='';return;}
       box.innerHTML=`<div class="toast warn" style="margin-bottom:10px"><b>Possible duplicates.</b>
         These labels look like the same evidence base — merge so one cohort isn't counted as two independent bases.</div>`
         + pairs.map(p=>{
@@ -526,7 +528,10 @@ def manage_html(qid, get_question):
       const ds=(window.__kb&&window.__kb.datasets)||[], ql=(q||'').trim().toLowerCase();
       const hits=ds.filter(o=>o.id!==srcId && (!ql||String(o.label||o.id).toLowerCase().includes(ql)));
       if(!hits.length)return '<div class="combo-empty">No matching evidence base</div>';
-      return hits.slice(0,40).map(o=>`<div class="combo-opt" role="option" data-id="${E(o.id)}">${E(o.label||o.id)}${o.kind?` <span class="why">${E(o.kind)}</span>`:''}</div>`).join('');
+      return hits.slice(0,40).map(o=>{
+        const tag=dsConfirmed(o)?' <span class="rev-badge merged">confirmed</span>':(o.kind?` <span class="why">${E(o.kind)}</span>`:'');
+        return `<div class="combo-opt" role="option" data-id="${E(o.id)}">${E(o.label||o.id)}${tag}</div>`;
+      }).join('');
     }
     function fillCombo(combo){ if(!combo)return;
       const inp=combo.querySelector('.combo-in'), menu=combo.querySelector('.combo-menu');
