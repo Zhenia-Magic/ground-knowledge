@@ -414,6 +414,14 @@ def manage_html(qid, get_question):
         here (counted in <b>no</b> metric) until someone decides. Read the abstract, then pick a
         position or drop the paper.</p>
         <div id="revs"></div></div>
+      <div class="panel"><h2>Evidence bases <span id="dscount"></span></h2>
+        <p class="desc">A dataset stays <b>proposed</b> — worth <b>zero</b> to the headline
+        independent-base count — until it is grounded one of two ways: an ingested source names it
+        with a verified-exact quote, or <b>you, as curator, vouch that it is a real, identified
+        evidence base</b>. Confirm the ones you have checked; they then enter the count. Un-confirm to
+        send one back. Each action is logged with your admin identity.</p>
+        <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
+        <div id="dss"></div></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
         <div id="srcs"></div></div>
@@ -451,6 +459,52 @@ def manage_html(qid, get_question):
         <span class="why">${E((s.authors||[]).slice(0,3).join(', '))}${(s.authors||[]).length>3?' et al.':''}</span></div>
         <button class="btn ghost" onclick="delSource('${s.id}',this)">✕ remove</button></div>`).join('')
         : '<div class="empty">No sources yet.</div>';
+      renderDatasets(kb);
+    }
+    const dsConfirmed=d=>d.confirmed===true||(d.confirmation&&d.confirmation.status==='confirmed');
+    function renderDatasets(kb){
+      const ds=kb.datasets||[], wrap=document.getElementById('dss');
+      const conf=ds.filter(dsConfirmed).length;
+      document.getElementById('dscount').innerHTML = ds.length
+        ? `<span class="why" style="font-weight:400">— ${conf} of ${ds.length} confirmed</span>` : '';
+      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';return;}
+      wrap.innerHTML=ds.slice().sort((a,b)=>dsConfirmed(a)-dsConfirmed(b)).map(d=>{
+        const ok=dsConfirmed(d);
+        const by=(d.confirmation&&d.confirmation.by)?` · ${E(d.confirmation.by)}`:'';
+        const badge=ok?`<span class="rev-badge merged">confirmed${by}</span>`
+                      :'<span class="rev-badge queued">proposed · 0 weight</span>';
+        return `<div class="cand"><div style="flex:1"><b>${E(d.label||d.id)}</b>
+          <span class="why">${E(d.kind||'dataset')}</span> ${badge}</div>
+          ${ok?`<button class="btn ghost" onclick="confirmDataset('${E(d.id)}',false,this)">Un-confirm</button>`
+              :`<button class="btn" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button>`}</div>`;
+      }).join('');
+    }
+    async function confirmDataset(dsId,confirmed,btn,extra){
+      if(btn)btn.disabled=true;
+      const r=await fetch('/api/admin/confirm-dataset',{method:'POST',headers:H(),
+        body:JSON.stringify(Object.assign({id:QID,dataset:dsId,confirmed},extra||{}))});
+      const j=await r.json();
+      if(j.error){
+        if(confirmed && /duplicate/i.test(j.error)){
+          const note=prompt(j.error+"\\n\\nIf these are genuinely distinct evidence bases, add a short note to confirm anyway (or Cancel to merge first):");
+          if(note&&note.trim())return confirmDataset(dsId,true,btn,{allowSimilar:true,note:note.trim()});
+          if(btn)btn.disabled=false; return {skipped:true};
+        }
+        if(btn){alert(j.error);btn.disabled=false;} return {error:j.error};
+      }
+      if(btn)render(); return {ok:true};
+    }
+    async function confirmAllProposed(btn){
+      const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
+      const todo=(kb.datasets||[]).filter(d=>!dsConfirmed(d));
+      if(!todo.length){alert('Every dataset is already confirmed.');return;}
+      if(!confirm('Confirm '+todo.length+' proposed evidence base'+(todo.length===1?'':'s')+' as real, identified datasets? Only do this after checking them.'))return;
+      btn.disabled=true; let done=0, dup=0, err=0;
+      for(const d of todo){ const res=await confirmDataset(d.id,true,null);
+        if(res.ok)done++; else if(res.skipped||/duplicate/i.test(res.error||''))dup++; else err++; }
+      btn.disabled=false;
+      alert('Confirmed '+done+'. '+(dup?dup+' skipped as possible duplicates (confirm those individually). ':'')+(err?err+' failed.':''));
+      render();
     }
     const posName=k=>{const s=String(k||'').replace(/^NEW:\\s*/i,'').replace(/^pos[_ ]/,'').replace(/_/g,' ');return s.charAt(0).toUpperCase()+s.slice(1);};
     function reviewItems(kb){
