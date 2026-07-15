@@ -37,16 +37,27 @@ class DivergenceTaxonomyTests(unittest.TestCase):
         self.assertGreaterEqual(sum(1 for c in cx.values() if c["crossCampCrux"]), 1)
 
 
-class DivergenceCopyTests(unittest.TestCase):
+class KeyIssuesCopyTests(unittest.TestCase):
     """The viewer template must carry the distinct badges and drop the copy that called every crux a
     'weigh very differently' disagreement (which was false for shared pivots)."""
 
     def test_template_has_distinct_badge_and_honest_tooltip(self):
         html = viewer_html("t", lambda _: {"id": "t", "question": "q", "version": 0,
                                            "kb": _kb("blackholes.kb.json")})
-        self.assertIn("SHARED PIVOT", html)
+        self.assertIn("SHARED UNCERTAINTY", html)
+        self.assertIn("KEY DISAGREEMENT", html)
         self.assertIn("pivotbadge", html)
         self.assertNotIn("weigh very differently — that is where the real disagreement", html)
+
+    def test_public_navigation_uses_plain_language_and_keeps_position(self):
+        with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as handle:
+            template = handle.read()
+        self.assertIn('{id:"coverage",label:"Overview"}', template)
+        self.assertIn('{id:"divergence",label:"Key issues"}', template)
+        self.assertIn('{id:"independence",label:"Evidence"}', template)
+        self.assertIn("Positions", template)
+        self.assertNotIn("Root coverage & bias", template)
+        self.assertNotIn("Divergence matrix", template)
 
 
 class QuoteBadgeCopyTests(unittest.TestCase):
@@ -81,7 +92,8 @@ class CoverageSummaryTests(unittest.TestCase):
     def test_coverage_keeps_source_count_and_independence_separate(self):
         with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as handle:
             template = handle.read()
-        self.assertIn("Two views of the evidence", template)
+        self.assertIn("Source count versus underlying evidence", template)
+        self.assertIn("Adjusted evidence-base count", template)
         self.assertIn('class="distrib"', template)
         self.assertIn('class="indeprows"', template)
         self.assertIn('class="indtrack"', template)

@@ -163,13 +163,13 @@ def home_html():
       </div>
       <div class="tcol">
         <div class="tnum">2 · The fix</div>
-        <p>We show <b>confirmed evidence-root coverage</b>, not headcount. Ten papers resting on one
-        dataset cover roughly <b>one</b> root — while quality and shared-method bias stay separate.</p>
+        <p>We show an <b>adjusted evidence-base count</b>, not just headcount. Ten papers using one
+        dataset count as roughly <b>one</b> evidence base — while quality and shared weaknesses stay separate.</p>
       </div>
       <div class="tcol">
         <div class="tnum">3 · How</div>
         <p>Each source is fetched, labelled with a quote-backed position, and merged into a living
-        map — positions, shared datasets, the real cruxes, and each side's blind spots.</p>
+        map — positions, shared evidence, key disagreements, and what each position leaves out.</p>
       </div>
     </div>
 
@@ -428,17 +428,17 @@ def manage_html(qid, get_question):
         position or drop the paper.</p>
         <div id="revs"></div></div>
       <div class="panel"><h2>Evidence bases <span id="dscount"></span></h2>
-        <p class="desc">These are the case's <b>proposed</b> evidence bases — each worth <b>zero</b> to
-        confirmed-root coverage until it is grounded. <b>Confirm</b> a base you have checked
-        to admit it (it then enters the count), or <b>merge</b> a proposed base that is the same data
-        under a different name <b>into an existing grounded base</b> (one you confirmed, or one a
-        fetched source's exact quote already verifies). Merging two grounded bases (or un-confirming /
-        renaming) is done in the CLI. Each action is logged with your admin identity.</p>
+        <p class="desc">These are the case's <b>proposed</b> evidence bases. They do <b>not count</b>
+        until checked. <b>Confirm</b> a base you have checked to include it, or <b>merge</b> a proposed
+        base that is the same data under a different name <b>into an existing confirmed base</b>
+        (one you confirmed, or one a
+        fetched source's exact quote already verifies). Changing, renaming, or merging confirmed
+        bases is done in the CLI. Each action is logged with your admin identity.</p>
         <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
         <div id="dsdup"></div>
         <div id="dss"></div>
-        <details id="dskindwrap" style="margin-top:6px"><summary style="cursor:pointer;color:var(--faint);font-size:12px">Set evidence-base kinds</summary>
-          <p class="desc" style="margin:10px 0 8px">Most bases are empirical <b>datasets</b>. Mark a proposal or record (a grant, a leaked document) as <b>document</b>, a chain of reasoning as <b>argument</b>, or a calculation / simulation as <b>model</b> — theoretical roots are exempt from the empirical non-human discount. This never changes a base's admission.</p>
+        <details id="dskindwrap" style="margin-top:6px"><summary style="cursor:pointer;color:var(--faint);font-size:12px">Set evidence-base types</summary>
+          <p class="desc" style="margin:10px 0 8px">Most bases are empirical <b>datasets</b>. Mark a proposal or record (a grant, a leaked document) as <b>document</b>, a chain of reasoning as <b>argument</b>, or a calculation / simulation as <b>model</b>. Theoretical evidence bases are not subject to the animal/in-vitro discount. This never changes whether a base counts.</p>
           <div id="dskinds"></div></details></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
@@ -492,17 +492,17 @@ def manage_html(qid, get_question):
       const ds=kb.datasets||[], wrap=document.getElementById('dss'), dup=document.getElementById('dsdup');
       const grounded=ds.filter(dsGrounded).length, proposed=ds.filter(d=>!dsGrounded(d));
       document.getElementById('dscount').innerHTML = ds.length
-        ? `<span class="why" style="font-weight:400">— ${proposed.length} proposed · ${grounded} grounded</span>` : '';
-      if(!ds.length){wrap.innerHTML='<div class="empty">No datasets yet.</div>';dup.innerHTML='';return;}
+        ? `<span class="why" style="font-weight:400">— ${proposed.length} awaiting review · ${grounded} confirmed</span>` : '';
+      if(!ds.length){wrap.innerHTML='<div class="empty">No evidence bases yet.</div>';dup.innerHTML='';return;}
       if(!proposed.length){
-        wrap.innerHTML=`<div class="empty">All ${ds.length} evidence bases are grounded — nothing to triage here. Un-confirm, rename, or merge grounded bases from the CLI.</div>`;
+        wrap.innerHTML=`<div class="empty">All ${ds.length} evidence bases are confirmed — nothing to review here. Un-confirm, rename, or merge confirmed bases from the CLI.</div>`;
         dup.innerHTML=''; return;
       }
-      const cliNote=grounded?`<div class="why" style="padding:2px 6px 12px">${grounded} grounded base${grounded===1?'':'s'} not shown (already counted) — manage those in the CLI.</div>`:'';
+      const cliNote=grounded?`<div class="why" style="padding:2px 6px 12px">${grounded} confirmed base${grounded===1?'':'s'} not shown (already counted) — manage those in the CLI.</div>`:'';
       wrap.innerHTML=cliNote+proposed.map(d=>{
         return `<div class="cand dsrow"><div style="flex:1;min-width:180px"><b>${E(d.label||d.id)}</b>
-          <span class="why">${E(d.kind||'dataset')}</span> <span class="rev-badge queued">proposed · 0 weight</span></div>
-          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this proposed base into an existing grounded base (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
+          <span class="why">${E(d.kind||'dataset')}</span> <span class="rev-badge queued">awaiting review · not counted</span></div>
+          <span class="combo" data-ds="${E(d.id)}"><input class="combo-in" type="text" placeholder="Merge into…" autocomplete="off" spellcheck="false" title="fold this proposed base into an existing confirmed base (same data, different name)"><div class="combo-menu" role="listbox"></div></span>
           <button class="btn sm" onclick="confirmDataset('${E(d.id)}',true,this)">Confirm</button></div>`;
       }).join('');
       renderDupes(kb);
@@ -517,7 +517,7 @@ def manage_html(qid, get_question):
       pairs=pairs.filter(p=>isc(p.a.ref)!==isc(p.b.ref));   // only proposed↔grounded pairs (fold proposed into the grounded base)
       if(!pairs.length){box.innerHTML='';return;}
       box.innerHTML=`<div class="toast warn" style="margin-bottom:10px"><b>Possible duplicates.</b>
-        These labels look like the same evidence base — merge so one cohort isn't counted as two roots.</div>`
+        These labels may describe the same evidence base — merge them so one cohort is not counted twice.</div>`
         + pairs.map(p=>{
           const keep=(isc(p.b.ref)&&!isc(p.a.ref))?p.b:p.a, fold=(keep===p.a)?p.b:p.a;
           return `<div class="cand"><div style="flex:1"><b>${E(fold.label)}</b>

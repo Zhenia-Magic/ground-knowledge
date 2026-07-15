@@ -243,6 +243,19 @@ _NONHUMAN_TOKENS = {"mice", "mouse", "murine", "rat", "rats", "rodent", "rodents
                     "zebrafish", "drosophila", "bovine", "ovine", "vitro"}
 _NONHUMAN_PHRASES = ("in vitro", "ex vivo", "cell line", "cell culture", "animal model")
 
+# A source that merely lacks an animal marker is not thereby human. In particular, legacy sources
+# and reviews commonly carry "—"/unknown population values. Only an explicit human-population
+# description on a PRIMARY source may upgrade an animal-only root to full human relevance.
+_HUMAN_TOKENS = {
+    "adult", "adults", "adolescent", "adolescents", "child", "children", "human", "humans",
+    "men", "women", "people", "person", "persons", "patient", "patients", "participant",
+    "participants", "physician", "physicians", "nurse", "nurses", "professional", "professionals",
+    "case", "cases", "population",
+}
+_UNKNOWN_POPULATION = {
+    "", "unknown", "unspecified", "not reported", "not stated", "not applicable", "na", "none",
+}
+
 
 def _is_nonhuman(source):
     """True if the source's population marks it as an animal or in-vitro study (see prompt rule)."""
@@ -250,6 +263,18 @@ def _is_nonhuman(source):
     if not p:
         return False
     return bool(set(p.split()) & _NONHUMAN_TOKENS) or any(ph in p for ph in _NONHUMAN_PHRASES)
+
+
+def _is_explicit_human(source):
+    """True only when population text affirmatively identifies human subjects.
+
+    This is intentionally stricter than ``not _is_nonhuman``: missing/placeholder population values
+    and secondary reviews must not erase an animal-only discount merely by failing to say "mice".
+    """
+    p = _norm(source.get("population"))
+    if p in _UNKNOWN_POPULATION or _is_nonhuman(source):
+        return False
+    return bool(set(p.split()) & _HUMAN_TOKENS)
 
 
 def _edges(source):
@@ -483,13 +508,20 @@ def resolve(kb):
     base_kind = {"ds:" + d["id"]: (d.get("kind") or "dataset") for d in kb.get("datasets", [])}
     non_empirical = {r for r, k in base_kind.items() if k in _NON_EMPIRICAL_KINDS}
 
-    # a root is 'non-human only' if EVERY source resting on it is an animal / in-vitro study — it's
-    # weaker evidence for a human/clinical question, so it counts at half (like secondary-only). This
-    # is an EMPIRICAL discount: it never applies to a theoretical argument/model root.
+    # A root is 'non-human only' when at least one source explicitly marks animal / in-vitro evidence
+    # and no PRIMARY source explicitly identifies human subjects. Reviews and unknown/placeholder
+    # populations cannot upgrade it: they do not generate human evidence. This is an EMPIRICAL
+    # discount and never applies to a theoretical argument/model root.
     human, animal = set(), set()
     _COLLAPSED = ("secpool:", "primpool:", "cycle:")            # pooled voices: halving n/a
     for s in kb["sources"]:
-        target = animal if _is_nonhuman(s) else human
+        target = None
+        if _is_nonhuman(s):
+            target = animal
+        elif tier_of(kb, s) == "primary" and _is_explicit_human(s):
+            target = human
+        if target is None:
+            continue
         for did in admitted_ds[s["id"]]:
             target.add("ds:" + did)
     nonhuman_only = (animal - human) - non_empirical

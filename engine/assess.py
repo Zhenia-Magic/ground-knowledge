@@ -653,11 +653,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         p, b = unsupported[0]
         out.append({
             "kind": "support-edge", "positionId": p["id"], "label": p["label"], "hue": p["hue"],
-            "badge": "unconfirmed support link",
-            "headline": "A claimed evidence link is excluded pending review.",
-            "detail": ('{} source-to-root link{} {} a verified dependency sentence or curator '
-                       'admission. They remain visible but add zero confirmed root coverage — e.g. '
-                       '"{}" under "{}".').format(
+            "badge": "evidence link awaiting review",
+            "headline": "A claimed evidence link is awaiting review.",
+            "detail": ('{} evidence link{} {} a verified dependency sentence or curator '
+                       'confirmation. They remain visible but do not count — e.g. "{}" under '
+                       '"{}".').format(
                            len(unsupported), "s" if len(unsupported) != 1 else "",
                            "lack" if len(unsupported) != 1 else "lacks", b["label"], p["label"]),
         })
@@ -668,11 +668,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         w = cand[0]
         out.append({
             "kind": "concentration", "positionId": w["id"], "label": w["label"], "hue": w["hue"],
-            "badge": "concentration risk",
-            "headline": "Apparent consensus is correlated.",
-            "detail": ('The "{}" position lists {} sources, but {} of them rest on one dataset — {}. '
-                           'That is {:g} confirmed-root coverage, not {} separate evidence bases. Counting sources '
-                       'here overstates the weight of evidence.').format(
+            "badge": "shared evidence",
+            "headline": "Several sources reuse the same evidence.",
+            "detail": ('The "{}" position lists {} sources, but {} of them use the same evidence '
+                       'base — {}. After shared evidence and limitations are accounted for, the '
+                       'adjusted count is {:g}, not {} separate evidence bases.').format(
                            w["label"], w["raw"], w["topDataset"]["sources"], w["topDataset"]["label"],
                            round(w["nEff"], 1), w["raw"]),
         })
@@ -683,11 +683,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         m = mcand[0]
         out.append({
             "kind": "method-monoculture", "positionId": m["id"], "label": m["label"], "hue": m["hue"],
-            "badge": "method-bias risk",
-            "headline": "Method-bias warning.",
-            "detail": ('In the "{}" position, {} of {} sources fall into the same method-risk '
-                       'family: {}. Separate datasets can still be wrong together when studies '
-                       'share the same design weakness.').format(
+            "badge": "shared method weakness",
+            "headline": "Several sources may share the same weakness.",
+            "detail": ('In the "{}" position, {} of {} sources share the same kind of method '
+                       'weakness: {}. Separate evidence bases can still be wrong together when '
+                       'studies use similar designs.').format(
                            m["label"], m["top"]["count"], m["raw"], m["top"]["label"]),
         })
 
@@ -699,12 +699,12 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         out.append({
             "kind": "quote", "positionId": f["position"],
             "label": p["label"] if p else f["position"], "hue": p["hue"] if p else "#8a6510",
-            "badge": "unverified quote{}".format("" if len(flagged) == 1 else "s"),
-            "headline": "Unverified quote{}.".format("" if len(flagged) == 1 else "s"),
-            "detail": ('{} source{} {} stored quote wording without a current verbatim audit '
-                       'against hashed fetched text — e.g. "{}". It may be altered, absent from '
+            "badge": "quote text not checked",
+            "headline": "Some quote text has not been checked.",
+            "detail": ('{} source{} {} stored quote wording that has not been matched word-for-word '
+                       'against the saved source text — e.g. "{}". It may be altered, absent from '
                        'the fetched material, or a legacy unchecked excerpt; it is shown as a '
-                       'summary rather than inside quotation marks until reverified.').format(
+                       'summary rather than inside quotation marks until checked.').format(
                            len(flagged), "" if len(flagged) == 1 else "s",
                            "has" if len(flagged) == 1 else "have",
                            f.get("title") or f["id"]),
@@ -716,11 +716,11 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         w = wcand[0]
         out.append({
             "kind": "low-confidence", "positionId": w["id"], "label": w["label"], "hue": w["hue"],
-            "badge": "weak quote grounding",
-            "headline": "Some position assignments rest on a weak quote.",
+            "badge": "position needs review",
+            "headline": "Some position assignments need review.",
             "detail": ('In the "{}" position, {} of {} sources have a labelling confidence '
-                       'below 50% — a real quote that only loosely supports the position it is '
-                       'filed under, not a fabricated one. Worth a curator\'s second look.').format(
+                       'below 50% — the quote is real but only loosely supports the position it is '
+                       'filed under. Worth a curator\'s second look.').format(
                            w["label"], w["low"], w["classed"]),
         })
 
@@ -733,14 +733,14 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
         out.append({
             "kind": "model-disagreement", "positionId": None,
             "label": "{} source{} to review".format(n, "" if n == 1 else "s"),
-            "hue": "#8a6510", "badge": "model disagreement",
+            "hue": "#8a6510", "badge": "source labels need review",
             "headline": "The labelling models disagreed on {} source{}.".format(
                 n, "" if n == 1 else "s"),
             "detail": ('When several models label a source independently, they usually agree; on '
-                       'these they split on which POSITION the source supports, and the '
-                       'highest-confidence model\'s label was used. These sources ARE included in '
-                       'every count under that label — the flag marks them for a curator\'s '
-                       're-check (re-label or remove via curation), not an exclusion. Each is '
+                       'these they split on which position the source supports, and the '
+                       'highest-confidence model\'s label was used. These sources are included in '
+                       'every count under that label; the flag asks a curator to re-check, relabel, '
+                       'or remove them rather than excluding them automatically. Each is '
                        'listed with every model\'s proposal — read the source itself to '
                        'adjudicate.'),
             "sources": [{"id": s["id"], "title": s.get("title") or s["id"],

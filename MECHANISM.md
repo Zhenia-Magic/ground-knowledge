@@ -220,11 +220,12 @@ meta-flag: "this root is read both ways" (contested evidence).
    marked "via review only" and contributes 0.5; an unconfirmed root contributes zero. This is
    implemented in `root_strength`, not proposed future work.
 
-5b. **Non-human evidence on a clinical question.** A root backed **only** by animal / in-vitro
-   sources (per the `population` tag: Mice, Rats, In vitro, …) is weaker evidence for a *human*
-   question, so it counts at **half** — same mechanism as the secondary-only halving, and the two
-   stack. A root that any human source also rests on keeps full weight. This needs the population
-   tag to be set, so it only fires on sources labelled with the animal/in-vitro convention.
+5b. **Non-human evidence on a clinical question.** A root backed by animal / in-vitro sources
+   (per the `population` tag: Mice, Rats, In vitro, …) is weaker evidence for a *human* question,
+   so it counts at **half** — same mechanism as the secondary-only halving, and the two stack. Only
+   a **primary source with an explicit human population** upgrades that root to full weight; a review
+   or an unknown/placeholder population cannot manufacture human grounding. The discount only fires
+   when at least one source explicitly carries the animal/in-vitro convention.
 
 6. **Same dataset under multiple positions** → counts once per position; optional "contested"
    meta-flag. Not double-counting — independence is a within-position question.

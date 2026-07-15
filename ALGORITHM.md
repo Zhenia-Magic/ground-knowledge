@@ -104,7 +104,7 @@ def strength(root):
     if root is pool or cycle:      return 0.0         # visible, no grounding
     w = 1.0
     if root in secondary_only:     w *= 0.5           # no primary source instantiates it
-    if root in nonhuman_only:      w *= 0.5           # animal / in-vitro only, for a human question
+    if root in nonhuman_only:      w *= 0.5           # animal/in-vitro; no explicit human primary
     return w
 
 def nEff(position):

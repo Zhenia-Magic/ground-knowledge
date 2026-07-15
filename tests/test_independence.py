@@ -570,8 +570,8 @@ class WarningsTests(unittest.TestCase):
         conc = [w for w in ws if w["kind"] == "concentration"]
         self.assertEqual(len(conc), 1)
         self.assertEqual(conc[0]["positionId"], "X")
-        self.assertIn("Apparent consensus is correlated", conc[0]["headline"])
-        self.assertIn("confirmed-root coverage", conc[0]["detail"])
+        self.assertIn("reuse the same evidence", conc[0]["headline"])
+        self.assertIn("adjusted count", conc[0]["detail"])
 
     def test_method_monoculture_warning(self):
         srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(4)]
@@ -600,7 +600,7 @@ class WarningsTests(unittest.TestCase):
         weak = [w for w in ws if w["kind"] == "low-confidence"]
         self.assertEqual(len(weak), 1)
         self.assertEqual(weak[0]["positionId"], "X")
-        self.assertIn("weak quote", weak[0]["badge"])
+        self.assertIn("needs review", weak[0]["badge"])
 
 
     def test_model_disagreement_warning_carries_sources_and_votes(self):
@@ -679,6 +679,30 @@ class NonHumanTests(unittest.TestCase):
         self.assertNotIn("ds:D", res["nonhuman_only"])
         self.assertEqual(root_strength("ds:D", res["secondary_only"], res["nonhuman_only"]), 1.0)
 
+    def test_unspecified_review_cannot_upgrade_animal_root(self):
+        from engine.roots import resolve, root_strength
+        kb = _kb([self._s2("m", "X", "Mechanistic", ["D"], "Mice"),
+                  self._s2("review", "X", "Narrative/Commentary", ["D"], "—")])
+        res = resolve(kb)
+        self.assertIn("ds:D", res["nonhuman_only"])
+        self.assertEqual(root_strength("ds:D", res["secondary_only"], res["nonhuman_only"]), 0.5)
+
+    def test_human_review_cannot_upgrade_animal_root(self):
+        from engine.roots import resolve, root_strength
+        kb = _kb([self._s2("m", "X", "Mechanistic", ["D"], "Mice"),
+                  self._s2("review", "X", "Narrative/Commentary", ["D"], "Human adults")])
+        res = resolve(kb)
+        self.assertIn("ds:D", res["nonhuman_only"])
+        self.assertEqual(root_strength("ds:D", res["secondary_only"], res["nonhuman_only"]), 0.5)
+
+    def test_unknown_primary_population_cannot_upgrade_animal_root(self):
+        from engine.roots import resolve, root_strength
+        kb = _kb([self._s2("m", "X", "Mechanistic", ["D"], "Mice"),
+                  self._s2("unknown", "X", "Observational", ["D"], "Unspecified")])
+        res = resolve(kb)
+        self.assertIn("ds:D", res["nonhuman_only"])
+        self.assertEqual(root_strength("ds:D", res["secondary_only"], res["nonhuman_only"]), 0.5)
+
     def test_argument_kind_root_is_exempt_from_empirical_nonhuman_halving(self):
         # a theoretical argument/model root has no 'population'; the animal / in-vitro discount that
         # would halve an EMPIRICAL dataset must never touch it (schema-v3 evidence-base kinds).
@@ -694,10 +718,13 @@ class NonHumanTests(unittest.TestCase):
                                        res["provisional"]), 1.0)
 
     def test_population_word_does_not_falsematch(self):
-        from engine.roots import _is_nonhuman
+        from engine.roots import _is_explicit_human, _is_nonhuman
         self.assertFalse(_is_nonhuman({"population": "moderate-risk adults"}))   # 'rat' in 'moderate'
         self.assertTrue(_is_nonhuman({"population": "Rats"}))
         self.assertTrue(_is_nonhuman({"population": "In vitro / cell"}))
+        self.assertFalse(_is_explicit_human({"population": "—"}))
+        self.assertFalse(_is_explicit_human({"population": "Unspecified"}))
+        self.assertTrue(_is_explicit_human({"population": "US adults"}))
 
 
 class BudgetAndFundingTests(unittest.TestCase):
