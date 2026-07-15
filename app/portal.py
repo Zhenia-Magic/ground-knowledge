@@ -129,6 +129,25 @@ def _admin_dataset_status(qid):
     return {"status": out}
 
 
+def _admin_set_dataset_kind(qid, dataset_ref, kind):
+    """Curator sets an evidence base's kind (dataset | document | argument | model). Display + the
+    empirical non-human discount only; never changes admission. Admin moderation."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    try:
+        res = curate.set_kind(kb, dataset_ref, kind)
+    except (ValueError, KeyError) as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"])
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v, "summary": res.get("summary")}
+
+
 def _admin_review_resolve(qid, item_id, kind, action, position=None):
     """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
     (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
@@ -456,6 +475,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, _admin_suggest_duplicates(body.get("id")))
             if p[2] == "dataset-status":
                 return self._send(200, _admin_dataset_status(body.get("id")))
+            if p[2] == "set-dataset-kind":
+                return self._send(200, _admin_set_dataset_kind(
+                    body.get("id"), body.get("dataset") or body.get("datasetId"), body.get("kind")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             body = self._json_body()

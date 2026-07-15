@@ -68,6 +68,12 @@ multiplying via paraphrase as a case grows):
   * A review or meta-analysis restsOn the cohorts it POOLS, NOT "the literature" / "studies through
     <year>" / a label describing the paper itself. If the pooled cohorts aren't named, list the few
     largest you can identify, else leave restsOn empty (it will count as one secondary voice).
+  * KIND of the base — most evidence bases are empirical DATA (a cohort, trial, sample, experiment,
+    observation); those need nothing extra. When a base is NOT empirical data — a proposal or record
+    (a grant proposal, a leaked document, a memo), a theoretical ARGUMENT / chain of reasoning, or a
+    MODEL / calculation — write that edge as an object and add `"datasetKind"` = `"document"`,
+    `"argument"`, or `"model"`. These theoretical roots are exempt from the empirical (non-human)
+    discount. Empirical data needs no `datasetKind` (it defaults to a dataset).
   restsOn may also reference ANOTHER SOURCE when this source's case IS that source (a commentary on
   one paper; two pieces citing each other). Write "SRC:<existing source id>" or "NEW-SRC:<title>".
   This is how the independence audit detects echo and circular corroboration — name the source

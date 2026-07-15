@@ -4,6 +4,7 @@ import argparse
 import glob
 import json
 import os
+import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +44,27 @@ def quote_audit_scope_errors():
     return errors
 
 
+# A root whose LABEL reads like a document or an argument but is typed as an empirical dataset is a
+# likely mis-classification (kind defaults to "dataset"). Advisory only — surfaced for human review,
+# not a hard failure — but it is part of the generated file, so a new mismatch shows up as drift.
+_DOC_SIGNAL = re.compile(
+    r"\bproposal\b|\bdocument\b|\bmemo\b|\bdossier\b|editorial|op-?ed|white ?paper|position paper"
+    r"|manifesto|\bargument\b|hypothesis|conjecture", re.I)
+_NON_EMPIRICAL = {"document", "argument", "model"}
+
+
+def kind_mismatches():
+    rows = []
+    for path in sorted(glob.glob(os.path.join(ROOT, "cases", "*.kb.json"))):
+        with open(path, encoding="utf-8") as f:
+            kb = json.load(f)
+        for d in kb.get("datasets", []):
+            k = (d.get("kind") or "dataset")
+            if _DOC_SIGNAL.search(d.get("label", "")) and k not in _NON_EMPIRICAL:
+                rows.append((os.path.basename(path), d.get("label", ""), k))
+    return rows
+
+
 def render():
     lines = [
         "# Current source inventory",
@@ -72,7 +94,19 @@ def render():
         "Exact position quotes use the current hashed verifier. Unadmitted support links remain visible",
         "but contribute zero confirmed-root coverage.",
         "",
+        "## Possible evidence-base kind mismatches",
+        "",
+        "Roots whose label reads like a document/argument but are typed as an empirical `dataset`.",
+        "Advisory — set the kind in the manage page or `curate.set_kind` if the label is right.",
+        "",
     ]
+    mismatches = kind_mismatches()
+    if mismatches:
+        lines += ["| Case | root | current kind |", "|---|---|---:|"]
+        lines += ["| `{}` | {} | {} |".format(c, lbl, k) for c, lbl, k in mismatches]
+    else:
+        lines.append("None — every document/argument-labelled root is typed accordingly.")
+    lines.append("")
     return "\n".join(lines)
 
 

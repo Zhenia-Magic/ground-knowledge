@@ -25,6 +25,9 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                                 //   document (absent = dataset). argument/model/document are THEORETICAL
                                 //   roots — first-class coverage bases, exempt from the empirical
                                 //   (non-human population) discount; proposition states the claim.
+                                //   kind is NEVER inferred: the labeller sets it via a restsOn edge's
+                                //   "datasetKind" (ingest.md), or a curator via curate.set_kind /
+                                //   the manage page. source_inventory flags document-labelled datasets.
                                 //   confirmation = {status: confirmed|provisional|disputed,
                                 //   method: curator|verified-edge, by, source?, ts, note?} -- an
                                 //   AUDITABLE record of HOW the root was admitted (replaces the bare

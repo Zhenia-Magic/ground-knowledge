@@ -14,3 +14,10 @@
 `root records` is the number of named evidence-base entities, not per-position coverage.
 Exact position quotes use the current hashed verifier. Unadmitted support links remain visible
 but contribute zero confirmed-root coverage.
+
+## Possible evidence-base kind mismatches
+
+Roots whose label reads like a document/argument but are typed as an empirical `dataset`.
+Advisory — set the kind in the manage page or `curate.set_kind` if the label is right.
+
+None — every document/argument-labelled root is typed accordingly.

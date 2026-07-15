@@ -114,6 +114,8 @@
                 "required": ["ref"],
                 "properties": {
                   "ref": {"type": "string"},
+                  "datasetKind": {"enum": ["dataset", "document", "argument", "model"],
+                    "description": "kind for a NEW evidence base named by this edge; document/argument/model are theoretical roots. Absent = empirical dataset. Applied only on creation."},
                   "provenance": {
                     "type": "object",
                     "properties": {

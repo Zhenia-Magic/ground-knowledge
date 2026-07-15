@@ -396,3 +396,49 @@ class PrettifyLabelTests(unittest.TestCase):
         self.assertEqual(p("McGill cohort"), "McGill cohort")
         self.assertEqual(p("UK Biobank"), "UK Biobank")
         self.assertEqual(p("SARS-CoV-2 wastewater data"), "SARS-CoV-2 wastewater data")
+
+
+class EvidenceBaseKindTests(unittest.TestCase):
+    """kind (dataset|document|argument|model) is set by the labeller (datasetKind on a restsOn edge)
+    or a curator (curate.set_kind); it is never inferred. 'dataset' is the empirical default and is
+    stored implicitly. See scripts/source_inventory.kind_mismatches for the drift guard."""
+
+    def test_labeller_datasetKind_creates_a_typed_root(self):
+        kb = empty_kb("k", "Q?")
+        merge_delta(kb, {"source": {"title": "Analysis", "year": 2023, "url": "https://ex.org/a",
+            "position": "NEW:Yes", "evidence": "Narrative/Commentary",
+            "restsOn": [{"ref": "NEW:The DEFUSE proposal", "datasetKind": "document",
+                         "provenance": {"quote": "x"}}]}})
+        doc = next(d for d in kb["datasets"] if "DEFUSE" in d["label"])
+        self.assertEqual(doc.get("kind"), "document")
+
+    def test_empirical_base_stays_implicit_and_invalid_kind_is_ignored(self):
+        kb = empty_kb("k", "Q?")
+        merge_delta(kb, {"source": {"title": "Cohort", "year": 2023, "url": "https://ex.org/c",
+            "position": "NEW:Yes", "evidence": "Observational",
+            "restsOn": [{"ref": "NEW:Framingham cohort", "provenance": {"quote": "y"}}]}})
+        merge_delta(kb, {"source": {"title": "Weird", "year": 2023, "url": "https://ex.org/w",
+            "position": "NEW:Yes", "evidence": "Observational",
+            "restsOn": [{"ref": "NEW:Weird base", "datasetKind": "nonsense",
+                         "provenance": {"quote": "z"}}]}})
+        for label in ("ramingham", "Weird"):
+            d = next(x for x in kb["datasets"] if label in x["label"])
+            self.assertNotIn("kind", d)
+
+    def test_curate_set_kind_sets_resets_and_rejects(self):
+        from engine import curate
+        kb = empty_kb("k", "Q?")
+        kb["datasets"].append({"id": "ds_x", "label": "X proposal", "aliases": []})
+        curate.set_kind(kb, "ds_x", "document")
+        self.assertEqual(kb["datasets"][0]["kind"], "document")
+        curate.set_kind(kb, "ds_x", "dataset")          # default -> stored implicitly (key removed)
+        self.assertNotIn("kind", kb["datasets"][0])
+        with self.assertRaises(ValueError):
+            curate.set_kind(kb, "ds_x", "bogus")
+
+    def test_audit_flags_a_document_labelled_dataset_and_is_clean_on_shipped_cases(self):
+        from scripts import source_inventory as si
+        self.assertTrue(si._DOC_SIGNAL.search("DEFUSE grant proposal document (2018)"))
+        self.assertFalse(si._DOC_SIGNAL.search("Nurses' Health Study cohort"))
+        # every shipped case must have its document/argument roots typed correctly (no mismatch)
+        self.assertEqual(si.kind_mismatches(), [])

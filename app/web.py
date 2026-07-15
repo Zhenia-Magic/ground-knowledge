@@ -66,6 +66,8 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .rev-opt .oq{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4;}
 .rev-act{display:flex;gap:8px;align-items:center;margin-top:11px;flex-wrap:wrap;}
 .rev-act select{flex:1;min-width:160px;padding:8px 10px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;}
+.kindsel{flex:0 0 auto;padding:6px 9px;border:1px solid var(--line-strong);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-size:12.5px;cursor:pointer;}
+.kindsel:focus{outline:none;border-color:var(--chrome);}
 .rev-act .btn{padding:7px 12px;font-size:13px;}
 .rev-abs{margin:8px 0 0;} .rev-abs summary{font-size:12.5px;color:var(--muted);cursor:pointer;}
 .cand{display:flex;gap:9px;align-items:flex-start;padding:8px 6px;border-top:1px solid var(--line);border-radius:6px;transition:background .12s;}
@@ -434,7 +436,10 @@ def manage_html(qid, get_question):
         renaming) is done in the CLI. Each action is logged with your admin identity.</p>
         <div class="bar" style="margin-bottom:10px"><button class="btn ghost sm" onclick="confirmAllProposed(this)">Confirm all proposed…</button></div>
         <div id="dsdup"></div>
-        <div id="dss"></div></div>
+        <div id="dss"></div>
+        <details id="dskindwrap" style="margin-top:6px"><summary style="cursor:pointer;color:var(--faint);font-size:12px">Set evidence-base kinds</summary>
+          <p class="desc" style="margin:10px 0 8px">Most bases are empirical <b>datasets</b>. Mark a proposal or record (a grant, a leaked document) as <b>document</b>, a chain of reasoning as <b>argument</b>, or a calculation / simulation as <b>model</b> — theoretical roots are exempt from the empirical non-human discount. This never changes a base's admission.</p>
+          <div id="dskinds"></div></details></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
         <div id="srcs"></div></div>
@@ -483,6 +488,7 @@ def manage_html(qid, get_question):
     const dsGrounded=d=>dsStatusOf(d)!=='proposed';
     function renderDatasets(kb){
       window.__kb=kb;
+      renderKinds(kb);
       const ds=kb.datasets||[], wrap=document.getElementById('dss'), dup=document.getElementById('dsdup');
       const grounded=ds.filter(dsGrounded).length, proposed=ds.filter(d=>!dsGrounded(d));
       document.getElementById('dscount').innerHTML = ds.length
@@ -519,6 +525,27 @@ def manage_html(qid, get_question):
             <span class="why">· ${E(p.reason)} · ${p.sim}</span></div>
             <button class="btn ghost" onclick="mergeDataset('${E(fold.ref)}','${E(keep.ref)}',null)">Merge</button></div>`;
         }).join('');
+    }
+    function renderKinds(kb){
+      const box=document.getElementById('dskinds'), wrap=document.getElementById('dskindwrap');
+      if(!box)return;
+      const ds=kb.datasets||[];
+      if(!ds.length){ if(wrap)wrap.style.display='none'; box.innerHTML=''; return; }
+      if(wrap)wrap.style.display='';
+      const KINDS=['dataset','document','argument','model'];
+      box.innerHTML=ds.map(d=>{
+        const cur=d.kind||'dataset';
+        const opts=KINDS.map(k=>`<option value="${k}"${k===cur?' selected':''}>${k}</option>`).join('');
+        return `<div class="cand"><div style="flex:1;min-width:160px"><b>${E(d.label||d.id)}</b>${cur!=='dataset'?` <span class="rev-badge merged">${cur}</span>`:''}</div>
+          <select class="kindsel" onchange="setKind('${E(d.id)}',this.value,this)">${opts}</select></div>`;
+      }).join('');
+    }
+    async function setKind(dsId,kind,el){
+      if(el)el.disabled=true;
+      const r=await fetch('/api/admin/set-dataset-kind',{method:'POST',headers:H(),body:JSON.stringify({id:QID,dataset:dsId,kind})});
+      const j=await r.json();
+      if(j.error){alert(j.error); if(el)el.disabled=false; return;}
+      render();
     }
     async function mergeDataset(srcId,dstId,el){
       const ds=(window.__kb&&window.__kb.datasets)||[], nm=id=>{const d=ds.find(x=>x.id===id);return d?(d.label||d.id):id;};

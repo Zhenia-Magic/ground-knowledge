@@ -21,6 +21,18 @@ from engine.verify import is_verified_exact
 
 HUES = ["#2E8B6F", "#B4502E", "#586A7A", "#8a6510", "#2f6296", "#7a4fa3"]
 
+# Evidence-base kinds. "dataset" is the empirical default and stays implicit (absent) in the KB;
+# document/argument/model are theoretical roots (a proposal, a chain of reasoning, a calculation)
+# and are exempt from the empirical non-human discount (engine/roots._NON_EMPIRICAL_KINDS).
+ROOT_KINDS = ("dataset", "document", "argument", "model")
+_STORED_KINDS = {"document", "argument", "model"}
+
+
+def normalize_kind(kind):
+    """A labeller/curator kind string -> a stored value, or None for the implicit 'dataset' default."""
+    k = str(kind or "").strip().lower()
+    return k if k in _STORED_KINDS else None
+
 
 def now_iso():
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -179,7 +191,7 @@ def _dataset_is_source_ref(kb, proposed):
     return None
 
 
-def _resolve_dataset(kb, proposed):
+def _resolve_dataset(kb, proposed, kind=None):
     is_new = proposed.startswith("NEW:")
     label = proposed[4:].strip() if is_new else None
     if not is_new:
@@ -199,7 +211,11 @@ def _resolve_dataset(kb, proposed):
     nice = prettify_label(label or proposed)
     cid = _unique_id("ds_", slug(nice),
                      lambda x: any(d["id"] == x for d in kb["datasets"]))
-    kb["datasets"].append({"id": cid, "label": nice, "aliases": []})
+    obj = {"id": cid, "label": nice, "aliases": []}
+    nk = normalize_kind(kind)               # only non-default kinds are stored; "dataset" stays implicit
+    if nk:
+        obj["kind"] = nk
+    kb["datasets"].append(obj)
     return cid, True
 
 
@@ -437,8 +453,9 @@ def merge_delta(kb, delta):
             d = str(entry.get("ref") or "").strip()
             eprov = entry.get("provenance") if isinstance(entry.get("provenance"), dict) else None
             eadmission = entry.get("admission") if isinstance(entry.get("admission"), dict) else None
+            ekind = entry.get("datasetKind") or entry.get("kind")   # kind for a NEW evidence base
         else:
-            d, eprov, eadmission = str(entry).strip(), None, None
+            d, eprov, eadmission, ekind = str(entry).strip(), None, None, None
         if not d:
             continue
         # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
@@ -470,7 +487,7 @@ def merge_delta(kb, delta):
                 obj["admission"] = eadmission
             rests_on.append(obj if len(obj) > 1 else obj["ref"])
             continue
-        did, created = _resolve_dataset(kb, d)
+        did, created = _resolve_dataset(kb, d, kind=ekind)
         if created:
             report["newDatasets"].append(did)
         # store an edge OBJECT only when the labeller attached a per-edge quote; a bare dataset

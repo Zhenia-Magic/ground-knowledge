@@ -466,6 +466,27 @@ def rename(kb, kind, ref, new_label):
     return _commit(kb, "rename", "renamed {} “{}” → “{}”".format(kind, old, new_label))
 
 
+_ROOT_KINDS = {"dataset", "document", "argument", "model"}
+
+
+def set_kind(kb, ref, kind):
+    """Set an evidence base's KIND: dataset | document | argument | model.
+
+    'dataset' is the empirical default and is stored implicitly (the field is removed so the KB stays
+    clean); document/argument/model are theoretical roots — a proposal/record, a chain of reasoning,
+    a model/calculation — and are exempt from the empirical (non-human) discount (engine/roots
+    ._NON_EMPIRICAL_KINDS). Display-and-discount only; it never changes a root's admission."""
+    k = str(kind or "dataset").strip().lower()
+    if k not in _ROOT_KINDS:
+        raise ValueError("kind must be one of {}".format(sorted(_ROOT_KINDS)))
+    d = _resolve(kb["datasets"], ref, "dataset")
+    if k == "dataset":
+        d.pop("kind", None)
+    else:
+        d["kind"] = k
+    return _commit(kb, "set-kind", "set kind of “{}” to {}".format(d["label"], k))
+
+
 def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=None, note=None,
                     allow_similar=False, embed=None):
     """Curator vouches that a dataset is a REAL, identified evidence base (or un-vouches it).
