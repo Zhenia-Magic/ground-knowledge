@@ -59,6 +59,30 @@ def _now():
 _KB_COL = "JSONB" if _IS_PG else "TEXT"
 
 
+def configure_from_env():
+    """Refresh backend configuration after the entrypoint has loaded ``.env``."""
+    global DATABASE_URL, _IS_PG, _SQLITE_PATH, _KB_COL
+    DATABASE_URL = os.environ.get("DATABASE_URL")
+    _IS_PG = bool(DATABASE_URL)
+    _SQLITE_PATH = os.environ.get("EPISTEMIC_DB", os.path.join("data", "app.db"))
+    _KB_COL = "JSONB" if _IS_PG else "TEXT"
+
+
+def _columns(cur, table):
+    if _IS_PG:
+        cur.execute("SELECT column_name FROM information_schema.columns"
+                    " WHERE table_schema = current_schema() AND table_name = %s",
+                    (table,))
+        return {row["column_name"] for row in cur.fetchall()}
+    cur.execute("PRAGMA table_info({})".format(table))
+    return {row["name"] for row in cur.fetchall()}
+
+
+def _add_column(cur, table, name, sql_type):
+    if name not in _columns(cur, table):
+        cur.execute("ALTER TABLE {} ADD COLUMN {} {}".format(table, name, sql_type))
+
+
 def init_db():
     """Create tables if absent. Safe to call on every boot."""
     conn = _connect()
@@ -71,6 +95,10 @@ def init_db():
             " question TEXT NOT NULL,"
             " kb {kb} NOT NULL,"
             " version INTEGER NOT NULL DEFAULT 0,"
+            " source_count INTEGER NOT NULL DEFAULT 0,"
+            " position_count INTEGER NOT NULL DEFAULT 0,"
+            " dataset_count INTEGER NOT NULL DEFAULT 0,"
+            " kb_version INTEGER NOT NULL DEFAULT 0,"
             " created_at INTEGER NOT NULL,"
             " updated_at INTEGER NOT NULL)".format(kb=_KB_COL)))
         cur.execute(_sql(
@@ -97,7 +125,34 @@ def init_db():
             " participant TEXT,"                              # self-chosen token, NOT PII
             " response {kb} NOT NULL,"                        # raw answers (incl. free text)
             " scored {kb} NOT NULL,"                          # auto-scored objective observations
+            " assignment_id TEXT,"
             " created_at INTEGER NOT NULL)".format(kb=_KB_COL)))
+        cur.execute(_sql(
+            "CREATE TABLE IF NOT EXISTS study_assignments ("
+            " id TEXT PRIMARY KEY,"
+            " plan {kb} NOT NULL,"
+            " consumed INTEGER NOT NULL DEFAULT 0,"
+            " created_at INTEGER NOT NULL,"
+            " submitted_at INTEGER)".format(kb=_KB_COL)))
+
+        # Additive migrations for databases created by earlier releases.
+        for name in ("source_count", "position_count", "dataset_count", "kb_version"):
+            _add_column(cur, "questions", name, "INTEGER")
+        _add_column(cur, "study_responses", "assignment_id", "TEXT")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_questions_updated ON questions(updated_at)")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_contributions_question ON contributions(question_id, created_at)")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_jobs_question ON jobs(question_id, created_at)")
+        cur.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_study_response_assignment ON study_responses(assignment_id)")
+
+        # Backfill compact question-card metadata once; list_questions never needs to parse KB blobs.
+        cur.execute("SELECT id, kb FROM questions WHERE source_count IS NULL OR position_count IS NULL"
+                    " OR dataset_count IS NULL OR kb_version IS NULL")
+        for row in cur.fetchall():
+            counts = _counts(_load(row["kb"]))
+            cur.execute(_sql("UPDATE questions SET source_count = ?, position_count = ?,"
+                             " dataset_count = ?, kb_version = ? WHERE id = ?"),
+                        (counts["sources"], counts["positions"], counts["datasets"],
+                         counts["version"], row["id"]))
         conn.commit()
     finally:
         conn.close()
@@ -141,14 +196,17 @@ def create_question(question_text, contributor="anonymous"):
     now = _now()
     conn = _connect()
     try:
-        conn.cursor().execute(_sql(
-            "INSERT INTO questions (id, slug, question, kb, version, created_at, updated_at)"
-            " VALUES (?, ?, ?, ?, ?, ?, ?)"),
-            (qid, sg, question_text, _dump(kb), 0, now, now))
+        cur = conn.cursor()
+        cur.execute(_sql(
+            "INSERT INTO questions (id, slug, question, kb, version, source_count, position_count,"
+            " dataset_count, kb_version, created_at, updated_at)"
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+            (qid, sg, question_text, _dump(kb), 0, 0, 0, 0,
+             kb.get("meta", {}).get("version", 0), now, now))
+        _insert_contribution(cur, qid, contributor, "create-question", question_text, now)
         conn.commit()
     finally:
         conn.close()
-    log_contribution(qid, contributor, "create-question", question_text)
     return {"id": qid, "slug": sg, "question": question_text, "version": 0,
             "created_at": now, "updated_at": now, "kb": kb}
 
@@ -171,14 +229,21 @@ def list_questions(search=None, limit=100):
         cur = conn.cursor()
         if search:
             like = "%" + search.lower() + "%"
-            cur.execute(_sql("SELECT * FROM questions WHERE LOWER(question) LIKE ?"
+            cur.execute(_sql("SELECT id, slug, question, version, created_at, updated_at,"
+                             " source_count, position_count, dataset_count, kb_version"
+                             " FROM questions WHERE LOWER(question) LIKE ?"
                              " ORDER BY updated_at DESC LIMIT ?"), (like, limit))
         else:
-            cur.execute(_sql("SELECT * FROM questions ORDER BY updated_at DESC LIMIT ?"), (limit,))
+            cur.execute(_sql("SELECT id, slug, question, version, created_at, updated_at,"
+                             " source_count, position_count, dataset_count, kb_version"
+                             " FROM questions ORDER BY updated_at DESC LIMIT ?"), (limit,))
         out = []
         for row in cur.fetchall():
             q = _row_to_question(row, with_kb=False)
-            q["counts"] = _counts(_load(row["kb"]))  # small summary for the card
+            q["counts"] = {"sources": row["source_count"] or 0,
+                           "positions": row["position_count"] or 0,
+                           "datasets": row["dataset_count"] or 0,
+                           "version": row["kb_version"] or 0}
             out.append(q)
         return out
     finally:
@@ -190,21 +255,30 @@ def _counts(kb):
             "datasets": len(kb.get("datasets", [])), "version": kb.get("meta", {}).get("version", 0)}
 
 
-def save_kb(qid, kb, expected_version):
+def save_kb(qid, kb, expected_version, audit=None):
     """Write a KB back, optimistic-locked on version: fails with Conflict if someone else wrote
     in between (so concurrent harvests serialize instead of clobbering). Returns the new version."""
-    new_version = kb.get("meta", {}).get("version", 0)
+    # This is a server revision, deliberately separate from kb.meta.version. Queueing a review item
+    # or replacing a KB may have the same semantic KB version as the previous document; it must still
+    # advance optimistic locking so a concurrent writer cannot silently win.
+    new_version = int(expected_version) + 1
+    counts = _counts(kb)
     now = _now()
     conn = _connect()
     try:
         cur = conn.cursor()
         cur.execute(_sql(
-            "UPDATE questions SET kb = ?, version = ?, updated_at = ?"
+            "UPDATE questions SET kb = ?, version = ?, source_count = ?, position_count = ?,"
+            " dataset_count = ?, kb_version = ?, updated_at = ?"
             " WHERE id = ? AND version = ?"),
-            (_dump(kb), new_version, now, qid, expected_version))
+            (_dump(kb), new_version, counts["sources"], counts["positions"], counts["datasets"],
+             counts["version"], now, qid, expected_version))
         if cur.rowcount == 0:
             conn.rollback()
             raise Conflict("question {} changed since version {}".format(qid, expected_version))
+        if audit:
+            _insert_contribution(cur, qid, audit.get("contributor") or "anonymous",
+                                 audit.get("action") or "update-kb", audit.get("summary") or "", now)
         conn.commit()
         return new_version
     finally:
@@ -214,7 +288,10 @@ def save_kb(qid, kb, expected_version):
 def delete_question(qid):
     conn = _connect()
     try:
-        conn.cursor().execute(_sql("DELETE FROM questions WHERE id = ?"), (qid,))
+        cur = conn.cursor()
+        cur.execute(_sql("DELETE FROM contributions WHERE question_id = ?"), (qid,))
+        cur.execute(_sql("DELETE FROM jobs WHERE question_id = ?"), (qid,))
+        cur.execute(_sql("DELETE FROM questions WHERE id = ?"), (qid,))
         conn.commit()
     finally:
         conn.close()
@@ -285,13 +362,21 @@ def get_job(jid):
 def log_contribution(qid, contributor, action, summary=""):
     conn = _connect()
     try:
-        conn.cursor().execute(_sql(
-            "INSERT INTO contributions (id, question_id, contributor, action, summary, created_at)"
-            " VALUES (?, ?, ?, ?, ?, ?)"),
-            (uuid.uuid4().hex[:12], qid, contributor or "anonymous", action, summary or "", _now()))
+        _insert_contribution(conn.cursor(), qid, contributor, action, summary, _now())
         conn.commit()
     finally:
         conn.close()
+
+
+def _insert_contribution(cur, qid, contributor, action, summary, created_at):
+    contributor = contributor.strip()[:100] if isinstance(contributor, str) and contributor.strip() \
+        else "anonymous"
+    action = action.strip()[:100] if isinstance(action, str) and action.strip() else "update-kb"
+    summary = summary[:2000] if isinstance(summary, str) else ""
+    cur.execute(_sql(
+        "INSERT INTO contributions (id, question_id, contributor, action, summary, created_at)"
+        " VALUES (?, ?, ?, ?, ?, ?)"),
+        (uuid.uuid4().hex[:12], qid, contributor, action, summary, created_at))
 
 
 def contributions(qid, limit=100):
@@ -320,14 +405,60 @@ def count_study_participants():
         conn.close()
 
 
-def save_study_response(participant, response, scored):
-    rid = uuid.uuid4().hex[:12]
+def new_study_assignment():
+    """Allocate a balanced, server-owned crossover plan under a database lock."""
+    from eval.reader_study import study
+    aid = uuid.uuid4().hex
+    now = _now()
     conn = _connect()
     try:
-        conn.cursor().execute(_sql(
-            "INSERT INTO study_responses (id, participant, response, scored, created_at)"
-            " VALUES (?, ?, ?, ?, ?)"),
-            (rid, (participant or "")[:64], _dump(response), _dump(scored), _now()))
+        cur = conn.cursor()
+        if _IS_PG:
+            cur.execute("LOCK TABLE study_assignments IN EXCLUSIVE MODE")
+        else:
+            cur.execute("BEGIN IMMEDIATE")
+        cur.execute("SELECT COUNT(*) AS n FROM study_assignments")
+        row = cur.fetchone()
+        index = int(row["n"]) if row else 0
+        plan = study.assign(index)
+        cur.execute(_sql("INSERT INTO study_assignments (id, plan, consumed, created_at)"
+                         " VALUES (?, ?, 0, ?)"), (aid, _dump(plan), now))
+        conn.commit()
+        return {"id": aid, "plan": plan}
+    finally:
+        conn.close()
+
+
+def get_study_assignment(assignment_id):
+    conn = _connect()
+    try:
+        cur = conn.cursor()
+        cur.execute(_sql("SELECT * FROM study_assignments WHERE id = ?"), (assignment_id,))
+        row = cur.fetchone()
+        if not row:
+            return None
+        return {"id": row["id"], "plan": _load(row["plan"]),
+                "consumed": bool(row["consumed"]), "created_at": row["created_at"]}
+    finally:
+        conn.close()
+
+
+def save_study_response(assignment_id, participant, response, scored):
+    rid = uuid.uuid4().hex[:12]
+    participant = participant.strip()[:64] if isinstance(participant, str) else ""
+    conn = _connect()
+    try:
+        cur = conn.cursor()
+        now = _now()
+        cur.execute(_sql("UPDATE study_assignments SET consumed = 1, submitted_at = ?"
+                         " WHERE id = ? AND consumed = 0"), (now, assignment_id))
+        if cur.rowcount == 0:
+            conn.rollback()
+            raise Conflict("study assignment is missing or was already submitted")
+        cur.execute(_sql(
+            "INSERT INTO study_responses (id, participant, response, scored, assignment_id, created_at)"
+            " VALUES (?, ?, ?, ?, ?, ?)"),
+            (rid, participant, _dump(response), _dump(scored), assignment_id, now))
         conn.commit()
     finally:
         conn.close()

@@ -266,6 +266,7 @@ meta-flag: "this root is read both ways" (contested evidence).
 | Mislabel a commentary as `Observational` (empty `restsOn`) | Mint a free independent root | Ungrounded primaries **pool to one voice per position** (like reviews); a distinct root needs a *named* evidence base; unrecognised labels default secondary; + verification pass + relevance gate |
 | Flood rehashes as `Observational`, each *naming a fabricated dataset* | Mint roots past the pool | Unverified roots remain visible but contribute **zero confirmed nEff**; a verified dependency quote must also name that edge's label/alias; false curator confirmation remains the semantic risk (§8.3) |
 | Attach an already-confirmed root to another camp | Launder trusted root identity into unearned support | Root identity and support-edge admission are separate; the unreviewed edge stays visible at zero |
+| Put a fake curator `admission` object in model output | Turn model text into a trust decision | Every ingestion path deletes model/client admission; only the explicit curator operation can write it; the executable benchmark checks this on the fetched-text path |
 | Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
@@ -335,6 +336,10 @@ provenance, verification against fetched text, and review. Named in §8 rather t
    a genuine architectural extension, not a deadline patch.
 8. **No reader-uplift result.** The benchmark tests structure and invariants, not whether readers
    become better calibrated. The reader-study materials are future-work scaffolding only.
+9. **Large-corpus evidence is still missing.** Candidate blocking removes the routine quadratic
+   duplicate scan; prompt size, PDF pages, request workers, fetch concurrency, and bodies are bounded.
+   These are engineering safeguards, not a published scale study. Optional semantic duplicate
+   matching is capped and remains advisory.
 
 If we publish the system, we publish this list. That is the epistemically honest move — the same
 instinct as documenting dataset errors instead of silently fixing them.

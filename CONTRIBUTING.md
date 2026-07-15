@@ -42,12 +42,18 @@ weaken the test.
 1. **Fixed-graph independence monotonicity.** Adding a source with only outgoing edges never lowers
    `nEff`; it rises only through a new admitted root or grounding upgrade. Graph corrections may lower it
    intentionally (alias merge; pending edge reveals a pure cycle). Both are tested.
-2. **Adversarial robustness contract.** Every case executes eight attacks: echo, fabricated roots,
+2. **Adversarial robustness contract.** Every case executes nine attacks: echo, fabricated roots,
    copied-sibling quote, circular ring, known alias, generic fetched label, unknown lexical alias
-   split, and cross-position support laundering. All must stay PASS.
+   split, cross-position support laundering, and forged curator admission. All must stay PASS.
 3. **Determinism / no drift.** The viewer renders `engine/assess.assess()` output; it never
    recomputes. One `assess()` is one `resolve()`. Same KB in → same numbers out, always.
 4. **Confirmation is per edge** (see below) — never re-widen it to a source-level boolean.
+5. **Models propose; curators admit.** An ingestion delta may never carry an `admission` object.
+   Fetched metadata is authoritative, and batch output is joined to fetched text only by the opaque
+   `sourceId` returned exactly once for every input.
+6. **Server revision is not `meta.version`.** Every hosted write advances the optimistic-lock
+   revision, even when the KB's semantic version does not change. Save the KB and audit entry in the
+   same transaction; never turn a conflict into last-write-wins behavior.
 
 ## How a knowledge base is shaped (`SCHEMA.md` is authoritative)
 
@@ -119,9 +125,10 @@ edge; it cannot be reused by another source.
 
 1. Keep the engine/eval path stdlib-only and deterministic.
 2. `bash scripts/smoke.sh` is green (tests + validation + strict benchmark + demo).
-3. Add/adjust tests for new behavior; if you touched a case KB, keep `cli.py validate` clean and the
+3. Add/adjust tests for new behavior; keep `python cli.py validate cases/*.kb.json` clean and the
    benchmark PASS.
-4. Update the docs you invalidated (`SCHEMA.md`, `MECHANISM.md`, `SUBMISSION.md`, `ALGORITHM.md`).
+4. Update the docs you invalidated (`SCHEMA.md`, `MECHANISM.md`, `SUBMISSION.md`, `ALGORITHM.md`,
+   `SECURITY.md`, and `DEPLOYMENT.md` where applicable).
 5. Match the surrounding code: comments explain *why*, not *what*; small, legible functions.
 
 By contributing you agree your contribution is licensed under the repository's

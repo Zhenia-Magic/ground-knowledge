@@ -59,7 +59,7 @@ The pipeline maps onto FLF's three-layer stack and produces a **living** KB (not
 
 3. **Assessment** (`engine/roots.py`, `engine/assess.py`) — pure, deterministic, no LLM. Resolves the derivation graph to its roots and computes every number the tool reports: independence, concentration, funding skew, method-monoculture, cruxes, blindspots, and a structured **diff** of what each update changed.
 
-4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; full-KB pushes are token-gated and optimistic-version-locked.
+4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; full-KB pushes are token-gated and optimistic-version-locked. The portal bounds request bodies, fetch batches, expensive concurrent work, request threads, and per-IP mutation rates. Each KB write and its audit entry commit together, and stale writers receive a conflict instead of overwriting newer work.
 
 ### The independence engine (the heart)
 
@@ -80,7 +80,7 @@ An already confirmed root therefore cannot be attached to another camp by an unr
 
 ## Adversarial robustness — a contract we *execute*
 
-The robustness claim is not prose; the benchmark runs eight attacks on every case:
+The robustness claim is not prose; the benchmark runs nine attacks on every case:
 
 - **+12 ungrounded echo** sources under the strongest position → `nEff` moves by **0.0**; the pooled assertion marker is visible at zero.
 - **+12 fabricated named datasets** on the unverified paste-back path → `nEff` moves by **0.0** (visible as proposed roots, quarantined until confirmed), versus a naive count of +12.
@@ -90,8 +90,9 @@ The robustness claim is not prose; the benchmark runs eight attacks on every cas
 - **a generic fetched label** (`Cohort`) → ordinary methods prose does not identify a root; **0.0** gain.
 - **two newly proposed lexical aliases** named by one real sentence → at most one enters `nEff`; the collision is flagged for curation.
 - **all confirmed roots from one camp attached to another through an unreviewed source** → the target camp moves by **0.0**; the unsupported links remain visible.
+- **a fetched model delta that forges a curator `admission` object** → the trust field is removed before merge and the target camp moves by **0.0**.
 
-All eight must hold for every case or the benchmark fails. They pass. A genuinely novel semantic paraphrase can still evade the lexical gate; optional embeddings and human review reduce, not eliminate, that risk.
+All nine must hold for every case or the benchmark fails. They pass. A genuinely novel semantic paraphrase can still evade the lexical gate; optional embeddings and human review reduce, not eliminate, that risk.
 
 ## Surfacing what matters — the crux taxonomy
 

@@ -57,7 +57,8 @@ def _vocab_kind(kind):
 def dedupe_sources(kb):
     """Remove duplicate SOURCES (the same paper ingested twice): same canonical id (DOI/PMID/PMCID),
     or same year with one title a prefix of the other (catches publisher-vs-PMC title-truncation).
-    Keeps the entry with the most text/provenance; re-points factor provenance off the dropped ids."""
+    Keeps the entry with the most text/provenance; re-points source edges, root confirmations, and
+    factor provenance off the dropped ids."""
     from engine.merge import paper_ident, norm
     srcs = kb["sources"]
 
@@ -102,16 +103,21 @@ def dedupe_sources(kb):
         repoint_confirmation_source(kb, loser, final, "duplicate source merged into retained record")
     kept_ids = {s["id"] for s in keep}
     kb["sources"] = keep
+    for source in keep:
+        edges = source.get("restsOn", [])
+        for loser, winner in resolved_remap.items():
+            edges = _repoint_and_dedup_edges(edges, "src:" + loser, "src:" + winner)
+        source["restsOn"] = _without_self_source_edges(edges, source["id"])
     for f in kb["factors"]:                        # re-point or drop provenance of removed sources
-        prov, seen = [], set()
+        prov = []
         for p in f.get("provenance", []):
             sid = resolved_remap.get(p.get("source"), p.get("source"))
-            if sid in kept_ids and (sid, p.get("pos")) not in seen:
-                seen.add((sid, p.get("pos"))); p["source"] = sid; prov.append(p)
-        f["provenance"] = prov
-        for k in list(f.get("weights", {})):       # (weights are keyed by position, untouched)
-            pass
-    removed = [{"removed": lid, "kept": wid} for lid, wid in dropped]
+            if sid in kept_ids:
+                p = dict(p); p["source"] = sid; prov.append(p)
+        f["provenance"] = _dedupe_claims(prov)
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)
+    removed = [{"removed": lid, "kept": resolved_remap[lid]} for lid, _wid in dropped]
     return dict(_commit(kb, "dedupe-sources",
                         "removed {} duplicate source(s)".format(len(dropped))), removed=removed)
 
@@ -138,6 +144,47 @@ def _edge_ref(edge):
     return str(edge.get("ref") or "").strip() if isinstance(edge, dict) else str(edge or "").strip()
 
 
+def _verified_rank(value):
+    status = (value or {}).get("verifiedQuote") if isinstance(value, dict) else None
+    return {"exact": 3, "fuzzy": 2, "missing": 1}.get(status, 0)
+
+
+def _merge_edge_objects(left, right):
+    """Combine collapsed edges without discarding the stronger provenance/admission audit."""
+    if not isinstance(left, dict):
+        return right
+    if not isinstance(right, dict):
+        return left
+    out = dict(left)
+    lp, rp = left.get("provenance"), right.get("provenance")
+    if isinstance(rp, dict) and (not isinstance(lp, dict) or
+                                 _verified_rank(rp) > _verified_rank(lp)):
+        out["provenance"] = copy.deepcopy(rp)
+    if not isinstance(out.get("admission"), dict) and isinstance(right.get("admission"), dict):
+        out["admission"] = copy.deepcopy(right["admission"])
+    return out
+
+
+def _dedupe_claims(claims):
+    """Keep the best-audited claim for each source/position after entity folding."""
+    out, where = [], {}
+    for claim in claims:
+        if not isinstance(claim, dict):
+            continue
+        key = (claim.get("source"), claim.get("pos"))
+        rank = (_verified_rank(claim), len(str(claim.get("quote") or "")),
+                bool(claim.get("quoteVerification")))
+        if key not in where:
+            where[key] = len(out); out.append(claim)
+            continue
+        old = out[where[key]]
+        old_rank = (_verified_rank(old), len(str(old.get("quote") or "")),
+                    bool(old.get("quoteVerification")))
+        if rank > old_rank:
+            out[where[key]] = claim
+    return out
+
+
 def _repoint_and_dedup_edges(edges, src_id, dst_id):
     """Rewrite dataset refs inside both string and object edges, deduping by resolved ref.
 
@@ -160,9 +207,15 @@ def _repoint_and_dedup_edges(edges, src_id, dst_id):
         if key not in where:
             where[key] = len(out)
             out.append(edge)
-        elif isinstance(edge, dict) and not isinstance(out[where[key]], dict):
-            out[where[key]] = edge
+        else:
+            out[where[key]] = _merge_edge_objects(out[where[key]], edge)
     return out
+
+
+def _without_self_source_edges(edges, source_id):
+    """Drop a citation edge that became self-referential after two source records were folded."""
+    self_ref = "src:" + str(source_id)
+    return [edge for edge in edges if _edge_ref(edge) != self_ref]
 
 
 def repoint_confirmation_source(kb, source_id, replacement=None, reason=None):
@@ -243,28 +296,20 @@ def remove_source(kb, ref, reason, by, replacement=None):
             else:
                 edge = target_ref
             edges.append(edge)
-        # Deduplicate after a replacement in case the retained record was already cited.
-        deduped, seen = [], set()
-        for edge in edges:
-            key = _edge_ref(edge)
-            if key and key not in seen:
-                seen.add(key)
-                deduped.append(edge)
-        other["restsOn"] = deduped
+        # Deduplicate after a replacement, retaining verified provenance/curator admission.
+        other["restsOn"] = _without_self_source_edges(
+            _repoint_and_dedup_edges(edges, "__never__", "__never__"), other.get("id"))
 
     for factor in kb.get("factors", []):
-        claims, seen = [], set()
+        claims = []
         for claim in factor.get("provenance", []):
             if claim.get("source") == sid:
                 if not target_id:
                     continue
                 claim = dict(claim)
                 claim["source"] = target_id
-            key = (claim.get("source"), claim.get("pos"), claim.get("weight"), claim.get("quote"))
-            if key not in seen:
-                seen.add(key)
-                claims.append(claim)
-        factor["provenance"] = claims
+            claims.append(claim)
+        factor["provenance"] = _dedupe_claims(claims)
 
     repoint_confirmation_source(kb, sid, target_id, reason)
     kb["sources"] = [item for item in kb.get("sources", []) if item.get("id") != sid]
@@ -355,14 +400,13 @@ def merge_positions(kb, src_ref, dst_ref):
             s["position"] = dst["id"]
             moved += 1
     for f in kb["factors"]:
-        w = f.get("weights", {})
-        if src["id"] in w:
-            w.setdefault(dst["id"], w[src["id"]])     # keep dst's weight if it already had one
-            del w[src["id"]]
         for p in f.get("provenance", []):
             if p.get("pos") == src["id"]:
                 p["pos"] = dst["id"]
+        f["provenance"] = _dedupe_claims(f.get("provenance", []))
     kb["positions"] = [p for p in kb["positions"] if p["id"] != src["id"]]
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)
     return _commit(kb, "merge-position",
                    "merged position “{}” → “{}” ({} sources)".format(src["label"], dst["label"], moved))
 
@@ -397,12 +441,13 @@ def merge_factors(kb, src_ref, dst_ref):
     dst = _resolve(kb["factors"], dst_ref, "factor")
     if src["id"] == dst["id"]:
         raise ValueError("source and target are the same factor")
-    for pos, w in src.get("weights", {}).items():
-        dst.setdefault("weights", {}).setdefault(pos, w)
     dst.setdefault("provenance", []).extend(src.get("provenance", []))
+    dst["provenance"] = _dedupe_claims(dst["provenance"])
     if not dst.get("rationale") and src.get("rationale"):
         dst["rationale"] = src["rationale"]
     kb["factors"] = [f for f in kb["factors"] if f["id"] != src["id"]]
+    from engine.merge import recompute_factor_weights
+    recompute_factor_weights(kb)
     return _commit(kb, "merge-factor",
                    "merged factor “{}” → “{}”".format(src["label"], dst["label"]))
 
@@ -616,6 +661,8 @@ def _similarity(a, b):
 
 
 _ACRONYM_STOP = {"a", "an", "and", "of", "the", "for", "in", "on", "cohort", "dataset"}
+_DUPLICATE_GENERIC = _ACRONYM_STOP | {"study", "studies", "registry", "trial", "trials",
+                                      "data", "sample", "samples", "analysis"}
 
 
 def _acronym(s):
@@ -638,7 +685,7 @@ def _cosine(u, v):
     return (dot / (nu * nv)) if nu and nv else 0.0
 
 
-def suggest_duplicates(kb, threshold=0.4, embed=None, embed_threshold=0.83):
+def suggest_duplicates(kb, threshold=0.4, embed=None, embed_threshold=0.83, max_pairs=500):
     """Flag entity pairs whose labels look like the SAME entity, so a curator doesn't have to hunt.
     **Suggestions only — the merge is always explicit; nothing here is ever auto-merged.**
 
@@ -651,6 +698,7 @@ def suggest_duplicates(kb, threshold=0.4, embed=None, embed_threshold=0.83):
         Embeddings live in the ingestion layer and are ADVISORY: the deterministic merge never depends
         on them, and every candidate still needs a human `curate.merge` to act.
     Each suggestion carries its `reason` (acronym | token-overlap | embedding) and score."""
+    max_pairs = max(1, int(max_pairs))
     groups = {
         "position": [(p["id"], p["label"]) for p in kb["positions"]],
         "dataset": [(d["id"], d["label"]) for d in kb["datasets"]],
@@ -661,30 +709,67 @@ def suggest_duplicates(kb, threshold=0.4, embed=None, embed_threshold=0.83):
     out = {}
     for kind, items in groups.items():
         pairs, flagged = [], set()
-        for i in range(len(items)):
-            for j in range(i + 1, len(items)):
-                acronym = _acronym_match(items[i][1], items[j][1])
-                sim = 1.0 if acronym else _similarity(items[i][1], items[j][1])
-                if sim >= threshold:
-                    pairs.append({"a": {"ref": items[i][0], "label": items[i][1]},
-                                  "b": {"ref": items[j][0], "label": items[j][1]},
-                                  "sim": round(sim, 2),
-                                  "reason": "acronym" if acronym else "token-overlap"})
-                    flagged.add((i, j))
-        # semantic candidates the lexical pass missed — advisory, never auto-merged
-        if embed is not None and len(items) >= 2:
-            vecs = [embed(lbl) for _, lbl in items]
-            for i in range(len(items)):
+        by_token = {}
+        for i, (_ident, label) in enumerate(items):
+            for token in _tokens(label) - _DUPLICATE_GENERIC:
+                by_token.setdefault(token, []).append(i)
+        candidates = set()
+        frequency_cap = min(100, max(10, int(len(items) * 0.2)))
+        candidate_cap = max(1000, max_pairs * 20)
+        for token in sorted(by_token):
+            indices = by_token[token]
+            if len(indices) > frequency_cap:  # a ubiquitous word is not useful identity evidence
+                continue
+            for offset, left in enumerate(indices):
+                for right in indices[offset + 1:]:
+                    candidates.add((left, right))
+                    if len(candidates) >= candidate_cap:
+                        break
+                if len(candidates) >= candidate_cap:
+                    break
+            if len(candidates) >= candidate_cap:
+                break
+        for i, (_ident, label) in enumerate(items):
+            if len(candidates) >= candidate_cap:
+                break
+            acronym = _acronym(label)
+            if len(acronym) >= 2:
+                for j in by_token.get(acronym, []):
+                    if i != j:
+                        candidates.add((min(i, j), max(i, j)))
+                        if len(candidates) >= candidate_cap:
+                            break
+
+        for i, j in sorted(candidates):
+            acronym = _acronym_match(items[i][1], items[j][1])
+            sim = 1.0 if acronym else _similarity(items[i][1], items[j][1])
+            if sim >= threshold:
+                pairs.append({"a": {"ref": items[i][0], "label": items[i][1]},
+                              "b": {"ref": items[j][0], "label": items[j][1]},
+                              "sim": round(sim, 2),
+                              "reason": "acronym" if acronym else "token-overlap"})
+                flagged.add((i, j))
+                if len(pairs) >= max_pairs:
+                    break
+        # Semantic matching is optional and advisory. Bound it to keep one request predictable.
+        semantic_items = items[:500]
+        if embed is not None and len(semantic_items) >= 2 and len(pairs) < max_pairs:
+            vecs = [embed(lbl) for _, lbl in semantic_items]
+            for i in range(len(semantic_items)):
                 if not vecs[i]:
                     continue
-                for j in range(i + 1, len(items)):
+                for j in range(i + 1, len(semantic_items)):
+                    if len(pairs) >= max_pairs:
+                        break
                     if (i, j) in flagged or not vecs[j]:
                         continue
                     cs = _cosine(vecs[i], vecs[j])
                     if cs >= embed_threshold:
-                        pairs.append({"a": {"ref": items[i][0], "label": items[i][1]},
-                                      "b": {"ref": items[j][0], "label": items[j][1]},
+                        pairs.append({"a": {"ref": semantic_items[i][0], "label": semantic_items[i][1]},
+                                      "b": {"ref": semantic_items[j][0], "label": semantic_items[j][1]},
                                       "sim": round(cs, 2), "reason": "embedding"})
+                if len(pairs) >= max_pairs:
+                    break
         if pairs:
             out[kind] = sorted(pairs, key=lambda x: -x["sim"])
     return out

@@ -224,9 +224,8 @@ def _question_block(case, spec, gold):
     return "".join(q)
 
 
-def study_form_html(participant_index, token):
+def study_form_html(plan, assignment_id, token):
     gold = study.load_gold()
-    plan = study.assign(participant_index)
     sections = []
     for row in plan:
         case = row["case"]
@@ -238,14 +237,15 @@ def study_form_html(participant_index, token):
             materials.append('<a class="btn" href="/q/{}" target="_blank" rel="noopener">'
                              '🗺️ Open the evidence map</a>'.format(spec["gkQuestionId"]))
         sections.append(
-            '<section class="case" data-case="{c}" data-condition="{cond}">'
+            '<section class="case" data-case="{c}">'
             '<div class="cnum">Case {n} of {tot}</div><h2>{title}</h2>'
             '<div class="materials">Read your materials, then answer below.<div class="mbtns">{mats}</div></div>'
             '{qs}</section>'.format(
-                c=case, cond=row["condition"], n=row["sequence"], tot=len(plan),
+                c=case, n=row["sequence"], tot=len(plan),
                 title=_esc(spec["title"]), mats="".join(materials),
                 qs=_question_block(case, spec, gold)))
-    plan_json = json_for_script(plan)
+    # The condition stays on the server.  The browser only needs the case order to collect answers.
+    plan_json = json_for_script([{"sequence": row["sequence"], "case": row["case"]} for row in plan])
     body = """
     <div class="kicker">Ground Knowledge — reader exercise</div>
     <h1>How well can you read the evidence?</h1>
@@ -273,9 +273,9 @@ def study_form_html(participant_index, token):
         const answers={{flood:val(c+'_flood')}}; const free={{}};
         sec.querySelectorAll('input[type=radio]').forEach(i=>{{const k=i.name.slice(c.length+1); if(i.checked) answers[k]=i.value;}});
         sec.querySelectorAll('textarea').forEach(t=>{{free[t.name.slice(c.length+1)]=t.value;}});
-        return {{case:c, condition:r.condition, confidence:Number(val(c+'_confidence'))||null, answers, free}};
+        return {{case:c, confidence:Number(val(c+'_confidence'))||null, answers, free}};
       }});
-      const payload={{participant:document.getElementById('token').value.trim(),
+      const payload={{assignment:'{assignment}', participant:document.getElementById('token').value.trim(),
         familiarity:Number(document.getElementById('familiarity').value),
         totalSeconds:Math.round((Date.now()-START)/1000), cases}};
       const btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Submitting…';
@@ -290,7 +290,8 @@ def study_form_html(participant_index, token):
       }}catch(e){{btn.disabled=false; btn.textContent='Submit my answers'; alert('Could not submit: '+e.message);}}
     }};
     </script>
-    """.format(token=_esc(token), sections="".join(sections), plan=plan_json)
+    """.format(token=_esc(token), assignment=_esc(assignment_id),
+               sections="".join(sections), plan=plan_json)
     return _page("Reader exercise · Ground Knowledge", body + _FORM_CSS)
 
 

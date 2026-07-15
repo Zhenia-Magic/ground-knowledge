@@ -33,6 +33,10 @@ Only current hashed `exact` verification counts—`fuzzy` is visibly unverified.
 
 Public paste-back deltas cannot provide either trust field: the portal strips spoofable verification
 and admission fields and queues the whole contribution for human review.
+The same is true on the fetched-text path: quote verification may be computed there, but a model's
+`admission` key is always deleted. Only `curate.confirm_edge` can write curator admission. Before
+mutation, a total validator bounds arrays/strings and rejects malformed types. In a batch, opaque
+`sourceId` values bind each delta to its fetched document; array order is never treated as identity.
 
 ## Step 2 — resolve every source through admitted edges to evidentiary roots
 
@@ -135,3 +139,7 @@ citation graphs), and a **wrong curator root/edge admission** can add bad covera
 are declared heuristics rather than calibrated evidence weights. These are semantic
 labelling-integrity problems; the defences are per-edge quote verification, the multi-model
 ensemble, human review, and — honestly — publishing this list rather than hiding it.
+
+The deployed store adds a separate server revision for optimistic concurrency. It increments on
+every write independently of `meta.version`, so two updates with the same semantic version cannot
+silently overwrite one another; persistence and its audit entry are one transaction.

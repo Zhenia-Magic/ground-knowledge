@@ -12,10 +12,15 @@ import json
 import os
 import re
 import ssl
+import sys
 import time
 import urllib.parse
 import urllib.request
 import urllib.error
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from engine.io import atomic_write_json  # noqa: E402
 
 try:
     import certifi
@@ -163,11 +168,7 @@ def main(argv=None):
             report = json.load(f)
 
     def checkpoint():
-        tmp = args.out + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(report, f, indent=2, ensure_ascii=False)
-            f.write("\n")
-        os.replace(tmp, args.out)
+        atomic_write_json(args.out, report)
 
     for path in sorted(set(files)):
         with open(path, encoding="utf-8") as f:

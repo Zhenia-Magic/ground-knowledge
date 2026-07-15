@@ -771,11 +771,11 @@ def dominant_dataset(kb, res=None):
             "count": mx, "total": n, "share": mx / n if n else 0}
 
 
-def assess(kb):
+def assess(kb, res=None):
     """The whole Assessment artifact -- one dict, diffable across versions. Resolves the derivation
     graph ONCE and threads it through every root-based metric (independence, weighted distribution,
     dominant dataset), instead of each re-resolving -- so one assess() is one resolve()."""
-    res = _roots.resolve(kb)
+    res = _roots.resolve(kb) if res is None else res
     ind = independence(kb, res)
     ma = method_audit(kb)
     qa = quote_audit(kb)

@@ -11,6 +11,11 @@ import argparse
 import datetime
 import json
 import os
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from engine.io import atomic_write_json  # noqa: E402
 
 
 def _ref(edge):
@@ -82,11 +87,7 @@ def main(argv=None):
         print("{}: {} confirmation record(s){}".format(
             path, len(changed), " updated" if args.apply else " would update"))
         if changed and args.apply:
-            tmp = path + ".tmp"
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(kb, f, indent=2, ensure_ascii=False)
-                f.write("\n")
-            os.replace(tmp, path)
+            atomic_write_json(path, kb)
     return 0
 
 

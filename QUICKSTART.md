@@ -30,6 +30,10 @@ echo $ANTHROPIC_API_KEY      # or OPENAI_API_KEY / DEEPSEEK_API_KEY / …
 - **Prints nothing →** you're in **MANUAL mode**: the tool still *finds and fetches* sources for
   free, then prints a labelling prompt (or one bundle file) you paste into any chatbot. No account needed.
 
+For a multi-source bundle, keep each top-level `sourceId` exactly as supplied. Order is irrelevant;
+the importer rejects a missing, repeated, or invented id rather than risk attaching one paper's
+label to another paper's text.
+
 (Optional, one time, for PDF/Word sources: `pip install -r requirements.txt`.)
 
 ---
@@ -227,4 +231,6 @@ still resolve to it. ✔
 | "Duplicate source — not added" | Expected: that study (by url, or title+year) is already in the KB. |
 | Viewer didn't change after `add` | You forgot to rebuild — re-run with `--build`, or `python cli.py build cases/<id>.kb.json`. |
 | Model returned prose, not JSON | Re-paste; the prompt ends with "Output ONLY JSON." Trim any extra text before saving `delta.json`. |
+| `batch response ... sourceId` | The chatbot dropped, repeated, or changed a bundle id. Re-run the same bundle and ask it to copy every `sourceId` exactly once. |
+| `version conflict` / `changed concurrently` | Someone updated the shared question first. Pull/reload the latest revision, reapply your change, and push again; the server refused to overwrite their work. |
 | A source got a wrong position/dataset | `cases/<id>.kb.json` is plain JSON — edit the entry by hand, then `python cli.py build ...`. |

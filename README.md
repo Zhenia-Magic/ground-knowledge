@@ -51,6 +51,8 @@ root cannot be laundered into another position through an unreviewed edge.
 | `ingest/llm.py` | Ingestion | model-agnostic LLM access — **Anthropic / NVIDIA (free) / OpenAI / DeepSeek / Mistral / Groq / Gemini / OpenRouter**; used only to *label* (single model or a multi-model **ensemble**); `--dry-run` needs no key |
 | `ingest/ensemble.py` | Ingestion | deterministic field-level majority vote fusing several models' labels into one delta + a per-source agreement report |
 | `engine/merge.py` | **Structure** | deterministic merge + entity resolution (LLM proposes ids, code disposes); duplicate / alias / off-topic defences; resolves source→source citation edges |
+| `engine/validate.py` | Structure | total, dependency-free validation for every model/public delta before mutation |
+| `engine/io.py` | Structure | crash-safe atomic writes for local KBs, viewers, prompts, exports, and maintenance scripts |
 | `engine/review.py` | Structure | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB (counted in no metric) for a human to resolve — pick a position, or drop the paper |
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
@@ -58,10 +60,10 @@ root cannot be laundered into another position through an unreviewed edge.
 | `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, cruxes |
 | `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
-| `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** (browse/search, contribute keyless, AI-retrieval docs, admin moderation) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |
+| `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |
 | `cases/*.kb.json` | artifact | five local, sourced knowledge bases (three competition cases plus alcohol and video-games generalization cases) |
-| `MECHANISM.md` · `SCHEMA.md` · `SPEC.md` | spec | the independence mechanism, the schema, and the written submission |
+| `MECHANISM.md` · `SCHEMA.md` · `SECURITY.md` · `DEPLOYMENT.md` | spec/runbook | the mechanism, schema, trust boundaries, and release/rollback procedure |
 
 **Core (engine + viewer build + URL/txt ingestion + `--dry-run` + the local portal store) is
 pure stdlib — no `pip install`.** Full-text PDF labelling needs `pypdf`, `.docx` needs
@@ -198,6 +200,10 @@ or `pull` them locally (`python cli.py pull <id>`):
   disagreement on a source's position surfaces in a **Needs-your-review** panel to resolve (pick a
   position or drop it) before it enters any metric.
 
+Batch labelling is bound by an opaque `sourceId`, not array order: missing, repeated, or unknown ids
+reject the batch, and fetched title/URL/author/citation/retraction metadata overwrites model output.
+Neither a model nor a public client can write edge admission; only the explicit curator operation can.
+
 Both write the same portable `cases/<id>.kb.json` through the same merge. Labelling reads the **full
 open-access PDF** when one exists (richer positions, named datasets from the methods, and the
 funding/COI statement the abstract omits), with a Crossref funder lookup as backup.
@@ -230,6 +236,9 @@ knowledge base that holds up under motivated reading and gets better as more peo
 - The 0.5 review-only/non-human discounts are transparent heuristics, not calibrated evidence weights.
 - Prompt context is bounded with deterministic lexical retrieval, but no large-corpus performance
   study or reader-uplift result is claimed.
+- The runtime is now bounded (request bodies, URL batches, PDF pages, worker threads, expensive fetch
+  concurrency, and per-client rates), but the limits are operational safeguards, not a published
+  large-corpus scalability result. See [`SECURITY.md`](SECURITY.md).
 - Entity resolution is normalized-string + learned aliases — robust to known variants, not every
   paraphrase. `dups --embed` adds advisory semantic candidates; nothing auto-merges, and a likely
   duplicate is blocked at confirmation unless the curator records an override reason.

@@ -110,6 +110,9 @@ Three sub-steps, and only the last needs an AI model:
   are spot-checked against the text that was actually fetched — a quote that doesn't match is flagged, but only counted as a
   real warning on a full-text source; the same check on an abstract-only source is expected
   noise, not an accusation (see §8).
+  Multi-source output is joined back to fetched documents by an opaque `sourceId`, never by array
+  position. The whole batch is rejected if an id is missing/duplicated/unknown, fetched bibliographic
+  metadata wins over model metadata, and model-authored curator/admission fields are removed.
 
 **Layer 2 — Structure (merging it in).**
 A small piece of **deterministic, plain-Python code** folds each labelled source into the
@@ -190,6 +193,11 @@ merge — and can **pull** a question from the portal, work on it locally, and *
 back. It's "git for knowledge bases": pull → work → push, with version checks so two people don't
 clobber each other.
 
+The portal revision is server-controlled and advances on every successful write, even when the KB's
+own semantic `meta.version` is unchanged. The KB update and its contribution-log entry commit in one
+database transaction. Public request size/rate/concurrency limits and bounded PDF extraction protect
+availability; see `SECURITY.md` and `DEPLOYMENT.md`.
+
 **(c) The command line.**
 Everything scriptable: `discover`, `harvest`, `ingest`, `add`, `push`, `pull`, `build`, plus
 cleanup tools (`merge`, `rename`, `tidy`, `dups`) for tidying duplicate entities.
@@ -213,7 +221,9 @@ A guiding principle throughout: **finding and reading sources are free and keyle
   ensemble measures it and the review queue handles the cases where it matters.
 
 - **The server holds no API key and does no AI work.** Because merging is deterministic, the
-  hosted portal is cheap, safe, and has no abuse surface for expensive AI calls.
+  hosted portal is cheap and has no billable AI-key surface. It still fetches public documents, so
+  URL validation, byte/page caps, rate limits, and a small expensive-operation semaphore bound that
+  remaining abuse surface.
 
 - **Full open-access PDFs, not just abstracts.** Early on it only read abstracts, but abstracts
   rarely contain the funding statement or name the datasets. Now it fetches the full PDF when the

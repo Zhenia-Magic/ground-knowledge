@@ -11,6 +11,7 @@ prompts/discover.md. The templates below mirror those specs.
 import json
 import os
 import re
+import secrets
 import sys
 
 from .extract import extract_text
@@ -158,8 +159,9 @@ EXTRACT_TEMPLATE = (
 
 BATCH_EXTRACT_TEMPLATE = (
     "You extract SEVERAL sources into structured deltas for an epistemic knowledge base in ONE\n"
-    "pass. Output ONLY a JSON array — one delta object per source, in the SAME ORDER as the\n"
-    "sources are listed below. No prose, no markdown.\n\n"
+    "pass. Output ONLY a JSON array — exactly one delta object per source. COPY each sourceId\n"
+    "exactly into its delta as a top-level sourceId field. Order does not matter because sourceId\n"
+    "is the binding between fetched text and output. Never reuse or invent an id. No prose or markdown.\n\n"
     "CASE QUESTION:\n%QUESTION%\n\n"
     + _POS_HINT + "\n%POSITIONS%\n\n"
     + _DS_HINT + " Two sources in THIS batch resting on the same cohort MUST use the same id/label.\n%DATASETS%\n\n"
@@ -167,8 +169,9 @@ BATCH_EXTRACT_TEMPLATE = (
     + _EV_HINT + "\n%EVIDENCE_VOCAB%\n\n"
     + _POP_HINT + "\n%POPULATION_VOCAB%\n\n"
     + _SRC_HINT + "\n%SOURCES_IN_KB%\n\n"
-    "SOURCES (%N% — produce exactly one delta per source, in order):\n%SOURCES%\n\n"
-    + _RULES + "\n\nReturn a JSON ARRAY of objects, each matching:\n" + _SCHEMA + "\n")
+    "SOURCES (%N% — produce exactly one delta for every sourceId):\n%SOURCES%\n\n"
+    + _RULES + "\n\nReturn a JSON ARRAY. Every object must add a top-level "
+    '"sourceId":"copy exactly from its source" field to this shape:\n' + _SCHEMA + "\n")
 
 RESEARCH_TEMPLATE = (
     "You are building a structured, balanced evidence base for a research dispute. Do it in ONE\n"
@@ -381,13 +384,14 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
     """One prompt covering several sources — the KB tables appear once. Sends each source's
     FULL fetched text by default; pass max_text to cap it (fewer tokens per call, at some cost
     in per-source extraction depth), e.g. for very large batches."""
+    _ensure_source_ids(docs)
     query = " ".join((d.get("title") or "") + " " + _prompt_text(d, max_text)
                      for d in docs)
     pos, ds, fac = _entity_tables(kb, query)
     blocks = []
     for n, d in enumerate(docs, 1):
-        blocks.append("--- SOURCE {} ---\ntitle: {}\nurl: {}\ntext:\n{}".format(
-            n, d.get("title") or "", d.get("url") or "(local document)",
+        blocks.append("--- SOURCE {} ---\nsourceId: {}\ntitle: {}\nurl: {}\ntext:\n{}".format(
+            n, d["_sourceId"], d.get("title") or "", d.get("url") or "(local document)",
             _prompt_text(d, max_text)))
     return (BATCH_EXTRACT_TEMPLATE
             .replace("%QUESTION%", kb["meta"]["question"])
@@ -397,6 +401,52 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
             .replace("%SOURCES_IN_KB%", _sources_for_ref(kb))
             .replace("%N%", str(len(docs)))
             .replace("%SOURCES%", "\n\n".join(blocks)))
+
+
+def _ensure_source_ids(docs):
+    """Attach opaque per-prompt ids so model output cannot be paired to the wrong fetched text."""
+    used = set()
+    for i, doc in enumerate(docs):
+        if not isinstance(doc, dict):
+            raise ValueError("source document {} must be an object".format(i))
+        existing = doc.get("_sourceId")
+        if existing:
+            if not isinstance(existing, str) or len(existing) > 80:
+                raise ValueError("source document {} has an invalid sourceId".format(i))
+            if existing in used:
+                raise ValueError("source documents repeat sourceId {}".format(existing))
+            used.add(existing)
+            continue
+        source_id = "source_" + secrets.token_hex(8)
+        while source_id in used:
+            source_id = "source_" + secrets.token_hex(8)
+        doc["_sourceId"] = source_id
+        used.add(source_id)
+
+
+def _align_deltas(deltas, docs):
+    """Return model deltas in document order, rejecting missing/duplicate/unknown source ids."""
+    _ensure_source_ids(docs)
+    expected = [d["_sourceId"] for d in docs]
+    expected_set = set(expected)
+    if not isinstance(deltas, list):
+        raise ValueError("batch response must be a JSON array")
+    by_id = {}
+    for i, delta in enumerate(deltas):
+        if not isinstance(delta, dict):
+            raise ValueError("batch response item {} must be an object".format(i))
+        source_id = delta.get("sourceId")
+        if not isinstance(source_id, str) or not source_id:
+            raise ValueError("batch response item {} is missing sourceId".format(i))
+        if source_id not in expected_set:
+            raise ValueError("batch response contains unknown sourceId {}".format(source_id))
+        if source_id in by_id:
+            raise ValueError("batch response repeats sourceId {}".format(source_id))
+        by_id[source_id] = delta
+    missing = [source_id for source_id in expected if source_id not in by_id]
+    if missing:
+        raise ValueError("batch response omitted {} sourceId(s)".format(len(missing)))
+    return [by_id[source_id] for source_id in expected]
 
 
 # --- size-adaptive batching -------------------------------------------------------------------
@@ -410,6 +460,12 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
 # is fast and you want fewer calls. A single source larger than this still goes alone.
 _BATCH_CHARS = int(os.environ.get("EPISTEMIC_BATCH_CHARS", str(90_000)))
 _BATCH_MAX = int(os.environ.get("EPISTEMIC_BATCH_MAX", "4"))               # output-token safety
+
+
+def configure_from_env():
+    global _BATCH_CHARS, _BATCH_MAX
+    _BATCH_CHARS = int(os.environ.get("EPISTEMIC_BATCH_CHARS", str(90_000)))
+    _BATCH_MAX = int(os.environ.get("EPISTEMIC_BATCH_MAX", "4"))
 
 
 def _doc_len(d):
@@ -451,13 +507,20 @@ def label_batch(kb, docs, max_text=None):
                 print("  ensemble model {} returned unparseable JSON — skipped ({})".format(
                     m, str(e)[:90]), file=sys.stderr)
                 continue
-            arrays.append(a if isinstance(a, list) else [a])
+            try:
+                arrays.append(_align_deltas(a if isinstance(a, list) else [a], docs))
+            except ValueError as e:
+                print("  ensemble model {} returned a misaligned batch — skipped ({})".format(
+                    m, str(e)[:120]), file=sys.stderr)
+                continue
         if not arrays:
             raise SystemExit("no ensemble model returned parseable JSON for this batch")
         consensus, _agree = ensemble.combine(arrays, len(docs))
+        for delta, doc in zip(consensus, docs):
+            delta["sourceId"] = doc["_sourceId"]
         return consensus
     arr = _parse_json(llm.complete(prompt))
-    return arr if isinstance(arr, list) else [arr]
+    return _align_deltas(arr if isinstance(arr, list) else [arr], docs)
 
 
 def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
@@ -486,6 +549,8 @@ def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
         arr = label_batch(kb, group, max_text)
         for delta, doc in zip(arr, group):
             _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
+            from engine.validate import require_valid_delta
+            require_valid_delta(delta)
             deltas.append(delta)
     return None if dry_run else deltas
 
@@ -516,18 +581,41 @@ def _carry_meta(delta, doc, verify_text=None):
     to the model for THIS source; without it, a quote could "verify" against content the model
     was never shown, if a batch call trimmed the prompt below the full fetched text. Defaults to
     the full doc text, correct for the single-source path (never truncated)."""
-    src = delta.setdefault("source", {})
-    for k in ("url", "title", "authors", "venue"):
-        if doc.get(k) and not src.get(k):
+    if not isinstance(delta, dict):
+        raise ValueError("model delta must be an object")
+    if not isinstance(doc, dict):
+        raise ValueError("fetched document must be an object")
+    src = delta.get("source")
+    if not isinstance(src, dict):
+        raise ValueError("model delta.source must be an object")
+    # Fetch/API metadata is authoritative.  A model must never swap a URL/title/author record from
+    # another item in the batch or replace known retraction/citation metadata.
+    for k in ("url", "title", "authors", "venue", "citations", "retracted"):
+        if k in doc:
             src[k] = doc[k]
-    if doc.get("citations") is not None and src.get("citations") is None:
-        src["citations"] = doc["citations"]
-    if "retracted" in doc and "retracted" not in src:
-        src["retracted"] = doc["retracted"]
     src["textDepth"] = doc.get("kind", "unknown")
 
     text = verify_text if verify_text is not None else (doc.get("text") or "")
-    for field, prov in (src.get("provenance") or {}).items():
+    if not isinstance(text, str):
+        raise ValueError("fetched document text must be a string")
+    provenance = src.get("provenance")
+    if provenance is not None and not isinstance(provenance, dict):
+        raise ValueError("model delta.source.provenance must be an object")
+    rests = src.get("restsOn", [])
+    if rests is None:
+        rests = []
+    if not isinstance(rests, list):
+        raise ValueError("model delta.source.restsOn must be an array")
+    factor_weights = delta.get("factorWeights", [])
+    if factor_weights is None:
+        factor_weights = []
+    if not isinstance(factor_weights, list):
+        raise ValueError("model delta.factorWeights must be an array")
+    agreement = src.get("modelAgreement")
+    if agreement is not None and not isinstance(agreement, dict):
+        raise ValueError("model delta.source.modelAgreement must be an object")
+
+    for field, prov in (provenance or {}).items():
         # Source-level dependency provenance is a legacy storage shape and is ambiguous when a
         # source names siblings. New ingestion must earn admission through the edge objects below;
         # remove any model-supplied trust flag rather than reviving the legacy path.
@@ -541,20 +629,21 @@ def _carry_meta(delta, doc, verify_text=None):
     # Dependency quotes are PER EDGE. Verifying them here, while the fetched text and the exact
     # model-visible slice are both in scope, is the only path that may promote a proposed root.
     # A sibling edge without its own quote remains provisional in engine/roots.py.
-    for edge in src.get("restsOn") or []:
+    for edge in rests:
         if not isinstance(edge, dict):
             continue
+        edge.pop("admission", None)       # curator-only; a model can propose evidence, never trust
         prov = edge.get("provenance")
         if isinstance(prov, dict) and prov.get("quote"):
             apply_quote_verification(prov, text, source_title=src.get("title"),
                                      text_depth=src["textDepth"], source_url=src.get("url"))
-    for fw in delta.get("factorWeights", []):
-        if fw.get("quote"):
+    for fw in factor_weights:
+        if isinstance(fw, dict) and fw.get("quote"):
             apply_quote_verification(fw, text, source_title=src.get("title"),
                                      text_depth=src["textDepth"], source_url=src.get("url"))
     # ensemble disagreement -> this delta will be routed to HUMAN review (engine/review.py);
     # carry the abstract/lead of what the models actually read, so the reviewer sees it too.
-    if (src.get("modelAgreement") or {}).get("flagged"):
+    if (agreement or {}).get("flagged"):
         delta["reviewText"] = text[:1500]
 
 
@@ -567,6 +656,8 @@ def ingest_source(target, kb, dry_run=False):
         return prompt
     delta = _parse_json(llm.complete(prompt))
     _carry_meta(delta, doc)
+    from engine.validate import require_valid_delta
+    require_valid_delta(delta)
     return delta
 
 

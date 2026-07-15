@@ -382,6 +382,8 @@ def _resolve_factor(kb, f_label):
 def merge_delta(kb, delta):
     """Fold one ingestion delta into the KB in place. Returns a change report.
     delta = {"source": {...}, "factorWeights": [...]} as produced by prompts/ingest.md."""
+    from engine.validate import require_valid_delta
+    require_valid_delta(delta)
     report = {"addedSource": None, "duplicate": False, "offTopic": False, "newDatasets": [],
               "newPositions": [], "newFactors": [], "updatedFactors": []}
     src = delta["source"]
@@ -397,11 +399,14 @@ def merge_delta(kb, delta):
         report["reason"] = reason
         already = {source_key(r) for r in kb.get("refused", [])}
         if source_key(src) not in already:                # don't re-log the same refusal on re-runs
+            version = (kb.get("meta", {}).get("version", 0) or 0) + 1
+            kb.setdefault("meta", {})["version"] = version
+            kb["meta"]["updated"] = now_iso()
             kb.setdefault("refused", []).append({
                 "title": src.get("title") or "(untitled)", "url": src.get("url"),
                 "year": src.get("year"), "reason": reason, "ts": now_iso()})
             kb.setdefault("log", []).append({
-                "version": kb.get("meta", {}).get("version", 0), "action": "refused-offtopic",
+                "version": version, "action": "refused-offtopic",
                 "source": src.get("title"), "ts": now_iso(), "note": "off-topic: " + reason})
         return report
 
@@ -452,17 +457,16 @@ def merge_delta(kb, delta):
         if isinstance(entry, dict):
             d = str(entry.get("ref") or "").strip()
             eprov = entry.get("provenance") if isinstance(entry.get("provenance"), dict) else None
-            eadmission = entry.get("admission") if isinstance(entry.get("admission"), dict) else None
             ekind = entry.get("datasetKind") or entry.get("kind")   # kind for a NEW evidence base
         else:
-            d, eprov, eadmission, ekind = str(entry).strip(), None, None, None
+            d, eprov, ekind = str(entry).strip(), None, None
         if not d:
             continue
         # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
         # independence audit catch circular corroboration (see MECHANISM.md). The labeller writes
         # SRC:<existing id> or NEW-SRC:<title>; we resolve to an existing source and store "src:<id>".
-        # Citation provenance/admission is preserved for audit. Only an explicit valid admission is
-        # allowed to propagate the cited source's roots (engine/roots.py); a quote alone is not.
+        # Citation provenance is preserved for audit. Admission is deliberately never copied from a
+        # labeller delta: only engine.curate.confirm_edge may create that trust decision.
         low = d.lower()
         if low.startswith("src:") or low.startswith("new-src:"):
             ref = d.split(":", 1)[1].strip()
@@ -471,20 +475,16 @@ def merge_delta(kb, delta):
                 obj = {"ref": "src:" + tid}
                 if eprov:
                     obj["provenance"] = eprov
-                if eadmission:
-                    obj["admission"] = eadmission
                 rests_on.append(obj if len(obj) > 1 else obj["ref"])
             else:
                 report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB YET
-                pending.append({"ref": ref, "provenance": eprov, "admission": eadmission})
+                pending.append({"ref": ref, "provenance": eprov})
             continue
         tid = _dataset_is_source_ref(kb, d)     # a source reference missing its SRC: prefix
         if tid:
             obj = {"ref": "src:" + tid}
             if eprov:
                 obj["provenance"] = eprov
-            if eadmission:
-                obj["admission"] = eadmission
             rests_on.append(obj if len(obj) > 1 else obj["ref"])
             continue
         did, created = _resolve_dataset(kb, d, kind=ekind)
@@ -495,8 +495,6 @@ def merge_delta(kb, delta):
         obj = {"ref": did}
         if eprov:
             obj["provenance"] = eprov
-        if eadmission:
-            obj["admission"] = eadmission
         rests_on.append(obj if len(obj) > 1 else did)
 
     sid = _unique_id("src_", slug(src["title"]) + "_" + str(src.get("year") or "0"),
@@ -606,9 +604,8 @@ def resolve_pending_refs(kb):
                 if isinstance(pending, dict):
                     ref = pending.get("ref") or ""
                     eprov = pending.get("provenance")
-                    eadmission = pending.get("admission")
                 else:                           # pre-v2 pending refs
-                    ref, eprov, eadmission = pending, None, None
+                    ref, eprov = pending, None
                 tid = _resolve_source_ref(kb, ref)
                 if not tid:
                     still.append(pending)                 # still not in the KB
@@ -616,8 +613,6 @@ def resolve_pending_refs(kb):
                 edge = {"ref": "src:" + tid}
                 if eprov:
                     edge["provenance"] = eprov
-                if eadmission:
-                    edge["admission"] = eadmission
                 stored = edge if len(edge) > 1 else edge["ref"]
                 refs = {(e.get("ref") if isinstance(e, dict) else e) for e in s.get("restsOn", [])}
                 if tid != s["id"] and edge["ref"] not in refs:
@@ -628,4 +623,11 @@ def resolve_pending_refs(kb):
                 s["_pendingRefs"] = still
             else:
                 s.pop("_pendingRefs", None)
+    if resolved:
+        version = (kb.setdefault("meta", {}).get("version", 0) or 0) + 1
+        kb["meta"]["version"] = version
+        kb["meta"]["updated"] = now_iso()
+        kb.setdefault("log", []).append({
+            "version": version, "action": "resolve-forward-refs", "resolved": resolved,
+            "ts": kb["meta"]["updated"]})
     return resolved

@@ -67,6 +67,21 @@ class ScoringTests(unittest.TestCase):
         self.assertAlmostEqual(agg["DR+GK"]["meanObjective"], 0.9)
         self.assertAlmostEqual(agg["upliftDRplusGK"], 0.5)
 
+    def test_server_plan_overrides_client_condition_and_rejects_extra_case(self):
+        plan = study.assign(0)
+        response = {"cases": [{"case": plan[0]["case"], "condition": "DR+GK", "answers": {}}]}
+        clean = study.normalize_response_for_plan(response, plan)
+        self.assertEqual(clean["cases"][0]["condition"], plan[0]["condition"])
+        with self.assertRaises(ValueError):
+            study.normalize_response_for_plan(
+                {"cases": response["cases"] + [{"case": "eggs", "answers": {}}]}, plan)
+
+    def test_server_plan_rejects_malformed_answer_shape(self):
+        plan = study.assign(0)
+        with self.assertRaises(ValueError):
+            study.normalize_response_for_plan(
+                {"cases": [{"case": plan[0]["case"], "answers": ["not an object"]}]}, plan)
+
 
 class StoreRoundTripTests(unittest.TestCase):
     def test_save_list_count(self):
@@ -77,7 +92,9 @@ class StoreRoundTripTests(unittest.TestCase):
             try:
                 store.init_db()
                 self.assertEqual(store.count_study_participants(), 0)
-                store.save_study_response("p1", {"cases": []}, [{"case": "covid", "condition": "DR"}])
+                assignment = store.new_study_assignment()
+                store.save_study_response(assignment["id"], "p1", {"cases": []},
+                                          [{"case": "covid", "condition": "DR"}])
                 self.assertEqual(store.count_study_participants(), 1)
                 rows = store.list_study_responses()
                 self.assertEqual(len(rows), 1)
@@ -90,11 +107,12 @@ class StoreRoundTripTests(unittest.TestCase):
 class WebRenderTests(unittest.TestCase):
     def test_form_renders_with_consent_and_one_case(self):
         from app.study_web import study_form_html
-        html = study_form_html(0, "abc123")
+        html = study_form_html(study.assign(0), "assignment-token", "abc123")
         self.assertIn("anonymous", html)
         self.assertIn("Submit my answers", html)
         self.assertEqual(html.count('<section class="case"'), 1)   # ONE case per participant now
         self.assertIn("SARS-CoV-2", html)                          # participant 0 -> covid
+        self.assertNotIn('condition:"DR"', html)
 
     def test_report_renders_markdown_and_strips_preamble(self):
         from app.study_web import study_report_html

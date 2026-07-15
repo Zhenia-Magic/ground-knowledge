@@ -26,7 +26,8 @@ def _primary_bases(pos):
 
 def find_gaps(kb, a=None):
     """Return a severity-sorted list of gaps. Each: {kind, why, severity, ...targets}."""
-    a = a or assess(kb)
+    res = _roots.resolve(kb)
+    a = a or assess(kb, res=res)
     gaps = []
 
     # 1. Positions held up by little or no INDEPENDENT primary evidence (mostly echo / secondary).
@@ -54,7 +55,6 @@ def find_gaps(kb, a=None):
                          "severity": 1})
 
     # 3. Datasets named but only cited THROUGH a review — the primary source itself is missing.
-    res = _roots.resolve(kb)
     for rk in sorted(res["secondary_only"]):
         did = rk[3:]
         gaps.append({"kind": "unsourced-dataset", "datasetId": did, "label": _ds_label(kb, did),

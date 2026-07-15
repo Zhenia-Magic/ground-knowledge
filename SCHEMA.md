@@ -10,6 +10,12 @@ loaders use `engine.migrate.migrate_kb` for additive v1→v2 migration and
 `engine.migrate.validation_errors` for unique-ID and cross-reference integrity checks. Migration
 never invents trust fields such as quote verification or dataset confirmation.
 
+There are deliberately two versions. `meta.version` is the semantic history inside the portable KB
+and advances when its evidence state changes. The hosted portal's top-level API `version` is a
+separate server revision that advances on **every stored write**, including review-queue changes and
+whole-KB replacement. Clients must send that server revision back when updating; a stale value gets
+a conflict instead of silently overwriting another contributor.
+
 Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destructively with
 `python cli.py migrate old.kb.json --out migrated.kb.json` (or use `--apply` explicitly).
 
@@ -217,6 +223,16 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    marker (`Mice` / `Rats` / `In vitro`) that down-weights animal evidence on a clinical question.
 
 ## Label trust: the ensemble report and the review queue
+
+### Ingestion delta boundary
+
+Every model or public contribution delta is structurally validated before merge. Batched labelling
+uses an opaque `sourceId` attached to each fetched document: every model must return each ID exactly
+once, and the pipeline rejects missing, repeated, or unknown IDs before pairing output with fetched
+text. Fetch-derived URL, title, author, venue, citation, and retraction metadata then overwrite model
+claims. Models may propose roots and quotes, but they cannot supply an `admission` object; only the
+authenticated curator path can create one. These checks prevent reordered batch output or forged
+trust fields from being attached to the wrong source.
 
 Labelling is the one load-bearing AI step, so the schema records *how much the models agreed*, not
 just the winning label. When labelling runs as a **multi-model ensemble** (`ingest/ensemble.py`),

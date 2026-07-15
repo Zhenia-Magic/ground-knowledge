@@ -35,6 +35,9 @@ is real and runnable from the repo root.
   per session.
   Without a key you use the *manual path*: the tool finds + fetches sources for free, then prints a
   labelling prompt (or a single bundle file) to paste into any chatbot; you paste the JSON back.
+  A multi-source bundle gives every source an opaque `sourceId`. Return every ID exactly once; if an
+  item is missing, duplicated, or renamed, the import stops instead of guessing which fetched text
+  belongs to which label.
 
 **Two modes — know which you're in:**
 
@@ -174,6 +177,11 @@ Prefer the terminal? `python cli.py show <kb>` prints the same summary;
   no server or internet needed.
 - **For another team to extend:** send `cases/<id>.kb.json` — the portable artifact. They run
   `build` to view it, and `ingest`/`add` to keep growing it. Nothing is locked in the UI.
+
+When syncing through the hosted portal, the response's top-level `version` is a server revision,
+not the KB's `meta.version`. `push` sends that revision back automatically. If another contributor
+writes first, the portal returns a conflict; pull the latest KB, reapply/review your change, and push
+again. Every accepted KB write and its contribution-log entry are committed together.
 
 ---
 

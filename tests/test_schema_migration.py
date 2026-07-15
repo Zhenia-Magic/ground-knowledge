@@ -54,6 +54,14 @@ class SchemaMigrationTests(unittest.TestCase):
                                             "by": "ann", "ts": "2026-07-11T00:00:00Z"}}]
         self.assertEqual(validation_errors(kb), [])
 
+    def test_validation_is_total_on_malformed_nested_values(self):
+        malformed = {"meta": [], "positions": [3], "datasets": "bad", "factors": [],
+                     "sources": [{}], "vocab": None, "log": {}}
+        errors = validation_errors(malformed)
+        self.assertTrue(errors)
+        with self.assertRaises(ValueError):
+            migrate_kb(malformed)
+
 
 if __name__ == "__main__":
     unittest.main()

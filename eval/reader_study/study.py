@@ -1,6 +1,6 @@
 """Reader-study logic: assignment, auto-scoring, aggregation. Pure, stdlib, deterministic.
 
-The web form (app/portal.py -> app/web.study_form_html) collects a participant's answers across
+The web form (app/portal.py -> app/study_web.study_form_html) collects a participant's answers across
 their assigned cases; POST /api/study scores the OBJECTIVE items here and stores everything. Free
 text is captured but never auto-scored — it stays for optional later human scoring (PROTOCOL.md).
 """
@@ -70,6 +70,43 @@ def score_response(response, gold=None):
             "score": score_case(case, obs.get("answers") or {"flood": obs.get("flood")}, gold),
         })
     return out
+
+
+def normalize_response_for_plan(response, plan):
+    """Bind a browser submission to the server-issued case/condition assignment.
+
+    The browser is an untrusted client: it may report answers, but it may not choose which condition
+    those answers belong to. Missing, extra, or repeated cases are rejected; condition is copied from
+    the stored assignment regardless of what the client sent.
+    """
+    if not isinstance(response, dict) or not isinstance(response.get("cases"), list):
+        raise ValueError("study submission must contain a cases array")
+    if not isinstance(plan, list) or not plan:
+        raise ValueError("study assignment has no cases")
+    expected = [row.get("case") for row in plan]
+    supplied = response["cases"]
+    if len(supplied) != len(expected) or any(not isinstance(obs, dict) for obs in supplied):
+        raise ValueError("submission does not match the assigned cases")
+    by_case = {}
+    for obs in supplied:
+        case = obs.get("case")
+        if case in by_case:
+            raise ValueError("submission repeats an assigned case")
+        if not isinstance(obs.get("answers"), dict):
+            raise ValueError("each assigned case requires an answers object")
+        if obs.get("free") is not None and not isinstance(obs.get("free"), dict):
+            raise ValueError("each assigned case free-text field must be an object")
+        by_case[case] = obs
+    if set(by_case) != set(expected):
+        raise ValueError("submission does not match the assigned cases")
+    clean = dict(response)
+    clean["cases"] = []
+    for row in plan:
+        obs = dict(by_case[row["case"]])
+        obs["case"] = row["case"]
+        obs["condition"] = row["condition"]
+        clean["cases"].append(obs)
+    return clean
 
 
 def aggregate(scored_observations):

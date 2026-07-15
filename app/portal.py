@@ -1,10 +1,10 @@
 """The hosted portal API (deployment layer, Phase 2).
 
 A thin, store-backed aggregator. It holds the canonical knowledge bases, lets people browse and
-search questions, and accepts pushed KBs from local CLIs (`cli.py push`). It deliberately does
-**no LLM work and holds no API key** — the expensive discover/fetch/label happens locally in the
-contributor's CLI with their own env key; the portal only stores and serves the deterministic
-result. Merging is pure stdlib, so the server stays cheap and key-free.
+search questions, accepts pushed KBs from local CLIs (`cli.py push`), and offers bounded keyless
+OpenAlex discovery/fetch for the public contribution flow. It deliberately does **no LLM work and
+holds no model API key** — labelling happens in the contributor's browser/chatbot or local CLI.
+Merging is pure stdlib, so the server stays cheap and key-free.
 
 Endpoints (JSON):
   GET  /api/questions?search=&limit=     -> [{id, question, counts, ...}]
@@ -18,40 +18,58 @@ Run locally:  python -m app.portal --port 8800     (sqlite store, no key, no dep
 Production:   gunicorn-style not needed; ThreadingHTTPServer behind Railway is fine for this load.
 """
 import hmac
+import ipaddress
 import json
 import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import threading
+from http.server import BaseHTTPRequestHandler
 
 from app import store, web
+from app.http_utils import BoundedThreadingHTTPServer, SlidingWindowLimiter
 
 MAX_BODY_BYTES = int(os.environ.get("EPISTEMIC_MAX_BODY_BYTES", str(4 * 1024 * 1024)))
-MAX_FETCH_URLS = int(os.environ.get("EPISTEMIC_MAX_FETCH_URLS", "25"))
+MAX_FETCH_URLS = int(os.environ.get("EPISTEMIC_MAX_FETCH_URLS", "10"))
+MAX_DELTA_BATCH = int(os.environ.get("EPISTEMIC_MAX_DELTA_BATCH", "50"))
+_RATE_LIMITER = SlidingWindowLimiter(int(os.environ.get("EPISTEMIC_RATE_WINDOW_SECONDS", "60")))
+_EXPENSIVE_SLOTS = threading.BoundedSemaphore(
+    max(1, int(os.environ.get("EPISTEMIC_MAX_EXPENSIVE_REQUESTS", "2"))))
+
+
+def _configure_from_env():
+    global MAX_BODY_BYTES, MAX_FETCH_URLS, MAX_DELTA_BATCH, _RATE_LIMITER, _EXPENSIVE_SLOTS
+    MAX_BODY_BYTES = int(os.environ.get("EPISTEMIC_MAX_BODY_BYTES", str(4 * 1024 * 1024)))
+    MAX_FETCH_URLS = int(os.environ.get("EPISTEMIC_MAX_FETCH_URLS", "10"))
+    MAX_DELTA_BATCH = int(os.environ.get("EPISTEMIC_MAX_DELTA_BATCH", "50"))
+    _RATE_LIMITER = SlidingWindowLimiter(
+        int(os.environ.get("EPISTEMIC_RATE_WINDOW_SECONDS", "60")))
+    _EXPENSIVE_SLOTS = threading.BoundedSemaphore(
+        max(1, int(os.environ.get("EPISTEMIC_MAX_EXPENSIVE_REQUESTS", "2"))))
+
+
+def _audit(action, summary, contributor="portal-admin"):
+    return {"action": action, "summary": summary, "contributor": contributor}
+
+
+def _actor(value, default="anonymous"):
+    return value.strip()[:100] if isinstance(value, str) and value.strip() else default
 
 
 def _admin_delete_source(qid, sid):
     """Remove one source from a question's KB (admin moderation), prune its factor provenance,
     bump the version, and log it. Metrics recompute from the KB on the next render."""
-    from engine.merge import now_iso
+    from engine import curate
     q = store.get_question(qid, with_kb=True)
     if not q:
         return {"error": "no such question"}
     kb = q["kb"]
-    before = len(kb.get("sources", []))
-    kb["sources"] = [s for s in kb.get("sources", []) if s.get("id") != sid]
-    if len(kb["sources"]) == before:
-        return {"error": "source not found"}
-    for f in kb.get("factors", []):
-        f["provenance"] = [pv for pv in f.get("provenance", []) if pv.get("source") != sid]
-    from engine.curate import repoint_confirmation_source
-    repoint_confirmation_source(kb, sid, reason="supporting source removed by portal administrator")
-    from engine.merge import recompute_factor_weights
-    recompute_factor_weights(kb)                      # re-derive cells so the dropped weight is gone
-    kb["meta"]["version"] = kb["meta"].get("version", 0) + 1
-    kb.setdefault("log", []).append({"version": kb["meta"]["version"],
-                                     "action": "admin-remove-source", "source": sid,
-                                     "ts": now_iso()})
     try:
-        v = store.save_kb(qid, kb, q["version"])
+        report = curate.remove_source(kb, sid, reason="removed by portal administrator",
+                                      by="portal-admin")
+    except ValueError as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"],
+                          _audit("remove-source", report.get("summary", sid)))
     except store.Conflict:
         return {"error": "changed concurrently — reload and retry"}
     return {"ok": True, "version": v}
@@ -68,12 +86,13 @@ def _admin_confirm_dataset(qid, dataset_ref, confirmed=True, by="portal-admin", 
         return {"error": "no such question"}
     kb = q["kb"]
     try:
-        res = curate.confirm_dataset(kb, dataset_ref, confirmed, by=by or "portal-admin",
+        res = curate.confirm_dataset(kb, dataset_ref, confirmed, by=_actor(by, "portal-admin"),
                                      source=source, note=note, allow_similar=allow_similar)
     except (ValueError, KeyError) as e:
         return {"error": str(e)}
     try:
-        v = store.save_kb(qid, kb, q["version"])
+        v = store.save_kb(qid, kb, q["version"],
+                          _audit("confirm-dataset", res.get("summary", "")))
     except store.Conflict:
         return {"error": "changed concurrently — reload and retry"}
     return {"ok": True, "version": v, "summary": res.get("summary")}
@@ -94,7 +113,8 @@ def _admin_merge_dataset(qid, src_ref, dst_ref):
     except (ValueError, KeyError) as e:
         return {"error": str(e)}
     try:
-        v = store.save_kb(qid, kb, q["version"])
+        v = store.save_kb(qid, kb, q["version"],
+                          _audit("merge-dataset", res.get("summary", "")))
     except store.Conflict:
         return {"error": "changed concurrently — reload and retry"}
     return {"ok": True, "version": v, "summary": res.get("summary")}
@@ -142,7 +162,8 @@ def _admin_set_dataset_kind(qid, dataset_ref, kind):
     except (ValueError, KeyError) as e:
         return {"error": str(e)}
     try:
-        v = store.save_kb(qid, kb, q["version"])
+        v = store.save_kb(qid, kb, q["version"],
+                          _audit("set-dataset-kind", res.get("summary", "")))
     except store.Conflict:
         return {"error": "changed concurrently — reload and retry"}
     return {"ok": True, "version": v, "summary": res.get("summary")}
@@ -167,7 +188,8 @@ def _admin_review_resolve(qid, item_id, kind, action, position=None):
     except ValueError as e:
         return {"error": str(e)}
     try:
-        v = store.save_kb(qid, kb, q["version"])
+        v = store.save_kb(qid, kb, q["version"],
+                          _audit("resolve-review", "resolved review item " + str(item_id)))
     except store.Conflict:
         return {"error": "changed concurrently — reload and retry"}
     return {"ok": True, "version": v, "report": rep,
@@ -205,56 +227,9 @@ def _norm_delta(it):
 
 
 def _delta_validation_error(delta):
-    src = delta.get("source")
-    if not isinstance(src, dict):
-        return "delta.source must be an object"
-    if src.get("relevant") is False:
-        return None
-    for field in ("title", "position"):
-        if not str(src.get(field) or "").strip():
-            return "delta.source.{} is required".format(field)
-    if len(str(src.get("title"))) > 500:
-        return "delta.source.title is too long (max 500 chars)"
-    # restsOn is the root-admission surface: bound it and type-check it so one public source can't
-    # supply an unbounded or malformed root list. (Novel roots from this path are unverified ->
-    # textDepth is stripped to 'unknown' -> they stay visible but count ZERO until an auditable
-    # confirmation admits them; see engine/roots.)
-    rests = src.get("restsOn")
-    if rests is not None:
-        if not isinstance(rests, list):
-            return "delta.source.restsOn must be an array"
-        if len(rests) > 40:
-            return "delta.source.restsOn has too many entries (max 40)"
-        for i, e in enumerate(rests):
-            if isinstance(e, dict):                       # edge object {ref, provenance}
-                ref = e.get("ref")
-                if not isinstance(ref, (str, int, float)) or not str(ref).strip():
-                    return "delta.source.restsOn[{}].ref is required".format(i)
-                if len(str(ref)) > 300:
-                    return "delta.source.restsOn[{}].ref is too long".format(i)
-                ep = e.get("provenance")
-                if ep is not None and not isinstance(ep, dict):
-                    return "delta.source.restsOn[{}].provenance must be an object".format(i)
-                if isinstance(ep, dict) and len(str(ep.get("quote") or "")) > 2000:
-                    return "delta.source.restsOn[{}].provenance.quote is too long".format(i)
-                continue
-            if not isinstance(e, (str, int, float)):
-                return "delta.source.restsOn[{}] must be a string or {{ref, provenance}} object".format(i)
-            if len(str(e)) > 300:
-                return "delta.source.restsOn[{}] is too long".format(i)
-    factor_weights = delta.get("factorWeights", [])
-    if not isinstance(factor_weights, list):
-        return "delta.factorWeights must be an array"
-    if len(factor_weights) > 40:
-        return "delta.factorWeights has too many entries (max 40)"
-    for i, fw in enumerate(factor_weights):
-        if not isinstance(fw, dict):
-            return "delta.factorWeights[{}] must be an object".format(i)
-        if not str(fw.get("factorLabel") or fw.get("factor") or "").strip():
-            return "delta.factorWeights[{}].factorLabel is required".format(i)
-        if fw.get("weight") not in ("high", "med", "low", "n/a"):
-            return "delta.factorWeights[{}].weight must be high, med, low, or n/a".format(i)
-    return None
+    from engine.validate import delta_validation_errors
+    errors = delta_validation_errors(delta)
+    return errors[0] if errors else None
 
 
 def _apply_delta(qid, q, delta, contributor):
@@ -267,6 +242,8 @@ def _apply_delta(qid, q, delta, contributor):
     from engine import review
     kb, base = q["kb"], q["version"]
     items = delta if isinstance(delta, list) else [delta]
+    if len(items) > MAX_DELTA_BATCH:
+        return {"error": "too many deltas in one request (max {})".format(MAX_DELTA_BATCH)}
     deltas = []
     for it in items:
         d = _norm_delta(it)
@@ -294,11 +271,11 @@ def _apply_delta(qid, q, delta, contributor):
     if not queued:
         return {"queued": 0, "duplicates": dups, "version": base}
     try:
-        version = store.save_kb(qid, kb, base)
+        summary = "{} queued for review, {} duplicate".format(queued, dups)
+        version = store.save_kb(qid, kb, base,
+                                _audit("queue-sources", summary, contributor or "anonymous"))
     except store.Conflict:
         return {"error": "someone else updated this question — reload and re-import"}
-    store.log_contribution(qid, contributor or "anonymous", "queue-sources",
-                           "{} queued for review, {} duplicate".format(queued, dups))
     return {"queued": queued, "duplicates": dups, "version": version}
 
 
@@ -306,6 +283,17 @@ class Handler(BaseHTTPRequestHandler):
     server_version = "epistemic-portal/0.1"
 
     # -- helpers --
+    def _security_headers(self):
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Referrer-Policy", "same-origin")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+        self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; "
+                         "style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; "
+                         "connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
+        if self.headers.get("X-Forwarded-Proto", "").lower() == "https":
+            self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+
     def _send(self, code, obj):
         body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
@@ -313,6 +301,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")  # browser clients
         self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Admin-Token")
+        self._security_headers()
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -321,6 +310,7 @@ class Handler(BaseHTTPRequestHandler):
         body = (html or "<h1>Not found</h1>").encode("utf-8")
         self.send_response(code)
         self.send_header("Content-Type", "text/html; charset=utf-8")
+        self._security_headers()
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -329,6 +319,9 @@ class Handler(BaseHTTPRequestHandler):
         try:
             n = int(self.headers.get("Content-Length") or 0)
         except ValueError:
+            self._body_error = (400, {"error": "invalid Content-Length"})
+            return None
+        if n < 0:
             self._body_error = (400, {"error": "invalid Content-Length"})
             return None
         if n > MAX_BODY_BYTES:
@@ -364,11 +357,27 @@ class Handler(BaseHTTPRequestHandler):
         sent = self.headers.get("X-Admin-Token", "")
         return bool(tok) and hmac.compare_digest(sent, tok)
 
+    def _client_key(self):
+        # A proxy appends the real client to any attacker-supplied XFF chain, so trust the final
+        # syntactically valid address rather than the spoofable first value.
+        forwarded = (self.headers.get("X-Forwarded-For") or "").rsplit(",", 1)[-1].strip()
+        try:
+            return str(ipaddress.ip_address(forwarded))
+        except ValueError:
+            return str(self.client_address[0])
+
+    def _rate_ok(self, action, limit):
+        if _RATE_LIMITER.allow((self._client_key(), action), limit):
+            return True
+        self._send(429, {"error": "too many requests; please retry shortly"})
+        return False
+
     def _send_file(self, text, mime, filename):
         body = (text or "").encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", mime + "; charset=utf-8")
         self.send_header("Content-Disposition", 'attachment; filename="{}"'.format(filename))
+        self._security_headers()
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -408,7 +417,11 @@ class Handler(BaseHTTPRequestHandler):
         # --- JSON API ---
         if p == ["api", "questions"]:
             q = self._query()
-            limit = int(q.get("limit") or 100)
+            try:
+                limit = int(q.get("limit") or 100)
+            except (TypeError, ValueError):
+                return self._send(400, {"error": "limit must be an integer"})
+            limit = max(1, min(limit, 100))
             return self._send(200, {"questions": store.list_questions(q.get("search"), limit)})
         if len(p) == 3 and p[:2] == ["api", "questions"]:
             data = _read_question(p[2])
@@ -431,13 +444,18 @@ class Handler(BaseHTTPRequestHandler):
         if p == ["study"]:
             from app import study_web
             import uuid as _uuid
-            idx = store.count_study_participants()
-            return self._send_html(200, study_web.study_form_html(idx, _uuid.uuid4().hex[:6]))
+            if not self._rate_ok("study-assignment", 10):
+                return
+            assignment = store.new_study_assignment()
+            return self._send_html(200, study_web.study_form_html(
+                assignment["plan"], assignment["id"], _uuid.uuid4().hex[:6]))
         if len(p) == 3 and p[0] == "study" and p[1] == "report":
             from app import study_web
             html = study_web.study_report_html(p[2])
             return self._send_html(200 if html else 404, html or "<h1>Not found</h1>")
         if p == ["study", "results"]:
+            if not self._is_admin():
+                return self._send(403, {"error": "admin token required"})
             from app import study_web
             return self._send_html(200, study_web.study_results_html(store.list_study_responses()))
         self._send(404, {"error": "not found"})
@@ -480,13 +498,19 @@ class Handler(BaseHTTPRequestHandler):
                     body.get("id"), body.get("dataset") or body.get("datasetId"), body.get("kind")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
+            if not self._rate_ok("create-question", 6):
+                return
             body = self._json_body()
             if body is None:
                 return
-            question = (body.get("question") or "").strip()
+            if not isinstance(body.get("question"), str):
+                return self._send(400, {"error": "question text required"})
+            question = body["question"].strip()
             if not question:
                 return self._send(400, {"error": "question text required"})
-            q = store.create_question(question, body.get("contributor") or "anonymous")
+            if len(question) > 1000:
+                return self._send(400, {"error": "question is too long (max 1000 chars)"})
+            q = store.create_question(question, _actor(body.get("contributor")))
             return self._send(201, {"id": q["id"], "question": q["question"], "version": 0})
         # contribute flow: /api/questions/{id}/{discover|fetch|delta} — all keyless server-side
         if len(p) == 4 and p[:2] == ["api", "questions"]:
@@ -498,16 +522,40 @@ class Handler(BaseHTTPRequestHandler):
             if body is None:
                 return
             if action == "discover":
+                if not self._rate_ok("discover", 10):
+                    return
+                try:
+                    k = max(1, min(int(body.get("k") or 10), 50))
+                except (TypeError, ValueError):
+                    return self._send(400, {"error": "k must be an integer"})
+                if not _EXPENSIVE_SLOTS.acquire(False):
+                    return self._send(429, {"error": "server is busy; retry shortly"})
                 from ingest.search import search_openalex
-                cands = search_openalex(q["question"], int(body.get("k") or 10))
+                try:
+                    try:
+                        cands = search_openalex(q["question"], k)
+                    except Exception:
+                        return self._send(502, {"error": "scholarly discovery is temporarily unavailable"})
+                finally:
+                    _EXPENSIVE_SLOTS.release()
                 return self._send(200, {"candidates": cands})
             if action == "fetch":
+                if not self._rate_ok("fetch", 4):
+                    return
                 from ingest.pipeline import fetch_docs, build_batch_extract_prompt
-                urls = [u for u in (body.get("urls") or []) if u]
+                raw_urls = body.get("urls") or []
+                if not isinstance(raw_urls, list) or any(not isinstance(u, str) for u in raw_urls):
+                    return self._send(400, {"error": "urls must be an array of strings"})
+                urls = [u.strip() for u in raw_urls if u.strip()]
                 if len(urls) > MAX_FETCH_URLS:
                     return self._send(400, {"error": "too many URLs in one fetch request",
                                             "limit": MAX_FETCH_URLS})
-                docs, skipped = fetch_docs(urls, allow_local=False)
+                if not _EXPENSIVE_SLOTS.acquire(False):
+                    return self._send(429, {"error": "server is busy; retry shortly"})
+                try:
+                    docs, skipped = fetch_docs(urls, allow_local=False)
+                finally:
+                    _EXPENSIVE_SLOTS.release()
                 # ONE bundle over all fetched sources -> one file to upload, one JSON array back.
                 # Full per-source text (not the old multi-prompt batches' small per-source cap),
                 # so labelling sees the whole paper, not just the first few thousand characters.
@@ -515,6 +563,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, {"bundle": bundle, "fetched": len(docs),
                                         "skipped": skipped})
             if action == "import-citations":
+                if not self._rate_ok("import-citations", 20):
+                    return
                 from ingest import citations
                 try:
                     cands = citations.parse(body.get("text", ""), filename=body.get("filename", ""))
@@ -522,21 +572,36 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "could not parse citations: {}".format(e)})
                 return self._send(200, {"candidates": cands})
             if action == "delta":
-                res = _apply_delta(qid, q, body.get("delta"), body.get("contributor"))
+                if not self._rate_ok("delta", 30):
+                    return
+                res = _apply_delta(qid, q, body.get("delta"), _actor(body.get("contributor")))
                 return self._send(400 if res.get("error") else 200, res)
             return self._send(404, {"error": "unknown action"})
         # --- reader study: anonymous response collection + auto-scoring ---
         if p == ["api", "study"]:
+            if not self._rate_ok("study-submit", 10):
+                return
             body = self._json_body()
             if body is None:
                 return
             if not isinstance(body.get("cases"), list) or not body["cases"]:
                 return self._send(400, {"error": "no cases in submission"})
             from eval.reader_study import study
-            scored = study.score_response(body)
+            assignment_id = body.get("assignment")
+            assignment = store.get_study_assignment(assignment_id)
+            if not assignment or assignment.get("consumed"):
+                return self._send(400, {"error": "study assignment is invalid or already submitted"})
+            try:
+                response = study.normalize_response_for_plan(body, assignment["plan"])
+            except ValueError as e:
+                return self._send(400, {"error": str(e)})
+            scored = study.score_response(response)
             if not scored:
                 return self._send(400, {"error": "no scorable cases in submission"})
-            store.save_study_response(body.get("participant"), body, scored)
+            try:
+                store.save_study_response(assignment_id, response.get("participant"), response, scored)
+            except store.Conflict as e:
+                return self._send(409, {"error": str(e)})
             correct = sum(o["score"]["nCorrect"] for o in scored)
             items = sum(o["score"]["nItems"] for o in scored)
             return self._send(200, {"ok": True, "correct": correct, "items": items})
@@ -554,11 +619,19 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(kb, dict):
                 return self._send(400, {"error": "kb (object) required"})
             try:
-                version = store.save_kb(p[2], kb, int(body.get("expected_version", 0)))
+                from engine.migrate import migrate_kb, validation_errors
+                kb, _changes = migrate_kb(kb)
+                errors = validation_errors(kb)
+                if errors:
+                    return self._send(400, {"error": "invalid KB", "details": errors[:50]})
+                version = store.save_kb(
+                    p[2], kb, int(body.get("expected_version", 0)),
+                    _audit("push-kb", "replaced canonical KB",
+                           body.get("contributor") or "anonymous"))
+            except (ValueError, TypeError) as e:
+                return self._send(400, {"error": "invalid KB", "detail": str(e)})
             except store.Conflict as e:
                 return self._send(409, {"error": "version conflict", "detail": str(e)})
-            store.log_contribution(p[2], body.get("contributor") or "anonymous",
-                                   "push-kb", "version -> {}".format(version))
             return self._send(200, {"version": version})
         self._send(404, {"error": "not found"})
 
@@ -580,9 +653,14 @@ def _seed_if_empty():
 def run(port=8800):
     from app.env import load_dotenv
     load_dotenv()
+    store.configure_from_env()
+    _configure_from_env()
     store.init_db()
     _seed_if_empty()
-    httpd = ThreadingHTTPServer(("0.0.0.0", port), Handler)
+    httpd = BoundedThreadingHTTPServer(
+        ("0.0.0.0", port), Handler,
+        max_workers=int(os.environ.get("EPISTEMIC_MAX_REQUEST_THREADS", "32")),
+        socket_timeout=int(os.environ.get("EPISTEMIC_SOCKET_TIMEOUT", "30")))
     print("Portal on http://0.0.0.0:{}  (store: {})".format(
         port, "Postgres" if store._IS_PG else store._SQLITE_PATH))
     httpd.serve_forever()

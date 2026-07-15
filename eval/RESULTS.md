@@ -37,8 +37,9 @@ diagnostic, not an evidence-quality, effect-size, confidence, or truth score**.
 | generic fetched label (`Cohort`) | +0.0; generic prose cannot identify a root |
 | two unknown lexical aliases | at most one enters; collision is flagged |
 | confirmed roots attached to another camp through unreviewed edges | +0.0 in that camp |
+| model forges curator admission on the fetched-text path | +0.0; admission is stripped |
 
-**All eight attacks pass on all three cases.**
+**All nine attacks pass on all three cases.**
 
 ## 4. Comparative recall
 

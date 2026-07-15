@@ -2,7 +2,14 @@
 """Generate deterministic, balanced study assignments (stdlib only)."""
 import argparse
 import csv
+import io
+import os
 import random
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, ROOT)
+from engine.io import atomic_write_text  # noqa: E402
 
 CASES = ("covid", "blackholes", "eggs")
 ORDERS = ((0, 1, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0), (1, 0, 2), (0, 2, 1))
@@ -32,9 +39,11 @@ def main(argv=None):
     ap.add_argument("--out", default="assignments.csv")
     args = ap.parse_args(argv)
     rows = assignments(args.participants, args.seed)
-    with open(args.out, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=("participant", "sequence", "case", "condition"))
-        w.writeheader(); w.writerows(rows)
+    output = io.StringIO(newline="")
+    writer = csv.DictWriter(output, fieldnames=("participant", "sequence", "case", "condition"))
+    writer.writeheader()
+    writer.writerows(rows)
+    atomic_write_text(args.out, output.getvalue())
     print("wrote {} assignment rows ({} participants × {} cases, within-participant crossover) to {}"
           .format(len(rows), args.participants, len(CASES), args.out))
 

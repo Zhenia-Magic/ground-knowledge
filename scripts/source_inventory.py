@@ -11,6 +11,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from engine.roots import resolve       # noqa: E402
 from engine.verify import is_verified_exact  # noqa: E402
+from engine.io import atomic_write_text  # noqa: E402
 
 
 OUT = os.path.join(ROOT, "eval", "SOURCE_INVENTORY.md")
@@ -117,8 +118,7 @@ def main(argv=None):
     args = ap.parse_args(argv)
     text = render()
     if args.write:
-        with open(OUT, "w", encoding="utf-8") as f:
-            f.write(text)
+        atomic_write_text(OUT, text)
         print("wrote eval/SOURCE_INVENTORY.md")
     if args.check:
         try:

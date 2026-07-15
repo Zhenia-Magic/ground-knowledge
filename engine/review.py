@@ -17,7 +17,8 @@ from .merge import merge_delta, norm, now_iso, source_key
 def needs_review(delta):
     """True when this delta's ensemble labelling had no majority position."""
     src = (delta or {}).get("source") or {}
-    return bool((src.get("modelAgreement") or {}).get("flagged"))
+    agreement = src.get("modelAgreement")
+    return bool(isinstance(agreement, dict) and agreement.get("flagged"))
 
 
 def pending_keys(kb):
@@ -47,6 +48,7 @@ def queue_for_review(kb, delta):
         "ts": now_iso(),
     }
     kb.setdefault("pendingReview", []).append(entry)
+    _bump(kb, "queue-review", "queued for human review: " + entry["title"])
     return entry
 
 
@@ -86,7 +88,10 @@ def resolve_review(kb, pr_id, action, position=None):
     ma["flagged"] = False
     ma["resolvedBy"] = "human"
     ma["resolvedTo"] = chosen
-    return merge_delta(kb, delta)
+    report = merge_delta(kb, delta)
+    if report.get("duplicate"):
+        _bump(kb, "review-duplicate", "removed duplicate review item: " + entry["title"])
+    return report
 
 
 def _position_ref(kb, chosen):

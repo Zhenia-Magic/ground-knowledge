@@ -14,7 +14,7 @@ from engine.merge import merge_delta
 from engine.schema import empty_kb
 from engine.verify import apply_quote_verification, ground_quote, is_verified_exact, match_quote
 from ingest.pipeline import (_carry_meta, _prompt_text, build_batch_extract_prompt,
-                             build_extract_prompt, build_research_prompt)
+                             build_extract_prompt, build_research_prompt, label_batch)
 from scripts.audit_quotes import write_markdown_report
 
 TEXT = """Title of Paper
@@ -404,6 +404,43 @@ class ConfidenceAuditTests(unittest.TestCase):
         kb = self._kb_with([self._src("s%d" % i, 0.2) for i in range(3)])
         ca = confidence_audit(kb)
         self.assertTrue(ca["positions"][0]["weak"])
+
+
+class BatchIdentityTests(unittest.TestCase):
+    def test_reordered_model_array_is_realigned_by_source_id(self):
+        kb = empty_kb("x", "Question?")
+        docs = [{"title": "First", "text": "first text", "kind": "full"},
+                {"title": "Second", "text": "second text", "kind": "full"}]
+
+        def complete(_prompt):
+            first, second = docs[0]["_sourceId"], docs[1]["_sourceId"]
+            return json.dumps([
+                {"sourceId": second, "source": {"title": "Second", "position": "NEW:No"}},
+                {"sourceId": first, "source": {"title": "First", "position": "NEW:Yes"}},
+            ])
+
+        with mock.patch("ingest.pipeline.llm.complete_ensemble", return_value=None), \
+             mock.patch("ingest.pipeline.llm.complete", side_effect=complete):
+            out = label_batch(kb, docs)
+        self.assertEqual([d["source"]["title"] for d in out], ["First", "Second"])
+
+    def test_missing_source_id_rejects_whole_batch(self):
+        kb = empty_kb("x", "Question?")
+        docs = [{"title": "First", "text": "first text", "kind": "full"}]
+        response = json.dumps([{"source": {"title": "First", "position": "NEW:Yes"}}])
+        with mock.patch("ingest.pipeline.llm.complete_ensemble", return_value=None), \
+             mock.patch("ingest.pipeline.llm.complete", return_value=response), \
+             self.assertRaises(ValueError):
+            label_batch(kb, docs)
+
+    def test_duplicate_document_source_ids_are_rejected_before_labelling(self):
+        kb = empty_kb("x", "Question?")
+        docs = [{"title": "First", "text": "first", "_sourceId": "same"},
+                {"title": "Second", "text": "second", "_sourceId": "same"}]
+        with mock.patch("ingest.pipeline.llm.complete_ensemble") as ensemble_call, \
+             self.assertRaises(ValueError):
+            label_batch(kb, docs)
+        ensemble_call.assert_not_called()
 
 
 if __name__ == "__main__":

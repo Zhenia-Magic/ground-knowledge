@@ -43,6 +43,13 @@ _rate_lock = threading.Lock()
 _rate_calls = []   # timestamps of recent rate-gated requests (sliding 60s window)
 
 
+def configure_from_env():
+    global _MAX_OUTPUT_TOKENS, _HTTP_TIMEOUT, _RATE_LIMIT_RPM
+    _MAX_OUTPUT_TOKENS = int(os.environ.get("EPISTEMIC_MAX_OUTPUT_TOKENS", "8192"))
+    _HTTP_TIMEOUT = int(os.environ.get("EPISTEMIC_HTTP_TIMEOUT", "300"))
+    _RATE_LIMIT_RPM = int(os.environ.get("EPISTEMIC_RATE_LIMIT_RPM", "40"))
+
+
 def _rate_gate():
     """Block until issuing another rate-limited request keeps us within _RATE_LIMIT_RPM over a
     trailing 60s window. Thread-safe (the console serves requests on threads); computes the wait

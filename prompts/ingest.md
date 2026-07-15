@@ -2,12 +2,17 @@
 
 This is the **Ingestion layer** (Layer 1). It runs in Claude Code (or any Claude call):
 given the current KB's entity tables plus one raw source, it emits a `delta.json` that
-`src/epistemic.js add` folds into the KB. It is deliberately **single-source**: the cold
+`python cli.py add` folds into the KB. It is deliberately **single-source**: the cold
 start is this prompt looped over discovered sources; an update is one run. Same path.
 
 The prompt never invents IDs. It *proposes* links to existing entities, or marks something
 `"NEW:<label>"`; the deterministic merge code decides. Keep extraction conservative —
 every field that isn't clearly supported by the text should lower its `extractionConfidence`.
+
+The automated batch form adds an opaque `sourceId` beside every source. Batch output must return
+each supplied ID exactly once; missing, duplicate, or unknown IDs reject the whole model response,
+and output is reordered by ID before any quote is checked against fetched text. The one-source
+manual form below may omit `sourceId`.
 
 ---
 
@@ -120,12 +125,16 @@ multiplying via paraphrase as a case grows):
   weighs — if only one side could engage it, it's a descriptive tag, not a crux. For each: how
   strongly its POSITION weights it (high/med/low) + quote + rationale.
 - Do NOT fabricate. If the text doesn't support a field, omit it or mark low confidence.
+- Never emit `admission`, `verifiedQuote`, or `quoteVerification`. Those are trust records produced
+  only by deterministic fetched-text verification or an authenticated curator, never by the model.
 ````
 
 ## Output schema
 
 ```jsonc
 {
+  // Batch mode only: echo the opaque ID supplied with this exact source.
+  "sourceId": "source_...",
   "source": {
     "title": "...", "year": 2020, "url": "...",
     "position": "pos_none" | "NEW:Some new stance",

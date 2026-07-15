@@ -9,9 +9,12 @@ import argparse
 import glob
 import json
 import os
+import sys
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from engine.io import atomic_write_json  # noqa: E402
 RECORD = {
     "status": "confirmed",
     "method": "legacy-migration",
@@ -51,9 +54,7 @@ def main(argv=None):
         print("{}: {} edge(s) {}".format(os.path.basename(path), changed,
               "need admission" if args.check else "migrated"))
         if changed and not args.check:
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(kb, f, ensure_ascii=False, indent=2)
-                f.write("\n")
+            atomic_write_json(path, kb)
     return 1 if args.check and pending else 0
 
 

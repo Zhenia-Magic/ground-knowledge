@@ -132,19 +132,22 @@ class TwoPassRefTests(unittest.TestCase):
         from engine.merge import resolve_pending_refs
         from engine.roots import resolve
         from engine.assess import independence
+        from engine.curate import confirm_edge
         kb = empty_kb("t", "q")
-        admission = {"status": "confirmed", "method": "curator", "by": "ann",
-                     "ts": "2026-07-14T00:00:00Z"}
         merge_delta(kb, {"source": {"title": "Paper A", "year": 2020, "url": "https://x/a",
             "position": "NEW:P", "evidence": "Narrative/Commentary",
-            "restsOn": [{"ref": "NEW-SRC:Paper B", "admission": admission}]}})
+            "restsOn": [{"ref": "NEW-SRC:Paper B"}]}})
         merge_delta(kb, {"source": {"title": "Paper B", "year": 2021, "url": "https://x/b",
             "position": "NEW:P", "evidence": "Narrative/Commentary",
-            "restsOn": [{"ref": "NEW-SRC:Paper A", "admission": admission}]}})
+            "restsOn": [{"ref": "NEW-SRC:Paper A"}]}})
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertEqual(a["restsOn"], [])                      # forward ref unresolved at merge time
         self.assertEqual(independence(kb)[0]["nEff"], 0)        # unsupported assertions have zero
         self.assertGreaterEqual(resolve_pending_refs(kb), 1)    # second pass wires A->B
+        confirm_edge(kb, "Paper A", "src:" + next(s["id"] for s in kb["sources"]
+                                                   if s["title"] == "Paper B"), by="ann")
+        confirm_edge(kb, "Paper B", "src:" + next(s["id"] for s in kb["sources"]
+                                                   if s["title"] == "Paper A"), by="ann")
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertTrue(any((e.get("ref") if isinstance(e, dict) else e).startswith("src:")
                             for e in a["restsOn"]))
@@ -163,6 +166,17 @@ class DuplicateSuggestionTests(unittest.TestCase):
         pairs = suggest_duplicates(kb).get("dataset", [])
         self.assertEqual(len(pairs), 1)
         self.assertEqual(pairs[0]["reason"], "acronym")
+
+    def test_large_generic_inventory_uses_blocked_candidates_not_all_pairs(self):
+        from engine import curate
+        from unittest import mock
+        kb = empty_kb("t", "q")
+        kb["datasets"] = [{"id": "d{}".format(i),
+                           "label": "Registry Common Unique{}".format(i), "aliases": []}
+                          for i in range(1500)]
+        with mock.patch("engine.curate._similarity", wraps=curate._similarity) as similarity:
+            curate.suggest_duplicates(kb)
+        self.assertLess(similarity.call_count, 20)
 
 
 class DatasetEdgeObjectCurationTests(unittest.TestCase):
@@ -268,7 +282,9 @@ class SourceRemovalTests(unittest.TestCase):
         kb["sources"].append(dict(kb["sources"][1], id="third", title="Third",
                                   url="https://x/third", restsOn=["src:" + sid]))
         remove_source(kb, sid, "duplicate record", "source-audit-2026-07", retained)
+        kept = next(s for s in kb["sources"] if s["id"] == retained)
         third = next(s for s in kb["sources"] if s["id"] == "third")
+        self.assertEqual(kept["restsOn"], [])
         self.assertEqual(third["restsOn"], ["src:" + retained])
 
     def test_move_source_updates_factor_claim_and_logs_reason(self):
@@ -324,12 +340,22 @@ class SourceRemovalTests(unittest.TestCase):
         new = dict(base, id="new", title="Same paper", year=2020,
                    url="https://publisher.example/10.1234/same",
                    provenance={"position": {"quote": "q"}})
-        kb["sources"] = [old, new]
+        referrer = dict(base, id="ref", title="A later commentary", year=2021,
+                        url="https://example.org/ref", provenance={}, restsOn=["src:old"])
+        kb["sources"] = [old, new, referrer]
         kb["datasets"] = [{"id": "d", "label": "D", "aliases": [], "confirmation": {
             "status": "confirmed", "method": "curator", "by": "ann",
             "ts": "2026-07-11T00:00:00Z", "source": "old"}}]
+        kb["factors"] = [{"id": "f", "label": "Factor", "weights": {"p": "low"},
+                           "rationale": "", "provenance": [
+                               {"source": "old", "pos": "p", "quote": "short"},
+                               {"source": "new", "pos": "p", "quote": "a richer claim"}]}]
         dedupe_sources(kb)
         self.assertEqual(kb["datasets"][0]["confirmation"]["source"], "new")
+        self.assertEqual(next(s for s in kb["sources"] if s["id"] == "ref")["restsOn"],
+                         ["src:new"])
+        self.assertEqual(kb["factors"][0]["provenance"][0]["source"], "new")
+        self.assertEqual(len(kb["factors"][0]["provenance"]), 1)
         self.assertEqual(validation_errors(kb), [])
 
 
@@ -412,18 +438,19 @@ class EvidenceBaseKindTests(unittest.TestCase):
         doc = next(d for d in kb["datasets"] if "DEFUSE" in d["label"])
         self.assertEqual(doc.get("kind"), "document")
 
-    def test_empirical_base_stays_implicit_and_invalid_kind_is_ignored(self):
+    def test_empirical_base_stays_implicit_and_invalid_kind_is_rejected(self):
         kb = empty_kb("k", "Q?")
         merge_delta(kb, {"source": {"title": "Cohort", "year": 2023, "url": "https://ex.org/c",
             "position": "NEW:Yes", "evidence": "Observational",
             "restsOn": [{"ref": "NEW:Framingham cohort", "provenance": {"quote": "y"}}]}})
-        merge_delta(kb, {"source": {"title": "Weird", "year": 2023, "url": "https://ex.org/w",
-            "position": "NEW:Yes", "evidence": "Observational",
-            "restsOn": [{"ref": "NEW:Weird base", "datasetKind": "nonsense",
-                         "provenance": {"quote": "z"}}]}})
-        for label in ("ramingham", "Weird"):
-            d = next(x for x in kb["datasets"] if label in x["label"])
-            self.assertNotIn("kind", d)
+        with self.assertRaises(ValueError):
+            merge_delta(kb, {"source": {"title": "Weird", "year": 2023, "url": "https://ex.org/w",
+                "position": "NEW:Yes", "evidence": "Observational",
+                "restsOn": [{"ref": "NEW:Weird base", "datasetKind": "nonsense",
+                             "provenance": {"quote": "z"}}]}})
+        d = next(x for x in kb["datasets"] if "ramingham" in x["label"])
+        self.assertNotIn("kind", d)
+        self.assertFalse(any("Weird" in x["label"] for x in kb["datasets"]))
 
     def test_curate_set_kind_sets_resets_and_rejects(self):
         from engine import curate

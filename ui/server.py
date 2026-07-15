@@ -17,10 +17,12 @@ import base64
 import glob
 import json
 import os
+import re
 import tempfile
 import time
+import urllib.parse
 import webbrowser
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CASES = os.path.join(ROOT, "cases")
@@ -29,11 +31,17 @@ UI = os.path.dirname(os.path.abspath(__file__))
 from engine.assess import assess, diff_assessments
 from engine.merge import merge_delta, source_key, norm
 from engine.schema import empty_kb
+from engine.io import atomic_write_json
+from app.http_utils import BoundedThreadingHTTPServer
 from ingest import llm
 from ingest.extract import extract_text, clean_url
 from ingest.pipeline import (build_research_prompt, build_discover_prompt, build_extract_prompt,
                              build_batch_extract_prompt, extract_prompts, _parse_json,
                              _carry_meta, _prompt_text, pack_batches, is_nonscholarly, label_batch)
+
+MAX_LOCAL_BODY = int(os.environ.get("EPISTEMIC_LOCAL_MAX_BODY_BYTES", str(18 * 1024 * 1024)))
+MAX_LOCAL_UPLOAD = int(os.environ.get("EPISTEMIC_LOCAL_MAX_UPLOAD_BYTES", str(12 * 1024 * 1024)))
+_CASE_ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
 
 
 def has_key():
@@ -140,13 +148,16 @@ def _read(p):
 
 
 def _write(p, o):
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(o, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    atomic_write_json(p, o)
 
 
 def _case_path(cid):
-    return os.path.join(CASES, cid + ".kb.json")
+    if not isinstance(cid, str) or not _CASE_ID.fullmatch(cid):
+        raise ValueError("Invalid case id (use 1–80 letters, numbers, _ or -).")
+    path = os.path.abspath(os.path.join(CASES, cid + ".kb.json"))
+    if os.path.commonpath((os.path.abspath(CASES), path)) != os.path.abspath(CASES):
+        raise ValueError("Invalid case id.")
+    return path
 
 
 def list_cases():
@@ -235,6 +246,8 @@ def _merge_list(cid, deltas, verification_trusted=False):
             d = strip_untrusted_verification(d)
         title = (d.get("source") or {}).get("title") if isinstance(d, dict) else None
         try:
+            from engine.validate import require_valid_delta
+            require_valid_delta(d)
             kb = _read(path)
             if review.needs_review(d):
                 entry = review.queue_for_review(kb, d)
@@ -393,9 +406,6 @@ def extract_op(cid, urls, apply, batch=None, max_text=None):
             log("  batch {}/{} failed ({}) — skipping; re-run to retry these source(s)."
                 .format(n, nbatches, str(e)[:140]))
             continue
-        if len(arr) != len(group):   # truncated/miscounted array: labels would misalign with docs
-            log("  ⚠ model returned {} delta(s) for {} source(s) — labelling by-source may be "
-                "misaligned; check results.".format(len(arr), len(group)))
         for delta, doc in zip(arr, group):
             _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
         res = _merge_list(cid, arr, verification_trusted=True)  # fetched and checked locally
@@ -429,11 +439,20 @@ def run_all_op(cid, k, source="api", deep=False):
 def add_file_op(cid, filename, b64, apply):
     """Add a single source from an uploaded document (PDF / docx / txt). We extract the real
     text, then build the extraction prompt (MANUAL) or run it (AUTO)."""
-    ext = os.path.splitext(filename or "")[1] or ".txt"
+    ext = os.path.splitext(filename or "")[1].lower() or ".txt"
+    if ext not in (".pdf", ".docx", ".txt", ".html", ".htm"):
+        raise ValueError("Upload a PDF, DOCX, TXT, or HTML file.")
+    try:
+        payload = base64.b64decode((b64 or "").split(",")[-1], validate=True)
+    except Exception:
+        raise ValueError("Uploaded file is not valid base64 data.")
+    if len(payload) > MAX_LOCAL_UPLOAD:
+        raise ValueError("Uploaded file is too large (max {} MB).".format(
+            MAX_LOCAL_UPLOAD // (1024 * 1024)))
     fd, tmp = tempfile.mkstemp(suffix=ext)
     try:
         with os.fdopen(fd, "wb") as f:
-            f.write(base64.b64decode((b64 or "").split(",")[-1]))
+            f.write(payload)
         doc = extract_text(tmp)
     finally:
         os.unlink(tmp)
@@ -697,6 +716,12 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")  # never serve a stale page/state
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; "
+                         "style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; "
+                         "object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
         self.end_headers()
         self.wfile.write(data)
 
@@ -706,7 +731,25 @@ class Handler(BaseHTTPRequestHandler):
         with open(path, "rb") as f:
             self._send(200, f.read(), ctype)
 
+    def _trusted_local_request(self):
+        local = {"localhost", "127.0.0.1", "::1"}
+        try:
+            host = urllib.parse.urlsplit("//" + (self.headers.get("Host") or "")).hostname
+        except ValueError:
+            return False
+        if host not in local:
+            return False
+        origin = self.headers.get("Origin")
+        if not origin:
+            return True
+        try:
+            return urllib.parse.urlsplit(origin).hostname in local
+        except ValueError:
+            return False
+
     def do_GET(self):
+        if not self._trusted_local_request():
+            return self._send(403, {"error": "local requests only"})
         if self.path in ("/", "/index.html"):
             return self._file(os.path.join(UI, "app.html"), "text/html; charset=utf-8")
         if self.path.startswith("/viewer"):
@@ -725,11 +768,24 @@ class Handler(BaseHTTPRequestHandler):
         self._send(404, {"error": "not found"})
 
     def do_POST(self):
-        n = int(self.headers.get("Content-Length") or 0)
+        if not self._trusted_local_request():
+            return self._send(403, {"error": "local requests only"})
+        if not (self.headers.get("Content-Type") or "").lower().startswith("application/json"):
+            return self._send(415, {"error": "Content-Type must be application/json"})
+        try:
+            n = int(self.headers.get("Content-Length") or 0)
+        except (TypeError, ValueError):
+            return self._send(400, {"error": "invalid Content-Length"})
+        if n < 0:
+            return self._send(400, {"error": "invalid Content-Length"})
+        if n > MAX_LOCAL_BODY:
+            return self._send(413, {"error": "request body too large"})
         try:
             body = json.loads(self.rfile.read(n) or b"{}")
         except Exception:
             return self._send(400, {"error": "invalid request body"})
+        if not isinstance(body, dict):
+            return self._send(400, {"error": "JSON body must be an object"})
         if self.path in ("/api/run-all", "/api/discover", "/api/extract"):
             log_reset()  # fresh progress log per user-initiated long operation
         try:
@@ -799,7 +855,17 @@ class Handler(BaseHTTPRequestHandler):
 def run(port=8765, open_browser=True):
     from app.env import load_dotenv
     load_dotenv()  # keys/config from .env
-    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    from ingest import extract as _extract, pipeline as _pipeline
+    llm.configure_from_env()
+    _extract.configure_from_env()
+    _pipeline.configure_from_env()
+    global MAX_LOCAL_BODY, MAX_LOCAL_UPLOAD
+    MAX_LOCAL_BODY = int(os.environ.get("EPISTEMIC_LOCAL_MAX_BODY_BYTES", str(18 * 1024 * 1024)))
+    MAX_LOCAL_UPLOAD = int(os.environ.get("EPISTEMIC_LOCAL_MAX_UPLOAD_BYTES", str(12 * 1024 * 1024)))
+    srv = BoundedThreadingHTTPServer(
+        ("127.0.0.1", port), Handler,
+        max_workers=int(os.environ.get("EPISTEMIC_LOCAL_MAX_REQUEST_THREADS", "16")),
+        socket_timeout=int(os.environ.get("EPISTEMIC_SOCKET_TIMEOUT", "30")))
     url = "http://localhost:{}/".format(port)
     print("Epistemic Coverage UI → {}   (Ctrl-C to stop)".format(url))
     if open_browser:

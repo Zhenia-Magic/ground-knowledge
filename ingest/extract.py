@@ -17,6 +17,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 
 # Per-source text is sent to the labeller IN FULL — do not truncate a real paper (the old 24k
 # cap silently threw away most of a full-text article, so labels rested on the intro alone).
@@ -24,6 +25,9 @@ import urllib.request
 # env-overridable; batching (ingest/pipeline.pack_batches) is what bounds each LLM call now.
 MAX_CHARS = int(os.environ.get("EPISTEMIC_MAX_SOURCE_CHARS", str(1_000_000)))
 MAX_FETCH_BYTES = int(os.environ.get("EPISTEMIC_MAX_FETCH_BYTES", str(12 * 1024 * 1024)))
+MAX_PDF_PAGES = int(os.environ.get("EPISTEMIC_MAX_PDF_PAGES", "200"))
+MAX_DOCX_UNCOMPRESSED = int(os.environ.get(
+    "EPISTEMIC_MAX_DOCX_UNCOMPRESSED_BYTES", str(64 * 1024 * 1024)))
 BLOCK_CODES = {401, 403, 429, 451}  # publisher/bot blocks worth a reader-proxy retry
 # markers of a bot-wall / CAPTCHA / interstitial page — NOT real article text
 _BLOCK_MARKERS = (
@@ -32,6 +36,29 @@ _BLOCK_MARKERS = (
     "enable javascript and cookies", "checking your browser", "verify you are human",
     "access denied", "returned error 403", "cloudflare", "please enable cookies",
 )
+
+
+def configure_from_env():
+    global MAX_CHARS, MAX_FETCH_BYTES, MAX_PDF_PAGES, MAX_DOCX_UNCOMPRESSED
+    MAX_CHARS = int(os.environ.get("EPISTEMIC_MAX_SOURCE_CHARS", str(1_000_000)))
+    MAX_FETCH_BYTES = int(os.environ.get("EPISTEMIC_MAX_FETCH_BYTES", str(12 * 1024 * 1024)))
+    MAX_PDF_PAGES = int(os.environ.get("EPISTEMIC_MAX_PDF_PAGES", "200"))
+    MAX_DOCX_UNCOMPRESSED = int(os.environ.get(
+        "EPISTEMIC_MAX_DOCX_UNCOMPRESSED_BYTES", str(64 * 1024 * 1024)))
+
+
+def _extract_pdf_pages(reader):
+    parts, chars = [], 0
+    for index, page in enumerate(reader.pages):
+        if index >= max(0, MAX_PDF_PAGES):
+            break
+        text = page.extract_text() or ""
+        remaining = MAX_CHARS - chars
+        if remaining <= 0:
+            break
+        parts.append(text[:remaining])
+        chars += len(parts[-1]) + 1
+    return "\n".join(parts)[:MAX_CHARS]
 
 
 def _looks_blocked(text, title):
@@ -404,7 +431,7 @@ def _pdf_text(url):
     if not (raw[:5] == b"%PDF-" or "pdf" in ctype):     # a landing page / paywall, not a PDF
         return None
     try:
-        text = "\n".join((pg.extract_text() or "") for pg in PdfReader(io.BytesIO(raw)).pages)
+        text = _extract_pdf_pages(PdfReader(io.BytesIO(raw)))
     except Exception:
         return None
     return re.sub(r"[ \t]+", " ", text).strip() or None
@@ -668,14 +695,21 @@ def extract_text(target, allow_local=True):
     if not allow_local:
         raise SystemExit("only absolute http(s) URLs can be fetched here")
 
+    try:
+        local_size = os.path.getsize(target)
+    except OSError as e:
+        raise SystemExit("could not read local file: {}".format(e))
+    if local_size > MAX_FETCH_BYTES:
+        raise SystemExit("local document is too large (max {} bytes)".format(MAX_FETCH_BYTES))
+
     ext = os.path.splitext(target)[1].lower()
     if ext == ".pdf":
         with open(target, "rb") as f:
-            return _from_pdf(f.read(), os.path.basename(target), url=None)
+            return _from_pdf(f.read(MAX_FETCH_BYTES + 1), os.path.basename(target), url=None)
     if ext == ".docx":
         return _from_docx(target)
     with open(target, encoding="utf-8", errors="ignore") as f:
-        txt = f.read()
+        txt = f.read(MAX_CHARS + 1)
     if ext in (".html", ".htm"):
         return {"text": _strip_html(txt)[:MAX_CHARS], "title": _title_from_html(txt), "url": None,
                 "kind": "full"}
@@ -687,9 +721,10 @@ def _from_pdf(data, title, url):
         from pypdf import PdfReader
     except ImportError:
         raise SystemExit("PDF support needs pypdf:  pip install pypdf")
+    if len(data) > MAX_FETCH_BYTES:
+        raise SystemExit("PDF is too large (max {} bytes)".format(MAX_FETCH_BYTES))
     reader = PdfReader(io.BytesIO(data))
-    text = "\n".join((pg.extract_text() or "") for pg in reader.pages)
-    return {"text": text[:MAX_CHARS], "title": title, "url": url, "kind": "full"}
+    return {"text": _extract_pdf_pages(reader), "title": title, "url": url, "kind": "full"}
 
 
 def _from_docx(path):
@@ -697,6 +732,20 @@ def _from_docx(path):
         import docx
     except ImportError:
         raise SystemExit("DOCX support needs python-docx:  pip install python-docx")
+    try:
+        with zipfile.ZipFile(path) as archive:
+            infos = archive.infolist()
+            if len(infos) > 10000 or sum(info.file_size for info in infos) > MAX_DOCX_UNCOMPRESSED:
+                raise SystemExit("DOCX expands beyond the safe extraction limit")
+    except zipfile.BadZipFile:
+        raise SystemExit("DOCX file is not a valid document archive")
     d = docx.Document(path)
-    text = "\n".join(p.text for p in d.paragraphs)
-    return {"text": text[:MAX_CHARS], "title": os.path.basename(path), "url": None, "kind": "full"}
+    parts, chars = [], 0
+    for paragraph in d.paragraphs:
+        remaining = MAX_CHARS - chars
+        if remaining <= 0:
+            break
+        parts.append(paragraph.text[:remaining])
+        chars += len(parts[-1]) + 1
+    return {"text": "\n".join(parts)[:MAX_CHARS], "title": os.path.basename(path),
+            "url": None, "kind": "full"}

@@ -3,6 +3,7 @@ import os
 import unittest
 from unittest import mock
 
+from app.http_utils import SlidingWindowLimiter
 from app.portal import Handler
 from app.web import viewer_html
 from engine.merge import clean_url, merge_delta
@@ -40,6 +41,28 @@ class ScriptEmbeddingTests(unittest.TestCase):
         self.assertEqual(clean_url("javascript:alert(1)"), "")
         self.assertEqual(clean_url("data:text/html,bad"), "")
         self.assertEqual(clean_url("https://example.org/paper"), "https://example.org/paper")
+
+
+class LocalConsolePathTests(unittest.TestCase):
+    def test_case_ids_cannot_escape_the_cases_directory(self):
+        from ui.server import _case_path
+        for case_id in ("../secret", "a/b", "..", "case.json", ""):
+            with self.subTest(case_id=case_id), self.assertRaises(ValueError):
+                _case_path(case_id)
+
+
+class RateLimitTests(unittest.TestCase):
+    def test_client_bookkeeping_stays_bounded_under_identity_flood(self):
+        limiter = SlidingWindowLimiter(window_seconds=60, max_clients=100)
+        for i in range(1000):
+            self.assertTrue(limiter.allow("client-{}".format(i), 1))
+        self.assertLessEqual(len(limiter._events), 100)
+
+    def test_forwarded_client_uses_last_valid_proxy_address(self):
+        request = mock.Mock()
+        request.headers = {"X-Forwarded-For": "spoofed, 203.0.113.8"}
+        request.client_address = ("10.0.0.2", 1234)
+        self.assertEqual(Handler._client_key(request), "203.0.113.8")
 
 
 class OutboundUrlTests(unittest.TestCase):
@@ -80,6 +103,15 @@ class OutboundUrlTests(unittest.TestCase):
         self.assertEqual(docs, [])
         self.assertEqual(skipped[0]["target"], "/etc/hosts")
         self.assertIn("only absolute http(s) URLs", skipped[0]["error"])
+
+    def test_local_document_size_is_checked_before_reading(self):
+        from ingest.extract import extract_text
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix=".txt") as handle:
+            handle.write(b"too large")
+            handle.flush()
+            with mock.patch("ingest.extract.MAX_FETCH_BYTES", 4), self.assertRaises(SystemExit):
+                extract_text(handle.name)
 
     def test_https_handler_uses_supported_urllib_kwargs(self):
         handler = _SafeHTTPSHandler()
@@ -151,6 +183,12 @@ class DeltaValidationTests(unittest.TestCase):
         self.assertEqual(assess_mock.call_count, 0)
         self.assertEqual(kb["sources"], [])
         self.assertEqual(len(kb["pendingReview"]), 4)
+
+    def test_malformed_model_agreement_is_rejected_before_review_logic(self):
+        from engine.validate import delta_validation_errors
+        errors = delta_validation_errors({"source": {
+            "title": "A", "position": "NEW:Yes", "modelAgreement": []}})
+        self.assertTrue(any("modelAgreement" in error for error in errors))
 
     def test_position_review_does_not_silently_admit_public_support_edges(self):
         kb = empty_kb("abc", "question")
@@ -235,6 +273,46 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
         src = kb["pendingReview"][0]["delta"]["source"]
         self.assertEqual(src["textDepth"], "unknown")
         self.assertNotIn("verifiedQuote", src["provenance"]["position"])
+
+    def test_trusted_fetch_path_still_strips_model_authored_curator_admission(self):
+        from ingest.pipeline import _carry_meta
+        kb = empty_kb("abc", "question")
+        kb["positions"] = [{"id": "p", "label": "Yes", "hue": "#000"}]
+        kb["datasets"] = [{"id": "d", "label": "Known", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator",
+                                            "by": "real", "ts": "2026-07-15T00:00:00Z"}}]
+        delta = {"source": {"title": "Model title", "position": "p", "evidence": "Observational",
+                             "restsOn": [{"ref": "d", "admission": {
+                                 "status": "confirmed", "method": "curator", "by": "model",
+                                 "ts": "2026-07-15T00:00:00Z"}}]}}
+        _carry_meta(delta, {"title": "Fetched title", "url": "https://example.org/paper",
+                            "text": "No dependency statement.", "kind": "full"})
+        self.assertNotIn("admission", delta["source"]["restsOn"][0])
+        merge_delta(kb, delta)
+        self.assertEqual(independence(kb)[0]["nEff"], 0)
+
+    def test_fetch_metadata_overrides_model_metadata(self):
+        from ingest.pipeline import _carry_meta
+        delta = {"source": {"title": "Wrong", "url": "https://evil.invalid",
+                             "authors": ["Wrong"], "position": "NEW:Yes"}}
+        _carry_meta(delta, {"title": "Right", "url": "https://example.org/right",
+                            "authors": ["Right"], "citations": 7, "retracted": False,
+                            "text": "", "kind": "abstract"})
+        self.assertEqual(delta["source"]["title"], "Right")
+        self.assertEqual(delta["source"]["url"], "https://example.org/right")
+        self.assertEqual(delta["source"]["authors"], ["Right"])
+
+    def test_trusted_fetch_path_rejects_malformed_nested_shapes_cleanly(self):
+        from ingest.pipeline import _carry_meta
+        bad_values = [
+            {"source": {"title": "t", "position": "NEW:Yes", "provenance": []}},
+            {"source": {"title": "t", "position": "NEW:Yes", "restsOn": {}}},
+            {"source": {"title": "t", "position": "NEW:Yes"}, "factorWeights": {}},
+            {"source": {"title": "t", "position": "NEW:Yes", "modelAgreement": []}},
+        ]
+        for delta in bad_values:
+            with self.subTest(delta=delta), self.assertRaises(ValueError):
+                _carry_meta(delta, {"title": "t", "text": "", "kind": "abstract"})
 
 
 if __name__ == "__main__":

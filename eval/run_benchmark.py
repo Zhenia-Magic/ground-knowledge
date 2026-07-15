@@ -10,10 +10,11 @@ Runs three checks the competition rubric asks for and prints a one-page report:
                          coverage per position (how much source volume is deduplicated).
   3. ADVERSARIAL-ROBUSTNESS — the robustness contract, executed: flood a position with ungrounded
                          echo and fabricated roots; copy a real quote onto a fake sibling edge;
-                         construct a citation ring; reuse a known alias; and attach every confirmed
-                         root from one camp to another through an unreviewed edge. Assert that confirmed
-                         coverage moves only for the one genuinely verified edge. Proposed roots
-                         stay visible but quarantined. This is executable, unlike prose.
+                         construct a citation ring; reuse a known alias; attach every confirmed root
+                         from one camp to another through an unreviewed edge; and forge a curator
+                         admission on the fetched-model path. Assert that confirmed coverage moves
+                         only for the one genuinely verified edge. Proposed roots stay visible but
+                         quarantined. This is executable, unlike prose.
 
 The point vs. a deep-research baseline (eval/baselines/) is not a better paragraph: it is a
 structured, recomputable artifact. The arithmetic is deterministic and immune to flooding/echo by
@@ -90,9 +91,9 @@ def _src(sid, pos, evidence, rests, depth="unknown"):
 def adversarial_invariance(kb):
     """Execute the attack contract against one case and return a structured result.
 
-    Covers volume, fabricated roots, quote-to-edge binding, circular corroboration, and a known
-    alias. The last two attacks exercise the ordinary merge/pending-ref and ingestion-verification
-    paths rather than calling resolver internals directly.
+    Covers volume, fabricated roots, quote-to-edge binding, circular corroboration, aliases,
+    support laundering, and forged curator trust. The attacks exercise ordinary merge,
+    pending-reference, and ingestion-verification paths rather than resolver internals directly.
     """
     ind = sorted(assess.independence(kb), key=lambda p: -p["nEff"])
     target = ind[0]["label"]
@@ -201,6 +202,22 @@ def adversarial_invariance(kb):
         cross_blocked = abs(after_cross - before_cross) <= 1e-6 and bool(
             cross_res.get("unadmitted_edges"))
 
+    # (i) A model on the real fetched-text path forges a curator admission object. The fetch layer
+    # must remove it before merge; being processed locally is not curator authentication.
+    after_forged_admission = before_cross
+    forged_admission_blocked = True
+    if other and target_roots:
+        kb_forged = copy.deepcopy(kb)
+        forged = _src("forged_curator_admission", other["label"], "Observational", [{
+            "ref": target_roots[0], "admission": {"status": "confirmed", "method": "curator",
+                                                     "by": "model", "ts": "2099-01-01T00:00:00Z"}
+        }])
+        _carry_meta(forged, {"kind": "full", "text": "No dependency statement."})
+        merge_delta(kb_forged, forged)
+        after_forged_admission = round({p["label"]: p for p in assess.independence(kb_forged)}
+                                       [other["label"]]["nEff"], 2)
+        forged_admission_blocked = abs(after_forged_admission - before_cross) <= 1e-6
+
     # Contract: 12 ungrounded echo collapse to the position's ONE pooled voice (+1.0 at most, not
     # +12); fabricated named datasets on the unverified path are visible as proposed roots but add
     # ZERO confirmed nEff until a fetched dependency quote verifies or a curator confirms them.
@@ -212,13 +229,14 @@ def adversarial_invariance(kb):
     generic_quarantined = abs(after_generic - before) <= 1e-6 and generic_ind["provisionalCount"] >= 1
     split_bounded = abs(after_split - (before + 1.0)) <= 1e-6 and bool(split_res["alias_suspects"])
     ok = (echo_ok and fab_quarantined and edge_bound and cycle_zero and alias_stable
-          and generic_quarantined and split_bounded and cross_blocked)
+          and generic_quarantined and split_bounded and cross_blocked and forged_admission_blocked)
     return {"target": target, "before": before, "echo": after_echo, "fabricated": after_fab,
             "edgeBound": after_edge, "edgeProvisional": proposed_after_edge,
             "cycle": after_cycle, "cycleFlagged": cycle_flagged, "knownAlias": after_alias,
             "genericLabel": after_generic, "unknownAliasSplit": after_split,
             "aliasSplitFlagged": bool(split_res["alias_suspects"]),
             "crossBefore": before_cross, "crossAfter": after_cross,
+            "forgedAdmission": after_forged_admission,
             "verdict": "PASS" if ok else "FAIL"}
 
 
@@ -433,10 +451,11 @@ def render_markdown(gold):
         "| generic fetched label (`Cohort`) | +0.0; generic prose cannot identify a root |",
         "| two unknown lexical aliases | at most one enters; collision is flagged |",
         "| confirmed roots attached to another camp through unreviewed edges | +0.0 in that camp |",
+        "| model forges curator admission on the fetched-text path | +0.0; admission is stripped |",
         "",
     ]
     verdicts = [adversarial_invariance(_load(path))["verdict"] for path in CASES.values()]
-    lines.append("**All eight attacks {} on all three cases.**".format(
+    lines.append("**All nine attacks {} on all three cases.**".format(
         "pass" if all(v == "PASS" for v in verdicts) else "do not pass"))
 
     lines += [
@@ -533,7 +552,9 @@ def main(argv=None):
               % adv["unknownAliasSplit"])
         print("     cross-position confirmed-root reuse %.2f -> %.2f   (unreviewed support edges add zero)"
               % (adv["crossBefore"], adv["crossAfter"]))
-        print("     %s  (eight volume, identity, edge-binding, cycle, alias, and laundering contracts)"
+        print("     forged curator admission         -> %.2f   (model trust field stripped)"
+              % adv["forgedAdmission"])
+        print("     %s  (nine volume, identity, edge-binding, cycle, alias, and laundering contracts)"
               % adv["verdict"])
 
     print_comparative(gold)
@@ -547,8 +568,8 @@ def main(argv=None):
     rendered = render_markdown(gold)
     results_path = os.path.join(ROOT, "eval", "RESULTS.md")
     if args.write_results:
-        with open(results_path, "w", encoding="utf-8") as f:
-            f.write(rendered)
+        from engine.io import atomic_write_text
+        atomic_write_text(results_path, rendered)
         print("WROTE eval/RESULTS.md")
     if args.check_results:
         try:

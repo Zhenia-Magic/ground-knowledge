@@ -263,6 +263,13 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   Public paste-back sources are queued; reviewed/local updates use the same merge. Human review is
   deliberately concentrated at confirmation, alias resolution, and ensemble disagreements; it is a
   real integrity bottleneck, not hidden.
+- **Bounds resource use:** portal bodies, fetch batches, extracted PDFs, request threads, expensive
+  fetches, and per-IP mutation rates all have configurable ceilings. Question cards are read from
+  indexed summary columns rather than reparsing every KB. This removes obvious denial-of-service and
+  list-page scaling failures, but is operational hardening rather than a large-corpus benchmark.
+- **Does not lose concurrent work:** the hosted store keeps a server revision separate from the KB's
+  semantic version. Every write advances it, stale writers receive a conflict, and each KB update and
+  its contribution record commit in one database transaction.
 - **Compounds:** the artifact is a JSON file another team forks and keeps growing; nothing is
   locked in the UI. The `Changes` tab and append-only log make the evolution legible.
 - **Shareable two ways:** `viewer/index.html` is self-contained (double-click, no server) for a
@@ -290,6 +297,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 - *Confirmed-root support laundering.* Root identity and support-edge admission are separate. A new
   source cannot attach all of another camp's already confirmed roots without edge-specific review;
   the eighth benchmark attack executes this case.
+- *Forged curator admission.* A model cannot make its proposed edge trusted by emitting an
+  `admission` object, even on the locally fetched path. Delta validation rejects it generally, the
+  trusted fetch boundary strips it before merge, and the ninth benchmark attack executes the path.
 - *Alias-splitting.* Exact and learned aliases resolve deterministically. Automatically verified
   lexical lookalikes admit at most one root and expose the collision; curator confirmation blocks
   lexical/acronym duplicates unless an override reason is recorded. Optional embeddings surface

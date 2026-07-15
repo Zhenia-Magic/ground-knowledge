@@ -27,6 +27,7 @@ from engine.merge import merge_delta
 from engine.render import json_for_script
 from engine.schema import empty_kb
 from engine.migrate import load_migrated
+from engine.io import atomic_write_json, atomic_write_text
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -37,9 +38,7 @@ def read_json(p):
 
 
 def write_json(p, o):
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(o, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    atomic_write_json(p, o)
 
 
 def pct(x):
@@ -266,6 +265,8 @@ def _apply_delta(kb_path, delta, verification_trusted=False):
     if not verification_trusted:
         from engine.verify import strip_untrusted_verification
         delta = strip_untrusted_verification(delta)
+    from engine.validate import require_valid_delta
+    require_valid_delta(delta)
     if review.needs_review(delta):
         delta = _review_prompt(kb_path, delta)
         if delta is None:
@@ -462,8 +463,7 @@ def _build_viewer(kb_paths, out=None):
         tpl = f.read()
     html = tpl.replace("/*__DATA__*/null", json_for_script(bundle))
     out = out or os.path.join(ROOT, "viewer", "index.html")
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(html)
+    atomic_write_text(out, html)
     print("Built {} ({} case{}) — open it in a browser.".format(
         out, len(order), "" if len(order) == 1 else "s"))
 
@@ -551,8 +551,7 @@ def _write_prompt_files(prompts, stem, tail=True):
     for i, p in enumerate(prompts, 1):
         name = stem + ".txt" if len(prompts) == 1 else "{}-{}.txt".format(stem, i)
         path = os.path.join(outdir, name)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(p)
+        atomic_write_text(path, p)
         paths.append(os.path.relpath(path, ROOT))
     print("Wrote {} file(s):".format(len(paths)))
     for p in paths:
@@ -737,8 +736,7 @@ def cmd_export(args):
     kb = read_json(args.kb)
     text, _mime, ext = citations.export(kb, args.format)
     if args.out:
-        with open(args.out, "w", encoding="utf-8") as f:
-            f.write(text)
+        atomic_write_text(args.out, text)
         print("Wrote {} source(s) → {} ({})".format(len(kb.get("sources", [])), args.out, ext))
     else:
         print(text)

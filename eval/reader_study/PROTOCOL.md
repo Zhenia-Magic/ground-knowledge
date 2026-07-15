@@ -6,10 +6,12 @@ A self-serve, auto-scored version runs in the portal so you can **just share one
 
 - **Participants open** `https://groundknowledge.org/study` — anonymous (a random token, never a name).
 - **Assignment:** each participant is given **ONE ~10-minute case** and one condition (a
-  between-subjects design), assigned automatically (`eval/reader_study/study.assign`, driven by the
-  submission count). The 3 cases × 2 conditions form 6 cells that rotate evenly, so cases and
-  conditions stay balanced. This keeps the ask short and spreads recruitment; the rigorous
-  WITHIN-participant crossover (`randomize.assignments`) is the manual follow-up below.
+  between-subjects design), assigned automatically by the server. Allocation is stored under an
+  opaque, single-use assignment token inside a locked database transaction; the response must match
+  the assigned case set, and any client-supplied condition is ignored. The 3 cases × 2 conditions
+  form 6 cells that rotate evenly, so cases and conditions stay balanced. This keeps the ask short
+  and spreads recruitment; the rigorous WITHIN-participant crossover (`randomize.assignments`) is
+  the manual follow-up below.
 - **Blinded:** participants see only their materials (the deep-research report; and, in the `DR+GK`
   condition, the Ground Knowledge evidence map) — never the condition label.
 - **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): a flood trap and
@@ -19,10 +21,12 @@ A self-serve, auto-scored version runs in the portal so you can **just share one
   reasoning, not their ability to read a number off the map — deliberately NOT "how many independent
   bases are there?", which would just ask the reader to recite the tool's output. Free-text answers
   are captured for optional later human scoring, never auto-scored.
-- **Results:** `https://groundknowledge.org/study/results` shows DR vs DR+GK mean objective score and
-  per-item accuracy. This is a **between-observations** read — an honest fast signal; the paired,
-  human-scored analysis below is the rigorous follow-up. Report it as **exploratory** below the 24
-  minimum.
+- **Results:** the administrator-only results endpoint shows DR vs DR+GK mean objective score and
+  per-item accuracy. It requires the same admin token as moderation and is not a public response
+  dump. This is a **between-observations** read — an honest fast signal; the paired, human-scored
+  analysis below is the rigorous follow-up. Report it as **exploratory** below the 24 minimum.
+
+This repository currently contains protocol and software only. No reader-study result is claimed.
 
 The manual, fully human-scored protocol follows.
 
@@ -104,4 +108,3 @@ For each case:
 - Completed `responses.csv` using `responses-template.csv`.
 - Frozen case materials and their SHA-256 hashes.
 - Two blinded scorer files, reconciliation notes, analysis notebook/script, and all exclusions.
-

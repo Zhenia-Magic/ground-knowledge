@@ -15,7 +15,8 @@ def seed_from_cases(pattern="cases/*.kb.json"):
     existing = {q["question"] for q in store.list_questions(limit=1000)}
     added = []
     for path in sorted(glob.glob(pattern)):
-        kb, _ = migrate_kb(json.load(open(path)))
+        with open(path, encoding="utf-8") as handle:
+            kb, _ = migrate_kb(json.load(handle))
         errors = validation_errors(kb)
         if errors:
             raise ValueError("{} is not a valid KB: {}".format(path, "; ".join(errors)))
@@ -23,7 +24,9 @@ def seed_from_cases(pattern="cases/*.kb.json"):
         if question in existing:
             continue
         q = store.create_question(question)               # makes an empty seeded KB...
-        store.save_kb(q["id"], kb, expected_version=0)     # ...then overwrite with the real KB
+        store.save_kb(q["id"], kb, expected_version=0,     # ...then overwrite with the real KB
+                      audit={"contributor": "system", "action": "seed-kb",
+                             "summary": "loaded bundled case " + os.path.basename(path)})
         existing.add(question)                             # avoid double-import within one run
         added.append(question)
     return added

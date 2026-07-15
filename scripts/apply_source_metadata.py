@@ -12,6 +12,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from engine.merge import now_iso
+from engine.io import atomic_write_json
 
 
 AUDITOR = "source-audit-2026-07"
@@ -236,9 +237,7 @@ def main(argv=None):
                 "summary": "corrected/enriched metadata for {} source(s)".format(len(changes)),
                 "changes": changes, "ts": kb["meta"]["updated"],
             })
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(kb, f, indent=2, ensure_ascii=False)
-                f.write("\n")
+            atomic_write_json(path, kb)
         print("{}: {} source metadata record(s) changed".format(path, len(changes)))
 
 
