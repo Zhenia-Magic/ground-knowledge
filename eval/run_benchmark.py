@@ -6,12 +6,13 @@ Runs three checks the competition rubric asks for and prints a one-page report:
   1. STRUCTURE-RECALL  — against a small gold fixture per case (eval/gold.json): did the tool surface
                          the expected positions, the key evidentiary roots, and the known cruxes?
                          Reports recall over a deliberately non-exhaustive set of key items.
-  2. COLLAPSE          — the headline claim, quantified: raw source count vs distinct independent
-                         bases per position (how much apparent support is correlated).
+  2. COLLAPSE          — the headline claim, quantified: raw source count vs confirmed-root
+                         coverage per position (how much source volume is deduplicated).
   3. ADVERSARIAL-ROBUSTNESS — the robustness contract, executed: flood a position with ungrounded
                          echo and fabricated roots; copy a real quote onto a fake sibling edge;
-                         construct a citation ring; and reuse a known alias. Assert that confirmed
-                         independence moves only for the one genuinely verified edge. Proposed roots
+                         construct a citation ring; reuse a known alias; and attach every confirmed
+                         root from one camp to another through an unreviewed edge. Assert that confirmed
+                         coverage moves only for the one genuinely verified edge. Proposed roots
                          stay visible but quarantined. This is executable, unlike prose.
 
 The point vs. a deep-research baseline (eval/baselines/) is not a better paragraph: it is a
@@ -126,8 +127,9 @@ def adversarial_invariance(kb):
     after_edge = round(edge_ind["nEff"], 2)
     proposed_after_edge = edge_ind["provisionalCount"]
 
-    # (d) twelve commentaries arranged in one ungrounded citation ring. The SCC is visible and
-    # flagged, but contributes ZERO evidence rather than laundering the loop into one basis.
+    # (d) twelve commentaries arranged in one ungrounded citation ring. Unreviewed source→source
+    # edges are blocked before propagation; the claimed links remain visible in the edge audit and
+    # contribute ZERO. An explicitly admitted ring would instead reach the SCC detector.
     kb_cycle = copy.deepcopy(kb)
     for i in range(12):
         merge_delta(kb_cycle, _src("cycle_%02d" % i, target, "Narrative/Commentary",
@@ -135,7 +137,9 @@ def adversarial_invariance(kb):
     resolve_pending_refs(kb_cycle)
     cycle_assessment = assess.assess(kb_cycle)
     after_cycle = round({p["label"]: p for p in cycle_assessment["independence"]}[target]["nEff"], 2)
-    cycle_flagged = any(p.get("circular") for p in cycle_assessment["independence"])
+    cycle_res = roots.resolve(kb_cycle)
+    cycle_flagged = len([e for e in cycle_res.get("unadmitted_edges", [])
+                         if e.get("kind") == "source"]) >= 12
 
     # (e) a known alias of a root already supporting the target must resolve back to that root and
     # leave nEff unchanged. Novel semantic paraphrases remain a curator-review problem, reported in
@@ -179,10 +183,28 @@ def adversarial_invariance(kb):
     split_res = roots.resolve(kb_split)
     after_split = round(split_ind["nEff"], 2)
 
+    # (h) SUPPORT LAUNDERING: attach every confirmed target-camp dataset to a different position
+    # through one unreviewed source. Root identity is already confirmed, so a root-only gate fails
+    # this attack; edge-specific admission must keep the other camp unchanged.
+    other = next((p for p in ind if p["label"] != target), None)
+    before_cross = after_cross = 0.0
+    cross_blocked = True
+    if other:
+        before_cross = round(other["nEff"], 2)
+        target_roots = [b["key"][3:] for b in target_bases if b["key"].startswith("ds:")]
+        kb_cross = copy.deepcopy(kb)
+        merge_delta(kb_cross, _src("cross_position_launder", other["label"], "Observational",
+                                   target_roots))
+        cross_res = roots.resolve(kb_cross)
+        after_cross = round({p["label"]: p for p in assess.independence(kb_cross)}
+                            [other["label"]]["nEff"], 2)
+        cross_blocked = abs(after_cross - before_cross) <= 1e-6 and bool(
+            cross_res.get("unadmitted_edges"))
+
     # Contract: 12 ungrounded echo collapse to the position's ONE pooled voice (+1.0 at most, not
     # +12); fabricated named datasets on the unverified path are visible as proposed roots but add
     # ZERO confirmed nEff until a fetched dependency quote verifies or a curator confirms them.
-    echo_ok = after_echo <= before + 1.0 + 1e-6
+    echo_ok = abs(after_echo - before) <= 1e-6
     fab_quarantined = abs(after_fab - before) <= 1e-6
     edge_bound = abs(after_edge - (before + 1.0)) <= 1e-6 and proposed_after_edge >= 1
     cycle_zero = abs(after_cycle - before) <= 1e-6 and cycle_flagged
@@ -190,12 +212,13 @@ def adversarial_invariance(kb):
     generic_quarantined = abs(after_generic - before) <= 1e-6 and generic_ind["provisionalCount"] >= 1
     split_bounded = abs(after_split - (before + 1.0)) <= 1e-6 and bool(split_res["alias_suspects"])
     ok = (echo_ok and fab_quarantined and edge_bound and cycle_zero and alias_stable
-          and generic_quarantined and split_bounded)
+          and generic_quarantined and split_bounded and cross_blocked)
     return {"target": target, "before": before, "echo": after_echo, "fabricated": after_fab,
             "edgeBound": after_edge, "edgeProvisional": proposed_after_edge,
             "cycle": after_cycle, "cycleFlagged": cycle_flagged, "knownAlias": after_alias,
             "genericLabel": after_generic, "unknownAliasSplit": after_split,
             "aliasSplitFlagged": bool(split_res["alias_suspects"]),
+            "crossBefore": before_cross, "crossAfter": after_cross,
             "verdict": "PASS" if ok else "FAIL"}
 
 
@@ -258,7 +281,8 @@ _COMPARE_SYNONYMS = {
                    "cosmic-ray safety analogy": ["cosmic ray", "cosmic-ray"],
                    "safety argument itself": ["safety argument", "argument could be wrong", "flawed argument"]},
     "eggs": {"Increases risk": ["increase", "raises risk", "higher risk", "harmful"],
-             "No association": ["no association", "no link", "no significant", "null result"],
+             "No increased risk": ["no association", "no link", "no significant", "null result",
+                                   "no increased risk", "possibly lower risk"],
              "Context-dependent": ["context", "depends", "population-dependent", "it depends"],
              "Nurses' Health Study": ["nurses", "nhs"],
              "industry funding": ["industry", "egg board", "funding"],
@@ -331,7 +355,7 @@ def print_comparative(gold):
     print("COMPARATIVE STRUCTURE RECALL  (same gold; GK structured output vs baseline prose)")
     print("CAVEAT: this is a keyword-recall PROXY (paraphrase synonyms included). A strong deep-research")
     print("report surfaces the same positions/roots/cruxes — near parity is the expected, honest result.")
-    print("GK's differentiator is NOT recall; it is the recomputable collapse (raw->independent bases),")
+    print("GK's differentiator is NOT recall; it is the recomputable collapse (raw->confirmed roots),")
     print("the EXECUTED flooding/fabrication contract, and the versioned diff. Read losses as the signal.")
     print("=" * 78)
     for name, data in comparative_recall(gold).items():
@@ -355,10 +379,110 @@ def print_comparative(gold):
                     print("       · GK surfaces %s that %s misses" % (sorted(gk[c] - hits[c]), sysname))
 
 
+def render_markdown(gold):
+    """Canonical judge-facing benchmark summary. Generated from the same executable checks."""
+    case_names = {"covid": "COVID", "blackholes": "Black holes", "eggs": "Eggs"}
+    lines = [
+        "# Benchmark results — Ground Knowledge vs two deep-research baselines",
+        "",
+        "> Generated by `python eval/run_benchmark.py --write-results`. CI reruns the benchmark and",
+        "> fails if this file is stale.",
+        "",
+        "This is a **developer-authored diagnostic**, not a held-out evaluation or evidence that readers",
+        "make better decisions. The small gold is deliberately non-exhaustive; comparative scoring is a",
+        "transparent keyword-recall proxy with declared synonyms and reports recall rather than precision.",
+        "Hashes establish capture integrity, not research quality.",
+        "",
+        "## 1. Structure recall",
+        "",
+        "| Case | positions | roots | cruxes |",
+        "|---|---:|---:|---:|",
+    ]
+    for name, path in CASES.items():
+        sr = structure_recall(name, _load(path), gold[name])
+        cells = []
+        for key in ("positions", "keyRoots", "cruxes"):
+            value = sr.get(key)
+            cells.append("{}/{}".format(*value) if value else "—")
+        lines.append("| {} | {} | {} | {} |".format(case_names[name], *cells))
+
+    lines += [
+        "",
+        "## 2. Collapse / confirmed-root coverage",
+        "",
+        "`nEff` is the sum of distinct admitted root credits. It is a **coverage and de-duplication",
+        "diagnostic, not an evidence-quality, effect-size, confidence, or truth score**.",
+        "",
+    ]
+    for name, path in CASES.items():
+        cells = ["{} {} → **{:.1f}**".format(label, raw, value)
+                 for label, raw, value in collapse(_load(path))]
+        lines.append("- **{}:** {}.".format(case_names[name], "; ".join(cells)))
+
+    lines += [
+        "",
+        "## 3. Adversarial contract",
+        "",
+        "| Attack | Required result |",
+        "|---|---|",
+        "| +12 ungrounded echo sources | +0.0 coverage; unsupported pool stays visible at zero |",
+        "| +12 fabricated named roots | +0.0; proposed roots remain visible |",
+        "| one real dependency quote copied to a sibling | only the specifically named edge enters |",
+        "| 12-source unreviewed citation ring | +0.0; source links are blocked pending admission |",
+        "| known root alias reused | +0.0; resolves to the existing root |",
+        "| generic fetched label (`Cohort`) | +0.0; generic prose cannot identify a root |",
+        "| two unknown lexical aliases | at most one enters; collision is flagged |",
+        "| confirmed roots attached to another camp through unreviewed edges | +0.0 in that camp |",
+        "",
+    ]
+    verdicts = [adversarial_invariance(_load(path))["verdict"] for path in CASES.values()]
+    lines.append("**All eight attacks {} on all three cases.**".format(
+        "pass" if all(v == "PASS" for v in verdicts) else "do not pass"))
+
+    lines += [
+        "",
+        "## 4. Comparative recall",
+        "",
+        "| Case/system | positions | roots | cruxes |",
+        "|---|---:|---:|---:|",
+    ]
+    cats = ("positions", "keyRoots", "cruxes")
+    for name, data in comparative_recall(gold).items():
+        for system, hits in data["systems"].items():
+            if hits is None:
+                cells = ["—", "—", "—"]
+            else:
+                cells = ["{}/{}".format(len(hits[c]), len(data["gold"].get(c, []))) for c in cats]
+            lines.append("| {} — {} | {} | {} | {} |".format(
+                case_names[name], system, *cells))
+
+    lines += [
+        "",
+        "Near parity is the honest result: good deep-research reports already find the main positions,",
+        "evidence layers, and cruxes. Ground Knowledge's added output is a structured, portable artifact",
+        "whose root coverage, trust decisions, adversarial properties, and update diff can be rerun.",
+        "",
+        "## 5. What remains unproven",
+        "",
+        "1. A wrong curator can still confirm a bad root or support edge; actor/time/note make the decision auditable, not correct.",
+        "2. An omitted citation/support edge remains invisible without an external citation-graph audit.",
+        "3. A genuinely novel semantic alias can evade automatic identity matching until review.",
+        "4. The 0.5 review-only and non-human credits are declared heuristics, not empirically calibrated weights.",
+        "5. Prompt context is bounded with deterministic lexical retrieval, but no large-corpus scale study is claimed.",
+        "6. No blinded reader study shows better calibration or decision quality than prose. The repository includes a future protocol, but this submission makes no uplift claim from it.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Run Ground Knowledge's reproducible evaluation")
     ap.add_argument("--require-live-baseline", action="store_true",
                     help="fail unless all three cases have independently captured live baselines")
+    ap.add_argument("--write-results", action="store_true",
+                    help="regenerate eval/RESULTS.md from the executable checks")
+    ap.add_argument("--check-results", action="store_true",
+                    help="fail if eval/RESULTS.md differs from generated benchmark evidence")
     args = ap.parse_args(argv)
     baseline_manifests, baseline_issues = baseline_status()
     if args.require_live_baseline and baseline_issues:
@@ -386,7 +510,7 @@ def main(argv=None):
         print("  crux types: %d headline crux (disagreement/shared pivot) · %d one-sided load-bearing"
               " · %d left-unanswered  (of %d factors)" % (n_crux, n_one, n_miss, len(cx)))
 
-        print("  collapse (raw sources -> distinct independent bases):")
+        print("  collapse (raw sources -> confirmed-root coverage; not a quality score):")
         for label, raw, neff in collapse(kb):
             print("     %-46s %2d -> %s" % (label[:46], raw, neff))
 
@@ -394,12 +518,12 @@ def main(argv=None):
         all_ok = all_ok and adv["verdict"] == "PASS"
         print("  adversarial robustness on '%s' (confirmed nEff %.2f):" %
               (adv["target"][:36], adv["before"]))
-        print("     +12 ungrounded echo             -> %.2f   (12 sources collapse to <=1 pooled voice)" % adv["echo"])
+        print("     +12 ungrounded echo             -> %.2f   (unsupported pool is visible but zero weight)" % adv["echo"])
         print("     +12 fabricated unverified roots -> %.2f   (proposed+visible, but quarantined; naive count %.2f)"
               % (adv["fabricated"], adv["before"] + 12))
         print("     +1 verified edge + copied sibling -> %.2f   (only named edge +1; sibling stays proposed)"
               % adv["edgeBound"])
-        print("     +12-source circular citation ring -> %.2f   (flagged; zero independent grounding)"
+        print("     +12-source circular citation ring -> %.2f   (unadmitted links flagged; zero grounding)"
               % adv["cycle"])
         print("     +1 source using a known root alias -> %.2f   (resolves to existing root)"
               % adv["knownAlias"])
@@ -407,7 +531,9 @@ def main(argv=None):
               % adv["genericLabel"])
         print("     +2 unknown lexical aliases        -> %.2f   (at most one admitted; collision flagged)"
               % adv["unknownAliasSplit"])
-        print("     %s  (seven volume, identity, edge-binding, cycle, and alias contracts)"
+        print("     cross-position confirmed-root reuse %.2f -> %.2f   (unreviewed support edges add zero)"
+              % (adv["crossBefore"], adv["crossAfter"]))
+        print("     %s  (eight volume, identity, edge-binding, cycle, alias, and laundering contracts)"
               % adv["verdict"])
 
     print_comparative(gold)
@@ -418,6 +544,21 @@ def main(argv=None):
           "INCOMPLETE: " + "; ".join(baseline_issues))
     print("OVERALL adversarial robustness:", "PASS" if all_ok else "FAIL")
     print("=" * 78)
+    rendered = render_markdown(gold)
+    results_path = os.path.join(ROOT, "eval", "RESULTS.md")
+    if args.write_results:
+        with open(results_path, "w", encoding="utf-8") as f:
+            f.write(rendered)
+        print("WROTE eval/RESULTS.md")
+    if args.check_results:
+        try:
+            with open(results_path, encoding="utf-8") as f:
+                current = f.read()
+        except FileNotFoundError:
+            current = ""
+        if current != rendered:
+            print("STALE eval/RESULTS.md — run: python eval/run_benchmark.py --write-results")
+            return 3
     return 0 if all_ok else 1
 
 

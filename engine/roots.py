@@ -1,4 +1,4 @@
-"""Root-basis resolution — the engine behind the independence metric (see MECHANISM.md).
+"""Root-basis resolution — the engine behind confirmed-root coverage (see MECHANISM.md).
 
 Resolves every source to the primary EVIDENTIARY ROOTS it ultimately depends on, by following
 `restsOn` edges (to datasets AND to other sources), collapsing strongly-connected citation cycles
@@ -7,10 +7,9 @@ sources. Pure functions of the KB; deterministic; no side effects.
 
 Root keys produced:
     ds:<id>           a real dataset / cohort / experiment
-    primpool:<posId>  the single 'unnamed first-hand voice' for a position — every ungrounded
-                      PRIMARY source that names NO evidence base collapses here (a distinct root
-                      needs a specific name AND admission, not a claimed primary tier)
-    secpool:<posId>   the single 'ungrounded secondary' voice for a position (all echo collapses here)
+    primpool:<posId>  visible marker for ungrounded first-hand claims. It contributes zero
+                      confirmed root coverage: assertion volume is not evidence grounding.
+    secpool:<posId>   visible marker for ungrounded secondary echo. It also contributes zero.
     cycle:<sourceId>  a circular-corroboration loop with no primary grounding (flagged)
 
 Design note (why ungrounded primaries pool): an earlier version gave each ungrounded primary its
@@ -18,7 +17,7 @@ OWN root (prim:<sourceId>, 'benefit of the doubt'). That is the flooding hole �
 careless labeller) marks ten rehashes 'Observational' with an empty restsOn and mints ten roots,
 bypassing the echo collapse that only fired for the secondary tier. Pooling makes ungrounded
 primaries collapse symmetrically with ungrounded secondaries: a source that claims original data but
-names none is epistemically indistinguishable from an assertion and is worth one pooled voice. A
+names none is epistemically indistinguishable from an assertion and is shown as one pooled marker. A
 REAL primary study can keep full, distinct credit by naming its own trial/cohort/sample in restsOn
 and passing root admission (the labelling prompt requires the per-edge evidence). prim:<sourceId> keys from older KBs still resolve for
 back-compat but are no longer produced.
@@ -55,7 +54,7 @@ _TIER = {_norm(k): v for k, v in {
     "mechanistic": "primary", "theoretical analysis": "primary",
     "theoretical critique": "primary", "modelling": "primary", "simulation": "primary",
     # A meta-analysis / systematic review is a SYNTHESIS of others' studies, not new primary data.
-    # It only counts as independent if it TAGS the trials it pools (then it resolves through them);
+    # It earns root coverage only if it TAGS the trials it pools (then it resolves through them);
     # an untagged one is echo and collapses into the position's one secondary voice (MECHANISM.md §3).
     "meta-analysis": "secondary", "systematic review": "secondary", "scoping review": "secondary",
     "umbrella review": "secondary",
@@ -111,6 +110,26 @@ def _dataset_confirmation(d):
     if d.get("confirmed"):
         return {"method": "curator"}
     return None
+
+
+def _edge_admission_record(value):
+    """Return a valid human/trusted-migration support-edge admission, else ``None``.
+
+    Dataset confirmation answers "is this root a real identified base?". This separate record
+    answers "did this source actually rest on that base/citation?". Keeping the two decisions
+    separate closes the support-laundering hole where a newly added source could attach any already
+    confirmed root to any position. ``legacy-migration`` is deliberately explicit: it records the
+    one-time adoption of the repository's pre-edge-admission curated relationships, not quote proof.
+    """
+    if not isinstance(value, dict) or value.get("status") != "confirmed":
+        return None
+    method = value.get("method")
+    actor = value.get("by")
+    ts = value.get("ts") or value.get("timestamp")
+    if method not in {"curator", "legacy-migration"} or not actor or not ts:
+        return None
+    return {k: value[k] for k in ("status", "method", "by", "ts", "timestamp", "note")
+            if value.get(k)}
 
 
 _GENERIC_IDENTITY = {
@@ -234,7 +253,7 @@ def _is_nonhuman(source):
 
 
 def _edges(source):
-    """Split a source's restsOn into (dataset ids, source ids, edge_provenance).
+    """Split a source's restsOn into (dataset ids, source ids, provenance, admission).
 
     A restsOn entry is EITHER a bare string ref, OR an edge object carrying its own dependency
     quote: {"ref": "<id>", "provenance": {"quote": "...", "verifiedQuote": "exact",
@@ -246,14 +265,16 @@ def _edges(source):
 
     edge_provenance maps the resolved ref key (dataset id, or 'src:<id>') to that ONE edge's
     provenance dict — so a verified quote confirms only the edge it actually annotates, never a
-    sibling edge on the same source and never a root reached only by inheritance."""
-    ds, src, edge_prov = [], [], {}
+    sibling edge on the same source and never a root reached only by inheritance. edge_admission is
+    the parallel map of explicit curator/trusted-migration decisions for support edges."""
+    ds, src, edge_prov, edge_admission = [], [], {}, {}
     for e in source.get("restsOn") or []:
         if isinstance(e, dict):
             ref = str(e.get("ref") or "").strip()
             prov = e.get("provenance") if isinstance(e.get("provenance"), dict) else None
+            admission = _edge_admission_record(e.get("admission"))
         else:
-            ref, prov = str(e).strip(), None
+            ref, prov, admission = str(e).strip(), None, None
         if not ref:
             continue
         if ref.lower().startswith("src:"):
@@ -264,7 +285,9 @@ def _edges(source):
             ds.append(ref)
         if prov:
             edge_prov[key] = prov
-    return ds, src, edge_prov
+        if admission:
+            edge_admission[key] = admission
+    return ds, src, edge_prov, edge_admission
 
 
 def _tarjan(adj):
@@ -322,7 +345,69 @@ def resolve(kb):
       kind         : {root_key: 'dataset'|'primary'|'secondary'|'cycle'}
     """
     sources = {s["id"]: s for s in kb["sources"]}
-    adj = {sid: [t for t in _edges(s)[1] if t in sources] for sid, s in sources.items()}
+
+    # Resolve ROOT identity trust and SUPPORT-EDGE trust separately. A globally confirmed dataset
+    # cannot be counted under a new source merely because the source names it: that particular edge
+    # must have a verified dependency sentence, a curator admission, or an explicit legacy-migration
+    # record. Public input has these fields stripped and is queued for review (app/portal.py).
+    _DEPTH_OK = {"full", "abstract", "partial"}
+    confirmed_by = {}
+    automatic = set()
+    dataset_records = {}
+    for d in kb.get("datasets", []):
+        rec = _dataset_confirmation(d)
+        if rec:
+            rk = "ds:" + d["id"]
+            confirmed_by[rk] = rec
+            dataset_records[d["id"]] = d.get("confirmation") or {}
+
+    admitted_ds, admitted_src, unadmitted_edges, unadmitted_source_roots = {}, {}, [], {}
+    unadmitted_primary_roots = set()
+    for sid, s in sources.items():
+        d_ids, src_ids, edge_prov, edge_admission = _edges(s)
+        direct = set(d_ids)
+        legacy = (s.get("provenance") or {}).get("restsOn")
+        legacy_single = s.get("textDepth") in _DEPTH_OK and len(direct) == 1 \
+            and isinstance(legacy, dict) and is_verified_exact(legacy)
+        ds_ok, src_ok = set(), set()
+        for did in d_ids:
+            rk = "ds:" + did
+            prov = edge_prov.get(did)
+            explicit = edge_admission.get(did)
+            drec = dataset_records.get(did) or {}
+            confirmation_sources = set(drec.get("sources") or [])
+            if drec.get("source"):
+                confirmation_sources.add(drec["source"])
+            verified = s.get("textDepth") in _DEPTH_OK and isinstance(prov, dict) \
+                and is_verified_exact(prov) and _quote_identifies_dataset(kb, did, prov.get("quote"))
+            if explicit or sid in confirmation_sources or verified or legacy_single:
+                ds_ok.add(did)
+                if verified or legacy_single:
+                    if rk not in confirmed_by:
+                        confirmed_by[rk] = {"method": "verified-edge" if verified else
+                                            "verified-edge-legacy-single", "source": sid}
+                        automatic.add(rk)
+            else:
+                unadmitted_edges.append({"source": sid, "ref": did, "kind": "dataset",
+                                         "reason": "support edge has no verified quote or curator admission"})
+        for target in src_ids:
+            key = "src:" + target
+            # Citation text can mention an author, title, identifier, or shorthand. Literal presence
+            # alone does not prove identity, so source→source edges require explicit human/migration
+            # admission. They remain stored and reviewable when not admitted.
+            if edge_admission.get(key):
+                src_ok.add(target)
+            else:
+                unadmitted_edges.append({"source": sid, "ref": key, "kind": "source",
+                                         "reason": "citation edge has no curator admission"})
+        admitted_ds[sid], admitted_src[sid] = ds_ok, src_ok
+        unadmitted_source_roots[sid] = {"ds:" + did for did in direct - ds_ok}
+        if tier_of(kb, s) == "primary":
+            unadmitted_primary_roots |= unadmitted_source_roots[sid]
+
+    alias_suspects = _suppress_auto_alias_splits(kb, confirmed_by, automatic)
+
+    adj = {sid: [t for t in admitted_src[sid] if t in sources] for sid in sources}
     sccs, comp_of = _tarjan(adj)
 
     circular = []
@@ -334,7 +419,7 @@ def resolve(kb):
     for ci in range(len(sccs)):
         deps = set()
         for sid in sccs[ci]:
-            for t in _edges(sources[sid])[1]:
+            for t in admitted_src[sid]:
                 if t in comp_of and comp_of[t] != ci:
                     deps.add(comp_of[t])
         comp_deps[ci] = deps
@@ -355,10 +440,13 @@ def resolve(kb):
             comp = sccs[ci]
             roots = set()
             for sid in comp:                  # dataset roots from any member
-                for d in _edges(sources[sid])[0]:
+                for d in admitted_ds[sid]:
                     roots.add("ds:" + d)
             for d in comp_deps[ci]:           # roots inherited from depended-on components
-                roots |= memo[d]
+                # Unsupported pooled assertions are position-specific visibility markers, never
+                # transferable evidence. A source citing an ungrounded source remains ungrounded in
+                # its own position instead of laundering that source's pool across camps.
+                roots |= {r for r in memo[d] if not r.startswith(("secpool:", "primpool:"))}
             if not roots:                     # ungrounded component
                 if len(comp) > 1:             # circular corroboration with no grounding -> flag
                     roots = {"cycle:" + min(comp)}
@@ -368,7 +456,7 @@ def resolve(kb):
                     s = sources[comp[0]]
                     # ungrounded, no named evidence base: a primary that names nothing collapses to
                     # the position's one 'unnamed first-hand voice' (primpool), a secondary to its
-                    # review voice (secpool). Both pool per position (flooding adds one voice once).
+                    # review marker (secpool). Both pool visibly per position but add zero credit.
                     roots = {"primpool:" + s["position"]} if tier_of(kb, s) == "primary" \
                         else {"secpool:" + s["position"]}
             memo[ci] = roots
@@ -381,9 +469,12 @@ def resolve(kb):
     primary_ds = set()
     for s in kb["sources"]:
         if tier_of(kb, s) == "primary":
-            for d in _edges(s)[0]:
+            for d in admitted_ds[s["id"]]:
                 primary_ds.add("ds:" + d)
-    all_ds = {r for rs in source_roots.values() for r in rs if r.startswith("ds:")}
+    # Identity-level proposal visibility includes asserted direct roots whose support edge was not
+    # admitted. They stay inspectable at zero strength instead of disappearing from the artifact.
+    asserted_ds = {r for rs in unadmitted_source_roots.values() for r in rs}
+    all_ds = {r for rs in source_roots.values() for r in rs if r.startswith("ds:")} | asserted_ds
     secondary_only = all_ds - primary_ds
 
     # evidence-base KIND (dataset | experiment | observation | argument | model | document). Empirical
@@ -399,9 +490,8 @@ def resolve(kb):
     _COLLAPSED = ("secpool:", "primpool:", "cycle:")            # pooled voices: halving n/a
     for s in kb["sources"]:
         target = animal if _is_nonhuman(s) else human
-        for r in source_roots[s["id"]]:
-            if not r.startswith(_COLLAPSED):
-                target.add(r)
+        for did in admitted_ds[s["id"]]:
+            target.add("ds:" + did)
     nonhuman_only = (animal - human) - non_empirical
 
     # ROOT ADMISSION: a dataset root is 'provisional' (unconfirmed) until the KB verifies it PER EDGE,
@@ -419,38 +509,6 @@ def resolve(kb):
     # asserted only by unverified/public input is QUARANTINED from nEff; it stays visible in the audit
     # as a proposed base and enters nEff only after confirmation. confirmed_by records HOW each root was
     # confirmed, so the admission is itself auditable.
-    _DEPTH_OK = {"full", "abstract", "partial"}
-    confirmed_by = {}                                          # root_key -> {method, source?/by?/...}
-    automatic = set()                                           # admitted from fetched edge quotes
-    for d in kb.get("datasets", []):
-        rec = _dataset_confirmation(d)
-        if rec:
-            confirmed_by["ds:" + d["id"]] = rec
-    for s in kb["sources"]:
-        if s.get("textDepth") not in _DEPTH_OK:
-            continue
-        d_ids, _src_ids, edge_prov = _edges(s)
-        direct = {"ds:" + d for d in d_ids}                   # this source's DIRECT dataset edges
-        # Legacy source-level dependency quote: back-compat ONLY when this source has exactly ONE
-        # direct dataset. With two or more direct roots it is inherently ambiguous and confirms none
-        # of them — one generic sentence must never whitewash every sibling edge. New ingestion
-        # always attaches provenance to the specific edge object below.
-        legacy = (s.get("provenance") or {}).get("restsOn")
-        if isinstance(legacy, dict) and is_verified_exact(legacy) and len(direct) == 1:
-            rk = next(iter(direct))
-            if rk not in confirmed_by:
-                confirmed_by[rk] = {"method": "verified-edge-legacy-single", "source": s["id"]}
-                automatic.add(rk)
-        for ref_key, ep in edge_prov.items():                 # per-edge object provenance
-            if ref_key.startswith("src:"):
-                continue                                       # a citation edge cannot self-confirm
-            rk = "ds:" + ref_key
-            if rk in direct and is_verified_exact(ep) \
-                    and _quote_identifies_dataset(kb, ref_key, ep.get("quote")):
-                if rk not in confirmed_by:
-                    confirmed_by[rk] = {"method": "verified-edge", "source": s["id"]}
-                    automatic.add(rk)
-    alias_suspects = _suppress_auto_alias_splits(kb, confirmed_by, automatic)
     provisional = {r for r in all_ds if r not in confirmed_by}
 
     def kind_of(r):
@@ -459,21 +517,25 @@ def resolve(kb):
              else "p" if r.startswith(("prim:", "primpool:"))     # own-root (legacy) or pooled voice
              else "s" if r.startswith("secpool:") else "c")]
     kinds = {r: kind_of(r) for rs in source_roots.values() for r in rs}
+    kinds.update({r: kind_of(r) for r in asserted_ds})
 
     return {"source_roots": source_roots, "circular": circular,
             "secondary_only": secondary_only, "nonhuman_only": nonhuman_only,
             "provisional": provisional, "confirmed_by": confirmed_by,
-            "alias_suspects": alias_suspects, "kind": kinds, "base_kind": base_kind}
+            "alias_suspects": alias_suspects, "kind": kinds, "base_kind": base_kind,
+            "unadmitted_edges": unadmitted_edges,
+            "unadmitted_source_roots": unadmitted_source_roots,
+            "unadmitted_primary_roots": unadmitted_primary_roots}
 
 
 def root_strength(root_key, secondary_only, nonhuman_only=frozenset(), provisional=frozenset()):
-    """Independence weight a root contributes. Halved for a dataset known only through a secondary
+    """Coverage credit a root contributes. Halved for a dataset known only through a secondary
     source (we heard about it, no primary source brought it in), halved for a root backed only by
     animal / in-vitro studies (weak evidence for a human question). A PROVISIONAL (unconfirmed /
     unverified) root contributes ZERO until a fetched dependency quote verifies it or a curator
     explicitly confirms it.
     See MECHANISM.md §6."""
-    if root_key in provisional:
+    if root_key.startswith(("secpool:", "primpool:", "cycle:")) or root_key in provisional:
         return 0.0
     w = 1.0
     if root_key in secondary_only:

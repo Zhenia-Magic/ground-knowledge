@@ -133,16 +133,21 @@ class TwoPassRefTests(unittest.TestCase):
         from engine.roots import resolve
         from engine.assess import independence
         kb = empty_kb("t", "q")
+        admission = {"status": "confirmed", "method": "curator", "by": "ann",
+                     "ts": "2026-07-14T00:00:00Z"}
         merge_delta(kb, {"source": {"title": "Paper A", "year": 2020, "url": "https://x/a",
-            "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper B"]}})
+            "position": "NEW:P", "evidence": "Narrative/Commentary",
+            "restsOn": [{"ref": "NEW-SRC:Paper B", "admission": admission}]}})
         merge_delta(kb, {"source": {"title": "Paper B", "year": 2021, "url": "https://x/b",
-            "position": "NEW:P", "evidence": "Narrative/Commentary", "restsOn": ["NEW-SRC:Paper A"]}})
+            "position": "NEW:P", "evidence": "Narrative/Commentary",
+            "restsOn": [{"ref": "NEW-SRC:Paper A", "admission": admission}]}})
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
         self.assertEqual(a["restsOn"], [])                      # forward ref unresolved at merge time
-        self.assertEqual(independence(kb)[0]["nEff"], 1)        # unresolved graph: one secondary voice
+        self.assertEqual(independence(kb)[0]["nEff"], 0)        # unsupported assertions have zero
         self.assertGreaterEqual(resolve_pending_refs(kb), 1)    # second pass wires A->B
         a = next(s for s in kb["sources"] if s["title"] == "Paper A")
-        self.assertTrue(any(str(e).startswith("src:") for e in a["restsOn"]))
+        self.assertTrue(any((e.get("ref") if isinstance(e, dict) else e).startswith("src:")
+                            for e in a["restsOn"]))
         self.assertEqual(len(resolve(kb)["circular"]), 1)       # the A<->B ring is now flagged
         self.assertEqual(independence(kb)[0]["nEff"], 0)        # correction removes false grounding
 
@@ -197,6 +202,24 @@ class DatasetEdgeObjectCurationTests(unittest.TestCase):
         self.assertEqual(rec["by"], "ann")
         self.assertTrue(rec["ts"])
         self.assertTrue(rec["similarityOverride"])
+
+    def test_confirm_edge_is_auditable_and_controls_support_credit(self):
+        from engine.curate import confirm_dataset, confirm_edge
+        from engine.assess import independence
+        kb = empty_kb("t", "q")
+        merge_delta(kb, {"source": {"title": "Paper", "position": "NEW:Yes",
+            "evidence": "Observational", "funding": "Undisclosed", "population": "—",
+            "restsOn": ["NEW:Registry"], "textDepth": "unknown"}})
+        sid, did = kb["sources"][0]["id"], kb["datasets"][0]["id"]
+        confirm_dataset(kb, did, by="ann")
+        self.assertEqual(independence(kb)[0]["nEff"], 0)
+        confirm_edge(kb, sid, did, by="ann", note="methods section names the registry")
+        self.assertEqual(independence(kb)[0]["nEff"], 1)
+        rec = kb["sources"][0]["restsOn"][0]["admission"]
+        self.assertEqual(rec["method"], "curator")
+        self.assertEqual(rec["by"], "ann")
+        confirm_edge(kb, sid, did, confirmed=False, by="ann")
+        self.assertEqual(independence(kb)[0]["nEff"], 0)
 
 
 class SourceRemovalTests(unittest.TestCase):

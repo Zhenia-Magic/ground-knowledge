@@ -1442,6 +1442,13 @@
               "normalizedCharEnd": 536,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1510,6 +1517,13 @@
               "normalizedCharEnd": 450,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1576,6 +1590,13 @@
               "normalizedCharEnd": 886,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1642,6 +1663,13 @@
               "normalizedCharEnd": 3771,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1886,7 +1914,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_individual_participant_mendelian_rand"
+        {
+          "ref": "ds_pooled_individual_participant_mendelian_rand",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1950,6 +1987,13 @@
               "normalizedCharEnd": 3885,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2015,6 +2059,13 @@
               "normalizedCharEnd": 3161,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2077,7 +2128,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_mendelian_randomisation_studies_on_al"
+        {
+          "ref": "ds_pooled_mendelian_randomisation_studies_on_al",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -2143,6 +2203,13 @@
               "normalizedCharEnd": 582,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2250,6 +2317,13 @@
               "normalizedCharEnd": 3756,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2316,6 +2390,13 @@
               "normalizedCharEnd": 463,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2380,6 +2461,13 @@
               "normalizedCharEnd": 2628,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2460,6 +2548,13 @@
               "normalizedCharEnd": 1251,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2626,6 +2721,13 @@
               "normalizedCharEnd": 2766,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2689,6 +2791,13 @@
               "normalizedCharEnd": 2198,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2760,6 +2869,13 @@
               "normalizedCharEnd": 2568,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2835,6 +2951,13 @@
               "normalizedCharEnd": 3850,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2906,6 +3029,13 @@
               "normalizedCharEnd": 2018,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3024,6 +3154,13 @@
               "normalizedCharEnd": 1007,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3075,7 +3212,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_chinese_population_cohort_nanjing_medical_un"
+        {
+          "ref": "ds_chinese_population_cohort_nanjing_medical_un",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -3140,6 +3286,13 @@
               "normalizedCharEnd": 519,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3206,6 +3359,13 @@
               "normalizedCharEnd": 525,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3264,8 +3424,26 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_mendelian_randomisation_studies_on_al",
-        "ds_pooled_prospective_cohorts_medline_1950_2009"
+        {
+          "ref": "ds_pooled_mendelian_randomisation_studies_on_al",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_pooled_prospective_cohorts_medline_1950_2009",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -3319,7 +3497,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_million_veteran_program"
+        {
+          "ref": "ds_million_veteran_program",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -3391,6 +3578,13 @@
               "normalizedCharEnd": 836,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3546,6 +3740,13 @@
               "normalizedCharEnd": 3601,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3611,6 +3812,13 @@
               "normalizedCharEnd": 3869,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3677,6 +3885,13 @@
               "normalizedCharEnd": 4006,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3774,10 +3989,46 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_systematic_reviews_on_alcohol_and_cvd",
-        "ds_epistemonikos_systematic_review_database_60_",
-        "ds_pooled_individual_participant_mendelian_rand",
-        "ds_large_scale_gwas_consortia_and_uk_biobank_me"
+        {
+          "ref": "ds_pooled_systematic_reviews_on_alcohol_and_cvd",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_epistemonikos_systematic_review_database_60_",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_pooled_individual_participant_mendelian_rand",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_large_scale_gwas_consortia_and_uk_biobank_me",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -3839,6 +4090,13 @@
               "normalizedCharEnd": 2838,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3908,6 +4166,13 @@
               "normalizedCharEnd": 603,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3973,6 +4238,13 @@
               "normalizedCharEnd": 3964,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4049,6 +4321,13 @@
               "normalizedCharEnd": 690,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4100,7 +4379,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_uk_biobank"
+        {
+          "ref": "ds_uk_biobank",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -4148,7 +4436,16 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_nonexperimental_cohort_studies_on_alc"
+        {
+          "ref": "ds_pooled_nonexperimental_cohort_studies_on_alc",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -4210,6 +4507,13 @@
               "normalizedCharEnd": 2490,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4298,8 +4602,26 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_uk_biobank",
-        "ds_large_scale_gwas_summary_data_1_2_million_co"
+        {
+          "ref": "ds_uk_biobank",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_large_scale_gwas_summary_data_1_2_million_co",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -4375,6 +4697,13 @@
               "normalizedCharEnd": 404,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4453,6 +4782,13 @@
               "normalizedCharEnd": 506,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4632,6 +4968,13 @@
               "normalizedCharEnd": 3313,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4700,6 +5043,13 @@
               "normalizedCharEnd": 867,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4769,6 +5119,13 @@
               "normalizedCharEnd": 624,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4837,6 +5194,13 @@
               "normalizedCharEnd": 625,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4902,6 +5266,13 @@
               "normalizedCharEnd": 525,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -4972,6 +5343,13 @@
               "normalizedCharEnd": 3825,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5248,6 +5626,13 @@
               "normalizedCharEnd": 1004,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5319,6 +5704,13 @@
               "normalizedCharEnd": 1774,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5388,6 +5780,13 @@
               "normalizedCharEnd": 608,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5457,6 +5856,13 @@
               "normalizedCharEnd": 367,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5532,6 +5938,13 @@
               "normalizedCharEnd": 15288,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -5620,6 +6033,13 @@
               "normalizedCharEnd": 657,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],

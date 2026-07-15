@@ -28,7 +28,14 @@ def _s(sid, pos, evidence, rests, textDepth="full"):
     # Default full-text fixtures include a verified dependency quote when they name a root, so these
     # tests exercise confirmed collapse mechanics. Unknown-depth fixtures remain provisional even if
     # a quote field is present; explicit missing-edge cases override provenance below.
-    s = {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": rests,
+    admitted = {"status": "confirmed", "method": "curator", "by": "test-curator",
+                "ts": "2026-07-14T00:00:00Z"}
+    # Resolution fixtures model already-curated citation links. Dataset edges keep exercising the
+    # verifier/confirmation path; source→source edges are explicitly admitted under the hardened
+    # edge-specific trust model.
+    trusted_rests = [({"ref": r, "admission": admitted} if isinstance(r, str)
+                      and r.lower().startswith("src:") else r) for r in rests]
+    s = {"id": sid, "position": pos, "evidence": evidence, "title": sid, "restsOn": trusted_rests,
          "funding": "Undisclosed", "population": "—", "confidence": "unstated", "textDepth": textDepth}
     s["provenance"] = {"position": _verified("verified position for " + sid)}
     if rests:
@@ -159,21 +166,22 @@ class MetricTests(unittest.TestCase):
         return {p["id"]: p for p in independence(_kb(srcs))}[pos]["nEff"]
 
     def test_ungrounded_review_flood_cannot_inflate_independence(self):
-        # one real study + a flood of ungrounded reviews -> exactly 2 bases (study + one voice)
+        # one real study + a flood of ungrounded reviews -> exactly 1 grounded base; unsupported
+        # reviews remain one visible zero-strength marker.
         srcs = [_s("study", "X", "Observational", ["D"])]
         srcs += [_s("r%d" % i, "X", "Narrative/Commentary", []) for i in range(50)]
         ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
-        self.assertAlmostEqual(ind["nEff"], 2.0, places=6)
+        self.assertAlmostEqual(ind["nEff"], 1.0, places=6)
         self.assertEqual(ind["collapsedSecondary"], 50)
 
     def test_echo_as_primary_flood_cannot_inflate_independence(self):
         # THE echo-as-primary attack: label a flood of ungrounded rehashes 'Observational' (primary)
         # with empty restsOn, trying to mint one distinct root each. They must all collapse to ONE
-        # 'unnamed first-hand voice' -- one real grounded study + 50 anonymous primaries = 2 bases.
+        # 'unnamed first-hand' marker -- one grounded study + 50 anonymous claims = 1 grounded base.
         srcs = [_s("study", "X", "Observational", ["D"])]
         srcs += [_s("r%d" % i, "X", "Observational", []) for i in range(50)]
         ind = {p["id"]: p for p in independence(_kb(srcs))}["X"]
-        self.assertAlmostEqual(ind["nEff"], 2.0, places=6)   # NOT 51
+        self.assertAlmostEqual(ind["nEff"], 1.0, places=6)   # NOT 51, and no assertion credit
 
     def test_named_primaries_each_earn_a_distinct_root(self):
         # the honest counterpart: real studies that each NAME their own evidence base keep full,
@@ -186,7 +194,7 @@ class MetricTests(unittest.TestCase):
     def test_unrecognized_label_flood_pools_as_secondary(self):
         # a coined evidence label can't mint roots either: ungrounded 'NEW:'-style types -> one voice
         srcs = [_s("q%d" % i, "X", "Cliodynamic survey", []) for i in range(30)]
-        self.assertAlmostEqual(self._neff(srcs), 1.0, places=6)
+        self.assertAlmostEqual(self._neff(srcs), 0.0, places=6)
 
     def test_grounded_echo_flood_cannot_inflate_independence(self):
         # THE attack the count-weighted formula failed: 10 sources on D1 + 1 on D2 reads as ~2
@@ -213,15 +221,15 @@ class MetricTests(unittest.TestCase):
         self.assertGreater(after["concentration"], base["concentration"])
 
     def test_ungrounded_review_flood_cannot_tank_a_rivals_independence(self):
-        # ungrounded junk aimed at a rival adds exactly the one collapsed voice, then nothing
+        # ungrounded junk aimed at a rival adds no confirmed grounding
         srcs = [_s("p1", "X", "Observational", ["D1"]),
                 _s("p2", "X", "Observational", ["D2"]),
                 _s("p3", "X", "Observational", ["D3"])]
         base = self._neff(srcs)
         srcs += [_s("r%d" % i, "X", "Evidence-synthesis", []) for i in range(40)]
-        self.assertAlmostEqual(self._neff(srcs), base + 1.0, places=6)  # + one voice, once
+        self.assertAlmostEqual(self._neff(srcs), base, places=6)
         srcs += [_s("r2_%d" % i, "X", "Evidence-synthesis", []) for i in range(40)]
-        self.assertAlmostEqual(self._neff(srcs), base + 1.0, places=6)  # a second wave adds 0
+        self.assertAlmostEqual(self._neff(srcs), base, places=6)
 
     def test_new_root_raises_neff(self):
         # the ONLY honest way up: bring genuinely new evidence
@@ -292,10 +300,10 @@ class ProvisionalRootTests(unittest.TestCase):
             "quote": "We used cohort D.", "verifiedQuote": "exact"}}]
         self.assertAlmostEqual(self._neff([src]), 0.0, places=6)
 
-    def test_curator_confirmed_dataset_is_full_strength(self):
+    def test_legacy_root_confirmation_does_not_admit_arbitrary_support_edge(self):
         kb = _kb([_s("paste", "X", "Observational", ["D"], textDepth="unknown")])
         kb["datasets"] = [{"id": "D", "label": "D", "aliases": [], "confirmed": True}]
-        self.assertAlmostEqual({p["id"]: p for p in independence(kb)}["X"]["nEff"], 1.0, places=6)
+        self.assertAlmostEqual({p["id"]: p for p in independence(kb)}["X"]["nEff"], 0.0, places=6)
 
     def test_confirming_a_root_never_lowers_neff(self):
         # confirmation is an UPGRADE (zero -> full); it can only raise nEff, preserving monotonicity
@@ -408,16 +416,30 @@ class PerEdgeConfirmationTests(unittest.TestCase):
         ind = {p["id"]: p for p in independence(_kb([study, review]))}["X"]
         self.assertAlmostEqual(ind["nEff"], 0.0, places=6)
 
-    def test_curator_confirmation_object_admits_root_with_method(self):
+    def test_curator_confirmation_object_tied_to_source_admits_root_and_support_edge(self):
         s = self._src("paste", "X", ["D"], depth="unknown")
         kb = _kb([s])
         kb["datasets"] = [{"id": "D", "label": "D", "aliases": [],
                            "confirmation": {"status": "confirmed", "method": "curator", "by": "ann",
-                                            "ts": "2026-07-11T00:00:00Z"}}]
+                                            "source": "paste", "ts": "2026-07-11T00:00:00Z"}}]
         ind = {p["id"]: p for p in independence(kb)}["X"]
         self.assertAlmostEqual(ind["nEff"], 1.0, places=6)
         self.assertEqual(ind["bases"][0]["confirmedBy"]["method"], "curator")
         self.assertEqual(ind["bases"][0]["confirmedBy"]["by"], "ann")
+
+    def test_confirmed_root_cannot_be_laundered_across_positions_by_unreviewed_edge(self):
+        admission = {"status": "confirmed", "method": "curator", "by": "ann",
+                     "ts": "2026-07-11T00:00:00Z"}
+        legit = self._src("legit", "X", [{"ref": "D", "admission": admission}], depth="unknown")
+        attacker = self._src("attacker", "Y", ["D"], depth="unknown")
+        kb = _kb([legit, attacker])
+        kb["datasets"] = [{"id": "D", "label": "D", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator", "by": "ann",
+                                            "ts": "2026-07-11T00:00:00Z"}}]
+        ind = {p["id"]: p for p in independence(kb)}
+        self.assertEqual(ind["X"]["nEff"], 1.0)
+        self.assertEqual(ind["Y"]["nEff"], 0.0)
+        self.assertTrue(any(b["supportUnconfirmed"] for b in ind["Y"]["bases"]))
 
     def test_confirmation_object_with_nonconfirmed_status_does_not_admit(self):
         s = self._src("paste", "X", ["D"], depth="unknown")
@@ -549,7 +571,7 @@ class WarningsTests(unittest.TestCase):
         self.assertEqual(len(conc), 1)
         self.assertEqual(conc[0]["positionId"], "X")
         self.assertIn("Apparent consensus is correlated", conc[0]["headline"])
-        self.assertIn("closer to", conc[0]["detail"])
+        self.assertIn("confirmed-root coverage", conc[0]["detail"])
 
     def test_method_monoculture_warning(self):
         srcs = [_s("s%d" % i, "X", "Observational", ["D%d" % i]) for i in range(4)]
@@ -618,6 +640,13 @@ class GapTests(unittest.TestCase):
         kb = _kb([_s("rev", "X", "Evidence-synthesis", ["D"])])
         self.assertTrue(any(g["kind"] == "unsourced-dataset" and g["datasetId"] == "D"
                             for g in find_gaps(kb)))
+
+    def test_unadmitted_primary_assertion_does_not_fill_a_gap(self):
+        from engine.gaps import find_gaps
+        srcs = [_s("p1", "X", "Observational", ["D1"], textDepth="unknown"),
+                _s("p2", "X", "Observational", ["D2"], textDepth="unknown")]
+        thin = [g for g in find_gaps(_kb(srcs)) if g["kind"] == "thin-position"]
+        self.assertTrue(any(g["positionId"] == "X" and g["severity"] == 3 for g in thin))
 
     def test_gap_queries_are_nonempty_strings(self):
         from engine.gaps import find_gaps, gap_queries

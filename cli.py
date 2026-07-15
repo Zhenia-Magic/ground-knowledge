@@ -102,12 +102,12 @@ def cmd_show(args):
         elif fs.get("undisclosed"):
             L.append("  funding gap: {} of {} sources undisclosed".format(
                 fs["undisclosed"], fs["total"]))
-    L += ["", "INDEPENDENCE  (concentration on single most-reused dataset)"]
+    L += ["", "CONFIRMED-ROOT COVERAGE  (not a quality/truth score; concentration shown alongside)"]
     for p in a["independence"]:
         t = "{} {}/{}".format(p["topDataset"]["label"], p["topDataset"]["count"], p["raw"]) \
             if p["topDataset"] else "—"
         L.append("  " + pad(p["label"], 22) + pad(pct(p["concentration"]), 5) + " on " +
-                 pad(t, 34) + " nEff≈{:.1f}".format(p["nEff"]) +
+                 pad(t, 34) + " coverage={:.1f}".format(p["nEff"]) +
                  ("   [CONCENTRATED]" if p["concentrated"] else ""))
     if a["dominantDataset"]:
         dd = a["dominantDataset"]
@@ -182,7 +182,7 @@ def cmd_demo(args):
         a = assess(kb)
         print("### %s — %s" % (name.upper(), kb["meta"]["question"]))
         for p in a["independence"]:
-            print("   %-42s %2d sources -> %.1f independent bases"
+            print("   %-42s %2d sources -> %.1f confirmed-root coverage"
                   % (p["label"][:42], p["raw"], p["nEff"]))
         heads = [c["label"] for c in a["cruxes"] if c["isCrux"]]
         print("   headline cruxes: " + (", ".join(heads) or "—"))
@@ -413,6 +413,15 @@ def cmd_confirm_dataset(args):
     report = curate.confirm_dataset(
         kb, args.ref, confirmed=not args.provisional, by=args.by, source=args.source,
         note=args.note, allow_similar=args.allow_similar, embed=embed)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
+
+
+def cmd_confirm_edge(args):
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.confirm_edge(kb, args.source, args.edge, confirmed=not args.provisional,
+                                 by=args.by, note=args.note)
     write_json(args.kb, kb)
     _curate_write(args, report)
 
@@ -989,6 +998,13 @@ def main():
     s.add_argument("--embed", action="store_true", help="check semantic duplicate suggestions before confirming")
     s.add_argument("--allow-similar", action="store_true", help="override a duplicate suggestion (requires --note)")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_confirm_dataset)
+    s = sub.add_parser("confirm-edge", help="admit one source→root/citation support link")
+    s.add_argument("kb"); s.add_argument("source", help="source id, title, or unique title substring")
+    s.add_argument("edge", help="exact restsOn ref (dataset id or src:source-id)")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--note", help="reason/evidence for the decision")
+    s.add_argument("--provisional", action="store_true", help="remove this edge admission")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_confirm_edge)
     s = sub.add_parser("tidy", help="prettify id-style / slug labels for display")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_tidy)
     s = sub.add_parser("harvest"); s.add_argument("kb"); s.add_argument("--k", type=int, default=8)

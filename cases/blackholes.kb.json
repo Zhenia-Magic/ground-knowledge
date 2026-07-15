@@ -333,8 +333,26 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
-        "arg_accretion_timescale",
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+        {
+          "ref": "arg_accretion_timescale",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_cosmic_ray_empirical_bound_white_dwarf_neutr",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -385,8 +403,26 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
-        "src:src_giddings_mangano_astrophysical_implications__2008",
-        "ds_hawking_radiation_black_hole_evaporation"
+        {
+          "ref": "src:src_giddings_mangano_astrophysical_implications__2008",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_hawking_radiation_black_hole_evaporation",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -437,8 +473,26 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
-        "src:src_giddings_mangano_astrophysical_implications__2008",
-        "ds_hawking_radiation_black_hole_evaporation"
+        {
+          "ref": "src:src_giddings_mangano_astrophysical_implications__2008",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_hawking_radiation_black_hole_evaporation",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -485,7 +539,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_hawking_radiation_black_hole_evaporation"
+        {
+          "ref": "ds_hawking_radiation_black_hole_evaporation",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -534,7 +597,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "arg_production_impossibility"
+        {
+          "ref": "arg_production_impossibility",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -583,7 +655,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_argument_reliability_analysis_probability_th"
+        {
+          "ref": "ds_argument_reliability_analysis_probability_th",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -630,7 +711,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "ds_argument_reliability_analysis_probability_th"
+        {
+          "ref": "ds_argument_reliability_analysis_probability_th",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -677,7 +767,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_lhc_safety_assessment_group_lsag_review_of_t_2008"
+        {
+          "ref": "src:src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -725,7 +824,16 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+        {
+          "ref": "ds_cosmic_ray_empirical_bound_white_dwarf_neutr",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -773,7 +881,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_cosmic_ray_empirical_bound_white_dwarf_neutr"
+        {
+          "ref": "ds_cosmic_ray_empirical_bound_white_dwarf_neutr",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -822,7 +939,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "arg_accretion_timescale"
+        {
+          "ref": "arg_accretion_timescale",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -869,7 +995,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_hawking_radiation_black_hole_evaporation"
+        {
+          "ref": "ds_hawking_radiation_black_hole_evaporation",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -916,7 +1051,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "ds_metastable_black_hole_accretion_scenario"
+        {
+          "ref": "ds_metastable_black_hole_accretion_scenario",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -964,7 +1108,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_giddings_mangano_astrophysical_implications__2008"
+        {
+          "ref": "src:src_giddings_mangano_astrophysical_implications__2008",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1011,7 +1164,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_argument_reliability_analysis_probability_th"
+        {
+          "ref": "ds_argument_reliability_analysis_probability_th",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {

@@ -3,15 +3,20 @@
 Audit date: 2026-07-12  
 Curator id recorded in the KB logs: `source-audit-2026-07`
 
+> **Status:** this document is the historical 2026-07-12 audit pass, not the current inventory.
+> Subsequent quote-enforcement and case curation changed the artifacts. The live count is generated
+> from `cases/*.kb.json` in [`SOURCE_INVENTORY.md`](SOURCE_INVENTORY.md), and CI fails if that file
+> drifts. Counts below describe what happened during this audit pass.
+
 ## Scope and rule
 
-All 192 sources present at the start of this audit were read against the exact question, the position
+All 192 sources present at the start of this audit snapshot were read against the exact question, the position
 under which they were filed, their quoted finding, and their dependency edges. A source was removed
 only when its exposure, outcome, or subject did not answer the case question, when it was a duplicate,
 or when the stored excerpt contained no case-specific finding. Method papers were retained when they
 directly test a load-bearing bias in the case; their indirect status is called out below.
 
-The resulting set has 180 sources: 16 removed, four high-value anchors added, and three sources moved
+That audit snapshot resulted in 180 sources: 16 removed, four high-value anchors added, and three sources moved
 to the position their actual conclusion supports. Every removal/move is a versioned `remove-source` or
 `move-source` log record with the reason and curator id. The reusable operation is implemented in
 `engine/curate.py`; it repairs citation edges, dataset confirmations, orphan datasets, and factor weights.
@@ -117,7 +122,7 @@ as independent aggressive-behavior experiments.
 
 ## Metadata and funding completion
 
-- Author and venue fields are now populated for all 180 retained/added sources.
+- At the audit snapshot, author and venue fields were populated for all 180 retained/added sources.
 - 97 retained sources received a catalogue/full-text metadata audit record; four additions arrived
   complete. Named funding details are now stored on 37 sources and are visible in the source cards.
 - The Berger dietary-cholesterol review is now marked **Industry** because Crossref records USDA plus

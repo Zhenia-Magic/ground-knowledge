@@ -7,9 +7,9 @@
 > *Ground News, but for research disputes — with the aggregator's neutrality inverted.*
 > Ground News counts and labels sources but stays neutral on who's right. In a research
 > dispute, naive source-counting rewards the loud, the numerous, and the industry-funded.
-> So we **aggregate, but weight by independent evidence and audit for independence** instead of
-> counting heads. Adding more papers on an *already resolved* cohort or review chain does **not**
-> add independent support; the widening gap between raw sources and roots makes the correlation visible.
+> So we **map confirmed evidence-root coverage and audit bias separately** instead of counting heads.
+> Adding more papers on an already represented cohort does not add root coverage; the widening gap
+> between source volume and roots makes correlation visible. Coverage is not a quality or truth score.
 
 **Live, no setup, no API key → [groundknowledge.org](https://groundknowledge.org)**
 
@@ -22,7 +22,7 @@ structured delta → **merges** deterministically → **recomputes** every metri
 **diff** of what changed → **bakes** a self-contained viewer. Cold-start and incremental
 update are the *same code path*, run N times or once.
 
-## The core idea: count independent evidence, not sources
+## The core idea: map admitted evidence roots, not source volume
 
 If one side has 20 papers and the other has 4, a naive aggregator declares a winner. But if all
 20 re-analyse the same dataset they're closer to **one** piece of evidence cited 20 times — and
@@ -35,11 +35,11 @@ three:
 - **Circular corroboration** — A cites B, B cites A, with nothing primary underneath: two
   sources, *zero* independent grounding (the adversarial case).
 
-The independence engine (`engine/roots.py`) resolves every source down to the primary
-**evidentiary roots** it actually depends on, collapsing echo/re-use into an honest count of
-*independent bases* per position while flagging and excluding ungrounded circular loops. It's adversarially robust
-under explicit contracts: sources landing on an existing root add zero; twelve ungrounded rehashes
-add at most one pooled voice rather than twelve; and a pure citation loop adds zero.
+The root engine (`engine/roots.py`) separates root identity from source→root support-edge trust,
+then resolves admitted edges down to **evidentiary roots**. It reports confirmed-root coverage while
+flagging zero-credit unsupported assertions and circular loops. Explicit contracts ensure that
+sources landing on an existing root add zero, twelve ungrounded rehashes add zero, and a confirmed
+root cannot be laundered into another position through an unreviewed edge.
 
 ## Layout
 
@@ -70,9 +70,9 @@ without. CI tests Python 3.10–3.13.
 
 > ### Reviewers — start here
 > **Try the live instance — no setup, no API key: [groundknowledge.org](https://groundknowledge.org)**
-> — browse the cases, open a report (Coverage & warnings · Divergence matrix · Independence & bias ·
-> Changes), or add a source to one. The **Independence** tab is the thesis made visible: each
-> position shown as its count of genuinely independent evidence bases, with echo collapsed and
+> — browse the cases, open a report (Coverage & warnings · Divergence matrix · Root coverage & bias ·
+> Changes), or submit a source for review. The **Root coverage** tab is the thesis made visible: each
+> position shows its admitted root coverage, with echo collapsed and
 > circular citation flagged — plus a separate warning when evidence shares a correlated-error
 > family (e.g. observational confounding) or a provenance quote doesn't match its fetched text.
 >
@@ -105,29 +105,29 @@ disclosures, and named cohorts (Zhong 2019 JAMA, Drouin-Chartier 2020 BMJ, Dehgh
 Carson 2020 AHA, Hu 1999, …). **Verified vs authored:** anchor sources whose full text we could fetch
 carry quotes checked against the real text (`verifiedQuote: exact`, `textDepth: full/partial`); the
 rest are faithful reconstructions with **authored** quotes (`textDepth: unknown`), clearly marked.
-An unverified newly proposed root contributes zero headline nEff unless a fetched dependency quote
-verifies it or an explicit curator confirmation admits it. Two findings fall out of the data:
+An unverified root or unadmitted support edge contributes zero headline nEff. Two findings fall out:
 
 - **Funding pattern (real):** interested funding does **not** uniquely favor one answer here. Two
   industry-funded meta-analyses back *"No association"* while two industry-funded trials back the
   context-dependent camp; the audit now reports that tie instead of choosing by position order.
-- **Independence (real):** the *"No association"* camp lists 9 sources but 6 resolve to the same
-  Nurses' Health / Health Professionals cohort, so it is closer to **~4 independent bases than 9** —
-  the shared-cohort collapse the source count hides.
+- **Root coverage (real):** the *"No increased risk / possibly lower risk"* camp lists 9 sources but
+  has **5.0 confirmed-root coverage** after shared-cohort collapse. This is not a quality-weighted
+  verdict; evidence design and method bias are shown alongside it.
 
 ### The update loop — recalculation made visible
 
 ```bash
 cp cases/eggs.kb.json /tmp/eggs.json
-python cli.py add   /tmp/eggs.json cases/eggs.delta-zhuang2021.json   # a real, independent cohort
+python cli.py add   /tmp/eggs.json cases/eggs.delta-zhuang2021.json   # a distinct named cohort
 python cli.py build /tmp/eggs.json                                    # rebuild; see the Changes tab
 ```
 
 The added source is real — Zhuang 2021 (PLOS Medicine, NIH-AARP, 521,120 people, egg/cholesterol
-→ higher mortality). It argues *"Increases risk"* and brings a **genuinely independent** cohort,
-so the recompute *adds an independent base* to the minority camp rather than padding a count. A
-naive aggregator just logs "+1 source"; here the **independence metric distinguishes independent
-evidence from correlated evidence**, and the **Changes tab** records the recompute as a diff.
+→ higher mortality). It argues *"Increases risk"* and brings a **distinct named** cohort, so the
+recompute adds one admitted evidence base to that camp rather than padding a source count. A naive
+aggregator just logs "+1 source"; here **confirmed-root coverage deduplicates reused bases** and the
+**Changes tab** records the recompute as a diff. Distinct roots are not assumed to be statistically
+independent or equally probative; method/funding audits remain separate.
 
 ### Add a source — automatic, manual, or from a citation manager
 
@@ -168,21 +168,21 @@ claim). *Web search / deep research need an Anthropic key; every provider can la
 Same engine, only the KB JSON differs. Browse these on the [live portal](https://groundknowledge.org)
 or `pull` them locally (`python cli.py pull <id>`):
 
-- **Eggs:** 20 sources across three answers; the no-association camp's 9 sources collapse to about
-  4 bases, while funding, subgroup effects, and biomarker-vs-outcome reasoning remain visible cruxes.
-- **COVID origin (contested):** 15 zoonotic sources collapse to about 5 bases and 8 laboratory-origin
-  sources to 3.5; Bayesian re-analyses resolve onto shared underlying evidence rather than counting
-  as independent looks.
-- **Black holes (settled):** 14 safe sources resolve to 4.5 bases spanning production impossibility,
-  Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, and one
-  half-strength review-only calculation. Residual concern attacks the reliability of those layers.
+- **Eggs:** 20 sources across three answers; current coverage is **4.0 / 5.0 / 4.0**, while funding,
+  subgroup effects, and biomarker-vs-outcome reasoning remain visible cruxes.
+- **COVID origin (contested):** current source→coverage values are **13→5.0, 7→3.5, 6→3.0**;
+  re-analyses resolve onto shared underlying evidence rather than counting as new roots.
+- **Black holes (settled):** 11 safe-position sources resolve to **4.0** coverage across production
+  impossibility, Hawking evaporation, accretion timescale, and the cosmic-ray/dense-star observation;
+  4 residual-concern sources resolve to **2.0**.
 
 ## Two surfaces, one compounding knowledge base
 
 - **The portal** (`python -m app.portal`) — a shared, multi-user site: browse and search questions,
   open the live report, and add sources **with no API key** (we fetch the best available text —
   open full text when accessible, otherwise abstract/metadata — you label it in *your own* chatbot
-  via one downloadable file → import). The server does **no LLM work and holds no key** — merging is
+  via one downloadable file → submit for curator review). Public submissions affect no metric until
+  reviewed. The server does **no LLM work and holds no key** — curation/merging is
   the deterministic stdlib function, so the hosted instance is cheap and has no
   key-trust problem. Admin moderation is gated by a shared token. Stores KBs as JSON documents
   (sqlite locally, Postgres in production — e.g. Railway). For the best, AI-driven retrieval, the
@@ -212,21 +212,24 @@ knowledge base that holds up under motivated reading and gets better as more peo
 
 ## Honest limitations
 
-- The three competition cases are real and sourced, but most dependency edges remain
-  **curator-confirmed rather than fetch-verified**. Every shipped curator record now names the actor,
-  time, and a direct supporting source; its note says explicitly that this is not a verified edge.
-- **Independence depends on self-reported edges.** The mechanism collapses echo and detects circular
+- The three competition cases are real and sourced, but most dependency edges carry explicit
+  **legacy-migration admissions rather than fetch verification**. The record says it adopts an
+  existing curated relationship and is not quote proof.
+- **Coverage depends on self-reported edges.** The mechanism collapses echo and detects circular
   citation, but only sees a dependency if the labeller recorded it. We don't crawl real citation
   graphs, so an adversary who *omits* a `src:` edge can still look more independent than they are —
   stated plainly in [`MECHANISM.md`](MECHANISM.md) §8 rather than papered over.
 - **Tier classification** (primary vs secondary evidence) leans on the evidence label being right;
-  a mislabel can mint or deny an independent base. Defenses: **ungrounded primaries pool to one
-  voice per position** (a distinct root needs a *named* evidence base, not a claimed tier — so
+  a mislabel can change a root's discount. Defenses: **ungrounded primaries pool at zero** (a
+  distinct root needs a named base and admitted support edge, so
   relabelling echo "Observational" can't inflate), unrecognised labels default to secondary,
   controlled vocab, relevance gate, funding-defaults-to-Undisclosed, and a multi-model **ensemble
   vote** that escalates genuine tier/position disagreements to a human review queue. Unverified
   named datasets add zero confirmed nEff; false confirmation or a blind spot shared across models
   remains possible.
+- The 0.5 review-only/non-human discounts are transparent heuristics, not calibrated evidence weights.
+- Prompt context is bounded with deterministic lexical retrieval, but no large-corpus performance
+  study or reader-uplift result is claimed.
 - Entity resolution is normalized-string + learned aliases — robust to known variants, not every
   paraphrase. `dups --embed` adds advisory semantic candidates; nothing auto-merges, and a likely
   duplicate is blocked at confirmation unless the curator records an override reason.

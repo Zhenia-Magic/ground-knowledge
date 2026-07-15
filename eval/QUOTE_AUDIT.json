@@ -2,10 +2,11 @@
   "method": "verbatim-sentence-v2",
   "automaticFuzzyRepair": false,
   "generated": "2026-07-13T02:11:56.312246+00:00",
+  "scopeNote": "Historical network-audit results, pruned on 2026-07-14 to the current case inventory without refetching. Current artifact counts are in QUOTE_AUDIT.md.",
   "cases": {
     "177f5ec738c9.kb.json": {
       "summary": {
-        "exact": 63,
+        "exact": 62,
         "empty": 1
       },
       "sources": [
@@ -257,21 +258,6 @@
               "repaired": false,
               "old": "Whereas violent video games increase aggression and aggression-related variables and decrease prosocial outcomes, prosocial video games have the opposite effects.",
               "new": "Whereas violent video games increase aggression and aggression-related variables and decrease prosocial outcomes, prosocial video games have the opposite effects.",
-              "field": "source:position"
-            }
-          ]
-        },
-        {
-          "id": "src_restoring_the_spirit_of_fair_play_in_the_deb_2013",
-          "title": "Restoring the Spirit of Fair Play in the Debate About Violent Video Games",
-          "fetch": "abstract",
-          "quotes": [
-            {
-              "status": "exact",
-              "changed": false,
-              "repaired": false,
-              "old": "This commentary argues that, rather than providing an “exhaustive review,” Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
-              "new": "This commentary argues that, rather than providing an “exhaustive review,” Elson and Ferguson (2013) discuss a selective sample of empirical studies on violent video game use which corroborate their claim that there is no systematic evidence for a link between violent video game play and aggression.",
               "field": "source:position"
             }
           ]

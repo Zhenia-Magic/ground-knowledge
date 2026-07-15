@@ -119,7 +119,7 @@ open viewer/index.html        # macOS — or just double-click the file
 ```
 
 Four tabs: **Coverage & warnings** (who holds what + funding skew + shared-method-bias flag),
-**Divergence matrix** (the cruxes), **Independence & bias** (is the consensus real, plus the same
+**Divergence matrix** (the cruxes), **Root coverage & bias** (is the source list concentrated, plus the same
 method-bias and quote-verification warnings), **Changes** (history). Prefer the terminal?
 `python cli.py show cases/salt.kb.json`.
 

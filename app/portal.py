@@ -239,11 +239,13 @@ def _delta_validation_error(delta):
 
 
 def _apply_delta(qid, q, delta, contributor):
-    """Merge one or many deltas into the question's KB (deterministic, no key), version-checked.
-    A batch is one optimistic transaction: it records ONE recompute diff (whole batch, before→after)
-    on the LAST added source's log entry, so the Changes tab shows what the contribution moved."""
-    from engine.merge import merge_delta
-    from engine.assess import assess, diff_assessments
+    """Queue one or many public paste-back deltas for human review, version-checked.
+
+    This endpoint has no trusted fetch context or authenticated curator identity. It therefore must
+    not mutate positions, roots, or headline metrics directly. Admin review can admit/drop the
+    source; support edges still require their own quote/curator admission in ``engine.roots``.
+    """
+    from engine import review
     kb, base = q["kb"], q["version"]
     items = delta if isinstance(delta, list) else [delta]
     deltas = []
@@ -255,35 +257,30 @@ def _apply_delta(qid, q, delta, contributor):
         if err:
             return {"error": err}
         deltas.append(d)
-    added = dups = off = 0
-    # Assess the existing artifact once, then the completed batch once. The previous implementation
-    # assessed before and after EVERY source (2M whole-KB traversals for an M-source import), turning
-    # large contributions into avoidable quadratic work. A batch is one optimistic transaction and
-    # now has one epistemic diff; its last add-source log entry owns that diff.
-    before = assess(kb)
-    last_added_log = None
+    queued = dups = 0
     for d in deltas:
-        rep = merge_delta(kb, d)
-        if rep.get("offTopic"):
-            off += 1
-        elif rep.get("duplicate"):
+        src = d["source"]
+        position = str(src.get("position") or "").strip()
+        pv = (src.get("provenance") or {}).get("position") or {}
+        src["modelAgreement"] = {
+            "models": 0, "flagged": True, "reviewReason": "public-unverified-contribution",
+            "positionVote": {position: 1},
+            "proposals": [{"position": position, "votes": 1,
+                           "quote": pv.get("quote") or "", "confidence": None}],
+        }
+        if review.queue_for_review(kb, d) is None:
             dups += 1
-        elif rep.get("addedSource"):
-            added += 1
-            if kb.get("log"):
-                last_added_log = kb["log"][-1]
-    from engine.merge import resolve_pending_refs
-    resolve_pending_refs(kb)                          # second pass: NEW-SRC forward refs in this batch
-    if last_added_log is not None:                    # persist one complete transaction diff
-        last_added_log["diff"] = diff_assessments(before, assess(kb))
-        last_added_log["batchSize"] = added
+        else:
+            queued += 1
+    if not queued:
+        return {"queued": 0, "duplicates": dups, "version": base}
     try:
         version = store.save_kb(qid, kb, base)
     except store.Conflict:
         return {"error": "someone else updated this question — reload and re-import"}
-    store.log_contribution(qid, contributor or "anonymous", "add-sources",
-                           "{} added, {} duplicate, {} off-topic".format(added, dups, off))
-    return {"added": added, "duplicates": dups, "offTopic": off, "version": version}
+    store.log_contribution(qid, contributor or "anonymous", "queue-sources",
+                           "{} queued for review, {} duplicate".format(queued, dups))
+    return {"queued": queued, "duplicates": dups, "version": version}
 
 
 class Handler(BaseHTTPRequestHandler):

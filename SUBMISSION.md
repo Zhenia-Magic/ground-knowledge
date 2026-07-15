@@ -1,6 +1,6 @@
 # Ground Knowledge — submission
 
-*A living, recomputing knowledge base that weights research disputes by **independent evidence**, not source count — and is hardened against being gamed by volume, echo, or circular citation.*
+*A living, recomputing knowledge base that maps **confirmed evidence-root coverage** instead of source count — and is hardened against volume, echo, circular citation, and support-edge laundering.*
 
 **Live, no setup, no API key → [groundknowledge.org](https://groundknowledge.org)**
 **Repo → https://github.com/Zhenia-Magic/ground-knowledge**
@@ -14,17 +14,17 @@
    python eval/run_benchmark.py
    ```
    It prints, per case: *structure recall* against a hand-written gold, the *collapse* (raw source
-   count → independent bases), the *crux taxonomy*, and an *executed* adversarial-robustness contract.
+   count → confirmed-root coverage), the *crux taxonomy*, and an *executed* adversarial contract.
    Or run `python cli.py demo` for the same plus a per-case assessment and links to the live viewer.
 
 2. **Read three worked cases** (open on the live site or `python cli.py assess cases/<case>.kb.json`):
-   - **COVID** — `cases/covid.kb.json` — [origin of SARS-CoV-2](https://groundknowledge.org/q/ac81b4cae8d0). Watch the zoonotic position's 15 sources collapse to ~5 independent bases; the shared Chinese market dataset, overlapping author group, and recycled advocacy documents fold into single roots.
-   - **Eggs** — `cases/eggs.kb.json` — [do eggs raise CVD risk?](https://groundknowledge.org/q/04329878656c). The literature reduces to ~4–5 genuinely distinct strands; industry funding is surfaced as a crux.
-   - **Black holes** — `cases/blackholes.kb.json` — [could the LHC destroy Earth?](https://groundknowledge.org/q/c6c6ad01ec11). A near-settled question where the "No risk" position rests on **four distinct theoretical safety arguments** modelled as first-class `argument`/`observation` roots (production impossibility, Hawking evaporation, accretion timescale, empirical dense-star bound) — so its independence count reflects the *layered* safety case, not a single empirical dataset. The *residual* concern (the safety argument itself might be wrong) is surfaced as a one-sided load-bearing crux.
+   - **COVID** — `cases/covid.kb.json` — [origin of SARS-CoV-2](https://groundknowledge.org/q/ac81b4cae8d0). The current artifact shows 13 zoonotic sources → **5.0** confirmed-root coverage, 7 laboratory-origin → **3.5**, and 6 unresolved → **3.0**.
+   - **Eggs** — `cases/eggs.kb.json` — [do eggs raise CVD risk?](https://groundknowledge.org/q/04329878656c). The three positions show 4 → **4.0**, 9 → **5.0**, and 7 → **4.0**; industry funding is surfaced separately from coverage.
+   - **Black holes** — `cases/blackholes.kb.json` — [could the LHC destroy Earth?](https://groundknowledge.org/q/c6c6ad01ec11). The "No risk" position has 11 sources and **4.0** confirmed-root coverage across production impossibility, Hawking evaporation, accretion timescale, and the empirical dense-star bound. This is a map of the layered safety case, not a quality-weighted verdict. The *residual* concern is surfaced as a one-sided load-bearing crux.
 
 3. **Read the two core functions** — this is a ≤2-page algorithm, not a black box:
-   - `engine/roots.py` → `resolve()` — resolves every source to the primary evidentiary **roots** it depends on, collapses echo / cohort-reuse / circular citation, and admits a root to the count only when it is **confirmed per edge**.
-   - `engine/assess.py` → `independence()` and `cruxes()` — turns roots into the headline *effective independent bases* per position, and surfaces *what matters*.
+   - `engine/roots.py` → `resolve()` — separates root-identity trust from source→root support-edge trust, resolves admitted edges, and collapses cohort reuse / echo / circular citation.
+   - `engine/assess.py` → `independence()` and `cruxes()` — computes *confirmed-root coverage* and surfaces *what matters*. The internal key remains `nEff` for compatibility.
    - The one-page pseudocode is in **[`ALGORITHM.md`](ALGORITHM.md)**.
 
 4. **Check the honest limitations** — `MECHANISM.md §8`. We publish the open problems rather than hide them.
@@ -43,7 +43,9 @@ Deep-research prose *notices* these correlations qualitatively, in a good report
 
 ## What Ground Knowledge does
 
-It aggregates like Ground News — but **inverts the aggregator's neutrality**. Instead of counting heads and staying agnostic, it resolves every source to the primary **evidentiary roots** it ultimately rests on, and reports, per position, the **effective number of independent bases** (`nEff`): each distinct root counted **once**, no matter how many sources pile onto it. With root identity fixed, adding a source to an existing root moves `nEff` **nowhere**. Source-weighted concentration is shown separately and may rise or fall depending on which root receives the source; a graph correction (merging aliases or revealing a citation loop) can legitimately lower `nEff`.
+Instead of counting heads, it resolves each admitted support link to the **evidentiary roots** underneath it and reports, per position, **confirmed-root coverage** (`nEff`): each distinct admitted root counted once with declared 0.5 discounts for review-only and non-human grounding. With root and edge identity fixed, adding a source to an existing root moves `nEff` nowhere. Source incidence, study design, funding, method monoculture, and quote quality are shown separately.
+
+This number is a **coverage and de-duplication diagnostic, not a support, evidence-quality, effect-size, confidence, or truth score**. Seven weak roots are not necessarily better evidence than one decisive trial; distinct roots can share the same confounder. The viewer labels it accordingly and displays each root's one-time coverage credit separately from source incidence.
 
 The number is produced by one deterministic, stdlib-only function over a portable JSON knowledge base. The viewer renders that function's output; it never recomputes, so there is no drift between pipeline and UI.
 
@@ -57,38 +59,39 @@ The pipeline maps onto FLF's three-layer stack and produces a **living** KB (not
 
 3. **Assessment** (`engine/roots.py`, `engine/assess.py`) — pure, deterministic, no LLM. Resolves the derivation graph to its roots and computes every number the tool reports: independence, concentration, funding skew, method-monoculture, cruxes, blindspots, and a structured **diff** of what each update changed.
 
-4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed) where anyone can add a question or contribute sources; every contribution is append-only and logged.
+4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; full-KB pushes are token-gated and optimistic-version-locked.
 
 ### The independence engine (the heart)
 
 `resolve()` builds the source→source citation graph, collapses each **strongly-connected component** via Tarjan's algorithm, then resolves every source — through evidence-base and citation edges alike — to the roots underneath it. A grounded cycle resolves into its real roots; an ungrounded loop remains visible and flagged but contributes **zero** headline evidence.
 
-- **Naming plus admission earns a root.** An ungrounded "primary" source that names *no* dataset collapses into one pooled "unnamed first-hand voice" per position. A distinct root needs a specific named base *and* an auditable confirmation; generic labels and unverified names remain proposed.
-- **Secondary echo pools.** All ungrounded reviews/commentary for a position collapse into one "secondary voice."
+- **Naming plus admission earns coverage.** An ungrounded source collapses into a visible position-level assertion marker with **zero** coverage credit. A distinct root needs a specific named base, confirmed root identity, and an admitted support edge.
+- **Secondary echo pools at zero.** Ungrounded reviews/commentary collapse into one visible marker but do not become an evidence base merely by existing.
 - **Roots count once.** `nEff` sums distinct-root strengths; piling sources onto an already-counted root cannot move it. A randomized fixed-graph property test checks that adding a source with only outgoing edges never lowers `nEff`; separately, graph corrections are allowed to remove false independence.
 
-### Auditable, per-edge root confirmation (recent hardening)
+### Separate, auditable root and support-edge admission (recent hardening)
 
-A named dataset is not trusted just because a source claims it. A root is **provisional** (contributes **zero** to the headline count) until it is confirmed one of two auditable ways:
+A named dataset is not trusted just because a source claims it. The implementation makes two separate decisions:
 
-- **curator confirmation** — the base carries a required `{status, method, by, ts}` record and normally a direct supporting `source`; likely aliases are blocked unless the curator records why they are distinct; **or**
-- **a verified edge** — a source that was actually fetched carries a dependency quote that both matches the fetched text and identifies **that specific evidence base**.
+- **Root identity:** is this a real, distinct evidence base? A curator record or a verified, specifically identifying dependency quote can confirm it.
+- **Support edge:** does this particular source actually rely on that base/citation? The edge needs its own verified dependency quote or `{status, method, by, ts}` curator admission. `python cli.py confirm-edge ...` is the auditable human fallback.
 
-Confirmation is strictly **per edge**: a verified quote admits only the dataset it annotates — never a sibling dataset on the same source, and never a root reached only by inheritance through a citation edge. Generic names such as “cohort” cannot bind ordinary methods prose, and automatically verified lexical lookalikes admit at most one root while the collision is surfaced. This closes real whitewashes and means a public contributor cannot mint independent support by fabricating dataset names on the paste-back path — fabricated roots stay **visible but quarantined**.
+An already confirmed root therefore cannot be attached to another camp by an unreviewed source. Generic names such as “cohort” cannot bind ordinary methods prose; automatically verified lexical lookalikes admit at most one root while the collision is surfaced. Existing case relationships carry explicit `legacy-migration` edge records that disclose they were adopted from the curated artifact and are **not** quote verification.
 
 ## Adversarial robustness — a contract we *execute*
 
-The robustness claim is not prose; the benchmark runs seven attacks on every case:
+The robustness claim is not prose; the benchmark runs eight attacks on every case:
 
-- **+12 ungrounded echo** sources under the strongest position → `nEff` rises by **at most 1.0** (the twelve collapse to a single pooled voice), not +12.
+- **+12 ungrounded echo** sources under the strongest position → `nEff` moves by **0.0**; the pooled assertion marker is visible at zero.
 - **+12 fabricated named datasets** on the unverified paste-back path → `nEff` moves by **0.0** (visible as proposed roots, quarantined until confirmed), versus a naive count of +12.
 - **one real dependency quote copied onto a fabricated sibling edge** → only the dataset the quote actually names enters `nEff`; the sibling stays proposed.
-- **a 12-source circular citation ring** → it is flagged and contributes **0.0**.
+- **a 12-source unreviewed circular citation ring** → its source links are blocked pending admission and contribute **0.0**; an admitted ungrounded ring is collapsed by the SCC detector.
 - **a known alias of an existing root** → it resolves to that root and contributes **0.0** additional independence.
 - **a generic fetched label** (`Cohort`) → ordinary methods prose does not identify a root; **0.0** gain.
 - **two newly proposed lexical aliases** named by one real sentence → at most one enters `nEff`; the collision is flagged for curation.
+- **all confirmed roots from one camp attached to another through an unreviewed source** → the target camp moves by **0.0**; the unsupported links remain visible.
 
-All seven must hold for every case or the benchmark fails. They pass. A genuinely novel semantic paraphrase can still evade the lexical gate; optional embeddings and human review reduce, not eliminate, that risk.
+All eight must hold for every case or the benchmark fails. They pass. A genuinely novel semantic paraphrase can still evade the lexical gate; optional embeddings and human review reduce, not eliminate, that risk.
 
 ## Surfacing what matters — the crux taxonomy
 
@@ -99,23 +102,23 @@ A single "camps disagree by a lot" test misses most of the factors that actually
 - **oneSidedLoadBearing** — one camp's case rests on a factor no other camp has engaged (e.g. "the safety argument itself may be wrong").
 - **missingCounterassessment** — a decisive factor a camp has left unanswered.
 
-The headline crux count stays tight (cross-camp disagreement or shared pivot) so it does not balloon to "every factor", while the one-sided and unanswered factors are surfaced separately. All hand-written gold crux concepts appear in the visible matrices (**3/3 per case**); promotion is intentionally stricter (e.g. COVID surfaces 2 headline cruxes of 7 factors, not 7).
+The headline crux count stays tight (cross-camp disagreement or shared pivot) so it does not balloon to "every factor", while the one-sided and unanswered factors are surfaced separately. All hand-written gold crux concepts appear in the visible matrices (**3/3 per case**); promotion is intentionally stricter (e.g. COVID currently surfaces 3 headline cruxes of 7 factors, not 7).
 
 ## Does it actually help? (honest evaluation)
 
 The benchmark ([`eval/run_benchmark.py`](eval/run_benchmark.py)) runs three checks and **verifies the baselines it compares against** (files + SHA-256 hashes), so a boolean is never taken as evidence. Two independent deep-research baseline sets — **ChatGPT Deep Research** and **Claude Code / Opus 4.8** — are captured with provenance and hash-checked.
 
 - **Structure recall** (positions / key roots / cruxes surfaced) is scored against a small, deliberately non-exhaustive gold per case.
-- **Collapse** quantifies the headline: e.g. COVID's *zoonotic* position — **15 sources → ~5 independent bases**; *lab-associated* — **8 → 3.5**. Eggs' *no-association* — **9 → 4**.
+- **Collapse/coverage** quantifies the headline: COVID **13 → 5.0**, **7 → 3.5**, **6 → 3.0**; black holes **11 → 4.0**, **4 → 2.0**; eggs **4 → 4.0**, **9 → 5.0**, **7 → 4.0**. [`eval/RESULTS.md`](eval/RESULTS.md) is generated from the benchmark, and CI fails if it is stale.
 - **Adversarial robustness** is executed, not asserted (above).
 
 **Comparative recall (honest).** The benchmark also scores the ChatGPT / Claude reports against the *same* small, developer-authored gold, as a keyword-recall proxy (with declared paraphrase synonyms). The result is **near-parity** — a good deep-research report surfaces the same positions, roots, and crux concepts GK does. Structure recall counts concepts visible anywhere in GK's factor matrix; the separate crux-type counts show which ones the detector actually promotes. This diagnostic is not held-out evaluation or evidence of reader uplift; hashes establish capture integrity, not output quality.
 
-**What we do NOT claim.** The Claude/ChatGPT baselines are strong comparators: they *do* notice reused evidence, funding, cruxes, and source overlap qualitatively. So the honest advantage is narrower than "deep research misses correlation" — it does not. What Ground Knowledge adds is a **structured, recomputable artifact**: an explicit root graph, a deterministic collapse count, a versioned update **diff**, an executable adversarial contract, and portable citations another team can extend. The arithmetic is deterministic and gaming-resistant but **not self-certifying**: an incorrect curator confirmation or omitted edge can still move the numbers wrongly. The strongest next evidence is a blinded reader study; the preregistration-ready protocol, response schema, and deterministic assignment generator are included in [`eval/reader_study/`](eval/reader_study/), but no reader outcome is claimed before it is run.
+**What we do NOT claim.** The Claude/ChatGPT baselines are strong comparators: they *do* notice reused evidence, funding, cruxes, and source overlap qualitatively. So the honest advantage is narrower than "deep research misses correlation" — it does not. What Ground Knowledge adds is a **structured, recomputable artifact**: an explicit root graph, a deterministic coverage/de-duplication count, a versioned update **diff**, an executable adversarial contract, and portable citations another team can extend. The arithmetic is deterministic and gaming-resistant but **not self-certifying**: an incorrect curator decision or omitted edge can still move the numbers wrongly. No reader study is claimed for this submission. [`eval/reader_study/`](eval/reader_study/) is future-work scaffolding only, not evidence of uplift.
 
 ## What is genuinely novel
 
-Counting independent data sources rather than papers is not itself new (meta-analysis handles it as a "unit-of-analysis" problem). The contribution is a **deterministic, recomputable metric over structured empirical-causal disputes**, combining echo/cohort/cycle resolution, per-edge auditable admission, and an executable adversarial contract. Labelling and confirmation remain partly human; this is not claimed to be automatic over arbitrary disputes.
+Counting underlying data sources rather than papers is not itself new (meta-analysis handles it as a unit-of-analysis problem). The contribution is the **portable updateable artifact and trust boundary**: deterministic root resolution, separate root/edge admission, visible zero-credit assertions, crux/funding/method audits, versioned diffs, and an executable adversarial contract. Labelling and curation remain partly human; this is not claimed to be automatic or calibrated over arbitrary disputes.
 
 ## Reproduce in 60 seconds
 

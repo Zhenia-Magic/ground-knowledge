@@ -210,6 +210,9 @@ def strip_untrusted_verification(delta):
                 provenance.pop("verifiedQuote", None)
                 provenance.pop("quoteVerification", None)
         for edge in source.get("restsOn") or []:
+            if isinstance(edge, dict):
+                # Admission is a curator/trusted-migration decision, never a client assertion.
+                edge.pop("admission", None)
             provenance = edge.get("provenance") if isinstance(edge, dict) else None
             if isinstance(provenance, dict):
                 provenance.pop("verifiedQuote", None)

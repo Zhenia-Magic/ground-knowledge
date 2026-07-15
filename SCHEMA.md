@@ -23,14 +23,14 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                                 //   underlying EVIDENCE BASES (the key stays "datasets" for back-compat).
                                 //   kind = dataset | experiment | observation | argument | model |
                                 //   document (absent = dataset). argument/model/document are THEORETICAL
-                                //   roots — first-class independent bases, exempt from the empirical
+                                //   roots — first-class coverage bases, exempt from the empirical
                                 //   (non-human population) discount; proposition states the claim.
                                 //   confirmation = {status: confirmed|provisional|disputed,
                                 //   method: curator|verified-edge, by, source?, ts, note?} -- an
                                 //   AUDITABLE record of HOW the root was admitted (replaces the bare
                                 //   legacy "confirmed": true, still read for old KBs). A root also
                                 //   confirms dynamically when a fetched source's PER-EDGE restsOn
-                                //   quote verified exact/fuzzy AND names THAT dataset's label/alias.
+                                //   quote has a current hashed exact verification AND names THAT dataset's label/alias.
                                 //   An UNCONFIRMED root
                                 //   (only unverified/paste-back input) is visible but contributes
                                 //   ZERO headline nEff until confirmed -- see engine/roots (admission)
@@ -57,11 +57,14 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                    "restsOn": [datasetId | "src:sourceId"          // evidentiary roots: datasets
                                 //   AND/OR other sources (derivation edges) -> independence +
                                 //   circular-corroboration detection (see MECHANISM.md).
-                     | {ref: datasetId, provenance: {quote, verifiedQuote,
-                                                     quoteVerification?}} ],  // OR an EDGE OBJECT
+                     | {ref: datasetId | "src:sourceId",
+                        provenance?: {quote, verifiedQuote, quoteVerification?},
+                        admission?: {status: confirmed,
+                                     method: curator | legacy-migration,
+                                     by, ts, note?}} ],              // OR an EDGE OBJECT
                                 //   carrying THIS edge's own dependency quote, so a verified quote
-                                //   confirms only the one dataset it annotates -- never a sibling
-                                //   edge, never an inherited root (engine/roots._edges)
+                                //   confirms only the one dataset it annotates. admission records
+                                //   that THIS source→root/citation support link was reviewed.
                    "textDepth",                    // full | abstract | partial | unknown -- how
                                 //   much of the source the labeller actually saw (engine/verify.py)
                    "provenance": { field: {quote, extractionConfidence, verifiedQuote?,
@@ -71,7 +74,7 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
                    "modelAgreement"?: { models, positionAgreement, flagged,   // multi-model ensemble
                                         disagreedFields, positionVote, proposals },  //   report (ingest/ensemble.py)
                    "addedIn": version } ],                    // powers the diff
-  "pendingReview": [ { "id", "title", "url", "year", "abstract",  // ensemble-disagreement queue:
+  "pendingReview": [ { "id", "title", "url", "year", "abstract",  // public/untrusted + ensemble review queue:
                        "proposals": [{position, votes, quote, confidence}],  //   sources NOT yet
                        "delta", "ts" } ],                     //   merged, awaiting a human decision
                                 //   (engine/review.py) -- counted in NO metric until resolved
@@ -101,13 +104,16 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    (`Finnish_cohort_Knekt_1996_4697_women`) become readable names on creation.
 
 2. **Determinism & cost.** All assessment (`engine/assess.py`) is pure functions of the KB.
-   Ingestion is O(new sources); recompute is O(whole KB) but just counting. Adding the
-   1000th source never re-reasons over the first 999. That is the scalability story.
+   Ingestion is O(new sources); recompute is O(whole KB) but just counting. Prompt entity/source
+   context is bounded and uses deterministic lexical retrieval (configurable `EPISTEMIC_CONTEXT_*`
+   caps), so the 1000th source does not make every model prompt grow without limit. No large-corpus
+   performance study is claimed.
 
 3. **Provenance on load-bearing claims.** Current ingestion requests a `quote` +
    `extractionConfidence` for the position, every dataset-dependency edge, and factor weights.
-   Source-citation edges and categorical metadata are not claimed to be quote-backed. Legacy/seed
-   cases may carry strings or authored quotes and are labelled accordingly.
+   Source-citation edges require explicit curator admission before propagating roots. Categorical
+   metadata is not claimed to be quote-backed. Legacy case relationships carry explicit
+   `legacy-migration` records that mean "adopted from the curated artifact," not quote verification.
 
    A quote is only as trustworthy as what the labeller actually saw. Ingestion does not always
    get the full paper: `ingest/extract.py` tries open full text (OA PDF, Europe PMC fullTextXML,
@@ -134,7 +140,7 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    source's high/medium/low vote only when `is_verified_exact` binds its displayed sentence to the
    fetched-text hash. Unverified wording remains in provenance for review but cannot create a crux
    cell. A `contextSources` record can support a methodological factor (for example, a funding-bias
-   review) without being misrepresented as a position source or inflating independence metrics.
+   review) without being misrepresented as a position source or inflating root-coverage metrics.
 
    Dependency provenance is stricter than ordinary field provenance: every dataset edge carries its
    own quote, and root admission requires both a text match and that the quote name the edge's
@@ -168,9 +174,9 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    code — so it is per-domain by construction while staying small enough for blindspots to mean
    something. The ingestion prompt shows the model the current vocabulary so it reuses terms.
    Evidence vocabulary terms may optionally carry `tier` (primary vs secondary for the
-   independence engine) and `methodClass` (the correlated-error family used only by the
+   root-coverage engine) and `methodClass` (the correlated-error family used only by the
    method-monoculture audit; see `MECHANISM.md` §12). A source-level `methodClass` can override the
-   vocabulary for curated cases, but it does not change `restsOn` or the primary independence
+   vocabulary for curated cases, but it does not change `restsOn` or the primary root-coverage
    metric.
    `funding` is a **closed** vocabulary (`BASE_FUNDING`: Government/public, Nonprofit/charity,
    Academic/institutional, Industry, Advocacy, Undisclosed) — `merge._resolve_funding` snaps to
@@ -184,17 +190,17 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    shared high pivots, one-sided high assumptions, unanswered high factors, and mild contests.
 
 5. **Adversarial robustness = the thesis, enforced at ingestion + assessment.** Defences span
-   `engine/merge.py` and the independence engine `engine/roots.py` (full spec: `MECHANISM.md`):
+   `engine/merge.py` and the root-coverage engine `engine/roots.py` (full spec: `MECHANISM.md`):
    (a) **alias-splitting** — incoming names match exact/learned aliases; automatically verified
    lexical lookalikes admit at most one root; lexical/acronym and optional embedding checks suggest
    novel paraphrases, and confirmation gates likely duplicates; (b) **duplicate sources** — same url, or same
    **title+year even under a different url**, are refused; (c) **off-topic** sources are judged at
-   labelling time and refused at merge; (d) the independence metric counts **independent evidentiary
-   roots**, not sources — re-used cohorts and review/meta-analysis **echo** collapse, while a pure
+   labelling time and refused at merge; (d) confirmed-root coverage counts **admitted, deduplicated
+   evidentiary roots**, not sources — re-used cohorts and review/meta-analysis **echo** collapse, while a pure
    **circular citation** loop (A↔B) is visible and flagged but counts **zero**. Animal/in-vitro or
    review-only roots count at half. Provisional/unverified roots remain visible but count zero.
    Each confirmed distinct root then counts **once**, no matter how many sources rest on it —
-   so flooding with correlated/derivative evidence cannot move independence. With graph identity
+   so flooding with correlated/derivative evidence cannot move coverage. With graph identity
    fixed, only a genuinely new root or grounding upgrade raises it; graph corrections can lower it
    by merging aliases or revealing a cycle. Verified in `tests/test_independence.py`, including a
    randomized fixed-graph property test and an explicit pending-edge cycle correction.

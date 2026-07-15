@@ -85,7 +85,7 @@ python cli.py build cases/eggs.kb.json  # bake the viewer
 open viewer/index.html                                      # or double-click it
 ```
 
-The viewer has four tabs — Coverage, Divergence, Independence, Changes (see §D).
+The viewer has four tabs — Coverage, Divergence, Root coverage, Changes (see §D).
 
 ---
 
@@ -150,7 +150,7 @@ viewer's **Changes** tab. Duplicate sources (same url, or title+year) are refuse
 |------|--------------------|-----------|
 | **Coverage & warnings** | Who holds which position? Where's the industry money? | the **funding-skew** banner — which camp industry funding favours; a **shared-method-bias** banner when many sources lean on the same correlated-error family |
 | **Divergence matrix** | What do the camps *actually* disagree on? | rows badged **CRUX** (spread ≥2); the rest is hidden agreement |
-| **Independence & bias** | Is a consensus real, or the same data counted twice? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset; the same method-bias warning, plus an **unverified-quote** warning when a full-text source's quote doesn't match its fetched text |
+| **Root coverage & bias** | Is the source list concentrated on the same admitted evidence bases? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset; the same method-bias warning, plus an **unverified-quote** warning when a full-text source's quote doesn't match its fetched text |
 | **Changes** | What did each new source do to the picture? | concentration/​distribution shifts, new cruxes, blindspots opening/closing |
 
 Reading rules of thumb:

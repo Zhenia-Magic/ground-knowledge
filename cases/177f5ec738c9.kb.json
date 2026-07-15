@@ -1308,6 +1308,13 @@
               "normalizedCharStart": 11753
             },
             "extractionConfidence": 0.8
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1383,6 +1390,13 @@
               "normalizedCharStart": 122
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1465,6 +1479,13 @@
               "normalizedCharStart": 504
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1541,6 +1562,13 @@
               "normalizedCharStart": 233
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1617,6 +1645,13 @@
               "normalizedCharStart": 639
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1765,6 +1800,13 @@
               "normalizedCharStart": 4445
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1838,6 +1880,13 @@
               "normalizedCharStart": 11303
             },
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -1921,6 +1970,13 @@
               "normalizedCharStart": 208
             },
             "extractionConfidence": 0.8
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2107,9 +2163,25 @@
               "normalizedCharStart": 88
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         },
-        "src:src_twenty_five_years_of_research_on_violence_in_2013"
+        {
+          "ref": "src:src_twenty_five_years_of_research_on_violence_in_2013",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "evidence": "Narrative/Commentary",
       "position": "pos_increases_aggression",
@@ -2182,6 +2254,13 @@
               "normalizedCharStart": 49
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2312,6 +2391,13 @@
               "normalizedCharStart": 231
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2368,7 +2454,16 @@
       ],
       "funding": "Undisclosed",
       "restsOn": [
-        "ds_hostile_expectation_bias_experiment"
+        {
+          "ref": "ds_hostile_expectation_bias_experiment",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "evidence": "Experimental (RCT)",
       "position": "pos_increases_aggression",
@@ -2427,7 +2522,16 @@
       ],
       "funding": "Undisclosed",
       "restsOn": [
-        "ds_ferguson_2008_two_study_report"
+        {
+          "ref": "ds_ferguson_2008_two_study_report",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "evidence": "Observational",
       "position": "pos_no_clear_effect",
@@ -2503,6 +2607,13 @@
               "normalizedCharStart": 600
             },
             "extractionConfidence": 0.8
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2578,6 +2689,13 @@
               "normalizedCharStart": 478
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2660,6 +2778,13 @@
               "normalizedCharStart": 132
             },
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2786,6 +2911,13 @@
               "normalizedCharStart": 612
             },
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -2862,6 +2994,13 @@
               "normalizedCharStart": 184
             },
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3044,6 +3183,13 @@
               "normalizedCharStart": 609
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3129,6 +3275,13 @@
               "normalizedCharStart": 942
             },
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3295,9 +3448,36 @@
       ],
       "funding": "Government/public",
       "restsOn": [
-        "ds_anderson_et_al_2010_meta_analysis_of_violent",
-        "ds_angrybirdsmeta_ferguson2015",
-        "ds_prescott_sargent_hull_2018_longitudinal_meta"
+        {
+          "ref": "ds_anderson_et_al_2010_meta_analysis_of_violent",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_angrybirdsmeta_ferguson2015",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_prescott_sargent_hull_2018_longitudinal_meta",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "evidence": "Evidence-synthesis",
       "position": "pos_increases_aggression",
@@ -3379,6 +3559,13 @@
               "normalizedCharStart": 3791
             },
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],
@@ -3493,9 +3680,36 @@
       ],
       "funding": "Academic/institutional",
       "restsOn": [
-        "src:src_technical_report_on_the_review_of_the_violen_2015",
-        "ds_prescott_sargent_hull_2018_longitudinal_meta",
-        "ds_angrybirdsmeta_ferguson2015"
+        {
+          "ref": "src:src_technical_report_on_the_review_of_the_violen_2015",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_prescott_sargent_hull_2018_longitudinal_meta",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_angrybirdsmeta_ferguson2015",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "evidence": "Evidence-synthesis",
       "position": "pos_increases_aggression",
@@ -3570,6 +3784,13 @@
               "normalizedCharEnd": 741,
               "normalizedCharStart": 553
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
           }
         }
       ],

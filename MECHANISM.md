@@ -8,10 +8,9 @@ us.*
 
 ## 0. The one-sentence idea
 
-> A position is only as strong as the number of **genuinely independent pieces of evidence** behind
-> it — not the number of documents that assert it. The mechanism counts *independent evidentiary
-> roots*, collapsing everything that merely echoes, summarizes, or circularly cites the same
-> underlying evidence.
+> Source volume is not evidence coverage. The mechanism maps **distinct admitted evidentiary roots**
+> behind each position, collapsing documents that reuse, summarize, or circularly cite the same
+> underlying basis. The resulting coverage count is not itself a verdict on evidence quality.
 
 Counting sources rewards whoever publishes (or re-publishes) most. We count *roots*.
 
@@ -45,7 +44,8 @@ all three.
 | **Tier** | Does the source *make* evidence or *talk about* evidence? | **Primary** (makes) vs **Secondary** (talks about). |
 
 The key move: **sources and roots are different kinds of node.** Many sources can share one root.
-Independence is a property of *roots*, counted *per position*.
+Root identity and support-edge admission are recorded per source/position; method independence is a
+separate audit rather than assumed from root count.
 
 ---
 
@@ -59,9 +59,9 @@ majority vote is combined deterministically — `ingest/ensemble.py`) records:
    - **Primary** tiers *make* evidence: `Observational`, `Experimental (RCT)`, `Mechanistic`.
    - **Secondary** tiers *talk about* evidence: `Meta-analysis` / `Systematic review`,
      `Narrative/Commentary`, `Evidence-synthesis`, `Expert advisory`, `Institutional statement`,
-     `Editorial/Perspective`. A meta-analysis is a *synthesis* — it only counts as independent if it
-     **tags the trials it pools** (then it resolves through them, tier aside); an untagged one is
-     echo and collapses into the position's one secondary voice. (This is the common real failure:
+     `Editorial/Perspective`. A meta-analysis is a *synthesis* — it earns root-coverage credit only
+     for **admitted links to the trials it pools** (then it resolves through them, tier aside); an
+     untagged one is echo and collapses into a visible, zero-credit secondary pool. (This is the common real failure:
      ten meta-analyses of the same overlapping RCTs are one look, not ten.)
    - Tier is a property attached to each vocabulary term, not guessed per source — so it is
      deterministic and auditable, and a case can override it.
@@ -86,11 +86,13 @@ majority vote is combined deterministically — `ingest/ensemble.py`) records:
 
 ---
 
-## 4. How independence is computed (the algorithm, in plain language)
+## 4. How confirmed-root coverage is computed (the algorithm, in plain language)
 
 ### 4.1 Build the dependency graph
-Nodes are **sources** and **roots**. For each source, draw an edge to every thing in its
-`restsOn` (a root, or another source). Self-edges (a source resting on itself) are dropped.
+Nodes are **sources** and **roots**. A stored `restsOn` assertion becomes a traversable edge only
+when that particular support link has a verified, specifically identifying dependency quote or an
+explicit curator/trusted-migration admission. Unadmitted links remain stored and visible at zero.
+Self-edges are dropped.
 
 ### 4.2 Resolve every source to its **root set**
 Walk each source's edges down to the primary evidence it ultimately depends on:
@@ -105,8 +107,7 @@ Walk each source's edges down to the primary evidence it ultimately depends on:
     unverifiable assertion and pools, symmetric with reviews. *(Earlier this minted a per-source
     root "on benefit of the doubt" — the echo-as-primary flooding hole; see §7, §8.1.)*
   - **secondary** tier → it has **no root of its own**. It joins this position's single
-    **ungrounded-secondary pool** — one shared pseudo-root per position. (This is the
-    "collapse all echo to one voice" decision.)
+    **ungrounded-secondary pool** — one shared visibility marker per position.
   - an **unrecognised** evidence label resolves as **secondary** (conservative — a coined/opinion
     label can't mint a primary root; a new primary *design* is opted in via `kb.vocab` tier).
 
@@ -123,7 +124,7 @@ sources that mutually depend):
   to one visible cycle marker, contributes **zero** to `nEff`, and raises a
   `circularCorroboration` flag naming the loop. This is the adversarial pattern, surfaced loudly.
 
-### 4.4 Count effective independent roots per position
+### 4.4 Count confirmed-root coverage per position
 For each position, take all its sources, map each to its resolved root(s), and count **each
 distinct root exactly once, at its strength**:
 
@@ -134,18 +135,19 @@ strength = 0.0   if the root is PROVISIONAL — not yet confirmed by a fetched s
                  per-edge `restsOn` quote verified against its text **and identifies the base's
                  specific label/learned alias**, or by an explicit curator decision.
                  It remains visible as a proposed base but is quarantined from headline nEff.
-         = 0.0   for a pure, ungrounded circular-citation marker (visible + flagged)
+         = 0.0   if this position's source→root support edge is unadmitted, even when the root's
+                 identity was confirmed elsewhere
+         = 0.0   for pure ungrounded circular-citation and pooled assertion markers (visible)
          = 1.0   for a confirmed real root (a NAMED dataset / cohort / experiment)
          × 0.5   if the root is known only via secondary sources (§6.5)
          × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
-         = 1.0   for the pooled secondary voice or pooled unnamed-primary voice
 ```
 
-This is the "effective number of independent looks," as a full-strength-equivalent root count.
-One root used by everyone → nEff = 1. Ten roots → nEff = 10, whether each is used once or one of
-them is used a hundred times. **How many sources land on each root is deliberately excluded from
-this number** — it feeds the separate *concentration* display ("82% of this position's sourcing
-leans on one cohort"), which is where a pile-up honestly belongs.
+This is **confirmed-root coverage**, a full-strength-equivalent root count. One admitted root used
+by everyone → nEff = 1. Ten admitted roots → nEff = 10, whether each is used once or one is used a
+hundred times. It is deliberately **not** a support, quality, confidence, effect-size, or truth
+score: one decisive trial may outweigh several weak roots, and distinct roots may share a bias.
+Source incidence feeds the separate concentration display.
 
 *Why not a share-based concentration index (Herfindahl) over the per-root source tallies?* Because
 any formula that reads per-source tallies is movable by adding worthless sources: echoing reviews
@@ -159,9 +161,9 @@ can legitimately lower it: merging aliases or resolving a pending edge that reve
 
 ### 4.5 The two bars the reader sees
 - **By source count** — the naive tally (kept, honestly labelled as naive).
-- **By independent evidence** — sized by `nEff` over resolved roots.
-- Plus, always, **the derivation shown**: "25 sources → 7 independent bases (15 secondary reviews
-  counted as 1 voice; furin-cleavage + proximal-origin share the Andersen dataset)." The number is
+- **By confirmed-root coverage** — sized by `nEff` over admitted resolved roots.
+- Plus, always, **the derivation shown**: "25 sources → 7.0 confirmed-root coverage; 15 ungrounded
+  reviews collapse to a visible zero-credit marker; furin-cleavage + proximal-origin share a root." The number is
   never a black box.
 
 ---
@@ -169,7 +171,7 @@ can legitimately lower it: merging aliases or resolving a pending edge that reve
 ## 5. Worked examples
 
 **E1 — Echo.** Position has 1 primary study (dataset D) + 12 narrative reviews, all `restsOn`
-empty, all secondary. → roots = {D, secondary-pool}. nEff = 2. The 12 reviews are one voice.
+empty. → markers = {D, secondary-pool}. nEff = 1. The reviews stay visible but add zero grounding.
 
 **E2 — Echo, well-tagged.** Same, but each review `restsOn` D (we tagged what they summarize). →
 every node resolves to D. nEff = 1. Even cleaner — and no tier rule was needed.
@@ -195,8 +197,8 @@ meta-flag: "this root is read both ways" (contested evidence).
 
 1. **Ungrounded primary source** (claims original data, names no dataset) → the position's one
    **unnamed-primary pool**, not a per-source root. Mislabelling a flood of commentaries as
-   `Observational` therefore mints ONE voice, not one root each — the echo-as-primary hole is
-   closed by pooling (symmetric with reviews). A real study keeps its root by *naming* its own
+   `Observational` therefore mints one visible marker and **zero** coverage — the echo-as-primary
+   hole is closed. A real study keeps its root by *naming* its own
    data. A fabricated named dataset remains visible as a proposed root but contributes zero headline
    nEff until a fetched dependency quote verifies that specific edge **and names a specific base**, or
    a curator confirms it. Generic labels ("cohort") and lexical alias collisions are quarantined.
@@ -255,14 +257,15 @@ meta-flag: "this root is read both ways" (contested evidence).
 
 | Attack | What the attacker wants | Defense |
 |---|---|---|
-| Flood with review articles | Inflate independence with echo | Secondary tier collapses to one voice per position |
-| Flood with ungrounded "primary" rehashes (empty `restsOn`) | Mint a root each, bypassing the review collapse | Ungrounded primaries pool to one voice per position too — a distinct root needs a *named* evidence base |
+| Flood with review articles | Inflate coverage with echo | Secondary tier collapses to one visible zero-credit marker per position |
+| Flood with ungrounded "primary" rehashes (empty `restsOn`) | Mint a root each | Ungrounded primaries pool to a zero-credit marker too — a distinct root needs a named and admitted base |
 | Flood echo onto a *minority* root the position already has | Even out the per-root source shares so a share-based index reads "more independent" | nEff counts each distinct root once (§4.4) — share-shuffling is arithmetic on a number the metric doesn't use |
 | Pile junk "support" onto a **rival's** biggest root | Poison by agreement: skew their shares, tank their score | Same — presence, not tallies. The rival's nEff holds; the pile-up surfaces as *their concentration rising*, clearly labelled as a warning about correlation, not a lower independence count |
 | Re-submit one cohort under many names | Fake many independent datasets | Normalized + alias root resolution; concentration *rises*, not falls |
 | Mutual citation ring (A↔B↔C↔A) | Manufacture corroboration from nothing | SCC becomes one visible marker, contributes zero + `circularCorroboration` flag |
 | Mislabel a commentary as `Observational` (empty `restsOn`) | Mint a free independent root | Ungrounded primaries **pool to one voice per position** (like reviews); a distinct root needs a *named* evidence base; unrecognised labels default secondary; + verification pass + relevance gate |
 | Flood rehashes as `Observational`, each *naming a fabricated dataset* | Mint roots past the pool | Unverified roots remain visible but contribute **zero confirmed nEff**; a verified dependency quote must also name that edge's label/alias; false curator confirmation remains the semantic risk (§8.3) |
+| Attach an already-confirmed root to another camp | Launder trusted root identity into unearned support | Root identity and support-edge admission are separate; the unreviewed edge stays visible at zero |
 | Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
@@ -271,7 +274,7 @@ The deep property, stated precisely (and enforced by a randomized test in
 `tests/test_independence.py`): **with entity identity and existing edges fixed, adding a source with
 only outgoing edges never lowers a position's nEff; it raises it only by introducing a new confirmed
 root or upgrading an existing root's strength.** Correlated/derivative evidence lands on roots
-already counted; a first wave of ungrounded echo adds at most the two pooled voices. A graph
+already counted; any amount of ungrounded echo adds zero coverage. A graph
 correction may intentionally lower nEff: alias resolution can fold duplicate roots, and resolving a
 pending edge can reveal that apparent grounding is actually a pure zero-strength citation cycle.
 An earlier formulation (a Herfindahl index over per-root source tallies) passed the ungrounded
@@ -279,9 +282,9 @@ attacks in this table but failed the two grounded ones — found by adversariall
 against its own claims, which is why the grounded rows above exist and why the invariant is now a
 tested property rather than a slogan.
 
-What this arithmetic cannot see is whether a fetched source or curator **falsely confirms a root**
-that the evidence does not actually support. Unverified roots are quarantined at zero, closing the
-public count-inflation path; false confirmation remains edge *fabrication*, the dual of edge
+What this arithmetic cannot see is whether a fetched source or curator **falsely confirms a root or
+support edge**. Unverified roots and unadmitted support links are quarantined at zero, closing the
+public count-inflation and confirmed-root-laundering paths; false confirmation remains edge *fabrication*, the dual of edge
 *omission* in §8.3. It is a semantic labelling-integrity problem: the defenses are per-`restsOn`
 provenance, verification against fetched text, and review. Named in §8 rather than hidden.
 
@@ -291,8 +294,8 @@ provenance, verification against fetched text, and review. Named in §8 rather t
 
 1. **Tier mislabelling.** The primary/secondary discount depends on the evidence type being right.
    Calling opinion "Observational" no longer earns one root per source: without an admitted named
-   base it enters the position's single unnamed-primary pool; with an existing base it can still
-   wrongly upgrade a review-only root. *Partial defenses exist; not airtight.* This remains a lever and the
+   base it enters a zero-credit marker; with an existing base **and an admitted support edge** it can
+   still wrongly upgrade a review-only root. *Partial defenses exist; not airtight.* This remains a lever and the
    first place to attack the system. Since first draft, labelling can run as a **multi-model
    ensemble** whose field-level vote out-votes a single model's mislabel, and a genuine split on
    the position **or evidence tier** is escalated to a human (`engine/review.py`)
@@ -304,14 +307,15 @@ provenance, verification against fetched text, and review. Named in §8 rather t
 3. **Citation data is self-reported.** We only know A rests on B because the labeller said so.
    We do not crawl real citation graphs. A truly adversarial actor can *omit* a `SRC:` edge to hide
    a dependency and look more independent than they are — and the dual attack, *fabricating* a
-   `restsOn` edge to a dataset that doesn't actually back the source, mints a root the position
-   hasn't earned (§7). Confirmation is now admitted **per edge**: a fetched source confirms a dataset
+   `restsOn` edge to a dataset that doesn't actually back the source, can add a root the position
+   hasn't earned (§7). Root identity and support are now admitted **separately**: a fetched source confirms a dataset
    only through the specific `restsOn` edge whose own dependency quote verified against the fetched
-   text **and names that root's canonical label or alias** (edge objects `{ref, provenance}`), and a citation (`src:`) edge can never confirm the root
-   it inherits. This closes the earlier whitewash where one source-level quote admitted *every*
+   text **and names that root's canonical label or alias** (edge objects `{ref, provenance}`); a
+   source citation (`src:`) propagates roots only after explicit edge admission. This closes the earlier whitewash where one source-level quote admitted *every*
    dataset a source touched (a source claiming ten datasets had to verify one quote, not ten) and
-   where a review's quote confirmed the primary study's data by inheritance. Curator confirmation is
-   likewise an **auditable record** (`status + method + by + ts`, with optional supporting `source`),
+   where a review's quote confirmed the primary study's data by inheritance, and the later loophole
+   where a confirmed root could be attached to a new camp. Curator root and edge admissions are
+   **auditable records** (`status + method + by + ts`, with optional note/source),
    not an opaque boolean; a lexical/semantic duplicate candidate is blocked at this boundary unless
    the curator records an override. Automatically verified lexical lookalikes admit at most one root
    and surface the collision. It is still a human vouch, so a wrong confirmation or missing edge remains a risk.
@@ -322,8 +326,15 @@ provenance, verification against fetched text, and review. Named in §8 rather t
 5. **Alias gaps.** A novel name remains proposed until curated. Lexical/acronym and optional
    embedding suggestions plus the confirmation gate reduce this risk; they deliberately do not
    auto-decide semantic identity.
-6. **"One voice" is a modelling choice, not a measurement.** Two truly independent review teams
-   *might* deserve >1. We chose the conservative floor (B) on purpose; it is a stance, not a fact.
+6. **The 0.5 discounts are modelling choices, not measurements.** Review-only and non-human roots
+   receive half credit. Those coefficients are declared heuristics, not empirically calibrated
+   likelihood ratios; the UI shows them per root and keeps evidence design separate.
+7. **Claim granularity remains coarse.** A source has one top-level position and an unordered set of
+   support links. It cannot yet represent that one paragraph supports claim A while another rebuts
+   subclaim B without splitting the source into multiple claim records. Typed claim-level edges are
+   a genuine architectural extension, not a deadline patch.
+8. **No reader-uplift result.** The benchmark tests structure and invariants, not whether readers
+   become better calibrated. The reader-study materials are future-work scaffolding only.
 
 If we publish the system, we publish this list. That is the epistemically honest move — the same
 instinct as documenting dataset errors instead of silently fixing them.
@@ -379,8 +390,8 @@ curator confirmations, so per-edge fetch verification coverage is not overstated
 ### 12.0 The gap this closes
 
 Sections 1–11 count **evidence bases** (datasets, experiments, observations, arguments, models, or
-documents). If 15 sources rest on 15 *distinct* cohorts, the mechanism
-correctly reports 15 independent bases. But independence-of-**data** is not the same as
+documents). If 15 sources rest on 15 admitted *distinct* cohorts, the mechanism reports 15.0
+confirmed-root coverage. But independence-of-**data** is not the same as
 independence-against-**being-wrong**. If all 15 cohorts share the same uncontrolled confounder —
 the textbook case is "moderate alcohol" studies sharing abstainer/sick-quitter bias — they can all
 be wrong in the same direction for the same reason. Fifteen distinct datasets, one shared way to
@@ -388,7 +399,7 @@ fail. The existing metric is blind to this, because it was never designed to see
 "how many different pieces of data?", not "how many different ways this could be an artifact?".
 
 This section proposes a **second, separate metric** for the latter question. It does **not** change
-the existing independence metric (§1–11) at all — that metric's claim ("distinct evidence bases
+the existing root-coverage metric (§1–11) at all — that metric's claim ("confirmed, admitted evidence bases
 count distinctly, echo pools, and pure circularity counts zero") stays narrow and testable.
 Triangulation is an additional lens shown *alongside* it, not a replacement.
 
@@ -470,7 +481,7 @@ Then, per position, it counts how many sources have a recognizable method-risk f
 - `monoculture`: true when at least 3 sources have a method-risk family, at least 70% of those
   sources share one family, and they cover at least 30% of the position's sources.
 
-This ships as a first-screen warning, an annotation on the Independence tab, and in `cli.py show`:
+This ships as a first-screen warning, an annotation on the Root coverage tab, and in `cli.py show`:
 *"N of M sources share observational confounding risk."* It deliberately **changes no existing
 metric**. It is a prompt for scrutiny: "these datasets may still fail together for the same
 methodological reason."

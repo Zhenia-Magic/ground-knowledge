@@ -13,15 +13,15 @@ gaps until the gaps stop generating new angles — and we always report what is 
 from engine.assess import assess, _ds_label
 from engine import roots as _roots
 
-# a position with fewer than this many genuinely independent PRIMARY bases is "thin"
+# a position with fewer than this many confirmed PRIMARY roots is "thin"
 THIN_PRIMARY_BASES = 2
 
 
 def _primary_bases(pos):
-    """Count a position's genuinely independent primary bases (datasets/own data a primary source
-    brought in) — excludes the collapsed secondary voice, circular loops, and review-only datasets."""
+    """Count confirmed primary roots with non-zero coverage credit."""
     return sum(1 for b in pos.get("bases", [])
-               if b["kind"] in ("dataset", "primary") and not b.get("secondaryOnly"))
+               if b["kind"] in ("dataset", "primary") and not b.get("secondaryOnly")
+               and b.get("strength", 0) > 0)
 
 
 def find_gaps(kb, a=None):
@@ -37,9 +37,9 @@ def find_gaps(kb, a=None):
         if np < THIN_PRIMARY_BASES:
             gaps.append({
                 "kind": "thin-position", "positionId": p["id"], "label": p["label"],
-                "why": ("no independent primary evidence — support is entirely echo / secondary"
+                "why": ("no confirmed primary root — support is ungrounded, unadmitted, or secondary"
                         if np == 0 else
-                        "only {} independent primary base; rest is echo / secondary".format(np)),
+                        "only {} confirmed primary root; rest is ungrounded or secondary".format(np)),
                 "severity": 3 if np == 0 else 2})
 
     # 2. Blindspots: evidence types / populations a side never argues from.

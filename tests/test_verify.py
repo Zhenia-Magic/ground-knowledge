@@ -13,7 +13,8 @@ from engine.assess import quote_audit
 from engine.merge import merge_delta
 from engine.schema import empty_kb
 from engine.verify import apply_quote_verification, ground_quote, is_verified_exact, match_quote
-from ingest.pipeline import _carry_meta, _prompt_text, build_batch_extract_prompt
+from ingest.pipeline import (_carry_meta, _prompt_text, build_batch_extract_prompt,
+                             build_extract_prompt, build_research_prompt)
 from scripts.audit_quotes import write_markdown_report
 
 TEXT = """Title of Paper
@@ -239,11 +240,38 @@ class PromptTextTruncationTests(unittest.TestCase):
         self.assertNotIn("R01-AA000000", prompt)
 
     def test_prompt_requests_per_edge_dependency_provenance(self):
-        from ingest.pipeline import build_extract_prompt
         kb = empty_kb("abc", "Does X cause Y?")
         prompt = build_extract_prompt(kb, {"title": "t", "url": "u", "text": TEXT})
         self.assertIn('"restsOn":[{"ref":', prompt)
         self.assertNotIn('"restsOn":{"quote"', prompt)
+
+    def test_entity_context_is_bounded_and_retrieves_relevant_items(self):
+        kb = empty_kb("abc", "Does sentinel exposure cause Y?")
+        kb["positions"] = [{"id": "p%d" % i, "label": "Position %d" % i, "hue": "#111"}
+                           for i in range(5)]
+        kb["datasets"] = [{"id": "d%d" % i, "label": "Dataset %d" % i, "aliases": []}
+                          for i in range(8)]
+        kb["datasets"][-1]["label"] = "Sentinel Registry"
+        kb["factors"] = [{"id": "f%d" % i, "label": "Factor %d" % i,
+                          "weights": {}, "provenance": []} for i in range(6)]
+        with mock.patch.dict("os.environ", {"EPISTEMIC_CONTEXT_POSITIONS": "2",
+                                            "EPISTEMIC_CONTEXT_DATASETS": "3",
+                                            "EPISTEMIC_CONTEXT_FACTORS": "2"}):
+            prompt = build_extract_prompt(kb, {"title": "Sentinel analysis", "url": "u",
+                                               "text": "We used the Sentinel Registry."})
+        self.assertIn("Sentinel Registry", prompt)
+        self.assertIn("less-relevant existing item(s) omitted", prompt)
+        self.assertNotIn("d6 — Dataset 6", prompt)
+
+    def test_research_prompt_caps_existing_source_inventory(self):
+        kb = empty_kb("abc", "Does X cause Y?")
+        kb["sources"] = [{"id": "s%d" % i, "title": "Source %d" % i, "year": 2020,
+                          "url": "https://example.org/%d" % i} for i in range(7)]
+        with mock.patch.dict("os.environ", {"EPISTEMIC_CONTEXT_SOURCES": "3"}):
+            prompt = build_research_prompt(kb)
+        self.assertIn("Source 6", prompt)
+        self.assertNotIn("Source 0", prompt)
+        self.assertIn("4 older source(s) omitted", prompt)
 
 
 class MergeCarriesVerificationTests(unittest.TestCase):

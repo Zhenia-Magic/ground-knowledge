@@ -265,18 +265,59 @@ def _vocab_options(kb, kind):
     return "\n".join("  " + v for v in out) or "  (none yet)"
 
 
-def _entity_tables(kb):
-    pos = "\n".join("  {} — {}".format(p["id"], p["label"]) for p in kb["positions"]) or "  (none yet)"
-    ds = "\n".join(
+def _context_limit(name, default):
+    """Positive bounded prompt-table limit; invalid environment values fall back safely."""
+    try:
+        return max(1, int(os.environ.get(name, str(default))))
+    except (TypeError, ValueError):
+        return default
+
+
+def _bounded_entities(rows, query, limit):
+    """Return at most ``limit`` entities, preferring labels/aliases relevant to the current text.
+
+    This keeps prompt growth bounded without blindly taking the first N entities. Ranking is a
+    deterministic token-overlap retrieval step; ties preserve artifact order.
+    """
+    if len(rows) <= limit:
+        return rows, 0
+    tokens_of = lambda value: set(re.findall(r"[a-z0-9]+", str(value or "").lower()))
+    q = tokens_of(query)
+    ranked = []
+    for i, row in enumerate(rows):
+        text = " ".join([str(row.get("label") or "")] + list(row.get("aliases") or []))
+        tokens = tokens_of(text)
+        ranked.append((len(q & tokens), i, row))
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    return [item[2] for item in ranked[:limit]], len(rows) - limit
+
+
+def _table(rows, render, omitted):
+    lines = [render(row) for row in rows]
+    if omitted:
+        lines.append("  … {} less-relevant existing item(s) omitted by the prompt context cap".format(omitted))
+    return "\n".join(lines) or "  (none yet)"
+
+
+def _entity_tables(kb, query=""):
+    positions, po = _bounded_entities(kb["positions"], query,
+                                      _context_limit("EPISTEMIC_CONTEXT_POSITIONS", 30))
+    datasets, do = _bounded_entities(kb["datasets"], query,
+                                     _context_limit("EPISTEMIC_CONTEXT_DATASETS", 100))
+    factors, fo = _bounded_entities(kb["factors"], query,
+                                    _context_limit("EPISTEMIC_CONTEXT_FACTORS", 100))
+    pos = _table(positions, lambda p: "  {} — {}".format(p["id"], p["label"]), po)
+    ds = _table(datasets, lambda d:
         "  {} — {}{}".format(d["id"], d["label"],
                              (" (aliases: " + ", ".join(d["aliases"]) + ")") if d.get("aliases") else "")
-        for d in kb["datasets"]) or "  (none yet)"
-    fac = "\n".join("  " + f["label"] for f in kb["factors"]) or "  (none yet)"
+        , do)
+    fac = _table(factors, lambda f: "  " + f["label"], fo)
     return pos, ds, fac
 
 
 def build_extract_prompt(kb, doc):
-    pos, ds, fac = _entity_tables(kb)
+    query = " ".join((doc.get("title") or "", doc.get("text") or ""))
+    pos, ds, fac = _entity_tables(kb, query)
     return (EXTRACT_TEMPLATE
             .replace("%QUESTION%", kb["meta"]["question"])
             .replace("%POSITIONS%", pos).replace("%DATASETS%", ds).replace("%FACTORS%", fac)
@@ -299,11 +340,17 @@ def _sources_for_ref(kb, limit=50):
     return "\n".join(rows) or "  (none yet)"
 
 
-def _existing_sources(kb):
+def _existing_sources(kb, limit=None):
+    limit = limit or _context_limit("EPISTEMIC_CONTEXT_SOURCES", 100)
+    all_sources = kb.get("sources", [])
+    srcs = all_sources[-limit:]
     lines = ["  - {}{} {}".format(s.get("title") or s["id"],
                                   " ({})".format(s["year"]) if s.get("year") else "",
                                   s.get("url") or "").rstrip()
-             for s in kb.get("sources", [])]
+             for s in srcs]
+    if len(all_sources) > len(srcs):
+        lines.append("  … {} older source(s) omitted by the prompt context cap".format(
+            len(all_sources) - len(srcs)))
     return "\n".join(lines) or "  (none yet)"
 
 
@@ -311,7 +358,7 @@ def build_research_prompt(kb, k=20):
     """One self-contained prompt that does discovery + extraction together — for pasting into a
     browsing chatbot. The chatbot fetches the pages itself (so no publisher 403s on our side)
     and returns a JSON array of deltas that `cli.py add` ingests directly."""
-    pos, ds, fac = _entity_tables(kb)
+    pos, ds, fac = _entity_tables(kb, kb["meta"]["question"])
     return (RESEARCH_TEMPLATE
             .replace("%QUESTION%", kb["meta"]["question"]).replace("%K%", str(k))
             .replace("%POSITIONS%", pos).replace("%DATASETS%", ds).replace("%FACTORS%", fac)
@@ -334,7 +381,9 @@ def build_batch_extract_prompt(kb, docs, max_text=None):
     """One prompt covering several sources — the KB tables appear once. Sends each source's
     FULL fetched text by default; pass max_text to cap it (fewer tokens per call, at some cost
     in per-source extraction depth), e.g. for very large batches."""
-    pos, ds, fac = _entity_tables(kb)
+    query = " ".join((d.get("title") or "") + " " + _prompt_text(d, max_text)
+                     for d in docs)
+    pos, ds, fac = _entity_tables(kb, query)
     blocks = []
     for n, d in enumerate(docs, 1):
         blocks.append("--- SOURCE {} ---\ntitle: {}\nurl: {}\ntext:\n{}".format(

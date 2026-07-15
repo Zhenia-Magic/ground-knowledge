@@ -1,5 +1,5 @@
 # Ground Knowledge
-### Aggregation weighted by independent evidence, with an independence audit — a spec for compounding, adversarially-robust knowledge bases for research disputes
+### Confirmed-root coverage with separate quality/bias audits — a spec for compounding, adversarially robust knowledge bases for research disputes
 
 *FLF "Lab Leaks, Black Holes, and Eggs" Epistemic Case Study Competition. Live at
 [groundknowledge.org](https://groundknowledge.org). Read with the prototype in this repo:
@@ -21,9 +21,9 @@ opposite of good epistemics.
 
 So our one design commitment, from which everything else follows:
 
-> **Aggregate, but count independent evidence bases and audit quality separately instead of
-> counting sources.** Sources landing on an already resolved base add no independent support;
-> twelve unnamed rehashes add at most one pooled voice rather than twelve.
+> **Aggregate, but map confirmed evidence-root coverage and audit quality separately instead of
+> counting sources.** Sources landing on an already represented root add no coverage; unsupported
+> rehashes collapse to a visible zero-credit marker.
 
 Everything below is in service of that inversion.
 
@@ -40,7 +40,7 @@ We produce a different kind of object:
 |---|---|---|
 | Output | prose, for one reader, one time | a **structured JSON artifact** another team forks and extends |
 | Numbers | asserted in text | each recomputed by one **legible function**; inspectable |
-| Gaming | a flood of weak papers reads as "growing consensus" | sources on an existing root add zero; unnamed floods add at most one pooled voice; an ungrounded **circular citation loop counts zero** |
+| Gaming | a flood of weak papers reads as "growing consensus" | sources on an existing root add zero; unsupported floods and loops add zero; unreviewed edges cannot launder a confirmed root into another camp |
 | Updating | re-run the whole query | add one source → **O(new) ingest**, deterministic recompute, **diff of what changed** |
 | Audit | trust the narrator | position, dataset-dependency, and factor-weight claims request **provenance quotes**; the metric is a pure function you can re-run |
 
@@ -116,13 +116,13 @@ it does not erase a blind spot shared across models.
 Every metric is a pure function over the KB (`engine/assess.py`). Four of them, each chosen to
 serve the thesis:
 
-**Distribution — naive *and* independence-weighted.** Two bars of the same split, shown together.
+**Distribution — naive source volume *and* confirmed-root coverage.** Two views shown together.
 The first is the naive aggregator's view (share of *sources* per position). The second re-sizes
-each position by its **effective independent evidence bases** — each distinct *resolved root* its
-sources reduce to, counted once at its strength (`weighted_distribution`; see the independence
-engine below), so sources sharing a dataset collapse, ungrounded reviews pool into one voice, and
+each position by its **confirmed-root coverage** — each distinct admitted *resolved root* counted
+once at its declared credit (`weighted_distribution`; see the root engine below), so sources sharing
+a dataset collapse, ungrounded reviews pool into a zero-credit marker, and
 an ungrounded citation loop is flagged but contributes zero. The weighted bar therefore exposes how
-far raw source volume exceeds independent support. **Funding pattern** then complicates it further:
+far raw source volume exceeds represented root coverage. It is not a quality or truth score. **Funding pattern** then complicates it further:
 where does *interested* money (Industry or Advocacy) cluster? On the real eggs case it is tied:
 two industry-funded meta-analyses back "No association," while two industry-funded trials back the
 context-dependent camp. The tool reports both instead of picking a winner by position order. Funding
@@ -138,13 +138,13 @@ contested weight. The tight headline `isCrux` is only cross-camp/shared-pivot; `
 includes one-sided and unanswered factors. On black holes the current artifact has one headline
 crux plus two one-sided load-bearing factors — not an inflated claim of three headline cruxes.
 
-**Independence — the anti-false-balance core** (the full mechanism is `engine/roots.py` /
+**Confirmed-root coverage — the anti-false-balance core** (the full mechanism is `engine/roots.py` /
 [`MECHANISM.md`](MECHANISM.md)). Echo, cohort re-use, and circular corroboration are one disease —
-*a source that adds no new root* — so the metric counts **independent evidentiary roots per
-position**, not sources. It resolves every source down to the primary evidence it ultimately
-depends on by following its `restsOn` edges (to datasets **and to other sources**), then:
+*a source that adds no new root* — so the metric counts admitted evidentiary-root credit per
+position, not sources. It follows only support edges with a verified specific dependency quote or
+explicit curator/migration admission; unadmitted links remain visible at zero. Then:
 - **shared datasets** collapse to one root (eight papers off one cohort = one look);
-- **ungrounded sources that name no evidence base** collapse to a single "voice" per position —
+- **ungrounded sources that name no evidence base** collapse to a single zero-credit marker per position —
   one for reviews/commentary/untagged meta-analyses, and one for **primaries that name no data**
   (an original study earns a distinct root only by *naming* its trial/cohort/sample, not by claiming
   the tier — this closes the "label your echo Observational" flooding hole); an unrecognised evidence
@@ -154,7 +154,7 @@ depends on by following its `restsOn` edges (to datasets **and to other sources*
 - a dataset known **only via a review**, or a root backed **only by animal / in-vitro** sources,
   counts at **half** (weak evidence, shown distinctly).
 
-The effective count (`nEff`) counts **each distinct resolved root once, at its strength** — never
+The coverage count (`nEff`) counts **each distinct admitted resolved root once, at its credit** — never
 how many sources landed on it — and the audit **shows its work**: each position is broken down into
 its bases (each base's one-time `strength` contribution sums to `nEff` exactly), with the
 collapsed-source count surfaced separately. The fixed-graph invariant, enforced by a randomized
@@ -163,17 +163,18 @@ grounding upgrade can raise it.** A graph correction can legitimately lower it b
 or revealing a pure citation cycle. Flooding with correlated or derivative evidence moves nothing;
 junk "support" aimed at a rival moves nothing of theirs either — the pile-up surfaces only as
 *concentration*, honestly labelled. This is the metric that refuses to be
-flooded, and it produces honest, differing verdicts (e.g. on the real COVID-origin case the
-best-supported camp rests on several genuinely independent primary datasets while others collapse to
-a single government-report or commentary voice — invisible to a source count).
+flooded, and it produces differing coverage diagnostics (e.g. on the real COVID-origin case one
+camp's source list reaches several admitted primary roots while other listed sources collapse onto
+fewer roots — invisible to a source count). That difference is not itself a verdict on which camp
+is true or best supported.
 
 One scope line, stated where the number is defined rather than discovered by a skeptical reader:
-**independence is deliberately orthogonal to per-study quality.** `nEff` answers "how many
-independent looks support this position," not "how good is each look" — one decisive RCT is a
-single root, seven independent anecdotes are seven. It composes with, and does not replace,
+**root coverage is deliberately orthogonal to per-study quality and correctness.** `nEff` answers
+"which admitted roots are represented under this position?", not "how strong is the case?" — one
+decisive RCT is a single root and seven weak anecdotes can be seven. It composes with, and does not replace,
 GRADE-style per-study quality appraisal; read it next to the evidence-type, confidence, and method
-audits, never as a settledness score. (The only quality-like terms inside `nEff` are the two root
-halvings above — provenance strength, not study quality.)
+audits, never as a settledness score. The two 0.5 discounts are declared heuristics, not calibrated
+evidence weights.
 
 **Blindspots.** Evidence types and populations present elsewhere in the case but absent from a
 position's own sources — operationalising FLF's "surface what's missing." Two data-quality
@@ -234,21 +235,21 @@ with **only the data changing.** It does:
   structure makes two auditable patterns visible: interested funding is **tied** between the
   no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
   industry-funded trials), and the shared-cohort collapse — the *No
-  association* camp lists 9 sources but 6 rest on the Nurses' Health / Health Professionals cohort,
-  so it is closer to 4 independent bases than 9. The subgroup crux (diabetics/hyper-responders)
+  increased-risk* camp lists 9 sources and has **5.0 confirmed-root coverage** after cohort reuse is
+  collapsed. The subgroup crux (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 
-- **COVID — live, contested, expertise-heavy** (28 sources, 3 camps). The independence audit tells
-  the honest story a source count hides: the zoonotic camp's 15 sources collapse to ~5 independent
-  bases, and the **six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on the same
-  underlying evidence** — so they count as re-analysis, not 6 independent looks, the "23 orders of
+- **COVID — live, contested, expertise-heavy** (26 sources, 3 camps). The root audit tells
+  the honest story a source count hides: current source→coverage values are **13→5.0, 7→3.5,
+  6→3.0**. The **six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on substantially shared
+  underlying evidence** — so they count as re-analysis, not six new roots, the "23 orders of
   magnitude from one evidence base" made visible. Cruxes: prior on lab accidents, furin site,
   ascertainment bias.
 
-- **Black holes — essentially settled** (20 sources, 2 camps). The naïve split is 70% "No risk," but
-  the 14 "safe" sources collapse to **4.5 bases**: production impossibility under standard gravity,
-  Hawking evaporation, slow accretion, the cosmic-ray/dense-star observation, and a half-strength
-  review-only strangelet calculation. The residual side attacks the reliability of those layers.
+- **Black holes — essentially settled** (15 sources, 2 camps). The 11 "safe" sources have **4.0
+  confirmed-root coverage**: production impossibility, Hawking evaporation, slow accretion, and the
+  cosmic-ray/dense-star observation. Four residual-concern sources have **2.0**. The count maps
+  layers; it does not independently establish that the conclusion is correct.
 
 Same `assess()`; same renderer; three lines of `build`. That is the generalization evidence.
 
@@ -257,7 +258,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 ## 7. Scalability, compounding, shareability
 
 - **Scales with better models** (ingestion/extraction quality), **more compute** (broader
-  discovery), and **more contributors** (each adds sources through the same merge). Human review is
+  discovery), and **more contributors**. Entity/source context in model prompts is bounded by
+  configurable caps and deterministic lexical retrieval rather than growing with the whole KB.
+  Public paste-back sources are queued; reviewed/local updates use the same merge. Human review is
   deliberately concentrated at confirmation, alias resolution, and ensemble disagreements; it is a
   real integrity bottleneck, not hidden.
 - **Compounds:** the artifact is a JSON file another team forks and keeps growing; nothing is
@@ -273,10 +276,10 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 
 **Defended (verified in the prototype, with tests in `tests/test_independence.py`):**
 - *Flooding the zone with echo.* Sources landing on an existing root add zero. A pile of otherwise
-  ungrounded reviews / commentary / untagged meta-analyses collapses to **at most one pooled voice**
-  rather than one root per item; the first such pool can add 1.0. Re-used cohorts collapse exactly.
+  ungrounded reviews / commentary / untagged meta-analyses collapse to one visible marker with
+  **zero coverage credit**. Re-used cohorts collapse exactly.
 - *Echo relabelled "primary".* The same flood dressed as original observations with an empty
-  `restsOn` no longer mints a root each — **ungrounded primaries pool to one voice per position**
+  `restsOn` no longer mints a root each — **ungrounded primaries pool at zero per position**
   too, so a distinct root requires a *specific named and admitted* evidence base, not a claimed tier
   (`test_echo_as_primary_flood_cannot_inflate_independence`). An unrecognised evidence label
   defaults to secondary for the same reason. Fabricating distinct *named* datasets on the unverified
@@ -284,6 +287,9 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   identity, bounded by the per-edge identity and duplicate gates below.
 - *Circular corroboration.* Sources whose only support is citing one another become a visible,
   strongly-connected cycle, contribute **zero**, and are flagged.
+- *Confirmed-root support laundering.* Root identity and support-edge admission are separate. A new
+  source cannot attach all of another camp's already confirmed roots without edge-specific review;
+  the eighth benchmark attack executes this case.
 - *Alias-splitting.* Exact and learned aliases resolve deterministically. Automatically verified
   lexical lookalikes admit at most one root and expose the collision; curator confirmation blocks
   lexical/acronym duplicates unless an override reason is recorded. Optional embeddings surface
@@ -292,8 +298,8 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   via PMC vs DOI vs publisher), is refused — a camp can't be inflated by re-submitting a study.
 - *Off-topic padding.* A real but tangential source is judged at labelling time and refused at merge,
   so it never pads a position.
-- *Tier laundering.* A meta-analysis or review only earns independence through **named, admitted**
-  evidence bases (then it collapses into them); an untagged one is echo, not a free independent base.
+- *Tier laundering.* A meta-analysis or review earns coverage only through **named, admitted**
+  evidence bases (then it collapses into them); an untagged one is a zero-credit assertion marker.
 - *Animal evidence passed off as human.* A root backed only by animal / in-vitro sources counts at
   half on a clinical question.
 

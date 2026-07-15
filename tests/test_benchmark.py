@@ -22,6 +22,7 @@ class BenchmarkContractTests(unittest.TestCase):
         self.assertEqual(adv["genericLabel"], adv["before"])
         self.assertEqual(adv["unknownAliasSplit"], adv["before"] + 1)
         self.assertTrue(adv["aliasSplitFlagged"])
+        self.assertEqual(adv["crossAfter"], adv["crossBefore"])
         self.assertEqual(adv["verdict"], "PASS")
 
     def test_live_baseline_files_and_hashes_are_complete(self):

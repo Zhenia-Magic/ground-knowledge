@@ -44,7 +44,7 @@ def _root_incidence(kb, res):
     it). This drives the CONCENTRATION share, the topDataset display, and the bases 'weight'
     column — the "everyone is leaning on one look" signal, which legitimately rises when sources
     pile onto one root. It is deliberately NOT the basis for nEff (see _root_presence): a tally
-    that grows with source count must never feed the independence number, or piling sources on a
+    that grows with source count must never feed confirmed-root coverage, or piling sources on a
     minority root would shift the shares and move nEff without adding any new evidence."""
     src_by_pos = _src_by_pos(kb)
     secondary_only = res["secondary_only"]
@@ -56,10 +56,12 @@ def _root_incidence(kb, res):
         for s in src_by_pos.get(p["id"], []):
             for r in res["source_roots"].get(s["id"], ()):
                 if r.startswith(("secpool:", "primpool:", "cycle:")):
-                    weights[r] = 1            # a COLLAPSED voice counts once, no matter how many
+                    weights[r] = 0            # visible assertion marker; no confirmed grounding
                 else:                          #   sources fell into it; real roots accumulate per
                     weights[r] = weights.get(r, 0) + _roots.root_strength(
                         r, secondary_only, nonhuman_only, provisional)   # source (halved for
+            for r in res.get("unadmitted_source_roots", {}).get(s["id"], ()):
+                weights.setdefault(r, 0.0)     # asserted and visible; support edge not admitted
         per_pos[p["id"]] = weights                          # review/animal; zero if unconfirmed)
     return per_pos
 
@@ -68,10 +70,10 @@ def _root_presence(kb, res):
     """Per position, each resolved root's OWN strength, counted exactly once no matter how many
     sources rest on it: {posId: {rootKey: strength}}. Strength is 1.0 for a real root, halved for
     a dataset known only via a secondary source, halved again for a root backed only by animal /
-    in-vitro studies; the collapsed secondary voice and pooled unnamed-primary voice each count
-    once at 1.0. A pure circular loop remains in the map for inspection but has strength 0.
+    in-vitro studies. Collapsed secondary/unnamed-primary assertions and pure citation loops remain
+    in the map for inspection but have strength 0: unsupported volume is not an evidence base.
     This idempotent map is the basis for nEff — writing the same key again cannot change it, which
-    is what makes the independence number immune to flooding by construction."""
+    is what makes confirmed-root coverage immune to flooding by construction."""
     src_by_pos = _src_by_pos(kb)
     secondary_only = res["secondary_only"]
     nonhuman_only = res.get("nonhuman_only", frozenset())
@@ -84,15 +86,16 @@ def _root_presence(kb, res):
                 # Pooled primary/secondary voices are one assertion. A PURE citation cycle is shown
                 # in the incidence/bases table but has zero independent grounding, so it contributes
                 # zero headline nEff rather than laundering circularity into one evidentiary base.
-                pres[r] = (0 if r.startswith("cycle:") else 1) \
-                    if r.startswith(("secpool:", "primpool:", "cycle:")) else \
-                    _roots.root_strength(r, secondary_only, nonhuman_only, provisional)
+                pres[r] = _roots.root_strength(
+                    r, secondary_only, nonhuman_only, provisional)
+            for r in res.get("unadmitted_source_roots", {}).get(s["id"], ()):
+                pres.setdefault(r, 0.0)        # source asserted it, but the support link is untrusted
         per_pos[p["id"]] = pres
     return per_pos
 
 
 def _n_indep(presence):
-    """Effective independent bases = the sum of distinct-root strengths (a full-strength-equivalent
+    """Confirmed-root coverage = the sum of distinct-root strengths (a full-strength-equivalent
     root count). Fixed-graph monotonicity invariant, relied on by tests/test_independence.py: adding
     a source with only outgoing edges can only add new keys to the presence map or raise an existing
     root's strength (secondary_only / nonhuman_only sets only ever shrink, and existing SCCs are
@@ -106,7 +109,7 @@ def _n_indep(presence):
 
 def _n_eff(weights):
     # Herfindahl numbers-equivalent (an EVENNESS measure over a tally). Used only by the method
-    # audit's diversity-of-methods reading; the independence metric uses _n_indep over _root_presence
+    # audit's diversity-of-methods reading; root coverage uses _n_indep over _root_presence
     # instead, because an evenness measure over per-source tallies is movable by flooding.
     total = sum(weights.values())
     hhi = sum((w / total) ** 2 for w in weights.values()) if total else 0
@@ -114,8 +117,8 @@ def _n_eff(weights):
 
 
 def weighted_distribution(kb, res=None):
-    """Distribution WEIGHTED BY INDEPENDENCE — the portal's thesis made visual. Each position is
-    sized not by raw source count but by its effective number of independent evidence ROOTS: each
+    """Distribution weighted by confirmed-root coverage. Each position is sized not by raw source
+    count but by admitted, deduplicated evidence ROOTS: each
     distinct resolved root counted once at its strength (MECHANISM.md). Sources sharing a dataset,
     echoing as secondary reviews, or citing each other in a loop are de-duplicated. A position
     propped up by re-used or derivative evidence shrinks vs. its raw bar; a pure, ungrounded
@@ -129,9 +132,12 @@ def weighted_distribution(kb, res=None):
     for p in kb["positions"]:
         mine = [s for s in kb["sources"] if s["position"] == p["id"]]
         n_eff = _n_indep(pres[p["id"]])
-        proposed = [r for r in pres[p["id"]] if r in provisional]
+        unsupported = {r for s in mine
+                       for r in res.get("unadmitted_source_roots", {}).get(s["id"], ())}
+        proposed = [r for r in pres[p["id"]] if r in provisional or r in unsupported]
+        potential_secondary = secondary_only - res.get("unadmitted_primary_roots", set())
         proposed_potential = sum(
-            _roots.root_strength(r, secondary_only, nonhuman_only, frozenset()) for r in proposed)
+            _roots.root_strength(r, potential_secondary, nonhuman_only, frozenset()) for r in proposed)
         weights.append(n_eff)
         out.append({"id": p["id"], "label": p["label"], "hue": p["hue"],
                     "raw": len(mine), "weight": round(n_eff, 2),
@@ -520,12 +526,12 @@ def _root_label(kb, rk, weight, secondary_only, nonhuman=frozenset(), provisiona
 
 
 def independence(kb, res=None):
-    """The anti-false-balance core. Per position, how many INDEPENDENT evidentiary roots actually
+    """The anti-false-balance core. Per position, how much CONFIRMED evidentiary-root coverage
     support it — after collapsing shared datasets, secondary echo, and circular citation (see
     MECHANISM.md and engine/roots.py).
         raw          = source count
         distinct     = number of distinct resolved roots
-        nEff         = sum of distinct-root strengths (each root ONCE) -> effective independent bases
+        nEff         = sum of distinct-root strengths (each root ONCE) -> confirmed-root coverage
         concentration= share of the position's sourcing resting on the single most-relied-on root
         bases        = the full 'show your work' breakdown: per root, 'weight' (source-weighted
                        incidence, what concentration reads) and 'strength' (its one-time
@@ -559,12 +565,15 @@ def independence(kb, res=None):
         strengths = pres[p["id"]]
         raw = len(mine)
         n_eff = _n_indep(strengths)
-        provisional_count = sum(1 for rk in strengths if rk in prov)
+        unsupported = {rk for s in mine
+                       for rk in res.get("unadmitted_source_roots", {}).get(s["id"], ())}
+        provisional_count = sum(1 for rk in strengths if rk in prov or rk in unsupported)
         # What the proposed roots would contribute after confirmation, preserving any independent
         # secondary-only / non-human discounts. This is audit information only, never headline nEff.
         provisional_potential = sum(
-            _roots.root_strength(rk, sec_only, nonhuman, frozenset())
-            for rk in strengths if rk in prov)
+            _roots.root_strength(rk, sec_only - res.get("unadmitted_primary_roots", set()),
+                                 nonhuman, frozenset())
+            for rk in strengths if rk in prov or rk in unsupported)
         total_w = sum(weights.values())
         top_key, top_w = None, 0.0
         for rk, w in weights.items():
@@ -580,6 +589,7 @@ def independence(kb, res=None):
               "proposition": _ds_meta(kb, rk[3:])[1] if rk.startswith("ds:") else "",
               "weight": round(w, 2), "strength": round(strengths[rk], 2),
               "secondaryOnly": rk in sec_only, "nonHuman": rk in nonhuman, "provisional": rk in prov,
+              "supportUnconfirmed": rk in unsupported,
               "aliasSuspect": rk in alias_suspects,
               "confirmedBy": confirmed_by.get(rk)}
              for rk, w in weights.items()), key=lambda b: -b["weight"])
@@ -637,6 +647,21 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
     ca = confidence_audit(kb) if ca is None else ca
     out = []
 
+    unsupported = [(p, b) for p in ind for b in p.get("bases", [])
+                   if b.get("supportUnconfirmed") and not b.get("strength")]
+    if unsupported:
+        p, b = unsupported[0]
+        out.append({
+            "kind": "support-edge", "positionId": p["id"], "label": p["label"], "hue": p["hue"],
+            "badge": "unconfirmed support link",
+            "headline": "A claimed evidence link is excluded pending review.",
+            "detail": ('{} source-to-root link{} {} a verified dependency sentence or curator '
+                       'admission. They remain visible but add zero confirmed root coverage — e.g. '
+                       '"{}" under "{}".').format(
+                           len(unsupported), "s" if len(unsupported) != 1 else "",
+                           "lack" if len(unsupported) != 1 else "lacks", b["label"], p["label"]),
+        })
+
     cand = [p for p in ind if p["concentrated"] and p["topDataset"]]
     cand.sort(key=lambda p: (p["topDataset"]["count"], p["concentration"], p["raw"]), reverse=True)
     if cand:
@@ -646,7 +671,7 @@ def warnings(kb, ind=None, ma=None, qa=None, ca=None):
             "badge": "concentration risk",
             "headline": "Apparent consensus is correlated.",
             "detail": ('The "{}" position lists {} sources, but {} of them rest on one dataset — {}. '
-                       'That is closer to {:g} independent bases than {}. Counting sources '
+                           'That is {:g} confirmed-root coverage, not {} separate evidence bases. Counting sources '
                        'here overstates the weight of evidence.').format(
                            w["label"], w["raw"], w["topDataset"]["sources"], w["topDataset"]["label"],
                            round(w["nEff"], 1), w["raw"]),
@@ -790,9 +815,9 @@ def diff_assessments(before, after):
         if not b:
             lines.append("+ new position: " + p["label"])
             continue
-        # independent bases (nEff) -- the headline number the old diff omitted
+        # confirmed-root coverage (nEff) -- the headline number the old diff omitted
         if abs(p["nEff"] - b["nEff"]) > 0.05:
-            lines.append("independent bases: {} {} → {}".format(
+            lines.append("confirmed-root coverage: {} {} → {}".format(
                 p["label"], round(b["nEff"], 1), round(p["nEff"], 1)))
         elif p["distinct"] != b["distinct"]:
             lines.append("distinct roots: {} {} → {}".format(

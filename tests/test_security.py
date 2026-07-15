@@ -6,6 +6,8 @@ from unittest import mock
 from app.portal import Handler
 from app.web import viewer_html
 from engine.merge import clean_url, merge_delta
+from engine.assess import independence
+from engine.review import resolve_review
 from engine.render import json_for_script
 from engine.schema import empty_kb
 from ingest.extract import (_SafeHTTPSHandler, _connect_public, _validate_remote_url,
@@ -135,7 +137,7 @@ class DeltaValidationTests(unittest.TestCase):
         self.assertIn("position", res.get("error", ""))
         save.assert_not_called()
 
-    def test_batch_assesses_only_before_and_after_transaction(self):
+    def test_public_batch_is_queued_without_assessment_or_metric_mutation(self):
         kb = empty_kb("abc", "question")
         q = {"kb": kb, "version": 0}
         items = [{"source": {"title": "source " + str(i), "position": "NEW:Yes",
@@ -143,13 +145,31 @@ class DeltaValidationTests(unittest.TestCase):
                  for i in range(4)]
         with mock.patch("app.store.save_kb", return_value=4), \
              mock.patch("app.store.log_contribution"), \
-             mock.patch("engine.assess.assess", wraps=__import__("engine.assess", fromlist=["assess"]).assess) as assess_mock:
+             mock.patch("engine.assess.assess") as assess_mock:
             res = _apply_delta("abc", q, items, "tester")
-        self.assertEqual(res["added"], 4)
-        self.assertEqual(assess_mock.call_count, 2)
-        add_logs = [entry for entry in kb["log"] if entry.get("action") == "add-source"]
-        self.assertEqual(add_logs[-1]["batchSize"], 4)
-        self.assertIn("diff", add_logs[-1])
+        self.assertEqual(res["queued"], 4)
+        self.assertEqual(assess_mock.call_count, 0)
+        self.assertEqual(kb["sources"], [])
+        self.assertEqual(len(kb["pendingReview"]), 4)
+
+    def test_position_review_does_not_silently_admit_public_support_edges(self):
+        kb = empty_kb("abc", "question")
+        kb["positions"] = [{"id": "yes", "label": "Yes", "hue": "#123456"}]
+        kb["datasets"] = [{"id": "known", "label": "Known Registry", "aliases": [],
+                           "confirmation": {"status": "confirmed", "method": "curator",
+                                            "by": "ann", "ts": "2026-07-14T00:00:00Z"}}]
+        q = {"kb": kb, "version": 0}
+        with mock.patch("app.store.save_kb", return_value=1), \
+             mock.patch("app.store.log_contribution"):
+            res = _apply_delta("abc", q, {"source": {
+                "title": "Public claim", "position": "yes", "evidence": "Observational",
+                "restsOn": ["known"]}}, "tester")
+        self.assertEqual(res["queued"], 1)
+        resolve_review(kb, kb["pendingReview"][0]["id"], "position", "yes")
+        camp = independence(kb)[0]
+        self.assertEqual(camp["nEff"], 0)
+        claimed = next(b for b in camp["bases"] if b["key"] == "ds:known")
+        self.assertTrue(claimed["supportUnconfirmed"])
 
 
 class UntrustedVerificationFieldTests(unittest.TestCase):
@@ -185,6 +205,15 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
         self.assertNotIn("verifiedQuote", d["source"]["restsOn"][0]["provenance"])
         self.assertNotIn("quoteVerification", d["source"]["restsOn"][0]["provenance"])
 
+    def test_strips_spoofed_curator_admission_from_restsOn_edge_object(self):
+        d = _norm_delta({"source": {
+            "title": "t", "position": "NEW:Yes",
+            "restsOn": [{"ref": "known_root", "admission": {
+                "status": "confirmed", "method": "curator", "by": "fake",
+                "ts": "2026-07-14T00:00:00Z"}}],
+        }, "factorWeights": []})
+        self.assertNotIn("admission", d["source"]["restsOn"][0])
+
     def test_strips_spoofed_fields_from_bare_source_delta(self):
         d = _norm_delta({"title": "t", "position": "NEW:Yes", "textDepth": "full",
                          "provenance": {"position": {"quote": "fabricated",
@@ -202,7 +231,8 @@ class UntrustedVerificationFieldTests(unittest.TestCase):
                 "funding": "Undisclosed", "population": "—", "textDepth": "full",
                 "provenance": {"position": {"quote": "fabricated", "verifiedQuote": "exact"}},
             }}, "tester")
-        src = kb["sources"][0]
+        self.assertEqual(kb["sources"], [])
+        src = kb["pendingReview"][0]["delta"]["source"]
         self.assertEqual(src["textDepth"], "unknown")
         self.assertNotIn("verifiedQuote", src["provenance"]["position"])
 

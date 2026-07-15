@@ -519,6 +519,46 @@ def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=N
     return _commit(kb, "confirm-dataset", "{} dataset “{}” as a real evidence base".format(verb, d["label"]))
 
 
+def confirm_edge(kb, source_ref, edge_ref, confirmed=True, by=None, note=None):
+    """Admit or un-admit one source→dataset/source support edge with an audit record.
+
+    Root confirmation and support-edge confirmation are deliberately distinct. Confirming dataset D
+    establishes D's identity; this operation establishes that a particular source actually relies on
+    D (or on ``src:<id>``). It is the human fallback when no fetched dependency quote can verify the
+    link automatically.
+    """
+    actor = str(by or "").strip()
+    if not actor:
+        raise ValueError("edge confirmation requires a non-empty 'by' identity")
+    source = _resolve_source(kb, source_ref)
+    probe = str(edge_ref or "").strip()
+    refs = []
+    for edge in source.get("restsOn") or []:
+        ref = _edge_ref(edge)
+        if ref == probe or norm(ref) == norm(probe):
+            refs.append((edge, ref))
+    if not refs:
+        raise ValueError("source '{}' has no restsOn edge matching '{}'".format(source["id"], edge_ref))
+    if len(refs) > 1:
+        raise ValueError("edge '{}' is duplicated on source '{}' — dedupe it first".format(edge_ref, source["id"]))
+    target, canonical = refs[0]
+    edges = source.get("restsOn") or []
+    idx = edges.index(target)
+    item = dict(target) if isinstance(target, dict) else {"ref": canonical}
+    if confirmed:
+        item["admission"] = {"status": "confirmed", "method": "curator", "by": actor,
+                             "ts": now_iso()}
+        if note:
+            item["admission"]["note"] = str(note).strip()
+    else:
+        item.pop("admission", None)
+    edges[idx] = item
+    source["restsOn"] = edges
+    verb = "admitted" if confirmed else "un-admitted"
+    return _commit(kb, "confirm-edge", "{} support edge {} → {}".format(
+        verb, source["id"], canonical))
+
+
 def tidy_labels(kb):
     """Prettify any id-style / slug labels across positions, datasets, and factors (underscores
     → spaces, drop trailing sample-size clauses). For datasets the old label is kept as an alias."""

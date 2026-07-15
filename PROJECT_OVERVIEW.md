@@ -17,12 +17,14 @@ This project ports that idea to **research questions** ("Do eggs raise heart-dis
 "Did COVID come from a lab?", "Could the LHC create a dangerous black hole?") — but inverts the
 neutrality. In a research dispute, some positions genuinely *are* better supported, so simply
 counting sources rewards whoever is loudest, most numerous, or best funded. That's **false
-balance**. So instead of counting heads, the tool **counts resolved independent evidence bases**
-and displays evidence design/funding alongside that count. It is not a GRADE-style quality score.
+balance**. So instead of counting heads, the tool reports **confirmed-root coverage**: how much
+admitted, deduplicated evidence-base coverage is represented for each position. It displays
+evidence design/funding alongside that count. This is not a GRADE-style quality, effect-size,
+confidence, or truth score.
 
-The headline behaviour: **adding papers to an already resolved root adds no independent support.**
-The raw count can grow while the independent-bases count stays fixed; twelve unnamed rehashes add
-at most one pooled voice, and a pure citation loop adds zero.
+The headline behaviour: **adding papers to an already resolved root adds no coverage credit.**
+The raw count can grow while confirmed-root coverage stays fixed; unnamed rehashes remain visible
+in a zero-credit pool, and a pure citation loop adds zero.
 
 ---
 
@@ -50,7 +52,7 @@ This tool is built to surface exactly those three things.
 
 ## 3. The core idea (the "thesis")
 
-> **Aggregate, but count independent evidence bases and audit quality separately — instead of
+> **Aggregate, but count confirmed, deduplicated evidence bases and audit quality separately — instead of
 > counting sources.** If a feature could be gamed by flooding the zone with low-quality or correlated
 > papers, it's the wrong feature.
 
@@ -67,7 +69,7 @@ For each research question, the tool builds a **knowledge base** — a single st
   complicated* by a funding-bias flag and, when triggered, a shared-method-bias warning banner.
 - **Divergence matrix** — a grid showing which specific factors the camps actually disagree on (the
   "cruxes"), versus what they agree on.
-- **Independence & bias** — the heart of it: for each position, how concentrated its evidence is on
+- **Root coverage & bias** — the heart of it: for each position, how concentrated its evidence is on
   a few datasets (the anti-false-balance audit), plus the method-bias and quote-verification
   warnings for that position.
 - **Changes** — a running history of what each newly added source did to the metrics.
@@ -151,14 +153,16 @@ And then the metrics computed from these:
   many sources don't disclose funding at all. Funding is a fixed set of categories
   (Government, Nonprofit, Academic, Industry, Advocacy, Undisclosed) and **defaults to
   "Undisclosed" — it never assumes independence** when a source is silent.
-- **Independence / concentration** — *the core metric.* For each position, it resolves every
-  source down to the underlying evidence it rests on and counts **each distinct evidentiary root
-  once** (at half weight when a root is known only via a review, or backed only by animal /
-  in-vitro work). If five sources all rest on one dataset, that's **1 independent look, not 5** —
-  and adding a sixth, sixtieth, or six-hundredth source on that dataset moves the count by exactly
-  nothing; the pile-up shows only in the separate *concentration* share. An ungrounded flood adds at
-  most one pooled voice, not one root per item. Relabelling echo as original research does not bypass
-  that pool: a distinct root requires a **specific named and admitted** evidence base.
+- **Confirmed-root coverage / concentration** — *the core metric.* For each position, it resolves
+  admitted source-support edges down to underlying evidence bases and credits **each distinct,
+  confirmed evidentiary root once** (at half credit when a root is known only via a review, or
+  backed only by animal / in-vitro work). If five sources all rest on one admitted dataset, that is
+  **1 unit of root coverage, not 5** — and adding a sixth, sixtieth, or six-hundredth source on that
+  dataset moves the coverage by exactly nothing; the pile-up shows only in the separate
+  *concentration* share. An ungrounded flood remains visible in a zero-credit pool. Relabelling an
+  echo as original research does not bypass that quarantine: credit requires a **specific confirmed
+  base and an admitted support edge for this position**. The result is not a claim that roots are
+  statistically independent, equally informative, or true.
 - **Cruxes** — from the factor grid: cross-camp disagreement, shared high pivots, one-sided high
   assumptions, unanswered high factors, and milder contests are separately typed. This localises
   where disagreement or missing engagement actually lives without calling every factor a crux.
@@ -214,7 +218,7 @@ A guiding principle throughout: **finding and reading sources are free and keyle
 - **Full open-access PDFs, not just abstracts.** Early on it only read abstracts, but abstracts
   rarely contain the funding statement or name the datasets. Now it fetches the full PDF when the
   paper is open-access and pulls out the funding/acknowledgments section specifically — so the
-  funding and independence metrics get real signal.
+  funding and root-identity audits get real signal.
 
 - **Funding identification has three tiers.** Full-text funding statement → OpenAlex grant data →
   Crossref funder data → and only then "Undisclosed." It honestly reports the disclosure gap
@@ -330,6 +334,7 @@ anti-false-balance independence audit is the central bet.
 ---
 
 *In short: it takes the familiar "map the coverage" idea from news aggregators and rebuilds it for
-science, where the right question isn't "how many sources?" but "how much genuinely independent
-evidence — and who paid for it?" The tool computes that, shows where camps really disagree, resists
-being gamed by volume, and lets a shared knowledge base grow as more people contribute.*
+science, where the first questions are not merely "how many sources?" but "which admitted evidence
+bases recur, which links remain unconfirmed, and who paid for the work?" The tool computes that
+coverage diagnostic, shows where camps disagree, resists being gamed by volume, and lets a shared
+knowledge base grow as more people contribute. It does not decide which position is true.*

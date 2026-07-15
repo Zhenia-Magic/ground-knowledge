@@ -161,8 +161,8 @@ def home_html():
       </div>
       <div class="tcol">
         <div class="tnum">2 · The fix</div>
-        <p>We weight each side by <b>independent</b> evidence, not headcount. Ten papers resting on
-        one dataset count as roughly <b>one</b> look — not ten.</p>
+        <p>We show <b>confirmed evidence-root coverage</b>, not headcount. Ten papers resting on one
+        dataset cover roughly <b>one</b> root — while quality and shared-method bias stay separate.</p>
       </div>
       <div class="tcol">
         <div class="tnum">3 · How</div>
@@ -427,7 +427,7 @@ def manage_html(qid, get_question):
         <div id="revs"></div></div>
       <div class="panel"><h2>Evidence bases <span id="dscount"></span></h2>
         <p class="desc">These are the case's <b>proposed</b> evidence bases — each worth <b>zero</b> to
-        the headline independent-base count until it is grounded. <b>Confirm</b> a base you have checked
+        confirmed-root coverage until it is grounded. <b>Confirm</b> a base you have checked
         to admit it (it then enters the count), or <b>merge</b> a proposed base that is the same data
         under a different name <b>into an existing grounded base</b> (one you confirmed, or one a
         fetched source's exact quote already verifies). Merging two grounded bases (or un-confirming /
@@ -511,7 +511,7 @@ def manage_html(qid, get_question):
       pairs=pairs.filter(p=>isc(p.a.ref)!==isc(p.b.ref));   // only proposed↔grounded pairs (fold proposed into the grounded base)
       if(!pairs.length){box.innerHTML='';return;}
       box.innerHTML=`<div class="toast warn" style="margin-bottom:10px"><b>Possible duplicates.</b>
-        These labels look like the same evidence base — merge so one cohort isn't counted as two independent bases.</div>`
+        These labels look like the same evidence base — merge so one cohort isn't counted as two roots.</div>`
         + pairs.map(p=>{
           const keep=(isc(p.b.ref)&&!isc(p.a.ref))?p.b:p.a, fold=(keep===p.a)?p.b:p.a;
           return `<div class="cand"><div style="flex:1"><b>${E(fold.label)}</b>
@@ -793,8 +793,8 @@ def contribute_html(qid, get_question):
       const r=await fetch(`/api/questions/${QID}/delta`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delta:data})});
       const j=await r.json();
       if(j.error)return toast(j.error,'warn');
-      const off=j.offTopic?`, ${j.offTopic} skipped as off-topic`:'';
-      toast(`Imported. ${j.added} added, ${j.duplicates||0} duplicate(s)${off}. Now v${j.version}. `,'ok');
+      toast(`Submitted. ${j.queued||0} queued for curator review, ${j.duplicates||0} duplicate(s). `+
+        `The public submission does not change the report until reviewed. Now v${j.version}. `,'ok');
     }
     function toast(m,c){const e=document.getElementById('imp');e.textContent=m;e.className='toast '+(c||'');
       if(c==='ok')e.innerHTML+=`<a href="/q/${QID}"> View the report →</a>`;}

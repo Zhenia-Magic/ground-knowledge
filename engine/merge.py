@@ -436,34 +436,51 @@ def merge_delta(kb, delta):
         if isinstance(entry, dict):
             d = str(entry.get("ref") or "").strip()
             eprov = entry.get("provenance") if isinstance(entry.get("provenance"), dict) else None
+            eadmission = entry.get("admission") if isinstance(entry.get("admission"), dict) else None
         else:
-            d, eprov = str(entry).strip(), None
+            d, eprov, eadmission = str(entry).strip(), None, None
         if not d:
             continue
         # A source can rest on ANOTHER SOURCE (citation/derivation edge) -- this is what lets the
         # independence audit catch circular corroboration (see MECHANISM.md). The labeller writes
         # SRC:<existing id> or NEW-SRC:<title>; we resolve to an existing source and store "src:<id>".
-        # A citation edge cannot confirm a dataset, so its provenance is not carried.
+        # Citation provenance/admission is preserved for audit. Only an explicit valid admission is
+        # allowed to propagate the cited source's roots (engine/roots.py); a quote alone is not.
         low = d.lower()
         if low.startswith("src:") or low.startswith("new-src:"):
             ref = d.split(":", 1)[1].strip()
             tid = _resolve_source_ref(kb, ref)
             if tid:
-                rests_on.append("src:" + tid)
+                obj = {"ref": "src:" + tid}
+                if eprov:
+                    obj["provenance"] = eprov
+                if eadmission:
+                    obj["admission"] = eadmission
+                rests_on.append(obj if len(obj) > 1 else obj["ref"])
             else:
                 report.setdefault("danglingRefs", []).append(ref)  # cited source not in the KB YET
-                pending.append(ref)               # a FORWARD ref -- retried in resolve_pending_refs
+                pending.append({"ref": ref, "provenance": eprov, "admission": eadmission})
             continue
         tid = _dataset_is_source_ref(kb, d)     # a source reference missing its SRC: prefix
         if tid:
-            rests_on.append("src:" + tid)
+            obj = {"ref": "src:" + tid}
+            if eprov:
+                obj["provenance"] = eprov
+            if eadmission:
+                obj["admission"] = eadmission
+            rests_on.append(obj if len(obj) > 1 else obj["ref"])
             continue
         did, created = _resolve_dataset(kb, d)
         if created:
             report["newDatasets"].append(did)
         # store an edge OBJECT only when the labeller attached a per-edge quote; a bare dataset
         # dependency stays a plain string so string-only KBs are unchanged.
-        rests_on.append({"ref": did, "provenance": eprov} if eprov else did)
+        obj = {"ref": did}
+        if eprov:
+            obj["provenance"] = eprov
+        if eadmission:
+            obj["admission"] = eadmission
+        rests_on.append(obj if len(obj) > 1 else did)
 
     sid = _unique_id("src_", slug(src["title"]) + "_" + str(src.get("year") or "0"),
                      lambda x: any(s["id"] == x for s in kb["sources"]))
@@ -568,14 +585,26 @@ def resolve_pending_refs(kb):
             if not pend:
                 continue
             still = []
-            for ref in pend:
+            for pending in pend:
+                if isinstance(pending, dict):
+                    ref = pending.get("ref") or ""
+                    eprov = pending.get("provenance")
+                    eadmission = pending.get("admission")
+                else:                           # pre-v2 pending refs
+                    ref, eprov, eadmission = pending, None, None
                 tid = _resolve_source_ref(kb, ref)
                 if not tid:
-                    still.append(ref)                     # still not in the KB
+                    still.append(pending)                 # still not in the KB
                     continue
-                edge = "src:" + tid
-                if tid != s["id"] and edge not in s.get("restsOn", []):
-                    s.setdefault("restsOn", []).append(edge)
+                edge = {"ref": "src:" + tid}
+                if eprov:
+                    edge["provenance"] = eprov
+                if eadmission:
+                    edge["admission"] = eadmission
+                stored = edge if len(edge) > 1 else edge["ref"]
+                refs = {(e.get("ref") if isinstance(e, dict) else e) for e in s.get("restsOn", [])}
+                if tid != s["id"] and edge["ref"] not in refs:
+                    s.setdefault("restsOn", []).append(stored)
                     resolved += 1
                 changed = True                            # resolved (or self/dup) -> drop from pending
             if still:

@@ -546,7 +546,16 @@
       "population": "US pooled cohorts",
       "confidence": "moderate",
       "restsOn": [
-        "ds_pooled_us_cohorts_lifetime_risk_pooling_proj"
+        {
+          "ref": "ds_pooled_us_cohorts_lifetime_risk_pooling_proj",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -600,7 +609,16 @@
       "population": "US older adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_nih_aarp_diet_and_health_study"
+        {
+          "ref": "ds_nih_aarp_diet_and_health_study",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -659,7 +677,16 @@
       "population": "US health professionals",
       "confidence": "high",
       "restsOn": [
-        "ds_nurses_health_study_health_professionals_fol"
+        {
+          "ref": "ds_nurses_health_study_health_professionals_fol",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -710,7 +737,16 @@
       "population": "Global (50 countries)",
       "confidence": "moderate",
       "restsOn": [
-        "ds_prospective_urban_rural_epidemiology_pure_st"
+        {
+          "ref": "ds_prospective_urban_rural_epidemiology_pure_st",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -761,7 +797,16 @@
       "population": "Chinese adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_china_kadoorie_biobank"
+        {
+          "ref": "ds_china_kadoorie_biobank",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -808,7 +853,16 @@
       "population": "US health professionals",
       "confidence": "moderate",
       "restsOn": [
-        "ds_nurses_health_study_health_professionals_fol"
+        {
+          "ref": "ds_nurses_health_study_health_professionals_fol",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -858,7 +912,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+        {
+          "ref": "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -908,7 +971,16 @@
       "population": "Adults with type 2 diabetes / prediabetes",
       "confidence": "moderate",
       "restsOn": [
-        "ds_diabegg_randomized_trial"
+        {
+          "ref": "ds_diabegg_randomized_trial",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -959,7 +1031,16 @@
       "population": "Adults with metabolic syndrome",
       "confidence": "low",
       "restsOn": [
-        "ds_egg_feeding_trial_metabolic_syndrome"
+        {
+          "ref": "ds_egg_feeding_trial_metabolic_syndrome",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1060,7 +1141,16 @@
       "population": "US male physicians",
       "confidence": "moderate",
       "restsOn": [
-        "ds_physicians_health_study"
+        {
+          "ref": "ds_physicians_health_study",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1109,7 +1199,16 @@
       "population": "Vascular-prevention clinic patients",
       "confidence": "low",
       "restsOn": [
-        "ds_carotid_plaque_clinic_cohort"
+        {
+          "ref": "ds_carotid_plaque_clinic_cohort",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1164,7 +1263,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+        {
+          "ref": "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1214,7 +1322,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+        {
+          "ref": "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1264,7 +1381,16 @@
       "population": "Finnish middle-aged men",
       "confidence": "moderate",
       "restsOn": [
-        "ds_kuopio_ischaemic_heart_disease_study_kihd"
+        {
+          "ref": "ds_kuopio_ischaemic_heart_disease_study_kihd",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1315,7 +1441,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+        {
+          "ref": "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1369,7 +1504,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999"
+        {
+          "ref": "src:src_hu_et_al_a_prospective_study_of_egg_consumpt_1999",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1418,7 +1562,16 @@
       "population": "Swedish adults",
       "confidence": "moderate",
       "restsOn": [
-        "ds_swedish_mammography_cohort_cohort_of_swedish"
+        {
+          "ref": "ds_swedish_mammography_cohort_cohort_of_swedish",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1479,10 +1632,46 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
-        "src:src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
-        "src:src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
-        "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015"
+        {
+          "ref": "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_rong_et_al_egg_consumption_and_risk_of_chd_a_2013",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_shin_et_al_egg_consumption_in_relation_to_ca_2013",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1543,10 +1732,46 @@
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
-        "src:src_godos_et_al_egg_consumption_and_cardiovascul_2021",
-        "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
-        "src:src_carson_et_al_dietary_cholesterol_and_cardiov_2020"
+        {
+          "ref": "src:src_drouin_chartier_et_al_egg_consumption_and_ri_2020",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_godos_et_al_egg_consumption_and_cardiovascul_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_larsson_et_al_egg_consumption_and_risk_of_he_2015",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_carson_et_al_dietary_cholesterol_and_cardiov_2020",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {

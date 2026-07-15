@@ -122,6 +122,19 @@
                       "quoteVerification": {"$ref": "#/$defs/quoteVerification"}
                     },
                     "additionalProperties": true
+                  },
+                  "admission": {
+                    "type": "object",
+                    "description": "auditable curator or trusted-migration admission of this support edge",
+                    "required": ["status", "method", "by", "ts"],
+                    "properties": {
+                      "status": {"enum": ["confirmed"]},
+                      "method": {"enum": ["curator", "legacy-migration"]},
+                      "by": {"type": "string", "minLength": 1},
+                      "ts": {"type": "string", "minLength": 1},
+                      "note": {"type": "string"}
+                    },
+                    "additionalProperties": true
                   }
                 },
                 "additionalProperties": true

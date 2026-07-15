@@ -42,9 +42,9 @@ weaken the test.
 1. **Fixed-graph independence monotonicity.** Adding a source with only outgoing edges never lowers
    `nEff`; it rises only through a new admitted root or grounding upgrade. Graph corrections may lower it
    intentionally (alias merge; pending edge reveals a pure cycle). Both are tested.
-2. **Adversarial robustness contract.** Every case executes seven attacks: echo, fabricated roots,
-   copied-sibling quote, circular ring, known alias, generic fetched label, and unknown lexical alias
-   split. All must stay PASS.
+2. **Adversarial robustness contract.** Every case executes eight attacks: echo, fabricated roots,
+   copied-sibling quote, circular ring, known alias, generic fetched label, unknown lexical alias
+   split, and cross-position support laundering. All must stay PASS.
 3. **Determinism / no drift.** The viewer renders `engine/assess.assess()` output; it never
    recomputes. One `assess()` is one `resolve()`. Same KB in → same numbers out, always.
 4. **Confirmation is per edge** (see below) — never re-widen it to a source-level boolean.
@@ -55,17 +55,18 @@ weaken the test.
 - **datasets** — the underlying **evidence bases** (the JSON key stays `datasets` for back-compat).
   Each may carry a `kind`: `dataset | experiment | observation | argument | model | document`
   (absent = `dataset`). `argument`/`model`/`document` are **theoretical roots** — first-class
-  independent bases, and exempt from the empirical (non-human population) discount. Give an argument
+  evidence bases, and exempt from the empirical (non-human population) discount. Give an argument
   root a `proposition` stating its claim.
 - **sources** — each supports a position with an evidence tier, funding, population, and `restsOn`
   edges. A `restsOn` entry is a bare ref string (`"ds_x"` or `"src:<id>"`) **or** an edge object
-  `{ref, provenance:{quote, verifiedQuote}}` carrying that edge's own dependency quote.
+  `{ref, provenance:{quote, verifiedQuote}, admission?}` carrying that edge's own dependency quote
+  and, when curated, its separate support-edge admission.
 - **factors** — the cross-cutting questions; their per-position weights drive the crux taxonomy.
 
 ## Root-confirmation rules
 
-A named dataset is not trusted just because a source claims it. A root is **provisional** — it
-contributes **zero** to the headline `nEff` — until confirmed one of two auditable ways:
+A named dataset is not trusted just because a source claims it. Root identity is **provisional** — it
+contributes **zero** to headline confirmed-root coverage — until confirmed one of two auditable ways:
 
 - **Curator confirmation.** A human vouches that the base is real, recorded as an *auditable object*
   `confirmation: {status:"confirmed", method:"curator", by, ts, source?}` — **not** a bare boolean, so
@@ -82,7 +83,14 @@ Two things are deliberately **not** enough (do not re-introduce them):
   source's own quote — only a source that *directly* names the base can vouch for it.
 
 On the untrusted paste-back path, `textDepth` and `verifiedQuote` are stripped, so a contributor can
-never self-declare a fabricated edge as verified. Fabricated roots stay visible but quarantined.
+never self-declare a fabricated edge as verified. Public contributions are queued for human review,
+not merged directly. Fabricated roots stay visible but quarantined after any eventual source review.
+
+Root identity and source support are separate decisions. Even a globally confirmed root adds zero
+under a new source/position until that particular edge has a qualifying verified dependency quote,
+a curator admission (`python cli.py confirm-edge ...`), or an explicit legacy-migration record. A
+dataset confirmation explicitly tied to its supporting source is a dual attestation for that one
+edge; it cannot be reused by another source.
 
 ## Curation rules
 
@@ -104,7 +112,8 @@ never self-declare a fabricated edge as verified. Fabricated roots stay visible 
   meta-analysis is `secondary` unless it tags the trials it pools. Add a genuinely new *primary
   design* to a case's `vocab.evidence` with `tier:"primary"`; don't hardcode.
 - **Model theoretical arguments as `kind:"argument"` roots**, not empirical datasets, so a position
-  resting on several independent arguments counts them independently (see the black-hole case).
+  can represent several distinct admitted arguments without applying an animal-population discount
+  (see the black-hole case). The count does not establish logical independence or soundness.
 
 ## Submitting a change
 

@@ -86,9 +86,33 @@ def _pos_key_tokens(proposal):
 
 
 def _same_stance(a, b):
-    """Two proposals are the same camp if one's stance tokens are a subset of the other's (subset
-    is stance-safe: opposite stances are never subsets). Empty token sets never match."""
-    return bool(a) and bool(b) and (a <= b or b <= a)
+    """Whether two token sets express the same stance rather than a negated/opposite camp.
+
+    Token-subset matching is useful for qualifier variants, but by itself it has a dangerous hole:
+    ``increase risk`` is a subset of ``no increase risk``. Check negation and directional polarity
+    first, then allow the conservative subset match.
+    """
+    if not a or not b:
+        return False
+    neg = {"no", "not", "never", "neither", "nor", "without", "lack", "lacking", "lacked"}
+    if bool(a & neg) != bool(b & neg):
+        return False
+
+    def direction(tokens):
+        up = ("increas", "rais", "higher", "grow", "worsen", "harm", "caus", "risk")
+        down = ("decreas", "reduc", "lower", "declin", "improv", "protect", "safe", "benefit")
+        signs = set()
+        for token in tokens:
+            if any(token.startswith(stem) for stem in up):
+                signs.add("up")
+            if any(token.startswith(stem) for stem in down):
+                signs.add("down")
+        return signs
+
+    da, db = direction(a), direction(b)
+    if da and db and da.isdisjoint(db):
+        return False
+    return a <= b or b <= a
 
 
 # generic dataset-name filler that shouldn't drive edge clustering ("cohort" alone is not identity)

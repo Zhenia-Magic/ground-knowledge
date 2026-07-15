@@ -43,7 +43,13 @@ jobs:
           done
 
       - name: Strict benchmark (structure recall · collapse · adversarial · baseline hashes)
-        run: python eval/run_benchmark.py --require-live-baseline
+        run: python eval/run_benchmark.py --require-live-baseline --check-results
+
+      - name: Edge-admission migration is complete
+        run: python scripts/migrate_edge_admissions.py --check
+
+      - name: Source inventory is current
+        run: python scripts/source_inventory.py --check
 
   smoke:
     name: clean-clone smoke test

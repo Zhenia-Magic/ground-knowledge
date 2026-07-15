@@ -14,7 +14,7 @@
   },
   "eggs": {
     "subQuestion": "Do eggs increase cardiovascular disease risk?",
-    "positions": ["Increases risk", "No association", "Context-dependent"],
+    "positions": ["Increases risk", "No increased risk", "Context-dependent"],
     "keyRoots": ["Nurses' Health Study", "PURE", "China Kadoorie"],
     "cruxes": ["industry funding", "Subgroups", "biomarkers"]
   }

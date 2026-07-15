@@ -574,7 +574,16 @@
       "population": "Wuhan early COVID-19 cases (Dec 2019)",
       "confidence": "high",
       "restsOn": [
-        "ds_huanan_market_environmental_samples_early_ca"
+        {
+          "ref": "ds_huanan_market_environmental_samples_early_ca",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -649,7 +658,16 @@
       "population": "Early SARS-CoV-2 genomes",
       "confidence": "high",
       "restsOn": [
-        "ds_early_sars_cov_2_genomic_sequences_lineages_"
+        {
+          "ref": "ds_early_sars_cov_2_genomic_sequences_lineages_",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -700,7 +718,16 @@
       "population": "SARS-CoV-2 genome",
       "confidence": "moderate",
       "restsOn": [
-        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+        {
+          "ref": "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -768,7 +795,16 @@
       "population": "Huanan market environmental samples",
       "confidence": "moderate",
       "restsOn": [
-        "ds_huanan_market_environmental_samples_early_ca"
+        {
+          "ref": "ds_huanan_market_environmental_samples_early_ca",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -835,8 +871,26 @@
       "population": "—",
       "confidence": "high",
       "restsOn": [
-        "ds_huanan_market_environmental_samples_early_ca",
-        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+        {
+          "ref": "ds_huanan_market_environmental_samples_early_ca",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -902,7 +956,16 @@
       "population": "SARS-CoV-2 genome",
       "confidence": "moderate",
       "restsOn": [
-        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+        {
+          "ref": "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -949,7 +1012,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "ds_defuse_grant_proposal_document_2018"
+        {
+          "ref": "ds_defuse_grant_proposal_document_2018",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -996,8 +1068,26 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
-        "src:src_analysis_of_the_defuse_proposal_ecohealth_wi_2023"
+        {
+          "ref": "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_analysis_of_the_defuse_proposal_ecohealth_wi_2023",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1044,8 +1134,26 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
-        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+        {
+          "ref": "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1092,8 +1200,26 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
-        "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022"
+        {
+          "ref": "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1185,7 +1311,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+        {
+          "ref": "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1233,7 +1368,16 @@
       "population": "SARS-CoV-2 genome",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+        {
+          "ref": "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1280,8 +1424,26 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
-        "src:src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024"
+        {
+          "ref": "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_rootclaim_saar_wilf_bayesian_analysis_of_cov_2024",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1356,7 +1518,16 @@
       "population": "Bat coronaviruses",
       "confidence": "high",
       "restsOn": [
-        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+        {
+          "ref": "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1428,7 +1599,16 @@
       "population": "Bat coronaviruses",
       "confidence": "high",
       "restsOn": [
-        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+        {
+          "ref": "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1482,7 +1662,16 @@
       "population": "Sarbecovirus genomes",
       "confidence": "high",
       "restsOn": [
-        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+        {
+          "ref": "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1537,7 +1726,16 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y"
+        {
+          "ref": "ds_bat_sarbecovirus_reservoir_ratg13_banal_52_y",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1584,7 +1782,16 @@
       "population": "SARS-CoV-2 genome",
       "confidence": "moderate",
       "restsOn": [
-        "ds_sars_cov_2_genome_structure_furin_cleavage_s"
+        {
+          "ref": "ds_sars_cov_2_genome_structure_furin_cleavage_s",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1668,7 +1875,16 @@
       "population": "Huanan market environmental samples",
       "confidence": "moderate",
       "restsOn": [
-        "ds_huanan_market_environmental_samples_early_ca"
+        {
+          "ref": "ds_huanan_market_environmental_samples_early_ca",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1715,7 +1931,16 @@
       "population": "Early SARS-CoV-2 sequences",
       "confidence": "moderate",
       "restsOn": [
-        "ds_deleted_early_wuhan_sequence_dataset"
+        {
+          "ref": "ds_deleted_early_wuhan_sequence_dataset",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1857,7 +2082,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_segreto_deigin_the_genetic_structure_of_sars_2021"
+        {
+          "ref": "src:src_segreto_deigin_the_genetic_structure_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1905,7 +2139,16 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "ds_mojiang_miners_ratg13_provenance"
+        {
+          "ref": "ds_mojiang_miners_ratg13_provenance",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1952,10 +2195,46 @@
       "population": "Global SARS-CoV-2 origins evidence through June 2025",
       "confidence": "high",
       "restsOn": [
-        "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
-        "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
-        "src:src_who_china_joint_study_on_the_origins_of_sars_2021",
-        "src:src_harrison_sachs_a_call_for_an_independent_inq_2022"
+        {
+          "ref": "src:src_worobey_et_al_the_huanan_market_was_the_earl_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_who_china_joint_study_on_the_origins_of_sars_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        },
+        {
+          "ref": "src:src_harrison_sachs_a_call_for_an_independent_inq_2022",
+          "admission": {
+            "status": "confirmed",
+            "method": "legacy-migration",
+            "by": "repository-migration",
+            "ts": "2026-07-14T00:00:00Z",
+            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
+          }
+        }
       ],
       "provenance": {
         "position": {

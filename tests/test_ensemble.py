@@ -64,6 +64,16 @@ class CombineOneTests(unittest.TestCase):
         self.assertTrue(rep["flagged"])
         self.assertEqual(c["source"]["position"], "NEW:Violent video games increase aggression")
 
+    def test_negated_superset_is_never_clustered_with_positive_stance(self):
+        for positive, negated in [
+            ("NEW:Increases risk", "NEW:No increase in risk"),
+            ("NEW:Causes harm", "NEW:Does not cause harm"),
+            ("NEW:Safe", "NEW:Not safe"),
+        ]:
+            _, rep = self._one([_d(positive, conf=0.8), _d(negated, conf=0.9)])
+            self.assertTrue(rep["flagged"], (positive, negated))
+            self.assertIn("position", rep["disagreedFields"])
+
     def test_tie_falls_to_highest_confidence_and_flags(self):
         c, rep = self._one([_d("NEW:Increases aggression", conf=0.6),
                             _d("NEW:No clear effect", conf=0.95)])
