@@ -184,6 +184,9 @@
   td{padding:8px 10px;font-size:12.5px;border-bottom:1px solid var(--line);vertical-align:top;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   td.wrap{white-space:normal;}
+  /* the root-coverage table has two-word numeric headers ("Source incidence", "Coverage credit")
+     that would ellipsis-truncate in a fixed-layout column; let its headers wrap and bottom-align. */
+  .covtbl th{white-space:normal;vertical-align:bottom;line-height:1.25;}
   /* Line-clamping needs display:-webkit-box, which breaks a <td>'s table-cell layout if
      applied directly to it (collapses column widths / row heights) -- so this only ever
      goes on a <div> nested inside the cell, never the cell itself. */
@@ -952,7 +955,7 @@ function renderIndependenceView(){
             <span class="infoicon" title="Sum of distinct admitted evidence roots with declared 0.5 discounts for review-only and animal/in-vitro grounding. Unsupported assertions, unconfirmed support links, and cycles contribute zero. This measures represented root coverage, not study quality, effect size, or truth.">?</span>
           </span></div>
         ${mix}
-        <div class="tbl-wrap"><table><colgroup><col style="width:36%"><col style="width:14%"><col style="width:12%"><col style="width:12%"><col style="width:26%"></colgroup><thead><tr><th class="nosort">Root</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Source incidence <span class="infoicon" title="How much listed sourcing rests on this root; used for the concentration warning, not the coverage total.">?</span></th><th class="nosort" style="text-align:right;">Coverage credit <span class="infoicon" title="This root's one-time contribution to confirmed-root coverage. Zero means the root/support link is unconfirmed or unsupported; fractional credit reflects declared review-only or non-human discounts.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
+        <div class="tbl-wrap"><table class="covtbl"><colgroup><col style="width:34%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:24%"></colgroup><thead><tr><th class="nosort">Root</th><th class="nosort">Kind</th><th class="nosort" style="text-align:right;">Source incidence <span class="infoicon" title="How much listed sourcing rests on this root; used for the concentration warning, not the coverage total.">?</span></th><th class="nosort" style="text-align:right;">Coverage credit <span class="infoicon" title="This root's one-time contribution to confirmed-root coverage. Zero means the root/support link is unconfirmed or unsupported; fractional credit reflects declared review-only or non-human discounts.">?</span></th><th class="nosort">Notes</th></tr></thead><tbody>${rows}</tbody></table>${more}</div>
         ${sec}${circ}${method}
       </div>`;
   }).join("");

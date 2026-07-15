@@ -71,6 +71,7 @@
     {
       "id": "ds_defuse_grant_proposal_document_2018",
       "label": "DEFUSE grant proposal document (2018)",
+      "kind": "document",
       "aliases": [],
       "confirmation": {
         "status": "confirmed",
