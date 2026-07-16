@@ -1,0 +1,1777 @@
+{
+  "meta": {
+    "id": "34c53ea5e983",
+    "question": "Does dietary saturated fat increase cardiovascular disease risk?",
+    "version": 45,
+    "updated": "2026-07-16T13:44:03.474186+00:00",
+    "schemaVersion": 2,
+    "portal": {
+      "id": "e9b9a1cd1960",
+      "baseVersion": 1,
+      "url": "https://groundknowledge.org"
+    }
+  },
+  "positions": [
+    {
+      "id": "pos_no_clear_effect",
+      "label": "No clear effect",
+      "hue": "#2E8B6F",
+      "shortLabel": "No clear effect"
+    },
+    {
+      "id": "pos_saturated_fat_increases_cardiovascular_disea",
+      "label": "Saturated fat increases cardiovascular disease risk",
+      "hue": "#B4502E",
+      "shortLabel": "Increases risk"
+    },
+    {
+      "id": "pos_replacing_saturated_fat_with_omega_6_linolei",
+      "label": "Replacing saturated fat with omega-6 linoleic acid increases CVD risk",
+      "hue": "#586A7A",
+      "shortLabel": "Increases risk"
+    }
+  ],
+  "datasets": [
+    {
+      "id": "ds_pooled_prospective_cohorts_on_dietary_fat_an",
+      "label": "Pooled prospective cohorts on dietary fat and CVD",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.695533+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_whi_2006",
+      "label": "WHI 2006",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.745243+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_dart_1989",
+      "label": "DART 1989",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.792178+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_veterans_admin_1969",
+      "label": "Veterans Admin 1969",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.840558+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_oslo_diet_heart_1966",
+      "label": "Oslo Diet-Heart 1966",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.887397+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_sydney_diet_heart_1978",
+      "label": "Sydney Diet-Heart 1978",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.934420+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_minnesota_coronary_survey_1989",
+      "label": "Minnesota Coronary Survey 1989",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:41.979928+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_prospective_urban_rural_epidemiology_pure_st",
+      "label": "Prospective Urban Rural Epidemiology (PURE) study",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:42.028923+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_pooled_linoleic_acid_intervention_trials",
+      "label": "Pooled linoleic acid intervention trials",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:42.075042+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    },
+    {
+      "id": "ds_nih_aarp_diet_and_health_study",
+      "label": "NIH-AARP Diet and Health Study",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T13:42:42.120243+00:00",
+        "by": "Evgeniia",
+        "note": "Curator-verified landmark saturated-fat trial/cohort — a real, identified evidence base."
+      }
+    }
+  ],
+  "factors": [],
+  "sources": [
+    {
+      "id": "src_meta_analysis_of_prospective_cohort_studies__2010",
+      "title": "Meta-analysis of prospective cohort studies evaluating the association of saturated fat with cardiovascular disease.",
+      "year": 2010,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20071648/",
+      "authors": [
+        "Siri-Tarino PW",
+        "Sun Q",
+        "Hu FB",
+        "Krauss RM."
+      ],
+      "venue": "The American journal of clinical nutrition",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_clear_effect",
+      "evidence": "Meta-analysis",
+      "funding": "Undisclosed",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_pooled_prospective_cohorts_on_dietary_fat_an",
+          "provenance": {
+            "quote": "Design Twenty-one studies identified by searching MEDLINE and EMBASE databases and secondary referencing qualified for inclusion in this study.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "250742455ffee2307629d62eaec6d3b80f52823c92db5343aa2ef77f4732f530",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20071648/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": true,
+              "quoteSha256": "0154e1e7fe742dc08e08658b8d9a0d4337c681286e7db1b019bcc3e695a7a437",
+              "normalizedCharStart": 501,
+              "normalizedCharEnd": 644,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.423943+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Conclusions A meta-analysis of prospective epidemiologic studies showed that there is no significant evidence for concluding that dietary saturated fat is associated with an increased risk of CHD or CVD.",
+          "extractionConfidence": 0.98,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "250742455ffee2307629d62eaec6d3b80f52823c92db5343aa2ef77f4732f530",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20071648/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "8d0ce1e687be97e45769e6bc62428b3e9ca27c8a42456ada3a89040dfa66ac17",
+            "normalizedCharStart": 1236,
+            "normalizedCharEnd": 1439,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 1,
+      "textDepth": "abstract"
+    },
+    {
+      "id": "src_meta_analysis_of_effect_of_saturated_fat_int_2010",
+      "title": "Meta-analysis of effect of saturated fat intake on cardiovascular disease: overadjustment obscures true associations",
+      "year": 2010,
+      "url": "https://ajcn.nutrition.org/article/S0002-9165(23",
+      "authors": [
+        "Sodi Moderate"
+      ],
+      "venue": "American Journal of Clinical Nutrition",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Narrative/Commentary",
+      "funding": "Nonprofit/charity",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "src:src_meta_analysis_of_prospective_cohort_studies__2010",
+          "provenance": {
+            "quote": "The recent article by Siri-Tarino et al ([1](https://ajcn.nutrition.org/article/S0002-9165(23)01920-2/fulltext#) 1. Siri-Tarino, P ∙ Sun, Q ∙ Hu, F ... **Meta-analysis of prospective cohort studies evaluating the association of saturated fat with cardiovascular disease.** _Am J Clin Nutr._ 2010; **91**:535-546 ), which reported on a meta-analysis of prospective cohort studies evaluating the association of saturated fat with coronary heart disease (CHD), stroke, and cardiovascular disease (CVD) observed that “there is no significant evidence for concluding that dietary saturated fat is associated with an increased risk of CHD or CVD.”",
+            "extractionConfidence": 1.0,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "0ea78ee3a1f734843201ade242fb929f7d032283646d5367e6b2cec95c50077c",
+              "textDepth": "partial",
+              "sourceUrl": "https://ajcn.nutrition.org/article/S0002-9165(23)01920-2/fulltext",
+              "reason": "crosses-structural-boundary"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.472714+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Without this further analysis, the conclusion that, “our meta-analysis showed that there is insufficient evidence from prospective epidemiologic studies to conclude that dietary saturated fat is associated with an increased risk of CHD, stroke, or CVD” is unsupported.",
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "0ea78ee3a1f734843201ade242fb929f7d032283646d5367e6b2cec95c50077c",
+            "textDepth": "partial",
+            "sourceUrl": "https://ajcn.nutrition.org/article/S0002-9165(23)01920-2/fulltext",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "45b95d50b8905ea8a8e22fc53db50db8450fda793f636bd819347c3942851c56",
+            "normalizedCharStart": 5083,
+            "normalizedCharEnd": 5351,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 2,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_reduction_in_saturated_fat_intake_for_cardio_2020",
+      "title": "Reduction in saturated fat intake for cardiovascular disease - Hooper, L - 2020 | Cochrane Library",
+      "year": 2020,
+      "url": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+      "authors": [
+        "Hooper, L.",
+        "Martin, N.",
+        "Jimoh, O. F.",
+        "Kirk, C.",
+        "Foster, E.",
+        "Abdelhamid, A. S."
+      ],
+      "venue": "Cochrane Database of Systematic Reviews",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Meta-analysis",
+      "funding": "Undisclosed",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_whi_2006",
+          "provenance": {
+            "quote": "WHI 2006, the largest single study with almost 50,000 female participants for many years.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.519606+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_dart_1989",
+          "provenance": {
+            "quote": "DART 1989 included 2033 participants and reported on all-cause mortality, CV mortality, CVD events, MI, and CHD events.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.566908+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_veterans_admin_1969",
+          "provenance": {
+            "quote": "Veterans Admin 1969 included 846 participants and was the single RCT that appears to have had adequate participant and study personnel blinding.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.613260+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_oslo_diet_heart_1966",
+          "provenance": {
+            "quote": "Oslo Diet-Heart 1966 included 412 men with previous MI and provided advice and supplement.",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.658406+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_sydney_diet_heart_1978",
+          "provenance": {
+            "quote": "Sydney Diet-Heart 1978 included 458 men with angina referred for angiography.",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.706939+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "The findings of this updated review suggest that reducing saturated fat intake for at least two years causes a potentially important reduction in combined cardiovascular events.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f389c0b7ef49b6c36a475708bce74b7f67a52641dd4cd589eab3cee35603af0d",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737.pub2/full",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "631c9139a4e019942c80263ea3a923e330e702832ea616df17a7ef334f6b8042",
+            "normalizedCharStart": 5736,
+            "normalizedCharEnd": 5913,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 3,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_reduction_in_saturated_fat_intake_for_cardio_2015",
+      "title": "Reduction in saturated fat intake for cardiovascular disease - Hooper, L - 2015 | Cochrane Library",
+      "year": 2015,
+      "url": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+      "authors": [
+        "Hooper, L."
+      ],
+      "venue": "Cochrane Database of Systematic Reviews",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Evidence-synthesis",
+      "funding": "Government/public",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_dart_1989",
+          "provenance": {
+            "quote": "The review included long‐term trials suggested that reducing dietary saturated fat reduced the risk of cardiovascular events by 17% (risk ratio (RR) 0.83; 95% confidence interval (CI) 0.72 to 0.96, 13 comparisons, 53,300 participants of whom 8% had a cardiovascular event, I² 65%, GRADE moderate quality of evidence).",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.753584+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_whi_2006",
+          "provenance": {
+            "quote": "Effects on all‐cause mortality (RR 0.97; 95% CI 0.90 to 1.05; 12 trials, 55,858 participants) and cardiovascular mortality (RR 0.95; 95% CI 0.80 to 1.12, 12 trials, 53,421 participants) were less clear (both GRADE moderate quality of evidence).",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.798674+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_veterans_admin_1969",
+          "provenance": {
+            "quote": "We include 15 randomised controlled trials (RCTs) (17 comparisons, ̃59,000 participants), which used a variety of interventions from providing all food to advice on how to reduce saturated fat.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "ade7ef38fd8055ad9d782ff9213454b083d51ad4145715a288e0e0fe3cdf6a6a",
+              "normalizedCharStart": 1851,
+              "normalizedCharEnd": 2044,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.844890+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_oslo_diet_heart_1966",
+          "provenance": {
+            "quote": "We include 15 randomised controlled trials (RCTs) (17 comparisons, ̃59,000 participants), which used a variety of interventions from providing all food to advice on how to reduce saturated fat.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "ade7ef38fd8055ad9d782ff9213454b083d51ad4145715a288e0e0fe3cdf6a6a",
+              "normalizedCharStart": 1851,
+              "normalizedCharEnd": 2044,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.890746+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_sydney_diet_heart_1978",
+          "provenance": {
+            "quote": "We include 15 randomised controlled trials (RCTs) (17 comparisons, ̃59,000 participants), which used a variety of interventions from providing all food to advice on how to reduce saturated fat.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "ade7ef38fd8055ad9d782ff9213454b083d51ad4145715a288e0e0fe3cdf6a6a",
+              "normalizedCharStart": 1851,
+              "normalizedCharEnd": 2044,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.935466+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "The findings of this updated review are suggestive of a small but potentially important reduction in cardiovascular risk on reduction of saturated fat intake.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d01bcde7d41ddb5c22015722ccfb82a6df56f5038a2be8d2ea241397fcd42c5a",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD011737/full",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d0977dfedfb479015039eca3d93662f994946b8f14b98f1f6c6dc32a08b03073",
+            "normalizedCharStart": 3981,
+            "normalizedCharEnd": 4139,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 4,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_saturated_fat_restriction_for_cardiovascular_2025",
+      "title": "Saturated Fat Restriction for Cardiovascular Disease Prevention: A Systematic Review and Meta-analysis of Randomized Controlled Trials",
+      "year": 2025,
+      "url": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+      "authors": [
+        "Yamada, S.",
+        "Shirai, T.",
+        "Inaba, S.",
+        "Inoue, G.",
+        "Torigoe, M.",
+        "Fukuyama, N."
+      ],
+      "venue": "JMA J.",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_clear_effect",
+      "evidence": "Meta-analysis",
+      "funding": "Academic/institutional",
+      "population": "General adult population",
+      "confidence": "low",
+      "restsOn": [
+        {
+          "ref": "ds_oslo_diet_heart_1966",
+          "provenance": {
+            "quote": "Leren [(19)] (1966) Oslo Diet Heart Norway Post-MI 206/206 Male 100% None SFA8.5% n.a. n.a. 5 CHD relapse",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:02.980924+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_veterans_admin_1969",
+          "provenance": {
+            "quote": "Dayton et al. [(20)] (1969) Los Angeles Veterans Administration USA Veterans domicile 424/422 Male 100% None Linoleic acid 38.4% of fat Linoleic acid 10.0% of fat n.a. 8 Sudden death or definite MI",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.026292+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_dart_1989",
+          "provenance": {
+            "quote": "Burr et al. [(21)] (1989) DART UK Post-MI 1018/1015 Male 100% None P:S=0.78 SFA18.1% P:S=0.44 SFA24.3% 6.2% energy 2 MI",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.072862+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_minnesota_coronary_survey_1989",
+          "provenance": {
+            "quote": "Frantz et al. [(22)] (1989) Minnesota Coronary Survey USA Mental hospital or nursing home 4541/4516 Female 41.5%, male 48.5% None SFA9% SFA18% 9.1% energy 4.5 MI, sudden death, or death",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.118394+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_sydney_diet_heart_1978",
+          "provenance": {
+            "quote": "Ramsden et al. [(24)] (2013) Sydney Diet Heart Study Australia Post-ACS 221/237 Male 100% None PUFA15.4%, SFA9.3% PUFA8.4%, SFA13.5% 4.2% energy 5 Death",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.163018+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "**Conclusions:** The findings indicate that a reduction in saturated fats cannot be recommended at present to prevent cardiovascular diseases and mortality.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "68e64c4a338c7cc061491b9971ecf05b6505059ccf0374f50c5ead2ce3c66d00",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.jmaj.jp/detail.php?id=10.31662%2Fjmaj.2024-0324",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "dce22ed6f4f88997894dad4a57a4a41ed2072952128b7afbabeaf7b5037785ae",
+            "normalizedCharStart": 2408,
+            "normalizedCharEnd": 2564,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 5,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_effect_of_reducing_saturated_fat_intake_on_c_2024",
+      "title": "Effect of reducing saturated fat intake on cardiovascular disease in adults: an umbrella review - PMC",
+      "year": 2024,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11180890/",
+      "authors": [
+        "Aramburu, A.",
+        "Dolores-Maldonado, G.",
+        "Curi-Quinto, K.",
+        "Cueva, K.",
+        "Alvarado-Gamarra, G.",
+        "Alcalá-Marcos, K.",
+        "Celis, C. R.",
+        "Lanata, C. F."
+      ],
+      "venue": "Frontiers in Public Health",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Evidence-synthesis",
+      "funding": "Nonprofit/charity",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "src:src_reduction_in_saturated_fat_intake_for_cardio_2020",
+          "provenance": {
+            "quote": "Hooper et al. ( 9 ) described 45 potential associations of cardiovascular disease and mortality associated with reduction in SAF intake.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "fuzzy",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "fuzzy",
+              "textSha256": "a1733de1067869e2889c890a28322a2493aa639f5530dc4a4d911a7b085ddad3",
+              "textDepth": "partial",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11180890/",
+              "reason": "paraphrase-or-altered-text",
+              "similarity": 1.0
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.251246+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_pooled_prospective_cohorts_on_dietary_fat_an",
+          "provenance": {
+            "quote": "Among meta-analyses of cohort studies, five of the 19 associations were significant.",
+            "extractionConfidence": 0.8,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "a1733de1067869e2889c890a28322a2493aa639f5530dc4a4d911a7b085ddad3",
+              "textDepth": "partial",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11180890/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "65c07302b0a89bdaaec52a7476d58c126f7b4ed3904751f62f16a119132bbd6a",
+              "normalizedCharStart": 5088,
+              "normalizedCharEnd": 5172,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.207029+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Conclusion This umbrella review found the reduction in SAF intake probably reduces cardiovascular events and other health outcomes.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a1733de1067869e2889c890a28322a2493aa639f5530dc4a4d911a7b085ddad3",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11180890/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "2152aff2180e2e0515d66d11a71ea1157170660dd9cbd413267b5ced3f9194b6",
+            "normalizedCharStart": 5481,
+            "normalizedCharEnd": 5612,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 6,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_associations_of_fats_and_carbohydrate_intake_2017",
+      "title": "Associations of fats and carbohydrate intake with cardiovascular disease and mortality in 18 countries from five continents (PURE): a prospective cohort study",
+      "year": 2017,
+      "url": "https://www.thelancet.com/article/S0140-6736(17",
+      "authors": [
+        "Dehghan, M.",
+        "Mente, A.",
+        "Zhang, X.",
+        "Swaminathan, S.",
+        "Li, W.",
+        "Mohan, V.",
+        "Iqbal, R.",
+        "Kumar, R.",
+        "Wentzel-Viljoen, E.",
+        "Rosengren, A.",
+        "Amma, L. I.",
+        "Avezum, A.",
+        "Chifamba, J.",
+        "Diaz, R.",
+        "Khatib, R.",
+        "Lear, S.",
+        "Lopez-Jaramillo, P.",
+        "Liu, X.",
+        "Gupta, R.",
+        "Mohammadifard, N.",
+        "Gao, N.",
+        "Oguz, A.",
+        "Ramli, A. S.",
+        "Seron, P.",
+        "Sun, Y.",
+        "Szuba, A.",
+        "Tsolekile, L.",
+        "Wielgosz, A.",
+        "Yusuf, R.",
+        "Yusufali, A. H.",
+        "Teo, K. K.",
+        "Rangarajan, S.",
+        "Dagenais, G.",
+        "Bangdiwala, S. I.",
+        "Islam, S.",
+        "Anand, S. S.",
+        "Yusuf, S."
+      ],
+      "venue": "The Lancet",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_clear_effect",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "General adult population",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_prospective_urban_rural_epidemiology_pure_st",
+          "provenance": {
+            "quote": "The Prospective Urban Rural Epidemiology (PURE) study is a large, epidemiological cohort study of individuals aged 35–70 years (enrolled between Jan 1, 2003, and March 31, 2013) in 18 countries with a median follow-up of 7·4 years (IQR 5·3–9·3).",
+            "extractionConfidence": 1.0,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "968877cf6956480f7eee10c727ac378d94980b0de4e578e475e812804b8a4bca",
+              "textDepth": "partial",
+              "sourceUrl": "https://www.thelancet.com/article/S0140-6736(17)32252-3/fulltext",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "b79fde4278f3b72ecd90aa93a87a42db5033a264816c580babb74188396f6343",
+              "normalizedCharStart": 128197,
+              "normalizedCharEnd": 128442,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Total fat and saturated and unsaturated fats were not significantly associated with risk of myocardial infarction or cardiovascular disease mortality.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "968877cf6956480f7eee10c727ac378d94980b0de4e578e475e812804b8a4bca",
+            "textDepth": "partial",
+            "sourceUrl": "https://www.thelancet.com/article/S0140-6736(17)32252-3/fulltext",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c0865bd5658274b8a436bb6b81e8c30a42d72fe4f73c5b8292ce772ed91a795c",
+            "normalizedCharStart": 130145,
+            "normalizedCharEnd": 130295,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 7,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_dietary_fats_and_cardiovascular_disease_a_pr_2017",
+      "title": "Dietary Fats and Cardiovascular Disease: A Presidential Advisory From the American Heart Association.",
+      "year": 2017,
+      "url": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000510",
+      "authors": [
+        "Sacks FM",
+        "Lichtenstein AH",
+        "Wu JHY",
+        "Appel LJ",
+        "Creager MA",
+        "Kris-Etherton PM",
+        "Miller M",
+        "Rimm EB",
+        "Rudel LL",
+        "Robinson JG",
+        "Stone NJ",
+        "Van Horn LV",
+        "American Heart Association."
+      ],
+      "venue": "Circulation",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Expert advisory",
+      "funding": "Nonprofit/charity",
+      "population": "General adult population",
+      "confidence": "unstated",
+      "restsOn": [
+        {
+          "ref": "src:src_meta_analysis_of_effect_of_saturated_fat_int_2010",
+          "provenance": {
+            "quote": "",
+            "extractionConfidence": 0.3
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.296217+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Taking into consideration the totality of the scientific evidence, satisfying rigorous criteria for causality, we conclude strongly that lowering intake of saturated fat and replacing it with unsaturated fats, especially polyunsaturated fats, will lower the incidence of CVD.",
+          "extractionConfidence": 1.0,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "b2864ca68ead332a25a005c2f60aeeaecd88378a88db8ba5736b332c9b133e8d",
+            "textDepth": "abstract",
+            "sourceUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000510",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "69dffa5acc90ecb922139357ddbfe350e845abd036044d32f396b23451dd25c8",
+            "normalizedCharStart": 1534,
+            "normalizedCharEnd": 1809,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 8,
+      "textDepth": "abstract",
+      "_pendingRefs": [
+        {
+          "ref": "src_associations_of_fats_and_carbohydrate_int_2017",
+          "provenance": {
+            "quote": "",
+            "extractionConfidence": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "src_intake_of_saturated_and_trans_unsaturated_fa_2015",
+      "title": "Intake of saturated and trans unsaturated fatty acids and risk of all cause mortality, cardiovascular disease, and type 2 diabetes: systematic review and meta-analysis of observational studies - PMC",
+      "year": 2015,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4532752/",
+      "authors": [
+        "de Souza, R.",
+        "Mente, A.",
+        "Maroleanu, A.",
+        "Cozma, A.",
+        "Ha, V.",
+        "Kishibe, T.",
+        "Uleryk, E.",
+        "Budylowski, P.",
+        "Schünemann, H.",
+        "Beyene, J.",
+        "Anand, S."
+      ],
+      "venue": "BMJ",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_clear_effect",
+      "evidence": "Meta-analysis",
+      "funding": "Government/public",
+      "population": "General adult population",
+      "confidence": "low",
+      "restsOn": [
+        {
+          "ref": "ds_pooled_prospective_cohorts_on_dietary_fat_an",
+          "provenance": {
+            "quote": "Results For saturated fat, three to 12 prospective cohort studies for each association were pooled (five to 17 comparisons with 90 501-339 090 participants).",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "1bde740a3cbb1ca620cd6ff77f49ed02b9d83d379fcdfdd714ed840caf5db7ba",
+              "textDepth": "partial",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4532752/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": true,
+              "quoteSha256": "d498b079f2fa8b7e9a391017622e8bd2dd035da9f86df3bae04b48ed48dd6b0b",
+              "normalizedCharStart": 7320,
+              "normalizedCharEnd": 7477,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.340335+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Conclusions Saturated fats are not associated with all cause mortality, CVD, CHD, ischemic stroke, or type 2 diabetes, but the evidence is heterogeneous with methodological limitations.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "1bde740a3cbb1ca620cd6ff77f49ed02b9d83d379fcdfdd714ed840caf5db7ba",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4532752/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "22780215ca8d9b0a594369e36ca05917fc3ce3d8d3207df63d05940aaff9009c",
+            "normalizedCharStart": 8737,
+            "normalizedCharEnd": 8922,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 9,
+      "textDepth": "partial"
+    },
+    {
+      "id": "src_use_of_dietary_linoleic_acid_for_secondary_p_2013",
+      "title": "Use of dietary linoleic acid for secondary prevention of coronary heart disease and death: evaluation of recovered data from the Sydney Diet Heart Study and updated meta-analysis",
+      "year": 2013,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23386268",
+      "authors": [
+        "Christopher E. Ramsden",
+        "Daisy Zamora",
+        "B. Leelarthaepin",
+        "Sharon F. Majchrzak‐Hong",
+        "Keturah R. Faurot",
+        "Chirayath Suchindran",
+        "A. Ringel",
+        "John M. Davis",
+        "Joseph R. Hibbeln"
+      ],
+      "venue": "BMJ",
+      "citations": 517,
+      "retracted": false,
+      "position": "pos_replacing_saturated_fat_with_omega_6_linolei",
+      "evidence": "Experimental (RCT)",
+      "funding": "Undisclosed",
+      "population": "458 men aged 30-59 years",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_sydney_diet_heart_1978",
+          "provenance": {
+            "quote": "The intervention group (n=221) had higher rates of death than controls (n=237) (all cause 17.6% v 11.8%, hazard ratio 1.62 (95% confidence interval 1.00 to 2.64), P=0.05; cardiovascular disease 17.2% v 11.0%, 1.70 (1.03 to 2.80), P=0.04; coronary heart disease 16.3% v 10.1%, 1.74 (1.04 to 2.92), P=0.04).",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "46f6467c9b71903018305717a1cf849f307bd99584ee4b6617b9ebe9e734c725",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23386268",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "a5351176de7acf4d675c3bde7e96b8758c0196eaad0829d0e21e31e72dbf54a7",
+              "normalizedCharStart": 1299,
+              "normalizedCharEnd": 1604,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.384926+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        },
+        {
+          "ref": "ds_pooled_linoleic_acid_intervention_trials",
+          "provenance": {
+            "quote": "Inclusion of these recovered data in an updated meta-analysis of linoleic acid intervention trials showed non-significant trends toward increased risks of death from coronary heart disease (hazard ratio 1.33 (0.99 to 1.79); P=0.06) and cardiovascular disease (1.27 (0.98 to 1.65); P=0.07).",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "46f6467c9b71903018305717a1cf849f307bd99584ee4b6617b9ebe9e734c725",
+              "textDepth": "abstract",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23386268",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "4684dbd6fda3368ccc2622ebb76d8d74a7672c96fd7a413a4930c6b815d77a96",
+              "normalizedCharStart": 1605,
+              "normalizedCharEnd": 1894,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.429919+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "In this cohort, substituting dietary linoleic acid in place of saturated fats increased the rates of death from all causes, coronary heart disease, and cardiovascular disease.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "46f6467c9b71903018305717a1cf849f307bd99584ee4b6617b9ebe9e734c725",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23386268",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c16fcfb95bb786075d771a1462750650adfb10d33f7ab85506cb454c1247b6a7",
+            "normalizedCharStart": 2189,
+            "normalizedCharEnd": 2364,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 10,
+      "textDepth": "abstract"
+    },
+    {
+      "id": "src_dietary_fats_in_relation_to_total_and_cause__2019",
+      "title": "Dietary Fats in Relation to Total and Cause-Specific Mortality in a Prospective Cohort of 521 120 Individuals With 16 Years of Follow-Up.",
+      "year": 2019,
+      "url": "https://www.ahajournals.org/doi/abs/10.1161/CIRCRESAHA.118.314038",
+      "authors": [
+        "Zhuang P",
+        "Zhang Y",
+        "He W",
+        "Chen X",
+        "Chen J",
+        "He L",
+        "Mao L",
+        "Wu F",
+        "Jiao J."
+      ],
+      "venue": "Circulation research",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_saturated_fat_increases_cardiovascular_disea",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "General adult population",
+      "confidence": "unstated",
+      "restsOn": [
+        {
+          "ref": "ds_nih_aarp_diet_and_health_study",
+          "provenance": {
+            "quote": "Methods and results We analyzed data of 521 120 participants aged 50 to 71 years from the National Institutes of Health-American Association of Retired Persons Diet and Health Study with 16 years of follow-up.",
+            "extractionConfidence": 0.98,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "caa1d03215eb9faa66ffe2a808bb310fbaa9e7a3c177ac02c3f1a4b950930d92",
+              "textDepth": "abstract",
+              "sourceUrl": "https://www.ahajournals.org/doi/abs/10.1161/CIRCRESAHA.118.314038",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": true,
+              "quoteSha256": "3f6e3fc204420cd5683143680a7b66d944738911c219a28cb796ac480636b3b8",
+              "normalizedCharStart": 479,
+              "normalizedCharEnd": 688,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-16T13:44:03.474049+00:00",
+            "note": "Curator-verified: this source draws on this evidence base / cited work."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "CVD mortality was inversely associated with marine omega-3 PUFA intake ( P trend <0.0001), whereas it was positively associated with SFA, trans-fatty acid, and arachidonic acid intake.",
+          "extractionConfidence": 0.97,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "caa1d03215eb9faa66ffe2a808bb310fbaa9e7a3c177ac02c3f1a4b950930d92",
+            "textDepth": "abstract",
+            "sourceUrl": "https://www.ahajournals.org/doi/abs/10.1161/CIRCRESAHA.118.314038",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ae24a9d1e35e26dfc8d09a1726938d8516b03cd3f302eb744eaecae21a132951",
+            "normalizedCharStart": 1530,
+            "normalizedCharEnd": 1714,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 11,
+      "textDepth": "abstract"
+    }
+  ],
+  "vocab": {
+    "evidence": [
+      {
+        "label": "Observational",
+        "aliases": []
+      },
+      {
+        "label": "Experimental (RCT)",
+        "aliases": []
+      },
+      {
+        "label": "Meta-analysis",
+        "aliases": []
+      },
+      {
+        "label": "Evidence-synthesis",
+        "aliases": []
+      },
+      {
+        "label": "Mechanistic",
+        "aliases": []
+      },
+      {
+        "label": "Expert advisory",
+        "aliases": []
+      },
+      {
+        "label": "Narrative/Commentary",
+        "aliases": []
+      }
+    ],
+    "population": [
+      {
+        "label": "General adult population",
+        "aliases": []
+      },
+      {
+        "label": "458 men aged 30-59 years",
+        "aliases": []
+      }
+    ],
+    "funding": [
+      {
+        "label": "Government/public",
+        "aliases": []
+      },
+      {
+        "label": "Nonprofit/charity",
+        "aliases": []
+      },
+      {
+        "label": "Academic/institutional",
+        "aliases": []
+      },
+      {
+        "label": "Industry",
+        "aliases": []
+      },
+      {
+        "label": "Advocacy",
+        "aliases": []
+      },
+      {
+        "label": "Undisclosed",
+        "aliases": []
+      }
+    ]
+  },
+  "log": [
+    {
+      "version": 1,
+      "action": "add-source",
+      "source": "src_meta_analysis_of_prospective_cohort_studies__2010",
+      "title": "Meta-analysis of prospective cohort studies evaluating the association of saturated fat with cardiovascular disease.",
+      "ts": "2026-07-16T13:26:30.173017+00:00",
+      "newDatasets": [
+        "ds_pooled_prospective_cohorts_on_dietary_fat_an"
+      ],
+      "newPositions": [
+        "pos_no_clear_effect"
+      ],
+      "diff": [
+        "distribution: No clear effect 0 → 1",
+        "+ new position: No clear effect",
+        "⚠ new warning: evidence link awaiting review — No clear effect"
+      ]
+    },
+    {
+      "version": 2,
+      "action": "add-source",
+      "source": "src_meta_analysis_of_effect_of_saturated_fat_int_2010",
+      "title": "Meta-analysis of effect of saturated fat intake on cardiovascular disease: overadjustment obscures true associations",
+      "ts": "2026-07-16T13:27:10.650228+00:00",
+      "newDatasets": [],
+      "newPositions": [
+        "pos_saturated_fat_increases_cardiovascular_disea"
+      ],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 0 → 1",
+        "+ new position: Saturated fat increases cardiovascular disease risk",
+        "⚠ new warning: quote text not checked — Saturated fat increases cardiovascular disease risk"
+      ]
+    },
+    {
+      "version": 3,
+      "action": "add-source",
+      "source": "src_reduction_in_saturated_fat_intake_for_cardio_2020",
+      "title": "Reduction in saturated fat intake for cardiovascular disease - Hooper, L - 2020 | Cochrane Library",
+      "ts": "2026-07-16T13:27:46.013897+00:00",
+      "newDatasets": [
+        "ds_whi_2006",
+        "ds_dart_1989",
+        "ds_veterans_admin_1969",
+        "ds_oslo_diet_heart_1966",
+        "ds_sydney_diet_heart_1978"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 1 → 2",
+        "distinct roots: Saturated fat increases cardiovascular disease risk 1 → 6"
+      ]
+    },
+    {
+      "version": 4,
+      "action": "add-source",
+      "source": "src_reduction_in_saturated_fat_intake_for_cardio_2015",
+      "title": "Reduction in saturated fat intake for cardiovascular disease - Hooper, L - 2015 | Cochrane Library",
+      "ts": "2026-07-16T13:29:09.176604+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 2 → 3"
+      ]
+    },
+    {
+      "version": 5,
+      "action": "add-source",
+      "source": "src_saturated_fat_restriction_for_cardiovascular_2025",
+      "title": "Saturated Fat Restriction for Cardiovascular Disease Prevention: A Systematic Review and Meta-analysis of Randomized Controlled Trials",
+      "ts": "2026-07-16T13:29:41.098692+00:00",
+      "newDatasets": [
+        "ds_minnesota_coronary_survey_1989"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No clear effect 1 → 2",
+        "distinct roots: No clear effect 2 → 7"
+      ]
+    },
+    {
+      "version": 6,
+      "action": "add-source",
+      "source": "src_effect_of_reducing_saturated_fat_intake_on_c_2024",
+      "title": "Effect of reducing saturated fat intake on cardiovascular disease in adults: an umbrella review - PMC",
+      "ts": "2026-07-16T13:30:13.309026+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 3 → 4",
+        "distinct roots: Saturated fat increases cardiovascular disease risk 6 → 7",
+        "blindspot opened: No clear effect missing \"Evidence-synthesis\""
+      ]
+    },
+    {
+      "version": 7,
+      "action": "add-source",
+      "source": "src_associations_of_fats_and_carbohydrate_intake_2017",
+      "title": "Associations of fats and carbohydrate intake with cardiovascular disease and mortality in 18 countries from five continents (PURE): a prospective cohort study",
+      "ts": "2026-07-16T13:30:25.965502+00:00",
+      "newDatasets": [
+        "ds_prospective_urban_rural_epidemiology_pure_st"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No clear effect 2 → 3",
+        "confirmed-root coverage: No clear effect 0.0 → 1.0",
+        "concentration: No clear effect 0% → 100% (top: Prospective Urban Rural Epidemiology (PURE) study)",
+        "most-reused case-wide: — → Prospective Urban Rural Epidemiology (PURE) study 1/7"
+      ]
+    },
+    {
+      "version": 8,
+      "action": "add-source",
+      "source": "src_dietary_fats_and_cardiovascular_disease_a_pr_2017",
+      "title": "Dietary Fats and Cardiovascular Disease: A Presidential Advisory From the American Heart Association.",
+      "ts": "2026-07-16T13:30:51.765925+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 4 → 5"
+      ]
+    },
+    {
+      "version": 9,
+      "action": "add-source",
+      "source": "src_intake_of_saturated_and_trans_unsaturated_fa_2015",
+      "title": "Intake of saturated and trans unsaturated fatty acids and risk of all cause mortality, cardiovascular disease, and type 2 diabetes: systematic review and meta-analysis of observational studies - PMC",
+      "ts": "2026-07-16T13:31:47.164507+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: No clear effect 3 → 4"
+      ]
+    },
+    {
+      "version": 10,
+      "action": "add-source",
+      "source": "src_use_of_dietary_linoleic_acid_for_secondary_p_2013",
+      "title": "Use of dietary linoleic acid for secondary prevention of coronary heart disease and death: evaluation of recovered data from the Sydney Diet Heart Study and updated meta-analysis",
+      "ts": "2026-07-16T13:32:02.215415+00:00",
+      "newDatasets": [
+        "ds_pooled_linoleic_acid_intervention_trials"
+      ],
+      "newPositions": [
+        "pos_replacing_saturated_fat_with_omega_6_linolei"
+      ],
+      "diff": [
+        "distribution: Replacing saturated fat with omega-6 linoleic acid increases CVD risk 0 → 1",
+        "+ new position: Replacing saturated fat with omega-6 linoleic acid increases CVD risk"
+      ]
+    },
+    {
+      "version": 11,
+      "action": "add-source",
+      "source": "src_dietary_fats_in_relation_to_total_and_cause__2019",
+      "title": "Dietary Fats in Relation to Total and Cause-Specific Mortality in a Prospective Cohort of 521 120 Individuals With 16 Years of Follow-Up.",
+      "ts": "2026-07-16T13:32:20.410182+00:00",
+      "newDatasets": [
+        "ds_nih_aarp_diet_and_health_study"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Saturated fat increases cardiovascular disease risk 5 → 6",
+        "distinct roots: Saturated fat increases cardiovascular disease risk 7 → 9",
+        "blindspot opened: Replacing saturated fat with omega-6 linoleic acid increases CVD risk missing \"Observational\""
+      ]
+    },
+    {
+      "version": 12,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Pooled prospective cohorts on dietary fat and CVD” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.695731+00:00"
+    },
+    {
+      "version": 13,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “WHI 2006” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.745381+00:00"
+    },
+    {
+      "version": 14,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “DART 1989” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.792346+00:00"
+    },
+    {
+      "version": 15,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Veterans Admin 1969” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.840834+00:00"
+    },
+    {
+      "version": 16,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Oslo Diet-Heart 1966” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.887543+00:00"
+    },
+    {
+      "version": 17,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Sydney Diet-Heart 1978” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.934568+00:00"
+    },
+    {
+      "version": 18,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Minnesota Coronary Survey 1989” as a real evidence base",
+      "ts": "2026-07-16T13:42:41.980080+00:00"
+    },
+    {
+      "version": 19,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Prospective Urban Rural Epidemiology (PURE) study” as a real evidence base",
+      "ts": "2026-07-16T13:42:42.029080+00:00"
+    },
+    {
+      "version": 20,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Pooled linoleic acid intervention trials” as a real evidence base",
+      "ts": "2026-07-16T13:42:42.075232+00:00"
+    },
+    {
+      "version": 21,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “NIH-AARP Diet and Health Study” as a real evidence base",
+      "ts": "2026-07-16T13:42:42.120399+00:00"
+    },
+    {
+      "version": 22,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_meta_analysis_of_prospective_cohort_studies__2010 → ds_pooled_prospective_cohorts_on_dietary_fat_an",
+      "ts": "2026-07-16T13:44:02.424091+00:00"
+    },
+    {
+      "version": 23,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_meta_analysis_of_effect_of_saturated_fat_int_2010 → src:src_meta_analysis_of_prospective_cohort_studies__2010",
+      "ts": "2026-07-16T13:44:02.472867+00:00"
+    },
+    {
+      "version": 24,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2020 → ds_whi_2006",
+      "ts": "2026-07-16T13:44:02.519772+00:00"
+    },
+    {
+      "version": 25,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2020 → ds_dart_1989",
+      "ts": "2026-07-16T13:44:02.567083+00:00"
+    },
+    {
+      "version": 26,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2020 → ds_veterans_admin_1969",
+      "ts": "2026-07-16T13:44:02.613395+00:00"
+    },
+    {
+      "version": 27,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2020 → ds_oslo_diet_heart_1966",
+      "ts": "2026-07-16T13:44:02.658569+00:00"
+    },
+    {
+      "version": 28,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2020 → ds_sydney_diet_heart_1978",
+      "ts": "2026-07-16T13:44:02.707160+00:00"
+    },
+    {
+      "version": 29,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2015 → ds_dart_1989",
+      "ts": "2026-07-16T13:44:02.753735+00:00"
+    },
+    {
+      "version": 30,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2015 → ds_whi_2006",
+      "ts": "2026-07-16T13:44:02.798840+00:00"
+    },
+    {
+      "version": 31,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2015 → ds_veterans_admin_1969",
+      "ts": "2026-07-16T13:44:02.845034+00:00"
+    },
+    {
+      "version": 32,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2015 → ds_oslo_diet_heart_1966",
+      "ts": "2026-07-16T13:44:02.890870+00:00"
+    },
+    {
+      "version": 33,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_reduction_in_saturated_fat_intake_for_cardio_2015 → ds_sydney_diet_heart_1978",
+      "ts": "2026-07-16T13:44:02.935626+00:00"
+    },
+    {
+      "version": 34,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_saturated_fat_restriction_for_cardiovascular_2025 → ds_oslo_diet_heart_1966",
+      "ts": "2026-07-16T13:44:02.981071+00:00"
+    },
+    {
+      "version": 35,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_saturated_fat_restriction_for_cardiovascular_2025 → ds_veterans_admin_1969",
+      "ts": "2026-07-16T13:44:03.026488+00:00"
+    },
+    {
+      "version": 36,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_saturated_fat_restriction_for_cardiovascular_2025 → ds_dart_1989",
+      "ts": "2026-07-16T13:44:03.073007+00:00"
+    },
+    {
+      "version": 37,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_saturated_fat_restriction_for_cardiovascular_2025 → ds_minnesota_coronary_survey_1989",
+      "ts": "2026-07-16T13:44:03.118544+00:00"
+    },
+    {
+      "version": 38,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_saturated_fat_restriction_for_cardiovascular_2025 → ds_sydney_diet_heart_1978",
+      "ts": "2026-07-16T13:44:03.163173+00:00"
+    },
+    {
+      "version": 39,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_effect_of_reducing_saturated_fat_intake_on_c_2024 → ds_pooled_prospective_cohorts_on_dietary_fat_an",
+      "ts": "2026-07-16T13:44:03.207167+00:00"
+    },
+    {
+      "version": 40,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_effect_of_reducing_saturated_fat_intake_on_c_2024 → src:src_reduction_in_saturated_fat_intake_for_cardio_2020",
+      "ts": "2026-07-16T13:44:03.251404+00:00"
+    },
+    {
+      "version": 41,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_dietary_fats_and_cardiovascular_disease_a_pr_2017 → src:src_meta_analysis_of_effect_of_saturated_fat_int_2010",
+      "ts": "2026-07-16T13:44:03.296364+00:00"
+    },
+    {
+      "version": 42,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_intake_of_saturated_and_trans_unsaturated_fa_2015 → ds_pooled_prospective_cohorts_on_dietary_fat_an",
+      "ts": "2026-07-16T13:44:03.340486+00:00"
+    },
+    {
+      "version": 43,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_use_of_dietary_linoleic_acid_for_secondary_p_2013 → ds_sydney_diet_heart_1978",
+      "ts": "2026-07-16T13:44:03.385077+00:00"
+    },
+    {
+      "version": 44,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_use_of_dietary_linoleic_acid_for_secondary_p_2013 → ds_pooled_linoleic_acid_intervention_trials",
+      "ts": "2026-07-16T13:44:03.430082+00:00"
+    },
+    {
+      "version": 45,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_dietary_fats_in_relation_to_total_and_cause__2019 → ds_nih_aarp_diet_and_health_study",
+      "ts": "2026-07-16T13:44:03.474186+00:00"
+    }
+  ]
+}

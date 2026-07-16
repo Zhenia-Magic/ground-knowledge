@@ -8,6 +8,7 @@ links to EXISTING ids (or "NEW:<label>") and the deterministic merge resolves th
 human-readable spec for the extraction contract is prompts/ingest.md; discovery is
 prompts/discover.md. The templates below mirror those specs.
 """
+import http.client
 import json
 import os
 import re
@@ -535,7 +536,11 @@ def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
     for t in targets:
         try:
             d = extract_text(t)
-        except SystemExit as e:
+        # A fetch is inherently unreliable: a dropped connection (RemoteDisconnected -> OSError),
+        # a timeout, a bad HTTP response, or extract's own SystemExit "give up" must skip THIS
+        # source, not abort the whole batch (and waste the discovery spend). Programming errors
+        # are not caught here.
+        except (SystemExit, OSError, http.client.HTTPException) as e:
             print("  skipped (fetch failed): {} — {}".format(t, e))
             continue
         docs.append(d)
@@ -544,13 +549,30 @@ def ingest_batch(targets, kb, dry_run=False, batch=None, max_text=None):
     if dry_run:
         return [build_batch_extract_prompt(kb, group, max_text)
                 for group in pack_batches(docs, max_count=batch)]
+    from engine.validate import require_valid_delta
     deltas = []
     for group in pack_batches(docs, max_count=batch):
-        arr = label_batch(kb, group, max_text)
+        # A label call is stochastic: the model can emit invalid JSON or the connection can drop.
+        # Retry once, then SKIP this group rather than aborting the whole harvest (and discarding
+        # every source already labelled). A parse failure surfaces from label_batch as SystemExit.
+        arr = None
+        for attempt in (1, 2):
+            try:
+                arr = label_batch(kb, group, max_text)
+                break
+            except (SystemExit, OSError, http.client.HTTPException) as e:
+                if attempt == 2:
+                    print("  skipped (labelling failed for {} source(s) after retry): {}".format(
+                        len(group), e))
+        if arr is None:
+            continue
         for delta, doc in zip(arr, group):
-            _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
-            from engine.validate import require_valid_delta
-            require_valid_delta(delta)
+            try:
+                _carry_meta(delta, doc, verify_text=_prompt_text(doc, max_text))
+                require_valid_delta(delta)
+            except (SystemExit, ValueError, KeyError) as e:
+                print("  skipped (invalid delta): {}".format(e))
+                continue
             deltas.append(delta)
     return None if dry_run else deltas
 

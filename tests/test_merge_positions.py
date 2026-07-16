@@ -469,3 +469,42 @@ class EvidenceBaseKindTests(unittest.TestCase):
         self.assertFalse(si._DOC_SIGNAL.search("Nurses' Health Study cohort"))
         # every shipped case must have its document/argument roots typed correctly (no mismatch)
         self.assertEqual(si.kind_mismatches(), [])
+
+
+class IngestBatchResilienceTests(unittest.TestCase):
+    """A harvest fetches + labels many sources; one bad fetch or one malformed LLM response must
+    skip THAT source, never abort the whole batch (which would discard everything already done and
+    waste the discovery spend). See ingest/pipeline.ingest_batch."""
+
+    def test_a_dropped_connection_skips_that_source_not_the_batch(self):
+        import http.client
+        from ingest import pipeline as P
+        good = {"url": "good", "kind": "abstract", "text": "s", "title": "Good", "abstract": "s"}
+        def fake_extract(t):
+            if t == "bad":
+                raise http.client.RemoteDisconnected("Remote end closed connection without response")
+            return good
+        oe = P.extract_text
+        P.extract_text = fake_extract
+        try:
+            prompts = P.ingest_batch(["bad", "good"], empty_kb("k", "Q?"), dry_run=True, batch=1)
+        finally:
+            P.extract_text = oe
+        self.assertEqual(len(prompts), 1)   # the bad fetch is skipped; the good one still produces work
+
+    def test_a_malformed_label_response_is_retried_once_then_skipped(self):
+        from ingest import pipeline as P
+        calls = {"n": 0}
+        def fake_extract(t):
+            return {"url": t, "kind": "abstract", "text": "s", "title": t, "abstract": "s"}
+        def fake_label(kb, group, max_text):
+            calls["n"] += 1
+            raise SystemExit("Could not parse model JSON")
+        oe, ol = P.extract_text, P.label_batch
+        P.extract_text, P.label_batch = fake_extract, fake_label
+        try:
+            out = P.ingest_batch(["a"], empty_kb("k", "Q?"), batch=1)
+        finally:
+            P.extract_text, P.label_batch = oe, ol
+        self.assertEqual(out, [])            # group skipped, harvest survives
+        self.assertEqual(calls["n"], 2)      # tried once, retried once
