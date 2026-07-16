@@ -99,6 +99,7 @@ def init_db():
             " position_count INTEGER NOT NULL DEFAULT 0,"
             " dataset_count INTEGER NOT NULL DEFAULT 0,"
             " kb_version INTEGER NOT NULL DEFAULT 0,"
+            " curated INTEGER NOT NULL DEFAULT 0,"
             " created_at INTEGER NOT NULL,"
             " updated_at INTEGER NOT NULL)".format(kb=_KB_COL)))
         cur.execute(_sql(
@@ -138,6 +139,9 @@ def init_db():
         # Additive migrations for databases created by earlier releases.
         for name in ("source_count", "position_count", "dataset_count", "kb_version"):
             _add_column(cur, "questions", name, "INTEGER")
+        # New feature: no pre-existing question is curated, so DEFAULT 0 is correct for every
+        # existing row — no KB re-parse needed. Future writes set it in save_kb from meta.curated.
+        _add_column(cur, "questions", "curated", "INTEGER NOT NULL DEFAULT 0")
         _add_column(cur, "study_responses", "assignment_id", "TEXT")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_questions_updated ON questions(updated_at)")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_contributions_question ON contributions(question_id, created_at)")
@@ -181,6 +185,10 @@ def _row_to_question(row, with_kb=True):
     d = {"id": row["id"], "slug": row["slug"], "question": row["question"],
          "version": row["version"], "created_at": row["created_at"],
          "updated_at": row["updated_at"]}
+    try:
+        d["curated"] = bool(row["curated"])
+    except (KeyError, IndexError):
+        d["curated"] = False
     if with_kb:
         d["kb"] = _load(row["kb"])
     return d
@@ -230,12 +238,12 @@ def list_questions(search=None, limit=100):
         if search:
             like = "%" + search.lower() + "%"
             cur.execute(_sql("SELECT id, slug, question, version, created_at, updated_at,"
-                             " source_count, position_count, dataset_count, kb_version"
+                             " source_count, position_count, dataset_count, kb_version, curated"
                              " FROM questions WHERE LOWER(question) LIKE ?"
                              " ORDER BY updated_at DESC LIMIT ?"), (like, limit))
         else:
             cur.execute(_sql("SELECT id, slug, question, version, created_at, updated_at,"
-                             " source_count, position_count, dataset_count, kb_version"
+                             " source_count, position_count, dataset_count, kb_version, curated"
                              " FROM questions ORDER BY updated_at DESC LIMIT ?"), (limit,))
         out = []
         for row in cur.fetchall():
@@ -267,12 +275,13 @@ def save_kb(qid, kb, expected_version, audit=None):
     conn = _connect()
     try:
         cur = conn.cursor()
+        curated = 1 if isinstance(kb.get("meta", {}).get("curated"), dict) else 0
         cur.execute(_sql(
             "UPDATE questions SET kb = ?, version = ?, source_count = ?, position_count = ?,"
-            " dataset_count = ?, kb_version = ?, updated_at = ?"
+            " dataset_count = ?, kb_version = ?, curated = ?, updated_at = ?"
             " WHERE id = ? AND version = ?"),
             (_dump(kb), new_version, counts["sources"], counts["positions"], counts["datasets"],
-             counts["version"], now, qid, expected_version))
+             counts["version"], curated, now, qid, expected_version))
         if cur.rowcount == 0:
             conn.rollback()
             raise Conflict("question {} changed since version {}".format(qid, expected_version))

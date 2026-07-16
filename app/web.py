@@ -41,6 +41,7 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .card:hover{border-color:var(--line-strong);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.09);transform:translateY(-2px);}
 .card .q{font-size:16px;font-weight:600;color:var(--ink);line-height:1.35;}
 .card:hover .q{color:var(--flag);}
+.card .cur{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--flag);background:var(--flag-bg);border-radius:999px;padding:2px 9px;margin-top:9px;}
 .card .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;}
 .empty{color:var(--muted);padding:30px 0;}
 .back{font-family:var(--mono);font-size:12px;color:var(--muted);}
@@ -205,6 +206,7 @@ def home_html():
         const c=q.counts||{};
         return `<a class="card" href="/q/${q.id}">
           <div class="q">${E(q.question)}</div>
+          ${q.curated?'<div class="cur" title="Officially curated and maintained by an admin. See the report for the confirmed-evidence percentage.">✓ Curated &amp; maintained</div>':''}
           <div class="meta"><span>v${c.version||0}</span><span>${c.sources||0} sources</span>
           <span>${c.positions||0} positions</span><span>${c.datasets||0} datasets</span></div></a>`;
       }).join('');
@@ -422,6 +424,13 @@ def manage_html(qid, get_question):
     <h1>{question}</h1>
     <div id="gate"></div>
     <div id="panel" style="display:none">
+      <div class="panel" id="curpanel"><h2>Curation status</h2>
+        <p class="desc">Mark this question as <b>officially curated &amp; maintained</b> — a stewardship
+        label shown to readers. It appears next to the <b>computed</b> confirmed-evidence percentage and
+        never replaces it: a maintainer vouching for the question is not a claim that every number is
+        verified. Logged with your admin identity.</p>
+        <div id="curstate" class="desc"></div>
+        <div class="bar"><button class="btn" id="curbtn" onclick="toggleCurated(this)"></button></div></div>
       <div class="panel" id="revpanel" style="display:none"><h2>Needs review <span id="revn"></span></h2>
         <p class="desc">The labelling models disagreed on these sources' positions — they are parked
         here (counted in <b>no</b> metric) until someone decides. Read the abstract, then pick a
@@ -457,6 +466,28 @@ def manage_html(qid, get_question):
     const H=()=>({'Content-Type':'application/json','X-Admin-Token':tok()});
     async function isAdmin(){ if(!tok())return false;
       try{const r=await fetch('/api/admin-check',{method:'POST',headers:H()});return (await r.json()).admin;}catch(e){return false;} }
+    function pctConfirmed(kb){
+      const st=window.__dsStatus||{}, ds=kb.datasets||[];
+      if(!ds.length) return 0;
+      let c=0; ds.forEach(d=>{ if((st[d.id]||'proposed')!=='proposed') c++; });
+      return Math.round(100*c/ds.length);
+    }
+    function renderCuration(kb){
+      const cur=(kb.meta&&kb.meta.curated)||null, pct=pctConfirmed(kb);
+      const st=document.getElementById('curstate'), btn=document.getElementById('curbtn');
+      if(cur){ st.innerHTML=`<b style="color:var(--flag)">✓ Curated &amp; maintained</b> by ${E(cur.by||'admin')}`
+          +`${cur.since?' · since '+E(String(cur.since).slice(0,10)):''} · evidence <b>${pct}%</b> confirmed`;
+        btn.textContent='Remove curated label'; btn.className='btn ghost'; }
+      else { st.innerHTML=`Not marked curated. Evidence <b>${pct}%</b> confirmed.`;
+        btn.textContent='Mark as curated & maintained'; btn.className='btn'; }
+    }
+    async function toggleCurated(b){
+      const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
+      const on=!((kb.meta&&kb.meta.curated)); b.disabled=true;
+      try{const res=await fetch('/api/admin/set-curated',{method:'POST',headers:H(),
+          body:JSON.stringify({id:QID,curated:on})}); const j=await res.json();
+        if(j.error){alert(j.error);} }catch(e){alert('failed: '+e);} b.disabled=false; render();
+    }
     async function render(){
       if(!await isAdmin()){
         document.getElementById('panel').style.display='none';
@@ -472,6 +503,7 @@ def manage_html(qid, get_question):
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
       try{const s=await fetch('/api/admin/dataset-status',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
         window.__dsStatus=((await s.json()).status)||{};}catch(e){window.__dsStatus={};}
+      renderCuration(kb);
       renderReview(kb);
       const srcs=kb.sources||[];
       document.getElementById('srcs').innerHTML = srcs.length? srcs.map(s=>`

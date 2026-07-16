@@ -199,6 +199,11 @@ def is_verified_exact(provenance):
 
 def strip_untrusted_verification(delta):
     """Remove client/model-supplied verification claims from a delta that was not fetched here."""
+    if isinstance(delta, dict):
+        # A delta describes ONE source; it never carries KB meta. Drop any client-supplied meta so a
+        # forged stewardship flag (meta.curated) can't ride in — belt-and-suspenders on top of the
+        # merge already being source-shaped and ignoring meta entirely.
+        delta.pop("meta", None)
     source = delta.get("source") if isinstance(delta, dict) else None
     if isinstance(source, dict):
         source.pop("textAudit", None)

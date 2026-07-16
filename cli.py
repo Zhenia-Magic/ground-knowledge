@@ -251,6 +251,23 @@ def cmd_doctor(args):
         print("HEALTHY — no structural problems and no warnings.")
 
 
+def cmd_mark_curated(args):
+    """Admin/curator marks (or, with --off, unmarks) a question as officially curated & maintained.
+
+    A trusted, admin-only stewardship label — see engine/curate.set_curated. It is shown to readers
+    next to the *computed* confirmed-coverage percentage, never as a substitute for it."""
+    from engine import curate
+    kb = read_json(args.kb)
+    res = curate.set_curated(kb, curated=not args.off, by=args.by, note=args.note)
+    write_json(args.kb, kb)
+    a = assess(kb).get("curation", {})
+    print(res["summary"] + "  (KB now v{})".format(kb["meta"]["version"]))
+    if not args.off:
+        print("  paired signal: evidence {}% confirmed ({}/{} bases), {}% of quotes verified".format(
+            a.get("basesPct", 0), a.get("confirmedBases", 0), a.get("totalBases", 0),
+            a.get("quotesPct", 0)))
+
+
 def cmd_validate(args):
     from engine.migrate import migrate_kb, validation_errors
     with open(args.kb, encoding="utf-8") as f:
@@ -1128,6 +1145,10 @@ def main():
     s.add_argument("path"); s.set_defaults(fn=cmd_lint)
     s = sub.add_parser("doctor", help="health check: structure + completeness + trust hygiene of a KB")
     s.add_argument("kb"); s.set_defaults(fn=cmd_doctor)
+    s = sub.add_parser("mark-curated", help="admin: mark a question as officially curated & maintained (trusted stewardship label)")
+    s.add_argument("kb"); s.add_argument("--by", help="curator/admin identity (required unless --off)")
+    s.add_argument("--note"); s.add_argument("--off", action="store_true", help="remove the curated label")
+    s.set_defaults(fn=cmd_mark_curated)
     s = sub.add_parser("migrate", help="additively migrate a v1 KB to schema v2")
     s.add_argument("kb"); migration_dest = s.add_mutually_exclusive_group()
     migration_dest.add_argument("--out"); migration_dest.add_argument("--apply", action="store_true")

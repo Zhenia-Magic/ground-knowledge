@@ -39,6 +39,11 @@
   .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
     font-family:var(--mono);margin-bottom:8px;}
   .qtitle{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:4px;}
+  .qbadge{display:none;align-items:center;gap:7px;font-size:11px;font-weight:600;
+    color:var(--flag);background:var(--flag-bg);border-radius:999px;padding:3px 10px;
+    margin:2px 0 10px;width:fit-content;cursor:help;}
+  .qbadge .qb-dot{opacity:.4;font-weight:400;}
+  .qbadge .qb-pct{font-weight:500;opacity:.85;}
   .qmeta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:18px;}
   .casesec{margin-bottom:14px;display:flex;flex-direction:column;gap:5px;}
   .cchip{display:block;width:100%;text-align:left;font:inherit;font-size:12px;color:var(--muted);
@@ -350,6 +355,7 @@
     <div id="caseSwitch" class="casesec" style="display:none;"></div>
     <div class="brand">Ground Knowledge</div>
     <div id="qtitle" class="qtitle"></div>
+    <div id="qbadge" class="qbadge"></div>
     <div id="qmeta" class="qmeta"></div>
     <nav id="nav" role="tablist" aria-label="Views"></nav>
     <a href="#" id="addSourceLink" class="addsrc" style="display:none;">+ Add source</a>
@@ -579,6 +585,14 @@ function renderChrome(){
 
   const c=cur(), kb=c.kb, a=c.assessment;
   el("qtitle").textContent=kb.meta.question;
+  const qb=el("qbadge"), curRec=(kb.meta&&kb.meta.curated)||null;
+  if(curRec){
+    const pct=(a.curation&&a.curation.basesPct)||0;
+    qb.style.display="inline-flex";
+    qb.innerHTML=`<span>✓ Curated &amp; maintained</span><span class="qb-dot">·</span><span class="qb-pct">evidence ${pct}% confirmed</span>`;
+    qb.title=`A maintainer vouches for this question${curRec.by?" — "+esc(curRec.by):""}${curRec.since?", since "+String(curRec.since).slice(0,10):""}. `
+      +`The percentage is a separate, computed signal: the share of evidence bases whose identity is confirmed. Stewardship is not a claim that every number is verified.`;
+  } else qb.style.display="none";
   el("qmeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} factors · ${kb.datasets.length} evidence bases`;
 
   const empty=kb.sources.length===0;

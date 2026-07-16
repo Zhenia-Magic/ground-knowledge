@@ -625,6 +625,34 @@ def confirm_edge(kb, source_ref, edge_ref, confirmed=True, by=None, note=None):
         verb, source["id"], canonical))
 
 
+def set_curated(kb, curated=True, by=None, note=None):
+    """Mark (or unmark) a whole QUESTION as officially curated and maintained by an admin/curator.
+
+    This is a STEWARDSHIP label shown to readers — a maintainer vouches for the question. It is NOT a
+    claim that the evidence is all verified: that is the separate, *computed* confirmed-coverage
+    signal shown alongside it (engine/assess.curation_summary), so the badge can never launder an
+    unverified number into looking authoritative.
+
+    Deliberately an admin-only, trusted act. It lives on ``meta``, which no ingestion delta can write
+    (the merge is source-shaped and never copies meta), so it cannot be forged through the public
+    contribute path — only a curator CLI run or the admin-token-gated portal endpoint sets it. Writes
+    an auditable record ``{by, since, note?}``."""
+    meta = kb.setdefault("meta", {})
+    if curated:
+        actor = str(by or "").strip()
+        if not actor:
+            raise ValueError("marking a question curated requires a non-empty 'by' identity")
+        rec = {"by": actor, "since": now_iso()}
+        if note:
+            rec["note"] = str(note).strip()
+        meta["curated"] = rec
+        msg = "marked the question as curated & maintained by {}".format(actor)
+    else:
+        meta.pop("curated", None)
+        msg = "removed the curated & maintained label"
+    return _commit(kb, "set-curated", msg)
+
+
 def tidy_labels(kb):
     """Prettify any id-style / slug labels across positions, datasets, and factors (underscores
     → spaces, drop trailing sample-size clauses). For datasets the old label is kept as an alias."""

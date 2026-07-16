@@ -40,6 +40,23 @@ class StoreRevisionTests(StoreTestCase):
         self.assertEqual(cards[0]["id"], question["id"])
         self.assertEqual(cards[0]["counts"]["sources"], 0)
 
+    def test_curated_flag_round_trips_from_meta_to_the_card(self):
+        from engine import curate
+        question = store.create_question("A curated question")
+        qid, kb = question["id"], question["kb"]
+        # a brand-new question is not curated
+        self.assertFalse(store.list_questions()[0]["curated"])
+        # marking it (on the KB meta) and saving must surface on the card WITHOUT parsing the KB
+        curate.set_curated(kb, by="admin")
+        v = store.save_kb(qid, kb, 0)
+        with mock.patch("app.store._load", side_effect=AssertionError("KB parsed")):
+            card = store.list_questions()[0]
+        self.assertTrue(card["curated"])
+        # un-marking clears the card flag
+        curate.set_curated(kb, curated=False)
+        store.save_kb(qid, kb, v)
+        self.assertFalse(store.list_questions()[0]["curated"])
+
     def test_failed_audit_rolls_back_the_kb_write(self):
         question = store.create_question("Atomic update?")
         with mock.patch("app.store._insert_contribution", side_effect=RuntimeError("audit failed")), \

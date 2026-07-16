@@ -169,6 +169,27 @@ def _admin_set_dataset_kind(qid, dataset_ref, kind):
     return {"ok": True, "version": v, "summary": res.get("summary")}
 
 
+def _admin_set_curated(qid, curated=True, by="portal-admin", note=None):
+    """Admin marks (or unmarks) a whole question as officially curated & maintained — a trusted
+    stewardship label shown to readers next to the computed confirmed-coverage percentage, never as a
+    substitute for it (engine/curate.set_curated). Admin moderation; meta is unreachable by the public
+    contribute path, so this is the only way the flag can be set on the portal (besides an admin push)."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    try:
+        res = curate.set_curated(kb, curated=curated, by=_actor(by, "portal-admin"), note=note)
+    except (ValueError, KeyError) as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"], _audit("set-curated", res.get("summary", "")))
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v, "summary": res.get("summary")}
+
+
 def _admin_review_resolve(qid, item_id, kind, action, position=None):
     """Resolve one ensemble disagreement ON THE PORTAL (admin moderation): a queued item
     (kind='pending') gets merged with the admin's chosen position or dropped; an already-merged
@@ -496,6 +517,10 @@ class Handler(BaseHTTPRequestHandler):
             if p[2] == "set-dataset-kind":
                 return self._send(200, _admin_set_dataset_kind(
                     body.get("id"), body.get("dataset") or body.get("datasetId"), body.get("kind")))
+            if p[2] == "set-curated":
+                return self._send(200, _admin_set_curated(
+                    body.get("id"), body.get("curated", True),
+                    body.get("by") or "portal-admin", body.get("note")))
             return self._send(404, {"error": "unknown admin action"})
         if p == ["api", "questions"]:
             if not self._rate_ok("create-question", 6):

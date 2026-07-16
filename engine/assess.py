@@ -771,6 +771,45 @@ def dominant_dataset(kb, res=None):
             "count": mx, "total": n, "share": mx / n if n else 0}
 
 
+def curation_summary(kb):
+    """The 'paired' trust signal behind the curated badge — a stewardship flag PLUS a *computed*
+    confirmed-coverage percentage, so a reader never reads "admin-maintained" as "evidence verified".
+
+    - ``curated``: the admin stewardship record (``meta.curated`` = {by, since, note?}) or None. This
+      is a human vouch, set only by a curator/admin (see engine/curate.set_curated).
+    - ``basesPct``: share of evidence bases whose identity is confirmed (curator-confirmed OR grounded
+      by a verified exact quote) — i.e. the bases that actually count toward coverage, not proposed.
+    - ``quotesPct``: share of provenance quotes verified against fetched text.
+    These two percentages are earned by the evidence state; they cannot be set by hand."""
+    res = _roots.resolve(kb)
+    confirmed_by = res.get("confirmed_by", {})
+    datasets = kb.get("datasets", [])
+    total_bases = len(datasets)
+    confirmed_bases = sum(1 for d in datasets if confirmed_by.get("ds:" + d.get("id", "")))
+    total_q = verified_q = 0
+    for s in kb.get("sources", []):
+        provs = list((s.get("provenance") or {}).values())
+        for edge in s.get("restsOn") or []:
+            if isinstance(edge, dict) and isinstance(edge.get("provenance"), dict):
+                provs.append(edge["provenance"])
+        for prov in provs:
+            if isinstance(prov, dict) and str(prov.get("quote") or "").strip():
+                total_q += 1
+                if prov.get("verifiedQuote") in ("exact", "fuzzy"):
+                    verified_q += 1
+    meta = kb.get("meta", {}) if isinstance(kb.get("meta"), dict) else {}
+    curated = meta.get("curated") if isinstance(meta.get("curated"), dict) else None
+    return {
+        "curated": curated,
+        "confirmedBases": confirmed_bases,
+        "totalBases": total_bases,
+        "basesPct": round(100 * confirmed_bases / total_bases) if total_bases else 0,
+        "verifiedQuotes": verified_q,
+        "totalQuotes": total_q,
+        "quotesPct": round(100 * verified_q / total_q) if total_q else 0,
+    }
+
+
 def assess(kb, res=None):
     """The whole Assessment artifact -- one dict, diffable across versions. Resolves the derivation
     graph ONCE and threads it through every root-based metric (independence, weighted distribution,
@@ -793,6 +832,7 @@ def assess(kb, res=None):
         "confidenceAudit": ca,
         "dominantDataset": dominant_dataset(kb, res),
         "warnings": warnings(kb, ind, ma, qa, ca),
+        "curation": curation_summary(kb),
     }
 
 

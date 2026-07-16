@@ -23,7 +23,13 @@ Validate with `python cli.py validate cases/example.kb.json`. Migrate non-destru
 
 ```jsonc
 {
-  "meta":      { "id", "question", "version", "updated", "note", "schemaVersion": 2 },
+  "meta":      { "id", "question", "version", "updated", "note", "schemaVersion": 2, "curated"? },
+                                //   curated? = { by, since, note? } — an admin/curator STEWARDSHIP
+                                //   record ("officially curated & maintained"), shown to readers next
+                                //   to the computed confirmed-coverage % (engine/assess.curation_summary),
+                                //   never as a substitute for it. Admin-only: set by curate.set_curated
+                                //   (CLI `mark-curated` / the admin-gated portal endpoint). No ingestion
+                                //   delta can write meta, so the flag cannot be forged by a contributor.
   "positions": [ { "id", "label", "hue" } ],                 // the camps
   "datasets":  [ { "id", "label", "aliases": [..], "kind"?, "proposition"?, "confirmation"? } ],
                                 //   underlying EVIDENCE BASES (the key stays "datasets" for back-compat).

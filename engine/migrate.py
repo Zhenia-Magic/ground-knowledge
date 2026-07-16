@@ -114,6 +114,19 @@ def validation_errors(kb):
     if not isinstance(kb["meta"].get("version", 0), int) or isinstance(
             kb["meta"].get("version", 0), bool):
         errors.append("meta.version must be an integer")
+    if "curated" in kb["meta"] and kb["meta"].get("curated") is not None:
+        # Admin/curator stewardship record: {by, since, note?}. Admin-only by construction (no
+        # ingestion delta writes meta); validate its shape so a malformed push is rejected.
+        cur = kb["meta"]["curated"]
+        if not isinstance(cur, dict):
+            errors.append("meta.curated must be an object or null")
+        else:
+            if not isinstance(cur.get("by"), str) or not cur.get("by").strip():
+                errors.append("meta.curated.by must be a non-empty string")
+            if not isinstance(cur.get("since"), str) or not cur.get("since").strip():
+                errors.append("meta.curated.since must be a non-empty string")
+            if "note" in cur and cur.get("note") is not None and not isinstance(cur.get("note"), str):
+                errors.append("meta.curated.note must be a string")
     for field in ("positions", "datasets", "factors", "sources", "log"):
         if not isinstance(kb.get(field), list):
             errors.append(field + " must be an array")
