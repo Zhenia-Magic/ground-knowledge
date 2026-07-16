@@ -23,6 +23,51 @@ You never hand-edit the KB JSON. You write **deltas** and run `add`. The KB is t
 
 ---
 
+## For the person setting this up — how to actually run it
+
+*(This section is for the human operator. The agent can read it too; the rest of the file is the
+agent's playbook.)*
+
+**You need:** a coding agent that can **browse/search the web** — Claude Code or Codex — opened in a
+clone of this repo. No API key, no `pip install` for the core loop (Python 3.10+ stdlib). The agent
+supplies the search + reading; the CLI does the rest.
+
+**1. Open your agent in the repo.** Claude Code auto-loads `CLAUDE.md` → this file; Codex auto-loads
+this file. So the playbook is already in context — you don't paste it in.
+
+**2. Point it at a case and say what to add.** Example prompts you can paste verbatim:
+
+> *"Read AGENTS.md. Add 3 recent sources on statins and cardiovascular mortality to
+> `cases/eggs.kb.json` — for each: search the web, read it, write a delta, `lint` it, then `add` it.
+> Run `doctor` when you're done and tell me what still needs a curator."*
+
+> *"Start a new case: `python cli.py new \"Does intermittent fasting improve metabolic health?\"`,
+> then follow the AGENTS.md loop to fill it with 6–8 sources covering each side. Show me `doctor` at
+> the end."*
+
+> *"Run `python cli.py gaps cases/covid.kb.json`, then find and add one source for the single
+> thinnest gap. Lint before adding."*
+
+**3. Your job while it runs** (the few things the agent can't or shouldn't decide alone):
+
+- **Position-split reviews.** If two labels disagree on a source's stance, `add` parks it in a review
+  queue instead of guessing — the agent will surface it; you pick the position or drop the source.
+- **Curator confirmations.** A new evidence base stays *proposed* (counts toward nothing) until a
+  human confirms it: `python cli.py confirm-dataset <kb> <id> --by "<you>"` and, to admit a support
+  edge, `confirm-edge`. `doctor` lists what's still proposed. Do this yourself, or tell the agent to
+  do it *as you* only if you've checked the base is real — it's an identity decision, not a label.
+- **The `doctor` gate before you publish.** Skim its output; resolve the ⚠ items or accept them
+  knowingly. Then `python cli.py build <kb> --out out.html` (local view) or `push` (to the portal).
+
+**Where your work lands:** everything is in `cases/<id>.kb.json` — one portable JSON file you own.
+The agent grows it; you view it with `build`, or `pull`/`push` it to a portal.
+
+**One caveat:** the CLI in this mode does **not** search for the agent — it fetches a *given* URL
+(`ingest --dry-run`) and does all the deterministic work, but *finding* sources is the agent's own
+web-search capability. An agent without web access can only work from URLs you hand it.
+
+---
+
 ## Golden rules (read before writing any JSON)
 
 1. **Never invent a quote.** Every `quote` must be copied character-for-character from text you
