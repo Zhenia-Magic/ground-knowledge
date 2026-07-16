@@ -457,7 +457,7 @@ function factorDetailHtml(kb, f, activePos){
     return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(p.shortLabel||shortLabel(p.label))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
   }).join("");
   const rat=f.rationale?`<div style="margin-bottom:8px;">${esc(f.rationale)}</div>`:"";
-  return rat+(groups||'<span style="color:var(--faint)">No exact source sentence supports a weight for this issue yet; unchecked claims are excluded from the table.</span>');
+  return rat+(groups||'<span style="color:var(--faint)">No exact source sentence supports a weight for this factor yet; unchecked claims are excluded from the table.</span>');
 }
 // Human label for one restsOn entry: a dataset's label, or — for a src:<id> derivation edge —
 // the cited source's title (never the raw id).
@@ -579,7 +579,7 @@ function renderChrome(){
 
   const c=cur(), kb=c.kb, a=c.assessment;
   el("qtitle").textContent=kb.meta.question;
-  el("qmeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} issues · ${kb.datasets.length} evidence bases`;
+  el("qmeta").textContent=`v${kb.meta.version} · ${kb.sources.length} sources · ${kb.positions.length} positions · ${kb.factors.length} factors · ${kb.datasets.length} evidence bases`;
 
   const empty=kb.sources.length===0;
   el("nav").style.display=empty?"none":"";
@@ -884,10 +884,10 @@ function renderDivergenceView(){
   if(nOne) cruxBits.push(`${nOne} raised by one side`);
   el("main").innerHTML=`<h1>Key issues</h1><div class="mmeta">where positions disagree and what several positions say matters</div>
     <div class="panel">
-      <div class="subnote">Each cell shows how important that issue is to a position. A <b>key disagreement</b> (black tag) is an issue the positions rate very differently. A <b>shared uncertainty</b> (blue tag) is an unsettled issue that several positions consider decisive. <b>Contested</b> rows are milder disagreements; <b>one side only</b> rows are raised by a single position. <b>Click a row</b> to see the reasoning and source quotes behind it.</div>
+      <div class="subnote">Each cell shows how important that factor is to a position. A <b>key disagreement</b> (black tag) is a factor the positions rate very differently. A <b>shared uncertainty</b> (blue tag) is an unsettled factor that several positions consider decisive. <b>Contested</b> rows are milder disagreements; <b>one side only</b> rows are raised by a single position. <b>Click a row</b> to see the reasoning and source quotes behind it.</div>
       <div class="wkey">importance: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">medium</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
       <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
-      <p style="font-size:13px;color:var(--muted);margin:14px 0 0">${cruxBits.join(" · ")||"no key issues"} — of ${kb.factors.length} issues.</p>
+      <p style="font-size:13px;color:var(--muted);margin:14px 0 0">${cruxBits.join(" · ")||"no key disagreements"} — of ${kb.factors.length} factors.</p>
     </div>`;
   el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
     const k="f"+tr.getAttribute("data-fid");
