@@ -2,8 +2,8 @@
   "meta": {
     "id": "eggs",
     "question": "Do eggs increase cardiovascular disease risk?",
-    "version": 27,
-    "updated": "2026-07-12T13:54:20.703909+00:00",
+    "version": 29,
+    "updated": "2026-07-16T23:36:48.077322+00:00",
     "portal": {
       "id": "04329878656c",
       "baseVersion": 27,
@@ -172,6 +172,25 @@
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
         "source": "src_larsson_et_al_egg_consumption_and_risk_of_he_2015"
       }
+    },
+    {
+      "id": "ds_eggant_randomized_trial_colombia",
+      "label": "Eggant randomized trial (Colombia)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T23:36:48.077162+00:00",
+        "by": "Evgeniia",
+        "note": "Distinct from DIABEGG: Galvis et al. Eggant RCT (Nutrients 2023, PMC9865189), healthy adults in Colombia, 2 eggs/day vs egg whites — not the Fuller DIABEGG type-2-diabetes trial. Name similarity only.",
+        "similarityOverride": [
+          {
+            "ref": "ds_diabegg_randomized_trial",
+            "reason": "token-overlap",
+            "similarity": 0.4
+          }
+        ]
+      }
     }
   ],
   "factors": [
@@ -264,6 +283,13 @@
             "normalizedCharEnd": 1319,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_galvis_et_al_consumption_of_eggs_alone_or_en_2023",
+          "pos": "pos_no_association",
+          "weight": "high",
+          "quote": "No significant changes were found over time or between groups in plasma triglycerides, LDL cholesterol, HDL cholesterol, apolipoprotein (apo) A1, apo B, or lipoprotein subfraction concentrations.",
+          "verifiedQuote": null
         }
       ]
     },
@@ -467,6 +493,13 @@
             "normalizedCharEnd": 1459,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_galvis_et_al_consumption_of_eggs_alone_or_en_2023",
+          "pos": "pos_no_association",
+          "weight": "low",
+          "quote": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
+          "verifiedQuote": null
         }
       ]
     }
@@ -1798,6 +1831,46 @@
       "fundingDetails": [
         "No external funding reported"
       ]
+    },
+    {
+      "id": "src_galvis_et_al_consumption_of_eggs_alone_or_en_2023",
+      "title": "Galvis et al. — Consumption of eggs alone or enriched with Annatto does not increase cardiovascular risk in healthy adults: the Eggant study (RCT)",
+      "year": 2023,
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
+      "authors": [
+        "Galvis, Y.",
+        "Pineda, K.",
+        "Zapata, J.",
+        "Aristizabal, J.",
+        "Estrada, A.",
+        "Fernandez, M.L.",
+        "Barona-Acevedo, J."
+      ],
+      "venue": "Nutrients",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Experimental (RCT)",
+      "funding": "Government/public",
+      "population": "General adults",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_eggant_randomized_trial_colombia",
+          "provenance": {
+            "quote": "In a parallel clinical trial, one hundred and five ( n = 105) men and women were randomized by age, sex, and body mass index (BMI), and distributed into three groups.",
+            "extractionConfidence": 0.9
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "In healthy adults, the intake of two eggs a day, or two eggs with Annatto for eight weeks, did not generate adverse changes in cardiovascular risk markers.",
+          "extractionConfidence": 0.9
+        }
+      },
+      "addedIn": 28,
+      "textDepth": "unknown"
     }
   ],
   "vocab": {
@@ -2398,6 +2471,32 @@
       "method": "verbatim-sentence-v2",
       "ts": "2026-07-13T01:28:12.849916+00:00",
       "sources": 20
+    },
+    {
+      "version": 28,
+      "action": "add-source",
+      "source": "src_galvis_et_al_consumption_of_eggs_alone_or_en_2023",
+      "title": "Galvis et al. — Consumption of eggs alone or enriched with Annatto does not increase cardiovascular risk in healthy adults: the Eggant study (RCT)",
+      "ts": "2026-07-16T23:13:44.094783+00:00",
+      "newDatasets": [
+        "ds_eggant_randomized_trial_colombia"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No increased risk / possibly lower risk 9 → 10",
+        "distinct roots: No increased risk / possibly lower risk 5 → 7",
+        "blindspot opened: Increases risk missing \"General adults\"",
+        "blindspot closed: No increased risk / possibly lower risk now covers \"Experimental (RCT)\"",
+        "blindspot opened: Context-dependent (depends on the person) missing \"General adults\"",
+        "⚠ new warning: evidence link awaiting review — No increased risk / possibly lower risk",
+        "⚠ new warning: quote text not checked — No increased risk / possibly lower risk"
+      ]
+    },
+    {
+      "version": 29,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Eggant randomized trial (Colombia)” as a real evidence base",
+      "ts": "2026-07-16T23:36:48.077322+00:00"
     }
   ],
   "refused": []
