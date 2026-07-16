@@ -95,7 +95,7 @@ Why per-edge: one verified quote must not admit ten datasets, a review quote mus
 by inheritance, and globally confirmed root identity must not let a new source launder that root
 into another camp.
 
-## Step 3 — strength of a root, and confirmed-root coverage
+## Step 3 — strength of a root, and adjusted evidence-base count
 
 ```
 def strength(root):
@@ -117,7 +117,7 @@ def nEff(position):
 already-counted roots and move it nowhere. A graph correction can lower it intentionally: merging
 aliases or resolving a pending edge that reveals an ungrounded cycle removes false independence.
 
-## Step 4 — surface what matters (cruxes)
+## Step 4 — surface what matters (key disagreements)
 
 For each factor, over ordinal weights `high=3, med=2, low=1` (n/a and un-weighed excluded):
 

@@ -17,13 +17,13 @@ This project ports that idea to **research questions** ("Do eggs raise heart-dis
 "Did COVID come from a lab?", "Could the LHC create a dangerous black hole?") — but inverts the
 neutrality. In a research dispute, some positions genuinely *are* better supported, so simply
 counting sources rewards whoever is loudest, most numerous, or best funded. That's **false
-balance**. So instead of counting heads, the tool reports **confirmed-root coverage**: how much
+balance**. So instead of counting heads, the tool reports **adjusted evidence-base count**: how much
 admitted, deduplicated evidence-base coverage is represented for each position. It displays
 evidence design/funding alongside that count. This is not a GRADE-style quality, effect-size,
 confidence, or truth score.
 
 The headline behaviour: **adding papers to an already resolved root adds no coverage credit.**
-The raw count can grow while confirmed-root coverage stays fixed; unnamed rehashes remain visible
+The raw count can grow while adjusted evidence-base count stays fixed; unnamed rehashes remain visible
 in a zero-credit pool, and a pure citation loop adds zero.
 
 ---
@@ -43,7 +43,7 @@ Three things go wrong with naive source-counting in research:
 2. **Funding bias hides in the pile.** An industry-funded study and an independent one count the
    same if you just tally them.
 3. **The real disagreement gets buried.** Two camps usually agree on most things and disagree on
-   a few specific "cruxes" — but a list of sources doesn't show you *where* the disagreement
+   a few specific "key disagreements" — but a list of sources doesn't show you *where* the disagreement
    actually lives.
 
 This tool is built to surface exactly those three things.
@@ -65,11 +65,11 @@ Everything in the project follows from that commitment.
 For each research question, the tool builds a **knowledge base** — a single structured JSON file
 — and renders it as a clean web report with four tabs:
 
-- **Coverage & warnings** — how the evidence splits across positions (the naive view), *immediately
+- **Overview** — how the evidence splits across positions (the naive view), *immediately
   complicated* by a funding-bias flag and, when triggered, a shared-method-bias warning banner.
-- **Divergence matrix** — a grid showing which specific factors the camps actually disagree on (the
-  "cruxes"), versus what they agree on.
-- **Root coverage & bias** — the heart of it: for each position, how concentrated its evidence is on
+- **Key issues** — a grid showing which specific factors the camps actually disagree on (the
+  "key disagreements"), versus what they agree on.
+- **Evidence reuse** — the heart of it: for each position, how concentrated its evidence is on
   a few datasets (the anti-false-balance audit), plus the method-bias and quote-verification
   warnings for that position.
 - **Changes** — a running history of what each newly added source did to the metrics.
@@ -156,7 +156,7 @@ And then the metrics computed from these:
   many sources don't disclose funding at all. Funding is a fixed set of categories
   (Government, Nonprofit, Academic, Industry, Advocacy, Undisclosed) and **defaults to
   "Undisclosed" — it never assumes independence** when a source is silent.
-- **Confirmed-root coverage / concentration** — *the core metric.* For each position, it resolves
+- **Adjusted evidence-base count / concentration** — *the core metric.* For each position, it resolves
   admitted source-support edges down to underlying evidence bases and credits **each distinct,
   confirmed evidentiary root once** (at half credit when a root is known only via a review, or
   backed only by animal / in-vitro work). If five sources all rest on one admitted dataset, that is
@@ -166,9 +166,9 @@ And then the metrics computed from these:
   echo as original research does not bypass that quarantine: credit requires a **specific confirmed
   base and an admitted support edge for this position**. The result is not a claim that roots are
   statistically independent, equally informative, or true.
-- **Cruxes** — from the factor grid: cross-camp disagreement, shared high pivots, one-sided high
+- **Key disagreements** — from the factor grid: cross-camp disagreement, shared high pivots, one-sided high
   assumptions, unanswered high factors, and milder contests are separately typed. This localises
-  where disagreement or missing engagement actually lives without calling every factor a crux.
+  where disagreement or missing engagement actually lives without calling every factor a key disagreement.
 - **Blindspots** — evidence types or populations present elsewhere in the debate but missing from
   a given position's own sources. "What is this camp not looking at?"
 

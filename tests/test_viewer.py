@@ -54,10 +54,19 @@ class KeyIssuesCopyTests(unittest.TestCase):
             template = handle.read()
         self.assertIn('{id:"coverage",label:"Overview"}', template)
         self.assertIn('{id:"divergence",label:"Key issues"}', template)
-        self.assertIn('{id:"independence",label:"Evidence"}', template)
+        self.assertIn('{id:"independence",label:"Evidence reuse"}', template)
         self.assertIn("Positions", template)
         self.assertNotIn("Root coverage & bias", template)
         self.assertNotIn("Divergence matrix", template)
+
+    def test_issue_badges_never_split_into_separate_pills(self):
+        with open(os.path.join(ROOT, "viewer", "template.html"), encoding="utf-8") as handle:
+            template = handle.read()
+        crux_css = template.split(".cruxbadge{", 1)[1].split("}", 1)[0]
+        pivot_css = template.split(".pivotbadge{", 1)[1].split("}", 1)[0]
+        self.assertIn("display:inline-block", crux_css)
+        self.assertIn("white-space:nowrap", crux_css)
+        self.assertIn("white-space:nowrap", pivot_css)
 
 
 class QuoteBadgeCopyTests(unittest.TestCase):

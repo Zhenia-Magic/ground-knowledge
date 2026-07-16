@@ -86,7 +86,7 @@ majority vote is combined deterministically — `ingest/ensemble.py`) records:
 
 ---
 
-## 4. How confirmed-root coverage is computed (the algorithm, in plain language)
+## 4. How adjusted evidence-base count is computed (the algorithm, in plain language)
 
 ### 4.1 Build the dependency graph
 Nodes are **sources** and **roots**. A stored `restsOn` assertion becomes a traversable edge only
@@ -124,7 +124,7 @@ sources that mutually depend):
   to one visible cycle marker, contributes **zero** to `nEff`, and raises a
   `circularCorroboration` flag naming the loop. This is the adversarial pattern, surfaced loudly.
 
-### 4.4 Count confirmed-root coverage per position
+### 4.4 Count adjusted evidence-base count per position
 For each position, take all its sources, map each to its resolved root(s), and count **each
 distinct root exactly once, at its strength**:
 
@@ -143,7 +143,7 @@ strength = 0.0   if the root is PROVISIONAL — not yet confirmed by a fetched s
          × 0.5   if the root is backed only by animal / in-vitro studies (§6.5b)
 ```
 
-This is **confirmed-root coverage**, a full-strength-equivalent root count. One admitted root used
+This is **adjusted evidence-base count**, a full-strength-equivalent root count. One admitted root used
 by everyone → nEff = 1. Ten admitted roots → nEff = 10, whether each is used once or one is used a
 hundred times. It is deliberately **not** a support, quality, confidence, effect-size, or truth
 score: one decisive trial may outweigh several weak roots, and distinct roots may share a bias.
@@ -161,8 +161,8 @@ can legitimately lower it: merging aliases or resolving a pending edge that reve
 
 ### 4.5 The two bars the reader sees
 - **By source count** — the naive tally (kept, honestly labelled as naive).
-- **By confirmed-root coverage** — sized by `nEff` over admitted resolved roots.
-- Plus, always, **the derivation shown**: "25 sources → 7.0 confirmed-root coverage; 15 ungrounded
+- **By adjusted evidence-base count** — sized by `nEff` over admitted resolved roots.
+- Plus, always, **the derivation shown**: "25 sources → 7.0 adjusted evidence bases; 15 ungrounded
   reviews collapse to a visible zero-credit marker; furin-cleavage + proximal-origin share a root." The number is
   never a black box.
 
@@ -397,7 +397,7 @@ curator confirmations, so per-edge fetch verification coverage is not overstated
 
 Sections 1–11 count **evidence bases** (datasets, experiments, observations, arguments, models, or
 documents). If 15 sources rest on 15 admitted *distinct* cohorts, the mechanism reports 15.0
-confirmed-root coverage. But independence-of-**data** is not the same as
+adjusted evidence-base count. But independence-of-**data** is not the same as
 independence-against-**being-wrong**. If all 15 cohorts share the same uncontrolled confounder —
 the textbook case is "moderate alcohol" studies sharing abstainer/sick-quitter bias — they can all
 be wrong in the same direction for the same reason. Fifteen distinct datasets, one shared way to
@@ -487,7 +487,7 @@ Then, per position, it counts how many sources have a recognizable method-risk f
 - `monoculture`: true when at least 3 sources have a method-risk family, at least 70% of those
   sources share one family, and they cover at least 30% of the position's sources.
 
-This ships as a first-screen warning, an annotation on the Root coverage tab, and in `cli.py show`:
+This ships as a first-screen warning, an annotation on the Evidence reuse tab, and in `cli.py show`:
 *"N of M sources share observational confounding risk."* It deliberately **changes no existing
 metric**. It is a prompt for scrutiny: "these datasets may still fail together for the same
 methodological reason."

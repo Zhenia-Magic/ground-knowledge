@@ -122,8 +122,8 @@ python cli.py build cases/salt.kb.json
 open viewer/index.html        # macOS — or just double-click the file
 ```
 
-Four tabs: **Coverage & warnings** (who holds what + funding skew + shared-method-bias flag),
-**Divergence matrix** (the cruxes), **Root coverage & bias** (is the source list concentrated, plus the same
+Four tabs: **Overview** (who holds what + funding skew + shared-method-bias flag),
+**Key issues** (the key disagreements), **Evidence reuse** (is the source list concentrated, plus the same
 method-bias and quote-verification warnings), **Changes** (history). Prefer the terminal?
 `python cli.py show cases/salt.kb.json`.
 
@@ -214,8 +214,8 @@ still resolve to it. ✔
 > **Funding & metric notes.** Funding is a fixed set — *Government/public, Nonprofit/charity,
 > Academic/institutional, Industry, Advocacy, Undisclosed* — and **defaults to Undisclosed** (the
 > tool never assumes "independent"). The Coverage banner flags interested (industry/advocacy)
-> money *and* the share of sources that don't disclose. In the Divergence matrix, factors only one
-> camp weighs are dimmed as "one side only" — the bold rows are the real cruxes.
+> money *and* the share of sources that don't disclose. In the Key issues, factors only one
+> camp weighs are dimmed as "one side only" — the bold rows are the real key disagreements.
 
 ---
 

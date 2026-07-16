@@ -1,5 +1,5 @@
 {
-  "_comment": "Reader-study items. FROZEN once responses are collected (see PROTOCOL.md) — this revision predates any collection. Each objective item is a TRANSFER/JUDGEMENT question (answerable in principle from either condition's materials), so a DR+GK win reflects better reasoning, not reading a number off the map. Deliberately NOT included: 'how many independent bases are there?' — that just asks the reader to recite the tool's output. 'gold' may be a string or a list of acceptable answers.",
+  "_comment": "Reader-study items. FROZEN once responses are collected (see PROTOCOL.md) — this revision predates any collection. Each objective item is a TRANSFER/JUDGEMENT question (answerable in principle from either condition's materials), so a DR+GK win reflects better reasoning, not reading a number off the map. Deliberately NOT included: 'how many adjusted evidence bases are there?' — that just asks the reader to recite the tool's output. 'gold' may be a string or a list of acceptable answers.",
   "flood_prompt": "Suppose twelve more articles are published that repeat the strongest camp's existing evidence — same datasets, no new data or argument. Should your confidence in that camp's conclusion change?",
   "flood_options": ["Increase", "Stay the same", "Decrease"],
   "flood_gold": "Stay the same",
@@ -83,7 +83,7 @@
         {
           "id": "cruxshared",
           "type": "choice",
-          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the crux?",
+          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the key disagreement?",
           "options": [
             "That cosmic rays far more energetic than the LHC have struck the Sun, Moon and dense stars for billions of years.",
             "Whether that cosmic-ray record actually rules out danger from slow, collider-made black holes.",
@@ -130,7 +130,7 @@
         {
           "id": "cruxshared",
           "type": "choice",
-          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the crux?",
+          "prompt": "Which of these do BOTH camps essentially AGREE on, so it is NOT the key disagreement?",
           "options": [
             "That eggs are a major source of dietary cholesterol.",
             "Whether that dietary cholesterol actually raises cardiovascular-event risk.",

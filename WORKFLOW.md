@@ -88,7 +88,7 @@ python cli.py build cases/eggs.kb.json  # bake the viewer
 open viewer/index.html                                      # or double-click it
 ```
 
-The viewer has four tabs — Coverage, Divergence, Root coverage, Changes (see §D).
+The viewer has four tabs — Overview, Key issues, Evidence reuse, Changes (see §D).
 
 ---
 
@@ -151,16 +151,16 @@ viewer's **Changes** tab. Duplicate sources (same url, or title+year) are refuse
 
 | View | Question it answers | Watch for |
 |------|--------------------|-----------|
-| **Coverage & warnings** | Who holds which position? Where's the industry money? | the **funding-skew** banner — which camp industry funding favours; a **shared-method-bias** banner when many sources lean on the same correlated-error family |
-| **Divergence matrix** | What do the camps *actually* disagree on? | rows badged **CRUX** (spread ≥2); the rest is hidden agreement |
-| **Root coverage & bias** | Is the source list concentrated on the same admitted evidence bases? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset; the same method-bias warning, plus an **unverified-quote** warning when a full-text source's quote doesn't match its fetched text |
-| **Changes** | What did each new source do to the picture? | concentration/​distribution shifts, new cruxes, blindspots opening/closing |
+| **Overview** | Who holds which position? Where's the industry money? | the **funding-skew** banner — which camp industry funding favours; a **shared-method-bias** banner when many sources lean on the same correlated-error family |
+| **Key issues** | What do the camps *actually* disagree on? | rows badged **KEY DISAGREEMENT** (spread ≥2); the rest is hidden agreement |
+| **Evidence reuse** | Is the source list concentrated on the same admitted evidence bases? | a camp marked **CONCENTRATED** + the case-wide most-reused dataset; the same method-bias warning, plus an **unverified-quote** warning when a full-text source's quote doesn't match its fetched text |
+| **Changes** | What did each new source do to the picture? | concentration/​distribution shifts, new key disagreements, blindspots opening/closing |
 
 Reading rules of thumb:
 - **High concentration = weak consensus.** "5 sources, 80% on one dataset" ≈ ~2 independent looks.
   Adding *correlated* sources makes this **worse**, not better — by design.
 - **Funding skew** is a flag to weigh, not a verdict: it tells you where to apply scrutiny.
-- **Few cruxes** is the normal, healthy finding: most disagreement is local.
+- **Few key disagreements** is the normal, healthy finding: most disagreement is local.
 - **Method-bias and quote warnings never change the independence count.** They're a separate
   signal shown alongside it, not folded into the number — see `MECHANISM.md` §12.
 - **An unverified quote only means something on a full-text source.** The same "missing" verdict

@@ -254,9 +254,9 @@
   .factor .flabel{font-size:13px;font-weight:500;color:var(--muted);}
   .factor.crux .flabel{font-size:13.5px;font-weight:600;color:var(--ink);}
   .cruxbadge{font-family:var(--mono);font-size:9.5px;background:var(--chrome);color:#fff;
-    border-radius:5px;padding:2px 7px;}
+    border-radius:5px;padding:2px 7px;display:inline-block;white-space:nowrap;}
   .pivotbadge{font-family:var(--mono);font-size:9.5px;background:#2f6296;color:#fff;
-    border-radius:5px;padding:2px 7px;}
+    border-radius:5px;padding:2px 7px;display:inline-block;white-space:nowrap;}
   .contestedtag{font-family:var(--mono);font-size:9.5px;color:#7fa8ce;}
   .onetag{font-family:var(--mono);font-size:9.5px;color:var(--faint);}
   .wkey{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);
@@ -382,7 +382,7 @@ const DATA = /*__DATA__*/null;
 const VIEWS=[
   {id:"coverage",label:"Overview"},
   {id:"divergence",label:"Key issues"},
-  {id:"independence",label:"Evidence"},
+  {id:"independence",label:"Evidence reuse"},
   {id:"changes",label:"Changes"},
 ];
 const WV={high:3,med:2,low:1,"n/a":0};

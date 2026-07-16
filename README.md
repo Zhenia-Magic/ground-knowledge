@@ -36,7 +36,7 @@ three:
   sources, *zero* independent grounding (the adversarial case).
 
 The root engine (`engine/roots.py`) separates root identity from source→root support-edge trust,
-then resolves admitted edges down to **evidentiary roots**. It reports confirmed-root coverage while
+then resolves admitted edges down to **evidentiary roots**. It reports adjusted evidence-base count while
 flagging zero-credit unsupported assertions and circular loops. Explicit contracts ensure that
 sources landing on an existing root add zero, twelve ungrounded rehashes add zero, and a confirmed
 root cannot be laundered into another position through an unreviewed edge.
@@ -57,7 +57,7 @@ root cannot be laundered into another position through an unreviewed edge.
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
 | `engine/curate.py` | Structure | curation ops: merge / rename / tidy; lexical + optional embedding duplicate suggestions; auditable confirmation gate |
-| `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, cruxes |
+| `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, key disagreements |
 | `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
@@ -72,8 +72,8 @@ without. CI tests Python 3.10–3.13.
 
 > ### Reviewers — start here
 > **Try the live instance — no setup, no API key: [groundknowledge.org](https://groundknowledge.org)**
-> — browse the cases, open a report (Coverage & warnings · Divergence matrix · Root coverage & bias ·
-> Changes), or submit a source for review. The **Root coverage** tab is the thesis made visible: each
+> — browse the cases, open a report (Overview · Key issues · Evidence reuse ·
+> Changes), or submit a source for review. The **Evidence reuse** tab is the thesis made visible: each
 > position shows its admitted root coverage, with echo collapsed and
 > circular citation flagged — plus a separate warning when evidence shares a correlated-error
 > family (e.g. observational confounding) or a provenance quote doesn't match its fetched text.
@@ -112,8 +112,8 @@ An unverified root or unadmitted support edge contributes zero headline nEff. Tw
 - **Funding pattern (real):** interested funding does **not** uniquely favor one answer here. Two
   industry-funded meta-analyses back *"No association"* while two industry-funded trials back the
   context-dependent camp; the audit now reports that tie instead of choosing by position order.
-- **Root coverage (real):** the *"No increased risk / possibly lower risk"* camp lists 9 sources but
-  has **5.0 confirmed-root coverage** after shared-cohort collapse. This is not a quality-weighted
+- **Evidence reuse (real):** the *"No increased risk / possibly lower risk"* camp lists 9 sources but
+  has **5.0 adjusted evidence bases** after shared-cohort collapse. This is not a quality-weighted
   verdict; evidence design and method bias are shown alongside it.
 
 ### The update loop — recalculation made visible
@@ -127,7 +127,7 @@ python cli.py build /tmp/eggs.json                                    # rebuild;
 The added source is real — Zhuang 2021 (PLOS Medicine, NIH-AARP, 521,120 people, egg/cholesterol
 → higher mortality). It argues *"Increases risk"* and brings a **distinct named** cohort, so the
 recompute adds one admitted evidence base to that camp rather than padding a source count. A naive
-aggregator just logs "+1 source"; here **confirmed-root coverage deduplicates reused bases** and the
+aggregator just logs "+1 source"; here **adjusted evidence-base count deduplicates reused bases** and the
 **Changes tab** records the recompute as a diff. Distinct roots are not assumed to be statistically
 independent or equally probative; method/funding audits remain separate.
 
@@ -171,7 +171,7 @@ Same engine, only the KB JSON differs. Browse these on the [live portal](https:/
 or `pull` them locally (`python cli.py pull <id>`):
 
 - **Eggs:** 20 sources across three answers; current coverage is **4.0 / 5.0 / 4.0**, while funding,
-  subgroup effects, and biomarker-vs-outcome reasoning remain visible cruxes.
+  subgroup effects, and biomarker-vs-outcome reasoning remain visible key disagreements.
 - **COVID origin (contested):** current source→coverage values are **13→5.0, 7→3.5, 6→3.0**;
   re-analyses resolve onto shared underlying evidence rather than counting as new roots.
 - **Black holes (settled):** 11 safe-position sources resolve to **4.0** coverage across production

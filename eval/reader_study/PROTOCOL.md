@@ -17,8 +17,8 @@ A self-serve, auto-scored version runs in the portal so you can **just share one
 - **Objective items auto-score instantly** (`eval/reader_study/gold_questions.json`): a flood trap and
   three per-case TRANSFER/JUDGEMENT items — a count-fallacy question (is "more sources" a good
   argument?), a load-bearing question (which finding, if wrong, most weakens the case?), and a
-  crux-vs-shared question (which point do both camps actually agree on?). These test the reader's
-  reasoning, not their ability to read a number off the map — deliberately NOT "how many independent
+  shared-vs-disagreement question (which point do both camps actually agree on?). These test the reader's
+  reasoning, not their ability to read a number off the map — deliberately NOT "how many adjusted evidence
   bases are there?", which would just ask the reader to recite the tool's output. Free-text answers
   are captured for optional later human scoring, never auto-scored.
 - **Results:** the administrator-only results endpoint shows DR vs DR+GK mean objective score and
@@ -51,7 +51,7 @@ reader benefit, not writing style or whether one system happened to retrieve a b
   participants are not told which condition is the submission.
 - **Time:** maximum 18 minutes per case. Capture completion time automatically or with a stopwatch.
 - **No coaching:** participants receive the task sheet below and may open cited sources, but receive
-  no explanation of roots, cruxes, or expected answers beyond the normal product copy.
+  no explanation of roots, key disagreements, or expected answers beyond the normal product copy.
 
 ## Primary outcome
 
@@ -61,7 +61,7 @@ Disagreements are reconciled without seeing condition labels.
 1. **Dependency recognition (0–4):** correctly identifies how many apparently separate sources reuse
    the same underlying dataset/argument; names the principal shared root(s).
 2. **Load-bearing evidence (0–4):** identifies the evidence whose failure would most change the answer.
-3. **Crux recognition (0–4):** identifies the predeclared gold cruxes and separates active
+3. **Key disagreement recognition (0–4):** identifies the predeclared gold key disagreements and separates active
    disagreement from an unanswered/one-sided assumption.
 4. **Calibrated conclusion (0–4):** conclusion preserves material uncertainty and does not infer
    confidence from raw source count.
@@ -88,7 +88,7 @@ For each case:
 1. State the main plausible answers and your calibrated current conclusion.
 2. Name the three most load-bearing pieces of evidence or argument.
 3. Identify any sources that are not independent of one another and explain why.
-4. Name the most important crux or unanswered assumption.
+4. Name the most important key disagreement or unanswered assumption.
 5. Suppose twelve additional articles repeat the strongest camp's existing evidence without adding
    new data or argument. Should your confidence change? Why?
 6. Rate confidence in your conclusion from 0–100.

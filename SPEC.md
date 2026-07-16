@@ -1,5 +1,5 @@
 # Ground Knowledge
-### Confirmed-root coverage with separate quality/bias audits — a spec for compounding, adversarially robust knowledge bases for research disputes
+### Adjusted evidence-base count with separate quality/bias audits — a spec for compounding, adversarially robust knowledge bases for research disputes
 
 *FLF "Lab Leaks, Black Holes, and Eggs" Epistemic Case Study Competition. Live at
 [groundknowledge.org](https://groundknowledge.org). Read with the prototype in this repo:
@@ -116,9 +116,9 @@ it does not erase a blind spot shared across models.
 Every metric is a pure function over the KB (`engine/assess.py`). Four of them, each chosen to
 serve the thesis:
 
-**Distribution — naive source volume *and* confirmed-root coverage.** Two views shown together.
+**Distribution — naive source volume *and* adjusted evidence-base count.** Two views shown together.
 The first is the naive aggregator's view (share of *sources* per position). The second re-sizes
-each position by its **confirmed-root coverage** — each distinct admitted *resolved root* counted
+each position by its **adjusted evidence-base count** — each distinct admitted *resolved root* counted
 once at its declared credit (`weighted_distribution`; see the root engine below), so sources sharing
 a dataset collapse, ungrounded reviews pool into a zero-credit marker, and
 an ungrounded citation loop is flagged but contributes zero. The weighted bar therefore exposes how
@@ -131,14 +131,14 @@ Nonprofit/charity, Academic/institutional, Industry, Advocacy, Undisclosed) that
 Undisclosed, never "independent"** — so the metric also reports how much of a case rests on
 sources that don't disclose funding, surfacing the data gap instead of fabricating independence.
 
-**Divergence / cruxes** (intellectual lineage: Heuer's *Analysis of Competing Hypotheses*). A
-factors × positions matrix distinguishes: a cross-camp crux (spread ≥2), a shared pivot (two camps
+**Divergence / key disagreements** (intellectual lineage: Heuer's *Analysis of Competing Hypotheses*). A
+factors × positions matrix distinguishes: a cross-camp key disagreement (spread ≥2), a shared uncertainty (two camps
 rate it high), a one-sided high assumption, a high factor a camp leaves unanswered, and a milder
 contested weight. The tight headline `isCrux` is only cross-camp/shared-pivot; `loadBearing` also
 includes one-sided and unanswered factors. On black holes the current artifact has one headline
-crux plus two one-sided load-bearing factors — not an inflated claim of three headline cruxes.
+key disagreement plus two one-sided load-bearing factors — not an inflated claim of three headline key disagreements.
 
-**Confirmed-root coverage — the anti-false-balance core** (the full mechanism is `engine/roots.py` /
+**Adjusted evidence-base count — the anti-false-balance core** (the full mechanism is `engine/roots.py` /
 [`MECHANISM.md`](MECHANISM.md)). Echo, cohort re-use, and circular corroboration are one disease —
 *a source that adds no new root* — so the metric counts admitted evidentiary-root credit per
 position, not sources. It follows only support edges with a verified specific dependency quote or
@@ -235,19 +235,19 @@ with **only the data changing.** It does:
   structure makes two auditable patterns visible: interested funding is **tied** between the
   no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
   industry-funded trials), and the shared-cohort collapse — the *No
-  increased-risk* camp lists 9 sources and has **5.0 confirmed-root coverage** after cohort reuse is
-  collapsed. The subgroup crux (diabetics/hyper-responders)
+  increased-risk* camp lists 9 sources and has **5.0 adjusted evidence bases** after cohort reuse is
+  collapsed. The subgroup key disagreement (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 
 - **COVID — live, contested, expertise-heavy** (26 sources, 3 camps). The root audit tells
   the honest story a source count hides: current source→coverage values are **13→5.0, 7→3.5,
   6→3.0**. The **six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on substantially shared
   underlying evidence** — so they count as re-analysis, not six new roots, the "23 orders of
-  magnitude from one evidence base" made visible. Cruxes: prior on lab accidents, furin site,
+  magnitude from one evidence base" made visible. Key disagreements: prior on lab accidents, furin site,
   ascertainment bias.
 
 - **Black holes — essentially settled** (15 sources, 2 camps). The 11 "safe" sources have **4.0
-  confirmed-root coverage**: production impossibility, Hawking evaporation, slow accretion, and the
+  adjusted evidence-base count**: production impossibility, Hawking evaporation, slow accretion, and the
   cosmic-ray/dense-star observation. Four residual-concern sources have **2.0**. The count maps
   layers; it does not independently establish that the conclusion is correct.
 
@@ -351,7 +351,7 @@ Naming these is the point: the metrics are **heuristics that redirect scrutiny**
 
 We are not claiming the tool decides who is right. It claims something narrower and, we think,
 more useful: that **counting sources is the wrong primitive for a research dispute**, and that a
-small set of computable, gaming-resistant metrics — independent-evidence-bases, funding skew, crux
+small set of computable, gaming-resistant metrics — independent-evidence-bases, funding skew, key disagreement
 localisation, blindspots — re-aim a reader's scrutiny at the places that actually move the
 conclusion. The seed weights are illustrative; the architecture, the metrics, and the eggs
 evidence base are real and runnable.

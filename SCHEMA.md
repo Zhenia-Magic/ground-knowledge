@@ -147,7 +147,7 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
 
    Factor claims follow the same trust rule. `engine/merge._recompute_factor_cell` admits a
    source's high/medium/low vote only when `is_verified_exact` binds its displayed sentence to the
-   fetched-text hash. Unverified wording remains in provenance for review but cannot create a crux
+   fetched-text hash. Unverified wording remains in provenance for review but cannot create a key disagreement
    cell. A `contextSources` record can support a methodological factor (for example, a funding-bias
    review) without being misrepresented as a position source or inflating root-coverage metrics.
 
@@ -192,10 +192,10 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    it and **defaults to "Undisclosed", never "independent"**, so a missing funding statement
    surfaces the gap instead of fabricating independence.
 
-   *Two blindspot/crux refinements keep this readable at scale (`engine/assess.py`):* a type
+   *Two blindspot/key disagreement refinements keep this readable at scale (`engine/assess.py`):* a type
    counts as "present in the case" only if ≥2 sources use it (`blindspots(min_support=2)`), so a
    single source's hyper-specific population isn't everyone's blindspot; and each factor reports
-   `engaged` (how many positions weighed it), so the divergence view separates cross-camp cruxes,
+   `engaged` (how many positions weighed it), so the divergence view separates cross-camp key disagreements,
    shared high pivots, one-sided high assumptions, unanswered high factors, and mild contests.
 
 5. **Adversarial robustness = the thesis, enforced at ingestion + assessment.** Defences span
@@ -204,7 +204,7 @@ and factor-weights reference those IDs. That indirection is what makes the KB me
    lexical lookalikes admit at most one root; lexical/acronym and optional embedding checks suggest
    novel paraphrases, and confirmation gates likely duplicates; (b) **duplicate sources** — same url, or same
    **title+year even under a different url**, are refused; (c) **off-topic** sources are judged at
-   labelling time and refused at merge; (d) confirmed-root coverage counts **admitted, deduplicated
+   labelling time and refused at merge; (d) adjusted evidence-base count counts **admitted, deduplicated
    evidentiary roots**, not sources — re-used cohorts and review/meta-analysis **echo** collapse, while a pure
    **circular citation** loop (A↔B) is visible and flagged but counts **zero**. Animal/in-vitro or
    review-only roots count at half. Provisional/unverified roots remain visible but count zero.

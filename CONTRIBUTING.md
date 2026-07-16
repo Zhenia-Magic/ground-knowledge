@@ -67,12 +67,12 @@ weaken the test.
   edges. A `restsOn` entry is a bare ref string (`"ds_x"` or `"src:<id>"`) **or** an edge object
   `{ref, provenance:{quote, verifiedQuote}, admission?}` carrying that edge's own dependency quote
   and, when curated, its separate support-edge admission.
-- **factors** — the cross-cutting questions; their per-position weights drive the crux taxonomy.
+- **factors** — the cross-cutting questions; their per-position weights drive the key disagreement taxonomy.
 
 ## Root-confirmation rules
 
 A named dataset is not trusted just because a source claims it. Root identity is **provisional** — it
-contributes **zero** to headline confirmed-root coverage — until confirmed one of two auditable ways:
+contributes **zero** to headline adjusted evidence-base count — until confirmed one of two auditable ways:
 
 - **Curator confirmation.** A human vouches that the base is real, recorded as an *auditable object*
   `confirmation: {status:"confirmed", method:"curator", by, ts, source?}` — **not** a bare boolean, so
