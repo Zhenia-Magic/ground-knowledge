@@ -29,6 +29,10 @@ echo $ANTHROPIC_API_KEY      # or OPENAI_API_KEY / DEEPSEEK_API_KEY / …
 - **Prints a key →** you're in **AUTO mode**: the tool labels for you, end to end.
 - **Prints nothing →** you're in **MANUAL mode**: the tool still *finds and fetches* sources for
   free, then prints a labelling prompt (or one bundle file) you paste into any chatbot. No account needed.
+- **Driving with a coding agent (Claude Code / Codex)? →** you're in **AGENT mode**: skip the key
+  entirely. Your agent does the search *and* labelling itself and calls the deterministic CLI to
+  verify and merge. Point it at [`AGENTS.md`](AGENTS.md); the loop is `gaps → search → lint → add →
+  doctor`, and `lint`/`doctor` are the guardrails that keep its JSON well-formed.
 
 For a multi-source bundle, keep each top-level `sourceId` exactly as supplied. Order is irrelevant;
 the importer rejects a missing, repeated, or invented id rather than risk attaching one paper's

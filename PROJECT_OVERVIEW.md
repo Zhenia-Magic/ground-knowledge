@@ -202,8 +202,18 @@ availability; see `SECURITY.md` and `DEPLOYMENT.md`.
 Everything scriptable: `discover`, `harvest`, `ingest`, `add`, `push`, `pull`, `build`, plus
 cleanup tools (`merge`, `rename`, `tidy`, `dups`) for tidying duplicate entities.
 
+**(c′) A coding agent driving the command line (no API key).**
+A variant of (c): when a coding agent (Claude Code, Codex) is doing the work, *it* is the model —
+it does the search and labelling that `harvest`/`deepen` would call a paid API for, and hands each
+source to the CLI, which stays the deterministic trust boundary. The agent writes deltas and runs
+`lint` (validate without merging) → `add` (verify quotes, strip model-supplied trust claims, merge)
+→ `doctor` (health check); it never hand-edits the KB and cannot bypass verification. The playbook
+is `AGENTS.md` (Claude Code auto-loads it via `CLAUDE.md`). This turns a Claude/Codex *subscription*
+into the labelling engine, so even the AI step needs no separate key.
+
 A guiding principle throughout: **finding and reading sources are free and keyless** (open APIs);
-**only the labelling step needs an AI.** So a huge amount works with no account at all.
+**only the labelling step needs an AI** — and with a coding agent even that needs no API key. So a
+huge amount works with no account at all.
 
 ---
 

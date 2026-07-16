@@ -58,11 +58,12 @@ root cannot be laundered into another position through an unreviewed edge.
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
 | `engine/curate.py` | Structure | curation ops: merge / rename / tidy; lexical + optional embedding duplicate suggestions; auditable confirmation gate |
 | `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, key disagreements |
-| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
+| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · lint · add · doctor · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |
 | `cases/*.kb.json` | artifact | five local, sourced knowledge bases (three competition cases plus alcohol and video-games generalization cases) |
+| `AGENTS.md` · `CLAUDE.md` | playbook | drive the repo with a **coding agent** (Claude Code / Codex) and no API key — the keyless loop, the delta contract, the guardrails |
 | `MECHANISM.md` · `SCHEMA.md` · `SECURITY.md` · `DEPLOYMENT.md` | spec/runbook | the mechanism, schema, trust boundaries, and release/rollback procedure |
 
 **Core (engine + viewer build + URL/txt ingestion + `--dry-run` + the local portal store) is
@@ -164,6 +165,29 @@ with no independent primary evidence, datasets cited only via a review, blindspo
 factors), searches exactly there, ingests, and re-checks — letting you choose which gaps to pursue
 each round, and always reporting what's still open (a plateau is a diagnostic, never a completeness
 claim). *Web search / deep research need an Anthropic key; every provider can label fetched text.*
+
+### Drive it with your coding agent — no API key
+
+`harvest`/`deepen` call a paid LLM API to search and label. If you'd rather spend a **Claude Code
+or Codex subscription** than wire up a key, point the agent at **[`AGENTS.md`](AGENTS.md)**: the
+*agent itself* does the web search and reading, and the deterministic CLI stays the trust boundary.
+The agent writes **deltas** and runs the CLI — it never hand-edits the KB, and it *cannot* corrupt
+it: `add` re-verifies every quote against fetched text, strips any `admission`/`verifiedQuote` the
+model asserts, and refuses off-topic or duplicate sources.
+
+```bash
+python cli.py gaps   cases/eggs.kb.json            # where evidence is thin (the search steering wheel)
+#  → the agent searches the web, then writes delta.json for one source:
+python cli.py lint   delta.json                    # validate WITHOUT merging — numbered errors, no key
+python cli.py add    cases/eggs.kb.json delta.json # verify + sanitize + dedupe + merge + recompute
+python cli.py doctor cases/eggs.kb.json            # health check before you hand off (structure/coverage/hygiene)
+```
+
+Claude Code auto-loads [`CLAUDE.md`](CLAUDE.md) → `AGENTS.md`; Codex auto-loads `AGENTS.md`. In
+practice you open a session in the repo and say *"read AGENTS.md and add 3 sources on X to
+`cases/eggs.kb.json`."* The new **`lint`** (validate a delta without merging) and **`doctor`**
+(structure + completeness + trust-hygiene health check) are the guardrails that keep an agent's
+output well-formed.
 
 ## How it generalises across case shapes
 

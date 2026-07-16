@@ -185,6 +185,41 @@ again. Every accepted KB write and its contribution-log entry are committed toge
 
 ---
 
+## F. Drive it with a coding agent (no API key)
+
+If a coding agent (Claude Code, Codex, …) is doing the work, you don't need an LLM key at all —
+**the agent is the model.** It does the web search and reading that `harvest`/`deepen` would pay an
+API for, and hands each source to the deterministic CLI, which stays the trust boundary. The full
+playbook is **[`AGENTS.md`](AGENTS.md)** (Claude Code auto-loads it via `CLAUDE.md`; Codex auto-loads
+`AGENTS.md`). The loop:
+
+```bash
+python cli.py gaps   cases/<id>.kb.json            # 1. where is the evidence thin? (steering wheel)
+#  2. the agent searches the web itself for sources answering those gaps, and reads them
+#     (or: python cli.py ingest <url> cases/<id>.kb.json --dry-run  to fetch text + the label prompt)
+#  3. the agent writes delta.json for ONE source, quoting only text it actually fetched
+python cli.py lint   delta.json                    # 4. validate WITHOUT merging — numbered errors, no key
+python cli.py add    cases/<id>.kb.json delta.json # 5. verify quotes + strip trust claims + dedupe + merge
+#  repeat 1–5 until `gaps` is quiet
+python cli.py doctor cases/<id>.kb.json            # 6. health check before you hand off
+```
+
+The guardrails an agent leans on:
+
+- **`lint`** never mutates anything — it just tells the agent what's malformed (numbered) and which
+  hand-written trust fields (`verifiedQuote`, `admission`) the merge will ignore. Run it before every `add`.
+- **`add`** is un-foolable: it re-verifies each quote against the text *it* fetched, strips any
+  `admission`/`verifiedQuote` the model wrote, refuses off-topic/duplicate sources, and rejects a
+  malformed delta with a clean numbered report (no traceback, KB untouched).
+- **`doctor`** is the handoff gate: structure (hard-fails on broken cross-refs), completeness
+  (empty positions, proposed-vs-confirmed bases, orphan bases), and trust hygiene. Warnings don't
+  block a build; broken structure does.
+
+**Golden rules for the agent** (full list in `AGENTS.md`): never invent a quote, never write trust
+fields, reuse existing entity IDs, one source per delta, `lint` before `add`.
+
+---
+
 ## Command reference
 
 | Command | What it does |
@@ -197,7 +232,9 @@ again. Every accepted KB write and its contribution-log entry are committed toge
 | `deepen <kb> --budget 3` | **thorough mode**: keep going until ~$3 (estimated) is spent or the gaps run dry; reports the spend |
 | `gaps <kb> [--json]` | show where evidence is thin (steers `deepen`) |
 | `ingest <kb> <link-or-file> [--apply] [--build] [--dry-run]` | fetch one source → label → delta (→ merge → build) |
-| `add <kb> <delta.json> [--build]` | merge a delta you already have; prints WHAT CHANGED |
+| `lint <delta.json\|kb>` | **validate WITHOUT merging** — numbered errors, nonzero exit; the pre-flight for agent-written JSON (keyless) |
+| `add <kb> <delta.json> [--build]` | merge a delta you already have; prints WHAT CHANGED (rejects a malformed delta cleanly) |
+| `doctor <kb>` | **health check** — structure + completeness + trust hygiene; the handoff gate (keyless) |
 | `import-citations <kb> <file> [--apply]` · `export <kb> --format bibtex\|ris\|csl` | Zotero/Mendeley/EndNote in & out |
 | `show <kb>` · `assess <kb>` | metrics summary in the terminal · full metrics as JSON |
 | `build <kb> [<kb2> ...] [--out FILE]` | bake the viewer (multiple KBs ⇒ a case switcher) |

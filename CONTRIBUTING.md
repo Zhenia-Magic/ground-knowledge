@@ -34,6 +34,11 @@ CI (`.github/workflows/ci.yml`) runs the suite on Python 3.10–3.13, validates 
 the **strict** benchmark (`--require-live-baseline`, which hash-checks the baseline reports), and a
 clean-clone smoke test. A PR must be green.
 
+**Contributing *content* (sources) with a coding agent?** Read [`AGENTS.md`](AGENTS.md) — the keyless
+loop for Claude Code / Codex: `gaps → search → lint → add → doctor`. It encodes invariant #5 below
+(models propose, curators admit): the agent writes deltas and the CLI verifies + merges. `lint`
+checks a delta without merging; `doctor` is the pre-handoff health check.
+
 ## Invariants you must not break
 
 These are enforced by tests; if your change trips one, the design question is real — ask, don't
