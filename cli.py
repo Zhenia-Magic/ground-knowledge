@@ -45,6 +45,204 @@ def pct(x):
     return str(round(x * 100)) + "%"
 
 
+def _print_numbered(errors):
+    for i, error in enumerate(errors, 1):
+        print("  {}. {}".format(i, error))
+
+
+def _trust_preview(delta):
+    """Notes on caller-supplied fields the trust boundary will IGNORE on `add`.
+
+    Not errors — just so an agent knows a verifiedQuote/admission/textDepth it wrote by hand will
+    not be believed. The CLI re-verifies quotes against fetched text; admission is a curator action.
+    """
+    notes = []
+    src = delta.get("source") if isinstance(delta, dict) else None
+    if isinstance(src, dict):
+        if src.get("textDepth") not in (None, "unknown"):
+            notes.append("source.textDepth='{}' will be reset to 'unknown' — depth only counts for "
+                         "text the CLI fetched itself".format(src.get("textDepth")))
+        for name, prov in (src.get("provenance") or {}).items():
+            if isinstance(prov, dict) and (prov.get("verifiedQuote") or prov.get("quoteVerification")):
+                notes.append("source.provenance.{}: verifiedQuote/quoteVerification will be dropped — "
+                             "the CLI re-verifies quotes against the text it fetched".format(name))
+        for i, edge in enumerate(src.get("restsOn") or []):
+            if not isinstance(edge, dict):
+                continue
+            if edge.get("admission"):
+                notes.append("restsOn[{}].admission will be dropped — admitting a root is a curator "
+                             "action (confirm-dataset / confirm-edge)".format(i))
+            prov = edge.get("provenance")
+            if isinstance(prov, dict) and (prov.get("verifiedQuote") or prov.get("quoteVerification")):
+                notes.append("restsOn[{}].provenance verification will be dropped — the CLI "
+                             "re-verifies edge quotes".format(i))
+    for i, factor in enumerate((delta.get("factorWeights") or []) if isinstance(delta, dict) else []):
+        if isinstance(factor, dict) and (factor.get("verifiedQuote") or factor.get("quoteVerification")):
+            notes.append("factorWeights[{}] verification will be dropped".format(i))
+    return notes
+
+
+def cmd_lint(args):
+    """Validate an agent-written delta file (or a KB) WITHOUT merging anything.
+
+    This is the pre-flight to run on hand/agent-authored JSON before `add`: it never mutates state,
+    reports numbered actionable problems, and exits nonzero on failure. A KB is routed to the full
+    schema/cross-reference validator; anything else is treated as a delta (or a batch array)."""
+    data = read_json(args.path)
+    # A KB carries meta + the top-level arrays -> reuse the full schema/cross-reference validator.
+    if isinstance(data, dict) and "meta" in data and "positions" in data and "sources" in data:
+        from engine.migrate import migrate_kb, validation_errors
+        kb, _ = migrate_kb(data)
+        errors = validation_errors(kb)
+        if errors:
+            print("{}: {} problem(s)".format(args.path, len(errors)))
+            _print_numbered(errors)
+            raise SystemExit(1)
+        print("{}: valid KB (schema v{}, {} sources)".format(
+            args.path, kb["meta"]["schemaVersion"], len(kb["sources"])))
+        return
+    # Otherwise a single delta, or a batch array of deltas.
+    from engine.validate import delta_validation_errors
+    deltas = data if isinstance(data, list) else [data]
+    total = 0
+    for idx, delta in enumerate(deltas):
+        label = "delta" if len(deltas) == 1 else "delta[{}]".format(idx)
+        if not isinstance(delta, dict):
+            print("{}: must be a JSON object".format(label))
+            total += 1
+            continue
+        errors = delta_validation_errors(delta)
+        title = (delta.get("source") or {}).get("title") if isinstance(delta.get("source"), dict) else None
+        head = label + (" — " + title if title else "")
+        if errors:
+            print("{}: {} formatting problem(s)".format(head, len(errors)))
+            _print_numbered(errors)
+        else:
+            print("{}: well-formed".format(head))
+        for note in _trust_preview(delta):
+            print("     note: " + note)
+        total += len(errors)
+    if total:
+        print("\n{} problem(s) total — fix before `add`.".format(total))
+        raise SystemExit(1)
+    print("\nAll well-formed. Safe to `add`.")
+
+
+def cmd_doctor(args):
+    """Health check for a KB: structure + completeness + trust hygiene.
+
+    Structural/reference breakage is a hard failure (nonzero exit); everything else is a warning that
+    still lets you build/push. Complements `show` (metrics) and `gaps` (evidence thinness): doctor
+    answers "is this file in good shape to hand off?"."""
+    from engine.migrate import migrate_kb, validation_errors, _edge_ref
+    kb, _ = migrate_kb(read_json(args.kb))
+    a = assess(kb)
+    positions, sources, datasets, factors = (
+        kb["positions"], kb["sources"], kb["datasets"], kb["factors"])
+    print("DOCTOR — {}  (v{})".format(kb["meta"]["question"], kb["meta"].get("version", 0)))
+    warnings = 0
+
+    # 1. STRUCTURE (hard) --------------------------------------------------
+    errors = validation_errors(kb)
+    print("\nSTRUCTURE")
+    if errors:
+        print("  x {} schema/reference problem(s):".format(len(errors)))
+        _print_numbered(errors)
+    else:
+        print("  ok  schema v{} + cross-references valid".format(kb["meta"]["schemaVersion"]))
+
+    # 2. COMPLETENESS ------------------------------------------------------
+    print("\nCOMPLETENESS")
+    src_per_pos = {}
+    for s in sources:
+        src_per_pos[s.get("position")] = src_per_pos.get(s.get("position"), 0) + 1
+    empty_pos = [p for p in positions if src_per_pos.get(p.get("id"), 0) == 0]
+    print("  {}  {} sources across {} positions".format(
+        "!!" if empty_pos else "ok", len(sources), len(positions)))
+    if empty_pos:
+        warnings += 1
+        print("      {} position(s) have no source yet: {}".format(
+            len(empty_pos), ", ".join(p.get("label", p.get("id")) for p in empty_pos)))
+    used = set()
+    for s in sources:
+        for edge in s.get("restsOn", []):
+            ref = _edge_ref(edge)
+            if ref and not ref.startswith("src:"):
+                used.add(ref)
+    confirmed_ids = {d.get("id") for d in datasets if isinstance(d.get("confirmation"), dict)
+                     and d["confirmation"].get("status") == "confirmed"}
+    proposed = [d for d in datasets if d.get("id") not in confirmed_ids]
+    print("  {}  {} evidence bases — {} confirmed, {} still proposed".format(
+        "!!" if proposed else "ok", len(datasets), len(confirmed_ids), len(proposed)))
+    if proposed:
+        warnings += 1
+        print("      confirm identities with `confirm-dataset` / admit support with `confirm-edge` "
+              "(or curate proposed bases in the portal) so they count toward coverage")
+    orphan_ds = [d for d in datasets if d.get("id") not in used]
+    if orphan_ds:
+        warnings += 1
+        print("  !!  {} evidence base(s) referenced by no source: {}".format(
+            len(orphan_ds), ", ".join(d.get("label", d.get("id")) for d in orphan_ds)))
+    if factors:
+        weak = [f for f in factors if not f.get("provenance") or not f.get("weights")]
+        print("  {}  {} factors{}".format(
+            "!!" if weak else "ok", len(factors),
+            " — {} with no claim / empty weights".format(len(weak)) if weak else ""))
+        if weak:
+            warnings += 1
+    else:
+        print("  --  no factors yet (the Key issues / divergence view will be empty)")
+
+    # 3. TRUST HYGIENE -----------------------------------------------------
+    print("\nTRUST HYGIENE")
+    unverifiable = 0
+    for s in sources:
+        for prov in (s.get("provenance") or {}).values():
+            if isinstance(prov, dict) and prov.get("verifiedQuote") in ("exact", "fuzzy") \
+                    and not prov.get("quoteVerification"):
+                unverifiable += 1
+    print("  {}  {} provenance quote(s) marked verified with no verification record".format(
+        "!!" if unverifiable else "ok", unverifiable))
+    if unverifiable:
+        warnings += 1
+    qa = a.get("quoteAudit")
+    unverified_full = sum(p.get("unverifiedFull", 0) for p in (qa["positions"] if qa else []))
+    if unverified_full:
+        warnings += 1
+        print("  !!  {} full-text source(s) carry an unverified quote (run scripts/audit_quotes.py)"
+              .format(unverified_full))
+    else:
+        print("  ok  no full-text source carries an unverified quote")
+
+    # 4. SIZE --------------------------------------------------------------
+    print("\nSIZE")
+    size_warn = []
+    if not sources:
+        size_warn.append("0 sources — nothing to assess")
+    if len(positions) < 2:
+        size_warn.append("< 2 positions — a dispute needs at least two")
+    if len(sources) > 400:
+        size_warn.append("{} sources — unusually large, check for duplicates".format(len(sources)))
+    if size_warn:
+        warnings += len(size_warn)
+        for w in size_warn:
+            print("  !!  " + w)
+    else:
+        print("  ok  {} sources / {} positions / {} bases / {} factors — within normal bounds".format(
+            len(sources), len(positions), len(datasets), len(factors)))
+
+    # summary --------------------------------------------------------------
+    print("\n" + ("-" * 52))
+    if errors:
+        print("UNHEALTHY — {} structural problem(s) must be fixed (see STRUCTURE).".format(len(errors)))
+        raise SystemExit(1)
+    if warnings:
+        print("OK with {} warning(s) — safe to build/push, but address the flagged items for a "
+              "submission-grade case.".format(warnings))
+    else:
+        print("HEALTHY — no structural problems and no warnings.")
+
+
 def cmd_validate(args):
     from engine.migrate import migrate_kb, validation_errors
     with open(args.kb, encoding="utf-8") as f:
@@ -265,8 +463,13 @@ def _apply_delta(kb_path, delta, verification_trusted=False):
     if not verification_trusted:
         from engine.verify import strip_untrusted_verification
         delta = strip_untrusted_verification(delta)
-    from engine.validate import require_valid_delta
-    require_valid_delta(delta)
+    from engine.validate import delta_validation_errors
+    errors = delta_validation_errors(delta)
+    if errors:
+        print("Delta rejected — {} formatting problem(s). Nothing was added:".format(len(errors)))
+        _print_numbered(errors)
+        print("Fix these and re-run `add`, or run `python cli.py lint <file>` first.")
+        return False
     if review.needs_review(delta):
         delta = _review_prompt(kb_path, delta)
         if delta is None:
@@ -913,6 +1116,10 @@ def main():
     s.set_defaults(fn=cmd_demo)
     s = sub.add_parser("validate", help="validate schema v2 plus IDs and cross-references")
     s.add_argument("kb"); s.set_defaults(fn=cmd_validate)
+    s = sub.add_parser("lint", help="pre-flight an agent-written delta (or KB) WITHOUT merging — numbered errors")
+    s.add_argument("path"); s.set_defaults(fn=cmd_lint)
+    s = sub.add_parser("doctor", help="health check: structure + completeness + trust hygiene of a KB")
+    s.add_argument("kb"); s.set_defaults(fn=cmd_doctor)
     s = sub.add_parser("migrate", help="additively migrate a v1 KB to schema v2")
     s.add_argument("kb"); migration_dest = s.add_mutually_exclusive_group()
     migration_dest.add_argument("--out"); migration_dest.add_argument("--apply", action="store_true")
