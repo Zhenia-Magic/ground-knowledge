@@ -184,12 +184,20 @@ def cmd_doctor(args):
         print("  !!  {} evidence base(s) referenced by no source: {}".format(
             len(orphan_ds), ", ".join(d.get("label", d.get("id")) for d in orphan_ds)))
     if factors:
-        weak = [f for f in factors if not f.get("provenance") or not f.get("weights")]
+        no_claim = [f for f in factors if not f.get("provenance")]
+        # A factor with claims but no derived weights isn't broken: its cells populate only from
+        # quote-verified claims (engine/merge._recompute_factor_cell), so it stays empty until a
+        # full-text quote check confirms it. Surface that as info, not a counted warning.
+        unrendered = [f for f in factors if f.get("provenance") and not f.get("weights")]
         print("  {}  {} factors{}".format(
-            "!!" if weak else "ok", len(factors),
-            " — {} with no claim / empty weights".format(len(weak)) if weak else ""))
-        if weak:
+            "!!" if no_claim else "ok", len(factors),
+            " — {} with no supporting claim".format(len(no_claim)) if no_claim else ""))
+        if no_claim:
             warnings += 1
+        if unrendered:
+            print("      note: {} factor(s) have a claim but no verified quote yet, so they will "
+                  "not render as key issues until a full-text quote check confirms them"
+                  .format(len(unrendered)))
     else:
         print("  --  no factors yet (the Key issues / divergence view will be empty)")
 

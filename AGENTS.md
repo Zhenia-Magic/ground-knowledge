@@ -145,8 +145,12 @@ The load-bearing decisions (all detailed in `prompts/ingest.md`):
   edge that specifically names that dataset as evidence this source used. Never let one sentence
   vouch for several roots. Never quote a title, heading, or boilerplate line.
 
-There is a filled example in `prompts/ingest.md`'s "Output schema" section; `cli.py ingest --dry-run`
-also prints a ready-to-fill prompt for the specific source.
+**Copy-and-adapt templates live in [`examples/`](examples/)** — one per common shape (a primary
+study naming its own base, a review resting on pooled cohorts, a non-empirical `document`, an
+echo/commentary `NEW-SRC:` edge, and a batch array). Each one already passes `lint`; start from the
+closest and swap in your fetched title/URL and *real* quotes. `prompts/ingest.md`'s "Output schema"
+section has an inline filled example too, and `cli.py ingest --dry-run` prints a ready-to-fill
+prompt for a specific source.
 
 ---
 
@@ -207,6 +211,8 @@ try to route around it.
 **Pre-flight before every `add`:** `python cli.py lint delta.json`
 **Handoff gate when you're done:** `python cli.py doctor cases/<id>.kb.json` — resolve the flags, or
 tell the human which ones need a curator.
+
+**Templates to copy:** [`examples/`](examples/) — one well-formed delta per shape, each lint-clean.
 
 For the bigger picture — the metric, the schema, the deployment — see
 [`WORKFLOW.md`](WORKFLOW.md), [`SCHEMA.md`](SCHEMA.md), and [`README.md`](README.md).

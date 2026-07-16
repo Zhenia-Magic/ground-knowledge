@@ -1,0 +1,22 @@
+{
+  "source": {
+    "title": "Editorial: what the Worobey market analysis means for the origin debate",
+    "year": 2022,
+    "url": "https://example.org/editorial",
+    "relevant": true,
+    "position": "NEW:Zoonotic spillover is the best-supported explanation",
+    "evidence": "Editorial / commentary",
+    "funding": "Undisclosed",
+    "population": "—",
+    "confidence": "low",
+    "restsOn": [
+      { "ref": "NEW-SRC:Worobey et al. 2022, the Huanan market was the early epicenter" }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "The geographic clustering reported by Worobey and colleagues is the strongest evidence yet for a market origin.",
+        "extractionConfidence": 0.6
+      }
+    }
+  }
+}

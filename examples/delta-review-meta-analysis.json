@@ -1,0 +1,35 @@
+{
+  "source": {
+    "title": "Saturated fat and cardiovascular disease: a meta-analysis of prospective cohorts",
+    "year": 2010,
+    "url": "https://doi.org/10.3945/ajcn.2009.27725",
+    "relevant": true,
+    "position": "NEW:No clear effect of saturated fat on CVD risk",
+    "evidence": "Meta-analysis",
+    "funding": "Academic/institutional",
+    "population": "Adults pooled across cohorts",
+    "confidence": "moderate",
+    "restsOn": [
+      {
+        "ref": "ds_nurses_health_study",
+        "provenance": {
+          "quote": "The Nurses' Health Study contributed 121,700 women followed prospectively for coronary events.",
+          "extractionConfidence": 0.85
+        }
+      },
+      {
+        "ref": "NEW:Health Professionals Follow-up Study",
+        "provenance": {
+          "quote": "The Health Professionals Follow-up Study contributed 51,529 men with repeated dietary assessments.",
+          "extractionConfidence": 0.85
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "There was no significant association between saturated fat intake and cardiovascular disease.",
+        "extractionConfidence": 0.85
+      }
+    }
+  }
+}

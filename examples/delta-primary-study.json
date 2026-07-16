@@ -1,0 +1,36 @@
+{
+  "source": {
+    "title": "Rose corn-oil trial: corn oil versus control after myocardial infarction",
+    "year": 1965,
+    "url": "https://doi.org/10.1016/S0140-6736(65)91838-X",
+    "relevant": true,
+    "position": "NEW:Replacing saturated fat with polyunsaturated fat does not reduce CVD risk",
+    "evidence": "Randomized controlled trial",
+    "funding": "Government/public",
+    "population": "Men with prior myocardial infarction",
+    "confidence": "low",
+    "restsOn": [
+      {
+        "ref": "NEW:Rose corn-oil trial (80 men, London, 1965)",
+        "provenance": {
+          "quote": "Eighty men with a history of myocardial infarction were allocated at random to a corn-oil, olive-oil, or control group.",
+          "extractionConfidence": 0.9
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "At the end of two years the corn-oil group had fared no better, and possibly worse, than the controls.",
+        "extractionConfidence": 0.85
+      }
+    }
+  },
+  "factorWeights": [
+    {
+      "factor": "Weight given to hard clinical outcomes over biomarkers",
+      "weight": "high",
+      "quote": "We assessed reinfarction and death rather than serum cholesterol alone.",
+      "rationale": "The trial reports hard cardiovascular endpoints, the dimension the camps weigh differently."
+    }
+  ]
+}

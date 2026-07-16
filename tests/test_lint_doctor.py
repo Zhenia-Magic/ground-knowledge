@@ -139,6 +139,26 @@ class DoctorTests(unittest.TestCase):
         self.assertIn("no source yet", out)
         self.assertIn("warning", out)
 
+    def test_factor_with_a_claim_but_unverified_quote_is_info_not_a_warning(self):
+        # weights stay empty until a quote is verified; that is by design, not a defect.
+        kb = _healthy_kb()
+        kb["factors"] = [{"id": "f_x", "label": "Hard outcomes vs biomarkers", "weights": {},
+                          "provenance": [{"source": "s1", "pos": "pos_up",
+                                          "quote": "we measured death, not cholesterol", "weight": "high"}]}]
+        out, code = _run(cli.cmd_doctor, kb=self._path("kb.json", kb))
+        self.assertEqual(code, 0)
+        self.assertIn("HEALTHY", out)          # no warnings added
+        self.assertIn("not render as key issues", out)  # but the info note appears
+
+    def test_factor_with_no_supporting_claim_warns(self):
+        kb = _healthy_kb()
+        kb["factors"] = [{"id": "f_x", "label": "Hard outcomes vs biomarkers",
+                          "weights": {}, "provenance": []}]
+        out, code = _run(cli.cmd_doctor, kb=self._path("kb.json", kb))
+        self.assertEqual(code, 0)
+        self.assertIn("no supporting claim", out)
+        self.assertIn("warning", out)
+
     def test_broken_structure_reports_unhealthy_and_exits_one(self):
         kb = _healthy_kb()
         kb["sources"][0]["position"] = "pos_does_not_exist"
@@ -164,6 +184,23 @@ class AddRejectionTests(unittest.TestCase):
             after = json.load(f)
         self.assertEqual(after["meta"]["version"], 0)  # unchanged
         self.assertEqual(after["sources"], [])
+
+
+class ExamplesTests(unittest.TestCase):
+    def test_every_shipped_example_delta_is_well_formed(self):
+        """The examples/ templates AGENTS.md points at must always lint clean."""
+        from engine.validate import delta_validation_errors
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        exdir = os.path.join(root, "examples")
+        files = [f for f in os.listdir(exdir) if f.endswith(".json")]
+        self.assertTrue(files, "no example deltas found in examples/")
+        for name in files:
+            with open(os.path.join(exdir, name), encoding="utf-8") as f:
+                data = json.load(f)
+            deltas = data if isinstance(data, list) else [data]
+            for i, delta in enumerate(deltas):
+                errs = delta_validation_errors(delta)
+                self.assertEqual(errs, [], "{}[{}] has errors: {}".format(name, i, errs))
 
 
 if __name__ == "__main__":

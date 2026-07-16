@@ -1,0 +1,58 @@
+[
+  {
+    "source": {
+      "title": "PURE study: dietary fats and cardiovascular disease across 18 countries",
+      "year": 2017,
+      "url": "https://doi.org/10.1016/S0140-6736(17)32252-3",
+      "relevant": true,
+      "position": "NEW:No clear effect of saturated fat on CVD risk",
+      "evidence": "Prospective cohort",
+      "funding": "Academic/institutional",
+      "population": "Adults in 18 countries",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "NEW:PURE cohort (135,335 adults, 18 countries)",
+          "provenance": {
+            "quote": "The Prospective Urban Rural Epidemiology study enrolled 135,335 individuals across 18 countries.",
+            "extractionConfidence": 0.9
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Saturated fat intake was not associated with cardiovascular disease or mortality.",
+          "extractionConfidence": 0.85
+        }
+      }
+    }
+  },
+  {
+    "source": {
+      "title": "Women's Health Initiative: low-fat dietary pattern and cardiovascular events",
+      "year": 2006,
+      "url": "https://doi.org/10.1001/jama.295.6.655",
+      "relevant": true,
+      "position": "NEW:No clear effect of saturated fat on CVD risk",
+      "evidence": "Randomized controlled trial",
+      "funding": "Government/public",
+      "population": "Postmenopausal women",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "NEW:Women's Health Initiative dietary trial (48,835 women)",
+          "provenance": {
+            "quote": "The Women's Health Initiative randomly assigned 48,835 postmenopausal women to a low-fat diet or control.",
+            "extractionConfidence": 0.9
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "The low-fat dietary pattern did not significantly reduce the risk of coronary heart disease.",
+          "extractionConfidence": 0.85
+        }
+      }
+    }
+  }
+]

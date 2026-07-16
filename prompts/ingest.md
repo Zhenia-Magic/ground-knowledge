@@ -162,7 +162,8 @@ multiplying via paraphrase as a case grows):
 }
 ```
 
-See `cases/eggs.delta-zhuang2021.json` for a filled example. Feed the result to:
+See [`../examples/`](../examples/) for filled deltas — one per shape (primary study, review,
+non-empirical document, echo/citation, batch), each lint-clean. Feed the result to:
 
 ```
 python cli.py add cases/eggs.kb.json delta.json

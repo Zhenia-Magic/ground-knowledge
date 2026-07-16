@@ -1,0 +1,29 @@
+{
+  "source": {
+    "title": "Analysis of the 2018 DEFUSE grant proposal and its bearing on origin",
+    "year": 2021,
+    "url": "https://example.org/defuse-analysis",
+    "relevant": true,
+    "position": "NEW:A research-related origin is plausible",
+    "evidence": "Document analysis",
+    "funding": "Undisclosed",
+    "population": "—",
+    "confidence": "low",
+    "restsOn": [
+      {
+        "ref": "NEW:DEFUSE grant proposal (2018 document)",
+        "datasetKind": "document",
+        "provenance": {
+          "quote": "The 2018 DEFUSE proposal described inserting a furin cleavage site into a SARS-related coronavirus.",
+          "extractionConfidence": 0.8
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "The proposal shows the intent and capability existed before the pandemic began.",
+        "extractionConfidence": 0.7
+      }
+    }
+  }
+}
