@@ -41,7 +41,7 @@ button{cursor:pointer;} input[type=checkbox]{cursor:pointer;}
 .card:hover{border-color:var(--line-strong);text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.09);transform:translateY(-2px);}
 .card .q{font-size:16px;font-weight:600;color:var(--ink);line-height:1.35;}
 .card:hover .q{color:var(--flag);}
-.card .cur{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--flag);background:var(--flag-bg);border-radius:999px;padding:2px 9px;margin-top:9px;}
+.card .cur{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--flag);margin:8px 0 0;}
 .card .meta{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;}
 .empty{color:var(--muted);padding:30px 0;}
 .back{font-family:var(--mono);font-size:12px;color:var(--muted);}

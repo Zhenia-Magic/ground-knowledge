@@ -271,6 +271,7 @@ meta-flag: "this root is read both ways" (contested evidence).
 | Single review asserting broad dataset support | Fake breadth | "Root present only via secondary" mark → that root counts at half |
 | Re-submit the same study | Inflate count | Duplicate refusal (same url / title+year) |
 | Add an off-topic but real study | Pad a position | Relevance gate refuses it at merge |
+| Forge an "officially curated" badge on a manipulated case | Borrow admin authority to make a gamed case look trusted | The badge lives on `meta`, which no ingestion delta can write (merge is source-shaped; a client `meta` is stripped); only an admin-token action sets it. And it is *paired* with a computed confirmed-coverage % it can never overwrite — see §7.1 |
 
 The deep property, stated precisely (and enforced by a randomized test in
 `tests/test_independence.py`): **with entity identity and existing edges fixed, adding a source with
@@ -289,6 +290,35 @@ support edge**. Unverified roots and unadmitted support links are quarantined at
 public count-inflation and confirmed-root-laundering paths; false confirmation remains edge *fabrication*, the dual of edge
 *omission* in §8.3. It is a semantic labelling-integrity problem: the defenses are per-`restsOn`
 provenance, verification against fetched text, and review. Named in §8 rather than hidden.
+
+### 7.1 Disclosed stewardship, not gatekeeping (the "curated & maintained" badge)
+
+A question can carry a **"Curated & maintained"** badge — an admin/curator vouching that they steward
+it. It is tempting to make robustness a *contributor gate* ("only confirmed researchers may add to
+official questions"). We deliberately did **not** do that: gating by identity re-introduces the
+authority-as-trust that §1 rejects, and it doesn't actually stop the gaming vectors above — those are
+defeated by the *mechanism* auditing every edge regardless of who submitted it. So the badge is a
+**label, not a gate**: contributions from anyone are still audited the same way, and the badge adds a
+disclosure on top.
+
+For that label to help rather than mislead, it obeys two rules:
+
+1. **It cannot be forged.** Stewardship lives on `meta`, and *no ingestion path writes `meta`* — the
+   merge only ever reads a delta's `source`/`factorWeights`, and the trust boundary additionally
+   strips any client-supplied `meta` (`engine/verify.strip_untrusted_verification`). The only writers
+   are the curator CLI (`mark-curated`) and the admin-token-gated portal endpoint. A contributor
+   cannot stamp their own case "official" — the same property that keeps `admission` out of model
+   output (row 11 above), applied to the case-level label.
+2. **It cannot launder an unverified number.** The badge is always shown *paired* with a **computed**
+   confirmed-coverage percentage (`engine/assess.curation_summary`: the share of evidence bases whose
+   identity is confirmed, and the share of quotes verified against fetched text). Those percentages
+   are earned by the evidence state and can't be hand-set, so "an admin maintains this question" is
+   visibly separate from "the evidence here is verified." A curated case with thin confirmation reads
+   as exactly that.
+
+The net effect: trust still attaches to *verifiable state*, computed by the same legible functions as
+every other number; the badge only discloses *who is stewarding*, and is engineered so it can neither
+be spoofed nor be mistaken for a verification claim.
 
 ---
 

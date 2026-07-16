@@ -212,7 +212,10 @@ or `pull` them locally (`python cli.py pull <id>`):
   the deterministic stdlib function, so the hosted instance is cheap and has no
   key-trust problem. Admin moderation is gated by a shared token. Stores KBs as JSON documents
   (sqlite locally, Postgres in production — e.g. Railway). For the best, AI-driven retrieval, the
-  portal points users to the CLI / local console.
+  portal points users to the CLI / local console. An admin can flag a question **"Curated &
+  maintained"** — a stewardship label shown *paired* with a computed confirmed-coverage % it can't
+  overwrite, and which no contributor can forge (it lives on `meta`, which no ingestion path writes).
+  It discloses *who stewards*, without gating *who may contribute* — see [`MECHANISM.md`](MECHANISM.md) §7.1.
 - **The local workstation** (`python cli.py ui`, or the CLI) — for power users with their own key:
   it's **git for knowledge bases**. `pull` a question, `harvest`/`deepen` it with your own
   compute/key, `push` the result back (admin-token protected, optimistic version-locked). Discovery
