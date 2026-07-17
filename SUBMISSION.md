@@ -18,9 +18,9 @@
    Or run `python cli.py demo` for the same plus a per-case assessment and links to the live viewer.
 
 2. **Read three worked cases** (open on the live site or `python cli.py assess cases/<case>.kb.json`):
-   - **COVID** — `cases/covid.kb.json` — [origin of SARS-CoV-2](https://groundknowledge.org/q/ac81b4cae8d0). The current artifact shows 13 zoonotic sources → **5.0** adjusted evidence-base count, 7 laboratory-origin → **3.5**, and 6 unresolved → **3.0**.
-   - **Eggs** — `cases/eggs.kb.json` — [do eggs raise CVD risk?](https://groundknowledge.org/q/04329878656c). The three positions show 4 → **4.0**, 9 → **5.0**, and 7 → **4.0**; industry funding is surfaced separately from coverage.
-   - **Black holes** — `cases/blackholes.kb.json` — [could the LHC destroy Earth?](https://groundknowledge.org/q/c6c6ad01ec11). The "No risk" position has 11 sources and **4.0** adjusted evidence-base count across production impossibility, Hawking evaporation, accretion timescale, and the empirical dense-star bound. This is a map of the layered safety case, not a quality-weighted verdict. The *residual* concern is surfaced as a one-sided load-bearing key disagreement.
+   - **COVID** — `cases/covid.kb.json` — [origin of SARS-CoV-2](https://groundknowledge.org/q/ac81b4cae8d0). The current artifact shows 13 zoonotic sources → **4.5** adjusted evidence-base count, 8 laboratory-origin → **3.0**, and 8 unresolved → **3.0**.
+   - **Eggs** — `cases/eggs.kb.json` — [do eggs raise CVD risk?](https://groundknowledge.org/q/04329878656c). The three positions show 4 → **4.0**, 10 → **5.0**, and 7 → **4.0**; industry funding is surfaced separately from coverage.
+   - **Black holes** — `cases/blackholes.kb.json` — [could the LHC destroy Earth?](https://groundknowledge.org/q/c6c6ad01ec11). The "No risk" position has 11 sources and **5.0** adjusted evidence-base count across production impossibility, Hawking evaporation, accretion timescale, and the empirical dense-star bound. This is a map of the layered safety case, not a quality-weighted verdict. The *residual* concern is surfaced as a one-sided load-bearing key disagreement.
 
 3. **Read the two core functions** — this is a ≤2-page algorithm, not a black box:
    - `engine/roots.py` → `resolve()` — separates root-identity trust from source→root support-edge trust, resolves admitted edges, and collapses cohort reuse / echo / circular citation.
@@ -114,7 +114,7 @@ The headline key disagreement count stays tight (cross-camp disagreement or shar
 The benchmark ([`eval/run_benchmark.py`](eval/run_benchmark.py)) runs three checks and **verifies the baselines it compares against** (files + SHA-256 hashes), so a boolean is never taken as evidence. Two independent deep-research baseline sets — **ChatGPT Deep Research** and **Claude Code / Opus 4.8** — are captured with provenance and hash-checked.
 
 - **Structure recall** (positions / key roots / key disagreements surfaced) is scored against a small, deliberately non-exhaustive gold per case.
-- **Collapse/coverage** quantifies the headline: COVID **13 → 5.0**, **7 → 3.5**, **6 → 3.0**; black holes **11 → 4.0**, **4 → 2.0**; eggs **4 → 4.0**, **9 → 5.0**, **7 → 4.0**. [`eval/RESULTS.md`](eval/RESULTS.md) is generated from the benchmark, and CI fails if it is stale.
+- **Collapse/coverage** quantifies the headline: COVID **13 → 4.5**, **8 → 3.0**, **8 → 3.0**; black holes **11 → 5.0**, **4 → 2.0**; eggs **4 → 4.0**, **10 → 5.0**, **7 → 4.0**. [`eval/RESULTS.md`](eval/RESULTS.md) is generated from the benchmark, and CI fails if it is stale.
 - **Adversarial robustness** is executed, not asserted (above).
 
 **Comparative recall (honest).** The benchmark also scores the ChatGPT / Claude reports against the *same* small, developer-authored gold, as a keyword-recall proxy (with declared paraphrase synonyms). The result is **near-parity** — a good deep-research report surfaces the same positions, roots, and key disagreement concepts GK does. Structure recall counts concepts visible anywhere in GK's factor matrix; the separate key disagreement-type counts show which ones the detector actually promotes. This diagnostic is not held-out evaluation or evidence of reader uplift; hashes establish capture integrity, not output quality.

@@ -2,8 +2,8 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 46,
-    "updated": "2026-07-16T01:47:55.565819+00:00",
+    "version": 47,
+    "updated": "2026-07-17T02:18:45.458406+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
       "baseVersion": 36,
@@ -591,7 +591,7 @@
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
       "evidence": "Observational",
-      "funding": "Academic/institutional",
+      "funding": "Government/public",
       "population": "Wuhan early COVID-19 cases (Dec 2019)",
       "confidence": "high",
       "restsOn": [
@@ -632,7 +632,20 @@
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.074768+00:00",
         "method": "catalogue+manual-full-text"
-      }
+      },
+      "fundingDetails": [
+        "National Institute of Allergy and Infectious Diseases (NIH)",
+        "Centers for Disease Control and Prevention",
+        "US Food and Drug Administration",
+        "US Department of Veterans Affairs",
+        "Wellcome Trust",
+        "European Research Council",
+        "Canadian Institutes of Health Research",
+        "Coalition for Epidemic Preparedness Innovations",
+        "Australian Research Council",
+        "Medical Research Council",
+        "European Union Horizon 2020"
+      ]
     },
     {
       "id": "src_pekar_et_al_the_molecular_epidemiology_of_mu_2022",
@@ -1028,7 +1041,7 @@
       "citations": null,
       "retracted": false,
       "position": "pos_laboratory_associated_origin",
-      "evidence": "Observational",
+      "evidence": "Narrative/Commentary",
       "funding": "Advocacy",
       "population": "—",
       "confidence": "low",
@@ -1742,8 +1755,8 @@
       "citations": null,
       "retracted": false,
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
-      "evidence": "Evidence-synthesis",
-      "funding": "Academic/institutional",
+      "evidence": "Observational",
+      "funding": "Government/public",
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
@@ -1784,7 +1797,13 @@
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:54:20.699772+00:00",
         "method": "catalogue+manual-full-text"
-      }
+      },
+      "fundingDetails": [
+        "Medical Research Council",
+        "Wellcome Trust",
+        "National Institutes of Health (NIAID)",
+        "Jiangsu Province High-level Innovation and Entrepreneurship Talent Programme"
+      ]
     },
     {
       "id": "src_garry_sars_cov_2_furin_cleavage_site_was_not_2022",
@@ -3301,6 +3320,13 @@
       "action": "rename",
       "summary": "renamed population “Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026” → “U.S. intelligence assessments on SARS-CoV-2 origins”",
       "ts": "2026-07-16T01:47:55.565819+00:00"
+    },
+    {
+      "version": 47,
+      "action": "correct-metadata",
+      "summary": "reviewer re-audit (2026-07): Worobey: funding→Government/public +details; USRTK DEFUSE analysis: evidence→Narrative/Commentary; Lytras: evidence→Observational (secondary data analysis), funding→Government/public +details",
+      "ts": "2026-07-17T02:18:45.458406+00:00",
+      "by": "reviewer re-audit"
     }
   ],
   "refused": [
