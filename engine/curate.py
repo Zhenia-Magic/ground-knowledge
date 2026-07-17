@@ -122,12 +122,14 @@ def dedupe_sources(kb):
                         "removed {} duplicate source(s)".format(len(dropped))), removed=removed)
 
 
-def _commit(kb, action, summary):
+def _commit(kb, action, summary, by=None):
     v = (kb["meta"].get("version", 0) or 0) + 1
     kb["meta"]["version"] = v
     kb["meta"]["updated"] = now_iso()
-    kb.setdefault("log", []).append(
-        {"version": v, "action": action, "summary": summary, "ts": kb["meta"]["updated"]})
+    entry = {"version": v, "action": action, "summary": summary, "ts": kb["meta"]["updated"]}
+    if by:
+        entry["by"] = str(by)[:100]
+    kb.setdefault("log", []).append(entry)
     return {"version": v, "summary": summary}
 
 
@@ -325,7 +327,7 @@ def remove_source(kb, ref, reason, by, replacement=None):
     from engine.merge import recompute_factor_weights
     recompute_factor_weights(kb)
     summary = "removed source “{}”: {}".format(source.get("title"), reason)
-    report = _commit(kb, "remove-source", summary)
+    report = _commit(kb, "remove-source", summary, by=by)
     kb["log"][-1].update({"source": sid, "title": source.get("title"), "by": by,
                            "reason": reason, "replacement": target_id,
                            "rewiredEdges": rewired, "prunedDatasets": orphaned})
@@ -582,7 +584,7 @@ def confirm_dataset(kb, ref, confirmed=True, by=None, method="curator", source=N
             d["confirmation"]["by"] = by
     d.pop("confirmed", None)                     # replace the legacy boolean with the audit record
     verb = "confirmed" if confirmed else "un-confirmed"
-    return _commit(kb, "confirm-dataset", "{} dataset “{}” as a real evidence base".format(verb, d["label"]))
+    return _commit(kb, "confirm-dataset", "{} dataset “{}” as a real evidence base".format(verb, d["label"]), by=actor)
 
 
 def confirm_edge(kb, source_ref, edge_ref, confirmed=True, by=None, note=None):
@@ -622,7 +624,7 @@ def confirm_edge(kb, source_ref, edge_ref, confirmed=True, by=None, note=None):
     source["restsOn"] = edges
     verb = "admitted" if confirmed else "un-admitted"
     return _commit(kb, "confirm-edge", "{} support edge {} → {}".format(
-        verb, source["id"], canonical))
+        verb, source["id"], canonical), by=actor)
 
 
 def set_curated(kb, curated=True, by=None, note=None):
@@ -650,7 +652,7 @@ def set_curated(kb, curated=True, by=None, note=None):
     else:
         meta.pop("curated", None)
         msg = "removed the curated & maintained label"
-    return _commit(kb, "set-curated", msg)
+    return _commit(kb, "set-curated", msg, by=by)
 
 
 def tidy_labels(kb):

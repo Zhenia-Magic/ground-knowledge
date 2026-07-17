@@ -229,7 +229,7 @@
   .card .titlewrap{min-width:0;flex:1 1 auto;}
   .card .title{font-size:13.5px;font-weight:600;line-height:1.4;overflow-wrap:anywhere;}
   .card .yr{font-family:var(--mono);font-size:10.5px;color:var(--faint);white-space:nowrap;}
-  .card .venue{font-size:11.5px;color:var(--faint);font-style:italic;margin:3px 0 9px;
+  .card .venue{font-size:11.5px;color:var(--faint);margin:3px 0 9px;
     overflow-wrap:anywhere;}
   .card .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px;}
   /* Not nowrap: population strings and "rests on" dataset labels are free text (sometimes a
@@ -281,7 +281,10 @@
   .indpos .peff{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);}
   .infoicon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;
     border-radius:50%;border:1px solid var(--faint);color:var(--faint);font-size:9.5px;
-    font-family:var(--sans);cursor:help;vertical-align:1px;}
+    font-family:var(--sans);cursor:pointer;vertical-align:1px;}
+  .infoicon:hover{border-color:var(--muted);color:var(--muted);}
+  #tip{position:fixed;z-index:100;max-width:300px;background:var(--chrome);color:#fff;padding:9px 11px;
+    border-radius:8px;font-size:12px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.22);display:none;}
   .indkey{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 16px;}
   .indkey span{display:flex;align-items:center;gap:6px;}
   .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
@@ -568,6 +571,20 @@ function caseLabel(c){
   return mid;
 }
 
+// Colorblind-safe categorical palette (Okabe-Ito), led by blue/orange so no position's colour
+// reads as "the right answer" and red/green are not the two opposing camps. Applied at render time
+// over any stored hue, so every case is consistent regardless of the order positions were created.
+const PAL=["#0072B2","#E69F00","#009E73","#CC79A7","#56B4E9","#D55E00","#8a6510"];
+let posHue={};
+function remapHues(node){
+  if(Array.isArray(node)){ for(const x of node) remapHues(x); return; }
+  if(node && typeof node==="object"){
+    const pid=(node.id&&posHue[node.id])?node.id:((node.positionId&&posHue[node.positionId])?node.positionId:null);
+    if(pid && ("hue" in node)) node.hue=posHue[pid];
+    for(const k in node) remapHues(node[k]);
+  }
+}
+
 function renderChrome(){
   const links=DATA.portalLinks;
   const backHome=el("backHome");
@@ -584,6 +601,7 @@ function renderChrome(){
   } else cs.style.display="none";
 
   const c=cur(), kb=c.kb, a=c.assessment;
+  posHue={}; kb.positions.forEach((p,i)=>{posHue[p.id]=PAL[i%PAL.length];}); remapHues(kb.positions); remapHues(a);
   el("qtitle").textContent=kb.meta.question;
   const qb=el("qbadge"), curRec=(kb.meta&&kb.meta.curated)||null;
   if(curRec){
@@ -768,8 +786,7 @@ function renderCoverageView(){
         const depthLabel={full:"full text",abstract:"abstract only",partial:"page text"}[s.textDepth];
         const venueBits=[];
         if((s.authors||[]).length) venueBits.push(esc(s.authors.slice(0,5).join(", "))+((s.authors||[]).length>5?" et al.":""));
-        if(s.venue) venueBits.push(esc(s.venue));
-        if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
+        if(s.venue) venueBits.push("<i>"+esc(s.venue)+"</i>");
         const fundingLine=(s.fundingDetails||[]).length?`<div class="venue">Funding detail: ${s.fundingDetails.map(esc).join(" · ")}</div>`:"";
         detail=`<tr class="detailrow"><td colspan="6">
             <div class="metarow">${venueBits.length?venueBits.join(" · ")+" · ":""}${esc(s.funding||"Undisclosed")} · conf: ${esc(s.confidence)}${depthLabel?" · "+esc(depthLabel):""}${pip}
@@ -797,8 +814,7 @@ function renderCoverageView(){
       const pip=st.n?`<span class="strength s${st.n}" title="${st.label} — by study design">${"●".repeat(st.n)}${"○".repeat(3-st.n)}</span>`:"";
       const venueBits=[];
       if((s.authors||[]).length) venueBits.push(esc(s.authors.slice(0,5).join(", "))+((s.authors||[]).length>5?" et al.":""));
-      if(s.venue) venueBits.push(esc(s.venue));
-      if(s.citations!=null) venueBits.push(`${esc(s.citations)} citation${s.citations===1?"":"s"}`);
+      if(s.venue) venueBits.push("<i>"+esc(s.venue)+"</i>");
       const venueLine=venueBits.length?`<div class="venue">${venueBits.join(" · ")}</div>`:"";
       const fundingLine=(s.fundingDetails||[]).length?`<div class="venue">Funding detail: ${s.fundingDetails.map(esc).join(" · ")}</div>`:"";
       const pq=((s.provenance||{}).position)||{};
@@ -833,7 +849,9 @@ function renderCoverageView(){
 
   el("main").innerHTML=`<h1>Overview</h1><div class="mmeta">compare source count with the underlying evidence</div>`
     +headline(c)
-    +`<div class="panel">${filterBar}${toolbar}${body}${more}</div>`
+    +`<div class="panel"><h1 style="font-size:14px;margin:0 0 4px;">Sources</h1>`
+     +`<div class="mmeta" style="margin-bottom:12px;">every source behind this question — filter, sort, and expand a row for its quote and evidence. Strength dots, by study design: <b>●●●</b> strong (RCT / meta-analysis) · <b>●●○</b> moderate (observational) · <b>●○○</b> weaker (opinion / commentary).</div>`
+     +`${filterBar}${toolbar}${body}${more}</div>`
     +`<div class="panel"><h1 style="font-size:14px;margin:0 0 4px;">What each position leaves out</h1><div class="mmeta" style="margin-bottom:14px;">evidence types and groups found elsewhere in the case but missing from a position's sources</div><div class="bs-grid">${bsCards}</div></div>`;
 
   el("main").querySelector("#fq").oninput=e=>{state.filter.q=e.target.value;state.shown=24;renderMain();};
@@ -975,7 +993,7 @@ function renderIndependenceView(){
   }).join("");
   const flag=(a.warnings&&a.warnings.length) ? warningsHtml(a.warnings, "detailed")
     : `<div class="flagbox"><span>No single evidence base dominates a position. Reviews that repeat primary sources and citation loops are already counted together.</span></div>`;
-  el("main").innerHTML=`<h1>Evidence reuse & weaknesses</h1><div class="mmeta">which sources reuse the same data, arguments, or documents?</div>
+  el("main").innerHTML=`<h1>Evidence reuse</h1><div class="mmeta">which sources reuse the same data, arguments, or documents — and the weaknesses they share</div>
     <div class="panel">
       <div class="subnote"><b>Adjusted evidence-base count</b> counts each checked evidence base once. When several sources use the same evidence, it is counted once; evidence available only through reviews or animal/in-vitro work counts as half. Unchecked links and citation loops stay visible but do not count. This shows evidence breadth and reuse, <b>not correctness or quality</b>; separate evidence bases can still share methods, incentives, or blind spots.</div>
       <div class="indkey"><span><i style="background:#222a35"></i>primary evidence (dataset / own data)</span><span><i style="background:#c4ccd4"></i>secondary source</span><span><b class="warn">⚠</b> citation loop</span></div>
@@ -1037,12 +1055,12 @@ function renderChangesView(){
     }
     const detail=open?`<tr class="detailrow"><td colspan="4">${detailBody}</td></tr>`:"";
     return `<tr class="rowmain" data-key="${esc(key)}"><td style="font-family:var(--mono);color:var(--muted);white-space:nowrap;">v${e.version}</td>
-        <td style="color:var(--faint);white-space:nowrap;">${esc(e.ts||"")}</td>
+        <td style="color:var(--faint);white-space:nowrap;">${e.ts?esc(e.ts.slice(0,10)+" "+e.ts.slice(11,16)):""}${e.by?" · "+esc(e.by):""}</td>
         <td><div class="clamp2">${esc(title)}</div></td>
         <td><div class="deltawrap">${badges}</div></td></tr>${detail}`;
   }).join("");
   const colgroup=`<colgroup><col style="width:9%"><col style="width:14%"><col style="width:51%"><col style="width:26%"></colgroup>`;
-  el("main").innerHTML=`<h1>Changes</h1><div class="mmeta">how the picture changed as evidence arrived — newest first</div>
+  el("main").innerHTML=`<h1>Changes</h1><div class="mmeta">an edit log for this case — newest first. A record of what was added or curated and by whom, <b>not a chronological research timeline</b>: sources can be added in any order.</div>
     <div class="panel">${rows?`<div class="tbl-wrap"><table>${colgroup}<thead><tr><th class="nosort">Version</th><th class="nosort">Date</th><th class="nosort">Source added</th><th class="nosort">Key change</th></tr></thead><tbody>${rows}</tbody></table></div>`:'<div class="empty">No history yet — only the seed.</div>'}</div>`;
   el("main").querySelectorAll(".rowmain").forEach(tr=>tr.onclick=()=>{
     const k=tr.getAttribute("data-key");
@@ -1081,6 +1099,23 @@ function switchCase(id){
 }
 if(DATA) switchCase(state.caseId);
 
+function showTip(el){
+  const txt=el.getAttribute("title")||el.getAttribute("data-tip"); if(!txt) return;
+  let tip=document.getElementById("tip");
+  if(!tip){tip=document.createElement("div");tip.id="tip";document.body.appendChild(tip);}
+  tip.textContent=txt; tip.style.display="block";
+  const r=el.getBoundingClientRect();
+  tip.style.left=Math.max(8,Math.min(r.left,window.innerWidth-tip.offsetWidth-8))+"px";
+  tip.style.top=(r.bottom+6+tip.offsetHeight>window.innerHeight?r.top-tip.offsetHeight-6:r.bottom+6)+"px";
+}
+// The "?" explanations were hover-only (dead on touch); make them tap/click to open. Capture phase
+// so a click on an icon inside a table row opens the note instead of toggling the row.
+document.addEventListener("click",e=>{
+  const ic=e.target.closest(".infoicon");
+  const tip=document.getElementById("tip");
+  if(ic){ e.stopPropagation(); e.preventDefault(); showTip(ic); return; }
+  if(tip) tip.style.display="none";
+}, true);
 document.addEventListener("click",e=>{
   const cs=e.target.closest("[data-case]"); if(cs){switchCase(cs.getAttribute("data-case"));renderMain();return;}
   const nv=e.target.closest("[data-view]"); if(nv){state.view=nv.getAttribute("data-view");state.shown=24;renderMain();return;}

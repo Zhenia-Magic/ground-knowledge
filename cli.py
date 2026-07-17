@@ -485,7 +485,7 @@ def _review_prompt(kb_path, delta):
         return delta
 
 
-def _apply_delta(kb_path, delta, verification_trusted=False):
+def _apply_delta(kb_path, delta, verification_trusted=False, by=None):
     from engine import review
     if not verification_trusted:
         from engine.verify import strip_untrusted_verification
@@ -503,7 +503,7 @@ def _apply_delta(kb_path, delta, verification_trusted=False):
             return False
     kb = read_json(kb_path)
     before = assess(kb)
-    report = merge_delta(kb, delta)
+    report = merge_delta(kb, delta, by=by)
     if report.get("offTopic"):
         write_json(kb_path, kb)                           # persist the auditable refusal record
         print("Off-topic — not added: {}".format(report.get("reason", "doesn't bear on the question")))
@@ -525,12 +525,12 @@ def _apply_delta(kb_path, delta, verification_trusted=False):
     return True
 
 
-def _merge_deltas(kb_path, deltas, verification_trusted=False):
+def _merge_deltas(kb_path, deltas, verification_trusted=False, by=None):
     """Merge a list of deltas one at a time (each recomputes + diffs against the prior KB)."""
     from engine.merge import resolve_pending_refs
     added = 0
     for d in deltas:
-        if _apply_delta(kb_path, d, verification_trusted=verification_trusted):
+        if _apply_delta(kb_path, d, verification_trusted=verification_trusted, by=by):
             added += 1
         print("")
     # second pass: resolve NEW-SRC forward references now that the whole batch is present (so a
@@ -684,10 +684,10 @@ def cmd_add(args):
     data = read_json(args.delta)
     deltas = data if isinstance(data, list) else [data]  # accept one delta or a batch array
     if len(deltas) == 1:
-        _apply_delta(args.kb, deltas[0])
+        _apply_delta(args.kb, deltas[0], by=getattr(args, 'as_', None))
     else:
         print("Merging {} deltas from {}\n".format(len(deltas), args.delta))
-        added = _merge_deltas(args.kb, deltas)
+        added = _merge_deltas(args.kb, deltas, by=getattr(args, 'as_', None))
         print("Done: {} of {} added.".format(added, len(deltas)))
     if getattr(args, "build", False):
         _build_viewer([args.kb])
@@ -1195,7 +1195,7 @@ def main():
     s.add_argument("--max-text", dest="max_text", type=int, default=None,
                    help="cap each source's text at N chars per LLM call (default: send the full fetched text)")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_deepen)
-    s = sub.add_parser("add"); s.add_argument("kb"); s.add_argument("delta")
+    s = sub.add_parser("add"); s.add_argument("kb"); s.add_argument("delta"); s.add_argument("--as", dest="as_")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_add)
     s = sub.add_parser("verify", help="re-fetch each source and ground its quotes (positions, edges, factor/crux claims) — the keyless quote check")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_verify)

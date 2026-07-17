@@ -146,7 +146,16 @@ A knowledge base is made of a few simple entity types:
   factor weights do too. Categorical metadata can come from fetched APIs and is not falsely described
   as quote-backed field by field.
 - **Factors** — the dimensions of the debate (e.g. "hormones in dairy", "confounding by overall
-  diet"). Each factor records how strongly *each position* weighs it.
+  diet"). Each factor records how strongly *each position* weighs it. The weight is **not** one
+  editor's judgment: it is *source-derived* — each source states, in a quote, how strongly its own
+  position weighs a factor, and a position's cell is the **mode of its quote-verified claims** (an
+  unverified claim is kept for repair but does not vote; see `engine/merge.recompute_factor_weights`).
+  So a factor "matters a lot to camp A" only if A's own sources say so, verbatim. On the reliability
+  of these judgments (a fair question — cf. inter-rater agreement): when labelling runs as a
+  **multi-model ensemble**, each field carries a recorded per-model **agreement**, and a genuine
+  split on a position or evidence tier is escalated to a human rather than averaged (`engine/review.py`).
+  That agreement is the closest thing to an inter-rater signal today; a formal human/AI reliability
+  study is named as future work, not claimed.
 
 And then the metrics computed from these:
 
@@ -176,7 +185,13 @@ And then the metrics computed from these:
 
 ## 7. How you use it — three surfaces, one knowledge base
 
-The same engine is reachable three ways, so different people can contribute:
+The same engine is reachable three ways, so different people can contribute. **Yes — anyone can add
+sources, so this is a compounding, Wikipedia-like knowledge base**, not a fixed snapshot. The crucial
+difference is the trust boundary: a public contribution never silently moves a number. Public
+paste-back sources are **queued for review** and count toward no metric until an administrator admits
+them; even once merged, a new evidence base stays **proposed** (zero coverage) until a curator
+confirms its identity, and every quote is re-verified against fetched text. So the base gets better as
+more people add to it, without letting volume or an unreviewed edit inflate the headline.
 
 **(a) The web portal** (deployed, multi-user, no setup, no API key).
 Browse and search questions, open the live report, or add sources. The "add source" flow is

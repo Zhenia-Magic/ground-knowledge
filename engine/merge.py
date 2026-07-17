@@ -19,7 +19,10 @@ from collections import Counter
 
 from engine.verify import is_verified_exact
 
-HUES = ["#2E8B6F", "#B4502E", "#586A7A", "#8a6510", "#2f6296", "#7a4fa3"]
+# Colorblind-safe categorical palette (Okabe-Ito), led by blue/orange so a position's colour never
+# reads as "correct/incorrect". The viewer also remaps by position index, so this is the stored
+# default; changing it does not affect any metric (hue is display-only).
+HUES = ["#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#D55E00", "#8a6510"]
 
 # Evidence-base kinds. "dataset" is the empirical default and stays implicit (absent) in the KB;
 # document/argument/model are theoretical roots (a proposal, a chain of reasoning, a calculation)
@@ -379,9 +382,10 @@ def _resolve_factor(kb, f_label):
     return cid, True
 
 
-def merge_delta(kb, delta):
+def merge_delta(kb, delta, by=None):
     """Fold one ingestion delta into the KB in place. Returns a change report.
-    delta = {"source": {...}, "factorWeights": [...]} as produced by prompts/ingest.md."""
+    delta = {"source": {...}, "factorWeights": [...]} as produced by prompts/ingest.md.
+    ``by`` (optional) records who added the source in the change log."""
     from engine.validate import require_valid_delta
     require_valid_delta(delta)
     report = {"addedSource": None, "duplicate": False, "offTopic": False, "newDatasets": [],
@@ -544,11 +548,14 @@ def merge_delta(kb, delta):
 
     kb["meta"]["version"] = version
     kb["meta"]["updated"] = now_iso()
-    kb.setdefault("log", []).append({
+    entry = {
         "version": version, "action": "add-source", "source": sid,
         "title": src["title"], "ts": kb["meta"]["updated"],
         "newDatasets": report["newDatasets"], "newPositions": report["newPositions"],
-    })
+    }
+    if by:
+        entry["by"] = str(by)[:100]
+    kb.setdefault("log", []).append(entry)
     return report
 
 
