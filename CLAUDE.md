@@ -5,9 +5,10 @@ This repo is **Ground Knowledge** — a living, recomputing knowledge base for r
 **If you are here to grow or fill in a case (add sources, deepen the evidence, fix a delta), read
 [`AGENTS.md`](AGENTS.md) first.** It is the playbook for driving this repo with your subscription
 instead of an API key: you do the web search and reading; the deterministic CLI (`lint` → `add` →
-`doctor`) verifies, sanitizes, and merges. The golden rules there are non-negotiable — most
-importantly: never invent a quote, never write trust fields (`admission` / `verifiedQuote`), reuse
-existing entity IDs, and always `lint` a delta before `add`.
+`verify` → `doctor`) sanitizes, merges, and grounds quotes. The golden rules there are
+non-negotiable — most importantly: never invent a quote, never write trust fields (`admission` /
+`verifiedQuote`), reuse existing entity IDs, always `lint` a delta before `add`, and always `verify`
+after `add` (until it runs, quotes are unchecked and cruxes stay dark).
 
 Quick pointers:
 
@@ -18,4 +19,5 @@ Quick pointers:
 - **Deploying the portal:** [`DEPLOYMENT.md`](DEPLOYMENT.md)
 
 Pre-flight before any `add`: `python cli.py lint delta.json`.
+Always after `add`: `python cli.py verify cases/<id>.kb.json` (grounds quotes; positions/cruxes don't count until it runs).
 Health check before you hand off: `python cli.py doctor cases/<id>.kb.json`.

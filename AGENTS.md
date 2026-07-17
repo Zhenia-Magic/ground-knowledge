@@ -14,10 +14,10 @@ So the division of labour is:
 
 | You (the agent)                                   | The CLI (deterministic, trusted)                        |
 | ------------------------------------------------- | ------------------------------------------------------- |
-| Find real sources on the web                      | Fetch/verify, merge, recompute every metric             |
-| Read them and write a `delta.json` per source     | Re-verify each quote against the text it fetched        |
+| Find real sources on the web                      | Merge, dedupe, recompute every metric                   |
+| Read them and write a `delta.json` per source     | On `verify`: re-fetch each source and ground its quotes |
 | Reuse existing entity IDs; keep extraction honest | Strip `admission` / `verifiedQuote` you supplied        |
-| Run `lint` → `add` → `doctor`                     | Refuse off-topic / duplicate / malformed deltas         |
+| Run `lint` → `add` → **`verify`** → `doctor`      | Refuse off-topic / duplicate / malformed deltas         |
 
 You never hand-edit the KB JSON. You write **deltas** and run `add`. The KB is the CLI's to change.
 
@@ -83,9 +83,10 @@ web-search capability. An agent without web access can only work from URLs you h
    over a new one. A shared cohort under a new name defeats the whole point (the coverage audit
    collapses shared evidence to one root). Introduce `"NEW:<label>"` only for something genuinely
    distinct. The merge code — not you — mints IDs.
-4. **`lint` before `add`; `doctor` before you hand off.** These are your guardrails. `lint` catches
-   a malformed delta *without* touching the KB; `doctor` tells you whether the case is in good shape
-   to submit. Both exit nonzero on failure, so they compose in a script.
+4. **`lint` before `add`; `verify` after `add`; `doctor` before you hand off.** These are your
+   guardrails. `lint` catches a malformed delta *without* touching the KB; `verify` re-fetches each
+   source and grounds its quotes — **no quote counts as verified, and no factor becomes a crux, until
+   it runs**, so never skip it; `doctor` tells you whether the case is in good shape to submit.
 5. **One source → one delta.** The cold start is this loop run over many sources; an update is one
    run. Same path. Keep each delta about a single source you read.
 
@@ -121,13 +122,21 @@ python cli.py ingest "https://doi.org/10.xxxx/xxxxx" cases/eggs.kb.json --dry-ru
 # 5. LINT it — no merge, no mutation, numbered actionable errors:
 python cli.py lint delta.json
 
-# 6. ADD it — the CLI verifies quotes, strips your trust claims, dedupes, merges, recomputes,
-#    and prints exactly what changed:
+# 6. ADD it — the CLI strips your trust claims, dedupes, merges, recomputes, and prints exactly
+#    what changed. IMPORTANT: `add` does NOT ground your quotes. It never fetched the text, so it
+#    stores every quote UNCHECKED — positions do not count and cruxes stay dark until step 7.
 python cli.py add cases/eggs.kb.json delta.json
 
-# 7. Repeat 1–6 until `gaps` is quiet or you've covered the dispute.
+# 7. VERIFY — ALWAYS run this after add. The CLI RE-FETCHES each source itself and grounds every
+#    stored quote word-for-word: each source's POSITION quote, each dependency EDGE quote, and every
+#    FACTOR/crux claim quote. This is the only keyless step that stamps a quote "verified" — an exact
+#    match then displays in quotes, can promote a proposed root, and activates a factor as a crux.
+#    It verifies the whole KB, so one call after a batch is fine.
+python cli.py verify cases/eggs.kb.json
 
-# 8. HEALTH CHECK before handing off:
+# 8. Repeat 1–7 until `gaps` is quiet or you've covered the dispute.
+
+# 9. HEALTH CHECK before handing off:
 python cli.py doctor cases/eggs.kb.json
 
 # 9. Build a local viewer to eyeball it (optional):
@@ -229,8 +238,8 @@ prompt for a specific source.
 `add` sanitizes every delta before it touches the KB. Anything in this list that you write is
 **silently dropped** (the CLI re-derives it from fetched text or a curator action):
 
-- `source.provenance.*.verifiedQuote` and `.quoteVerification` — the CLI re-verifies each quote
-  against the text *it* fetched, and stamps the result itself.
+- `source.provenance.*.verifiedQuote` and `.quoteVerification` — stripped on `add`; the CLI stamps
+  these itself only in `verify`, when it re-fetches the source and grounds the quote against that text.
 - `source.restsOn[*].admission` — admitting a root is a **curator** decision, never a claim in a delta.
 - `source.restsOn[*].provenance.verifiedQuote` / `.quoteVerification` — same re-verification.
 - `source.textDepth` — reset to `"unknown"`; depth only counts for text the CLI fetched.
@@ -270,7 +279,8 @@ try to route around it.
 | `gaps <kb>` / `gaps <kb> --json` | Where evidence is thin; the search steering wheel | no |
 | `ingest <url> <kb> --dry-run` | Fetch text + print the labelling prompt for one source | no |
 | `lint <delta-or-kb>` | Validate WITHOUT merging; numbered errors; nonzero on failure | no |
-| `add <kb> <delta>` | Verify + sanitize + dedupe + merge one delta or a batch array | no |
+| `add <kb> <delta>` | Sanitize (strip trust claims) + dedupe + merge one delta or a batch array — does NOT ground quotes | no |
+| `verify <kb>` | Re-fetch every source and ground its quotes (positions, edges, factor/crux claims); stamps `verifiedQuote` | no |
 | `doctor <kb>` | Health check: structure + completeness + trust hygiene | no |
 | `validate <kb>` | Strict schema + cross-reference check | no |
 | `show <kb>` | Print the metrics (distribution, coverage, warnings) | no |
@@ -280,6 +290,8 @@ try to route around it.
 | `harvest` / `deepen` | The *keyed* auto-pipeline — you replace these with your own search | yes (skip it) |
 
 **Pre-flight before every `add`:** `python cli.py lint delta.json`
+**Always after `add`:** `python cli.py verify cases/<id>.kb.json` — grounds quotes; positions and
+cruxes do not count until it runs.
 **Handoff gate when you're done:** `python cli.py doctor cases/<id>.kb.json` — resolve the flags, or
 tell the human which ones need a curator.
 
