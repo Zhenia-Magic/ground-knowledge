@@ -149,6 +149,61 @@ def _admin_dataset_status(qid):
     return {"status": out}
 
 
+def _admin_unadmitted_edges(qid):
+    """The support links the REPORT flags but the datasets panel can't act on: a source claims an
+    evidence base whose identity is confirmed, yet this particular source→base link is neither
+    quote-verified nor curator-admitted, so it stays visible and contributes zero. Mirrors exactly
+    what assess() warns about (engine/roots.resolve unadmitted_source_roots), so the manage page and
+    the report agree. Returns one row per unadmitted edge: {source, sourceTitle, position, ref, label}."""
+    from engine import roots as _roots
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    uar = _roots.resolve(kb).get("unadmitted_source_roots", {})
+    src = {s["id"]: s for s in kb.get("sources", [])}
+    ds_label = {d["id"]: d.get("label", d["id"]) for d in kb.get("datasets", [])}
+    pos_label = {p["id"]: p.get("label") for p in kb.get("positions", [])}
+    out = []
+    for sid, root_keys in uar.items():
+        source = src.get(sid)
+        if not source or not root_keys:
+            continue
+        for rk in root_keys:
+            if rk.startswith("ds:"):                       # root key ds:<id> -> restsOn ref <id>
+                ref, label = rk[3:], ds_label.get(rk[3:], rk[3:])
+            elif rk.startswith("src:"):                    # a source-citation edge keeps its prefix
+                ref, label = rk, "source cited: " + rk[4:]
+            else:
+                ref, label = rk, rk
+            out.append({"source": sid, "sourceTitle": source.get("title", ""),
+                        "position": pos_label.get(source.get("position"), source.get("position")),
+                        "ref": ref, "label": label})
+    return {"edges": out}
+
+
+def _admin_confirm_edge(qid, source_ref, edge_ref, confirmed=True, by="portal-admin", note=None):
+    """Curator admits (or un-admits) one source→base/citation support edge — the human fallback when
+    no fetched dependency quote verified it (engine/curate.confirm_edge). An admitted edge on a
+    confirmed base starts counting toward coverage. Admin moderation; the auditable counterpart of the
+    datasets panel's confirm, for the *link* layer rather than the *identity* layer."""
+    from engine import curate
+    q = store.get_question(qid, with_kb=True)
+    if not q:
+        return {"error": "no such question"}
+    kb = q["kb"]
+    try:
+        res = curate.confirm_edge(kb, source_ref, edge_ref, confirmed,
+                                  by=_actor(by, "portal-admin"), note=note)
+    except (ValueError, KeyError) as e:
+        return {"error": str(e)}
+    try:
+        v = store.save_kb(qid, kb, q["version"], _audit("confirm-edge", res.get("summary", "")))
+    except store.Conflict:
+        return {"error": "changed concurrently — reload and retry"}
+    return {"ok": True, "version": v, "summary": res.get("summary")}
+
+
 def _admin_set_dataset_kind(qid, dataset_ref, kind):
     """Curator sets an evidence base's kind (dataset | document | argument | model). Display + the
     empirical non-human discount only; never changes admission. Admin moderation."""
@@ -514,6 +569,12 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, _admin_suggest_duplicates(body.get("id")))
             if p[2] == "dataset-status":
                 return self._send(200, _admin_dataset_status(body.get("id")))
+            if p[2] == "unadmitted-edges":
+                return self._send(200, _admin_unadmitted_edges(body.get("id")))
+            if p[2] == "confirm-edge":
+                return self._send(200, _admin_confirm_edge(
+                    body.get("id"), body.get("source"), body.get("edge") or body.get("ref"),
+                    body.get("confirmed", True), body.get("by") or "portal-admin", body.get("note")))
             if p[2] == "set-dataset-kind":
                 return self._send(200, _admin_set_dataset_kind(
                     body.get("id"), body.get("dataset") or body.get("datasetId"), body.get("kind")))

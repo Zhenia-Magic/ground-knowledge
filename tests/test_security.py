@@ -192,6 +192,38 @@ class FullPushAuthorizationTests(unittest.TestCase):
         self.assertEqual(code, 200)
 
 
+class SupportEdgeAdminTests(unittest.TestCase):
+    """The manage panel must surface (and let a curator admit) exactly the support edges the report
+    flags — a confirmed base whose source->base link isn't verified/admitted."""
+    def _kb(self):
+        kb = empty_kb("q", "Does X cause Y?")
+        kb["positions"] = [{"id": "p1", "label": "Yes", "hue": "#2E8B6F"}]
+        kb["datasets"] = [{"id": "d1", "label": "Cohort D", "confirmation": {
+            "status": "confirmed", "method": "curator", "by": "E", "ts": "2020-01-01T00:00:00Z"}}]
+        kb["sources"] = [{"id": "s1", "title": "Study S", "evidence": "RCT",
+                          "funding": "Government/public", "population": "human", "position": "p1",
+                          "restsOn": [{"ref": "d1"}]}]      # confirmed base, but the LINK is unadmitted
+        return kb
+
+    def test_unadmitted_edges_lists_the_edge_the_report_flags(self):
+        from app.portal import _admin_unadmitted_edges
+        with mock.patch("app.store.get_question", return_value={"kb": self._kb(), "version": 0}):
+            edges = _admin_unadmitted_edges("q")["edges"]
+        self.assertEqual(len(edges), 1)
+        self.assertEqual((edges[0]["source"], edges[0]["ref"]), ("s1", "d1"))
+
+    def test_confirm_edge_admits_the_link_and_it_stops_being_unadmitted(self):
+        from app.portal import _admin_confirm_edge, _admin_unadmitted_edges
+        saved = {}
+        with mock.patch("app.store.get_question", return_value={"kb": self._kb(), "version": 0}), \
+             mock.patch("app.store.save_kb", side_effect=lambda q, kb, v, audit=None: saved.update(kb=kb) or 1):
+            r = _admin_confirm_edge("q", "s1", "d1", by="tester")
+        self.assertTrue(r.get("ok"))
+        self.assertEqual(saved["kb"]["sources"][0]["restsOn"][0]["admission"]["status"], "confirmed")
+        with mock.patch("app.store.get_question", return_value={"kb": saved["kb"], "version": 1}):
+            self.assertEqual(_admin_unadmitted_edges("q")["edges"], [])
+
+
 class DeltaValidationTests(unittest.TestCase):
     def test_malformed_delta_returns_clean_error_before_save(self):
         kb = empty_kb("abc", "question")

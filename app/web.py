@@ -452,6 +452,13 @@ def manage_html(qid, get_question):
         <details id="dskindwrap" style="margin-top:6px"><summary style="cursor:pointer;color:var(--faint);font-size:12px">Set evidence-base types</summary>
           <p class="desc" style="margin:10px 0 8px">Most bases are empirical <b>datasets</b>. Mark a proposal or record (a grant, a leaked document) as <b>document</b>, a chain of reasoning as <b>argument</b>, or a calculation / simulation as <b>model</b>. Theoretical evidence bases are not subject to the animal/in-vitro discount. This never changes whether a base counts.</p>
           <div id="dskinds"></div></details></div>
+      <div class="panel" id="edgepanel" style="display:none"><h2>Unadmitted support links <span id="edgecount"></span></h2>
+        <p class="desc">These sources claim an evidence base whose <b>identity is confirmed</b>, but this
+        specific <b>link</b> — that the source actually relies on that base — is not verified: no
+        fetched dependency sentence matched it and no curator has admitted it. They stay visible but
+        <b>do not count</b> toward coverage (this is what the report flags as "awaiting review").
+        <b>Admit</b> a link you have checked. Logged with your admin identity.</p>
+        <div id="edges"></div></div>
       <div class="panel"><h2>Sources</h2>
         <p class="desc">Remove a source if it's inappropriate or spam — the metrics recompute.</p>
         <div id="srcs"></div></div>
@@ -491,6 +498,21 @@ def manage_html(qid, get_question):
           body:JSON.stringify({id:QID,curated:on})}); const j=await res.json();
         if(j.error){alert(j.error);} }catch(e){alert('failed: '+e);} b.disabled=false; render();
     }
+    function renderEdges(edges){
+      const panel=document.getElementById('edgepanel'), box=document.getElementById('edges'),
+            cnt=document.getElementById('edgecount');
+      if(!edges.length){panel.style.display='none';return;}
+      panel.style.display=''; cnt.textContent='('+edges.length+')';
+      box.innerHTML=edges.map(e=>`<div class="cand"><div style="flex:1"><b>${E(e.sourceTitle)}</b><br>
+        <span class="why">relies on <b>${E(e.label)}</b>${e.position?' · '+E(e.position):''}</span></div>
+        <button class="btn" onclick="admitEdge('${E(e.source)}','${E(e.ref)}',this)">Admit link</button></div>`).join('');
+    }
+    async function admitEdge(source, ref, b){
+      b.disabled=true;
+      try{const r=await fetch('/api/admin/confirm-edge',{method:'POST',headers:H(),
+          body:JSON.stringify({id:QID,source:source,edge:ref})}); const j=await r.json();
+        if(j.error){alert(j.error);} }catch(e){alert('failed: '+e);} b.disabled=false; render();
+    }
     async function render(){
       if(!await isAdmin()){
         document.getElementById('panel').style.display='none';
@@ -506,6 +528,8 @@ def manage_html(qid, get_question):
       const r=await fetch('/api/questions/'+QID); const kb=(await r.json()).kb||{};
       try{const s=await fetch('/api/admin/dataset-status',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
         window.__dsStatus=((await s.json()).status)||{};}catch(e){window.__dsStatus={};}
+      try{const ee=await fetch('/api/admin/unadmitted-edges',{method:'POST',headers:H(),body:JSON.stringify({id:QID})});
+        renderEdges(((await ee.json()).edges)||[]);}catch(e){renderEdges([]);}
       renderCuration(kb);
       renderReview(kb);
       const srcs=kb.sources||[];
