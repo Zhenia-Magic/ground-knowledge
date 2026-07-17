@@ -281,9 +281,12 @@
   .indpos .ph{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
   .indpos .plabel{font-size:14px;font-weight:600;}
   .indpos .peff{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);}
+  /* line-height must be 1: the inherited 1.55 builds a ~15px line box inside a 12px content box,
+     which pushes the "?" off-centre. margin-left keeps it from butting against the label. */
   .infoicon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;
     border-radius:50%;border:1px solid var(--faint);color:var(--faint);font-size:9.5px;
-    font-family:var(--sans);cursor:pointer;vertical-align:1px;}
+    line-height:1;font-family:var(--sans);cursor:pointer;vertical-align:1px;
+    margin-left:5px;flex:none;}
   .infoicon:hover{border-color:var(--muted);color:var(--muted);}
   /* Light and quiet on purpose: same surface/'hairline border' language as a panel, so an
      explanation reads as part of the page rather than a dark overlay dropped on top of it. */
