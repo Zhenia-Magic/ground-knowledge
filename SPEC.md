@@ -242,11 +242,11 @@ structural and named honestly.
 FLF chose three cases with deliberately different profiles; a general tool must handle all three
 with **only the data changing.** It does:
 
-- **Eggs — contested, mundane, malformed question** (20 sources, 3 camps). The curator-authored
+- **Eggs — contested, mundane, malformed question** (21 sources, 3 camps). The curator-authored
   structure makes two auditable patterns visible: interested funding is **tied** between the
   no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
   industry-funded trials), and the shared-cohort collapse — the *No
-  increased-risk* camp lists 9 sources and has **5.0 adjusted evidence bases** after cohort reuse is
+  increased-risk* camp lists 10 sources and has **6.0 adjusted evidence bases** after cohort reuse is
   collapsed. The subgroup key disagreement (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 
@@ -257,10 +257,10 @@ with **only the data changing.** It does:
   magnitude from one evidence base" made visible. Key disagreements: prior on lab accidents, furin site,
   ascertainment bias.
 
-- **Black holes — essentially settled** (15 sources, 2 camps). The 11 "safe" sources have **4.0
-  adjusted evidence-base count**: production impossibility, Hawking evaporation, slow accretion, and the
-  cosmic-ray/dense-star observation. Four residual-concern sources have **2.0**. The count maps
-  layers; it does not independently establish that the conclusion is correct.
+- **Black holes — essentially settled** (15 sources, 2 camps). The 11 "safe" sources have **5.0
+  adjusted evidence-base count**: production impossibility, Hawking evaporation, slow accretion, the
+  cosmic-ray/dense-star observation, and the CMS Run 2 collider search. Four residual-concern sources
+  have **2.0**. The count maps layers; it does not independently establish that the conclusion is correct.
 
 Same `assess()`; same renderer; three lines of `build`. That is the generalization evidence.
 

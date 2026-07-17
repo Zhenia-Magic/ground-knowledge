@@ -32,7 +32,11 @@ def quote_audit_scope_errors():
     current = {}
     for path in glob.glob(os.path.join(ROOT, "cases", "*.kb.json")):
         with open(path, encoding="utf-8") as f:
-            current[os.path.basename(path)] = {s["id"] for s in json.load(f).get("sources", [])}
+            kb = json.load(f)
+        # The audit grounds every quote-bearing record — position sources and the funding/context
+        # sources that never enter the metric alike — so scope must be checked against both.
+        current[os.path.basename(path)] = {
+            s["id"] for s in (kb.get("sources", []) + kb.get("contextSources", []))}
     audited = {name: {s.get("id") for s in report.get("sources", [])}
                for name, report in (audit.get("cases") or {}).items()}
     errors = []
