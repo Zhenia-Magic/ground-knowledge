@@ -19,10 +19,10 @@ from collections import Counter
 
 from engine.verify import is_verified_exact
 
-# Colorblind-safe categorical palette (Okabe-Ito), led by blue/orange so a position's colour never
-# reads as "correct/incorrect". The viewer also remaps by position index, so this is the stored
-# default; changing it does not affect any metric (hue is display-only).
-HUES = ["#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#D55E00", "#8a6510"]
+# Paul Tol's "muted" qualitative palette — colourblind-safe, and no position's colour reads as
+# "correct/incorrect". Keep in step with PAL in viewer/template.html, which remaps by position index
+# at render time; this is the stored default. Hue is display-only and affects no metric.
+HUES = ["#332288", "#117733", "#44AA99", "#88CCEE", "#DDCC77", "#CC6677", "#AA4499", "#882255"]
 
 # Evidence-base kinds. "dataset" is the empirical default and stays implicit (absent) in the KB;
 # document/argument/model are theoretical roots (a proposal, a chain of reasoning, a calculation)

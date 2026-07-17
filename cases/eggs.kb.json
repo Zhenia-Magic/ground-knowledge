@@ -666,16 +666,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
-            "textDepth": "abstract",
             "textSha256": "cbe03405dd51c7e4f7cf3e4a93ead807a19b9ddbbf779324d14e70e583387b95",
-            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "normalizedCharStart": 1628,
             "normalizedCharEnd": 1855,
-            "normalizedCharStart": 1628
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -686,16 +686,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6439941/",
-            "textDepth": "partial",
             "textSha256": "96192c4e67c45b95f39e7c1133701ba7cd3e84d327b69600085fa6bb904489e3",
-            "quoteSha256": "a3f8096d4a628a9579ca8425608f93fc5271897bdbc3398c15912cbf7665d5f7",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6439941/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "a3f8096d4a628a9579ca8425608f93fc5271897bdbc3398c15912cbf7665d5f7",
+            "normalizedCharStart": 11254,
             "normalizedCharEnd": 11510,
-            "normalizedCharStart": 11254
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -706,16 +706,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1016/j.atherosclerosis.2012.07.032",
-            "textDepth": "abstract",
             "textSha256": "6abe5d80e45e28e40ed881f49721a60bfbfcedc336885bd737b5bd68ef93d2df",
-            "quoteSha256": "56ca3454b3b4f69d46e9e50312b9e67a3f2fb31a38b22906bebd67baeb615834",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.atherosclerosis.2012.07.032",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "56ca3454b3b4f69d46e9e50312b9e67a3f2fb31a38b22906bebd67baeb615834",
+            "normalizedCharStart": 940,
             "normalizedCharEnd": 1081,
-            "normalizedCharStart": 940
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -726,16 +726,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
-            "textDepth": "abstract",
             "textSha256": "f03369e14009bdeb3b704ef68c92da12c0b0e9a7a32b0c8b4db003e71e63a40a",
-            "quoteSha256": "9b62c07782c131324a1896c6ebdd443a462fd844f7e69dd5edf4a1d633b8cd29",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "9b62c07782c131324a1896c6ebdd443a462fd844f7e69dd5edf4a1d633b8cd29",
+            "normalizedCharStart": 986,
             "normalizedCharEnd": 1319,
-            "normalizedCharStart": 986
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -743,7 +743,20 @@
           "pos": "pos_no_association",
           "weight": "high",
           "quote": "No significant changes were found over time or between groups in plasma triglycerides, LDL cholesterol, HDL cholesterol, apolipoprotein (apo) A1, apo B, or lipoprotein subfraction concentrations.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3dbff99136509e99c783fab7aa65e887704f3ed8df8c4a857a447f1097a89b06",
+            "normalizedCharStart": 5982,
+            "normalizedCharEnd": 6177,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -764,16 +777,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
-            "textDepth": "full",
             "textSha256": "98afbfc905af4d6c4540a8b6390feb09c45324c539fa0a6e3f45f10b0b6e463e",
-            "quoteSha256": "3e992c548edd3e6fab2520d726e6cdc75f37c54c7e77453dcab49a953310c62c",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "3e992c548edd3e6fab2520d726e6cdc75f37c54c7e77453dcab49a953310c62c",
+            "normalizedCharStart": 2336,
             "normalizedCharEnd": 2531,
-            "normalizedCharStart": 2336
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -784,16 +797,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
-            "textDepth": "abstract",
             "textSha256": "403e3bdf9bbc1963eee6a80b3d0a8a3c70834e5a9411f4ddc179c22874720f4f",
-            "quoteSha256": "aeda52433893d22b48a73e16342df26f625158002cb5cd38d1f8fefb5695bc1d",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "aeda52433893d22b48a73e16342df26f625158002cb5cd38d1f8fefb5695bc1d",
+            "normalizedCharStart": 1148,
             "normalizedCharEnd": 1353,
-            "normalizedCharStart": 1148
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -815,16 +828,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
-            "textDepth": "abstract",
             "textSha256": "cbe03405dd51c7e4f7cf3e4a93ead807a19b9ddbbf779324d14e70e583387b95",
-            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "normalizedCharStart": 1628,
             "normalizedCharEnd": 1855,
-            "normalizedCharStart": 1628
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -835,16 +848,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
+            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
             "textDepth": "partial",
-            "textSha256": "193ef6f78cf7b7179387ea60fe1d3d37a632dda67fcfeeaba51297c6f8d22100",
-            "quoteSha256": "2e9abd90efa381ebd15101ede3b223c9e56e61cf5f9c783b67bfece3a27f4a0a",
+            "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "2e9abd90efa381ebd15101ede3b223c9e56e61cf5f9c783b67bfece3a27f4a0a",
+            "normalizedCharStart": 31797,
             "normalizedCharEnd": 32038,
-            "normalizedCharStart": 31797
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -855,16 +868,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
-            "textDepth": "abstract",
             "textSha256": "f03369e14009bdeb3b704ef68c92da12c0b0e9a7a32b0c8b4db003e71e63a40a",
-            "quoteSha256": "453651073718f43bd3ec4ed0d51a78e8668f2b9d8facc817666d5d80027fa208",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "453651073718f43bd3ec4ed0d51a78e8668f2b9d8facc817666d5d80027fa208",
+            "normalizedCharStart": 817,
             "normalizedCharEnd": 934,
-            "normalizedCharStart": 817
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -886,16 +899,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
-            "textDepth": "abstract",
             "textSha256": "403e3bdf9bbc1963eee6a80b3d0a8a3c70834e5a9411f4ddc179c22874720f4f",
-            "quoteSha256": "a51b3b5b76ac8490547df9aa70ae09e19d85af9290104737862a659490588c04",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "a51b3b5b76ac8490547df9aa70ae09e19d85af9290104737862a659490588c04",
+            "normalizedCharStart": 2257,
             "normalizedCharEnd": 2385,
-            "normalizedCharStart": 2257
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         },
         {
@@ -906,16 +919,16 @@
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3683816/",
-            "textDepth": "partial",
             "textSha256": "69f6109438cae0deaf765448e15d594582abba16f5e9f6389012b71189f5cbe2",
-            "quoteSha256": "13c6bc522c591652d757370d07e65141338ac683fb146759fadc968ceca6a3c1",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3683816/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "13c6bc522c591652d757370d07e65141338ac683fb146759fadc968ceca6a3c1",
+            "normalizedCharStart": 28962,
             "normalizedCharEnd": 29043,
-            "normalizedCharStart": 28962
+            "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       ]
@@ -924,7 +937,8 @@
       "id": "f_industry_funding_as_a_source_quality_concern",
       "label": "Industry funding as a source-quality concern",
       "weights": {
-        "pos_increases_risk": "high"
+        "pos_increases_risk": "high",
+        "pos_no_association": "low"
       },
       "rationale": "A systematic review found that industry-funded egg-intervention papers were substantially more likely to describe cholesterol increases favorably, so the caution camp treats funding as a material interpretation risk.",
       "provenance": [
@@ -953,7 +967,20 @@
           "pos": "pos_no_association",
           "weight": "low",
           "quote": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "64d2af99f9bbe4cef9376255e9f24de05b43da32c241b8101af5e6ba26684caa",
+            "normalizedCharStart": 34423,
+            "normalizedCharEnd": 34602,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     }
@@ -1005,21 +1032,21 @@
       "provenance": {
         "position": {
           "quote": "Meaning Among US adults, higher consumption of dietary cholesterol or eggs was significantly associated with higher risk of incident CVD and all-cause mortality in a dose-response manner.",
+          "extractionConfidence": 0.9,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6439941/",
-            "textDepth": "partial",
             "textSha256": "96192c4e67c45b95f39e7c1133701ba7cd3e84d327b69600085fa6bb904489e3",
-            "quoteSha256": "624a6685a84a4335009867a8a041f14431266f444e3266227dece7b38abc127b",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6439941/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "624a6685a84a4335009867a8a041f14431266f444e3266227dece7b38abc127b",
+            "normalizedCharStart": 8339,
             "normalizedCharEnd": 8526,
-            "normalizedCharStart": 8339
-          },
-          "extractionConfidence": 0.9
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1068,21 +1095,21 @@
       "provenance": {
         "position": {
           "quote": "In this study, intakes of eggs and cholesterol were associated with higher all-cause, CVD, and cancer mortality.",
+          "extractionConfidence": 0.9,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
-            "textDepth": "full",
             "textSha256": "98afbfc905af4d6c4540a8b6390feb09c45324c539fa0a6e3f45f10b0b6e463e",
-            "quoteSha256": "46ed72e968c497c80bc0a6e08d56347b91b3a3566dff57a4a160e78c1be3f3e1",
+            "textDepth": "full",
+            "sourceUrl": "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003508",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "46ed72e968c497c80bc0a6e08d56347b91b3a3566dff57a4a160e78c1be3f3e1",
+            "normalizedCharStart": 2545,
             "normalizedCharEnd": 2657,
-            "normalizedCharStart": 2545
-          },
-          "extractionConfidence": 0.9
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1195,22 +1222,22 @@
       "population": "Global (50 countries)",
       "provenance": {
         "position": {
-          "quote": "CONCLUSIONS In 3 large international prospective studies including ∼177,000 individuals, 12,701 deaths, and 13,658 CVD events from 50 countries in 6 continents, we did not find significant associations between egg intake and blood lipids, mortality, or major CVD events.",
+          "quote": "Conclusions In 3 large international prospective studies including ∼177,000 individuals, 12,701 deaths, and 13,658 CVD events from 50 countries in 6 continents, we did not find significant associations between egg intake and blood lipids, mortality, or major CVD events.",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/31965140/",
+            "textSha256": "787c840b6bb8d94c1ecae6acc582d13926ee2a9a2db4069ecc953a311693c4b2",
             "textDepth": "abstract",
-            "textSha256": "3f990cc5a12999aeba3b0350ce009d5fdf1380a260bd39f81b0446a182a58d00",
-            "quoteSha256": "c1a4d82a511cd5d11014547f75eafb1e9e65a88dd99b7f8b6c024457cc99c381",
-            "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/31965140/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "7966a57fb7c79341b4832cf73e3aa79825d7c700d9aa40719ea9088efaa28926",
+            "normalizedCharStart": 2008,
             "normalizedCharEnd": 2278,
-            "normalizedCharStart": 2008
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1256,21 +1283,21 @@
       "provenance": {
         "position": {
           "quote": "Compared with non-consumers, daily egg consumption was associated with lower risk of CVD (HR 0.89, 95% CI 0.87 to 0.92).",
+          "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
+            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
             "textDepth": "partial",
-            "textSha256": "193ef6f78cf7b7179387ea60fe1d3d37a632dda67fcfeeaba51297c6f8d22100",
-            "quoteSha256": "7db677afa4a4734de397c90b711aaca68cf8a9b2b42117e056106ed04a838083",
+            "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "7db677afa4a4734de397c90b711aaca68cf8a9b2b42117e056106ed04a838083",
+            "normalizedCharStart": 2628,
             "normalizedCharEnd": 2748,
-            "normalizedCharStart": 2628
-          },
-          "extractionConfidence": 0.8
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1312,21 +1339,21 @@
       "provenance": {
         "position": {
           "quote": "These findings suggest that consumption of up to 1 egg per day is unlikely to have substantial overall impact on the risk of CHD or stroke among healthy men and women.",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
-            "textDepth": "abstract",
             "textSha256": "403e3bdf9bbc1963eee6a80b3d0a8a3c70834e5a9411f4ddc179c22874720f4f",
-            "quoteSha256": "798663841e872c690d3994af519bd0e6b6838ad2ee69e44926feb9676094e624",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1001/jama.281.15.1387",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "798663841e872c690d3994af519bd0e6b6838ad2ee69e44926feb9676094e624",
+            "normalizedCharStart": 2089,
             "normalizedCharEnd": 2256,
-            "normalizedCharStart": 2089
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1430,21 +1457,21 @@
       "provenance": {
         "position": {
           "quote": "Conclusions People with prediabetes or T2D who consumed a 3-mo high-egg weight-loss diet with a 6-mo follow-up exhibited no adverse changes in cardiometabolic markers compared with those who consumed a low-egg weight-loss diet.",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
-            "textDepth": "abstract",
             "textSha256": "cbe03405dd51c7e4f7cf3e4a93ead807a19b9ddbbf779324d14e70e583387b95",
-            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29741558/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "76fe8b5937341aaf5ab32a07087e7658b0923d31eee61d1cc25514b00ffc38b9",
+            "normalizedCharStart": 1628,
             "normalizedCharEnd": 1855,
-            "normalizedCharStart": 1628
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1490,21 +1517,21 @@
       "provenance": {
         "position": {
           "quote": "Conclusions Incorporating daily whole egg intake into a moderately carbohydrate-restricted diet provides further improvements in the atherogenic lipoprotein profile and in insulin resistance in individuals with MetS.",
+          "extractionConfidence": 0.75,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23021013/",
-            "textDepth": "abstract",
             "textSha256": "bc6f117fc16eba6d043eab6abd6d8c5cd1a9e98e8ff3681c766d245b19e89d01",
-            "quoteSha256": "3c7b0d18e4d9ae1fa0c133a4de89853fb70de2eb8d6336109bb5a03848f30c8e",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/23021013/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "3c7b0d18e4d9ae1fa0c133a4de89853fb70de2eb8d6336109bb5a03848f30c8e",
+            "normalizedCharStart": 1674,
             "normalizedCharEnd": 1890,
-            "normalizedCharStart": 1674
-          },
-          "extractionConfidence": 0.75
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1543,21 +1570,21 @@
       "provenance": {
         "position": {
           "quote": "Dietary guidance should focus on healthy dietary patterns (eg, Mediterranean-style and DASH [Dietary Approaches to Stop Hypertension]-style diets) that are inherently relatively low in cholesterol with typical levels similar to the current US intake.",
+          "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000743",
+            "textSha256": "96aa7d1e5705b6ab5d557af7243498ac98dfb64d92e32a5f10b31d43609a20f0",
             "textDepth": "abstract",
-            "textSha256": "866f4f5123d147458ee05a6c95e2d6cd15555eb6b0b8bc91ab76b2c894823c64",
-            "quoteSha256": "654015d2c037838fed746d93751c8d16fbfaa8df2643f464cc22375f53a3f052",
+            "sourceUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000743",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "654015d2c037838fed746d93751c8d16fbfaa8df2643f464cc22375f53a3f052",
+            "normalizedCharStart": 903,
             "normalizedCharEnd": 1153,
-            "normalizedCharStart": 903
-          },
-          "extractionConfidence": 0.8
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1600,21 +1627,21 @@
       "provenance": {
         "position": {
           "quote": "However, egg consumption of > or = 1 per day is related to an increased risk of HF among US male physicians.",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1161/CIRCULATIONAHA.107.734210",
-            "textDepth": "abstract",
             "textSha256": "6c47d51ed363fb23048fe1212f5ab732935f75ef7e47a97e89149b53d7699f23",
-            "quoteSha256": "cf3ebadbcd3cd3bb73b595463c8f0945100f897ba178b1bc875bae5af229a9d6",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1161/CIRCULATIONAHA.107.734210",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "cf3ebadbcd3cd3bb73b595463c8f0945100f897ba178b1bc875bae5af229a9d6",
+            "normalizedCharStart": 1549,
             "normalizedCharEnd": 1657,
-            "normalizedCharStart": 1549
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1658,21 +1685,21 @@
       "provenance": {
         "position": {
           "quote": "Interpretation Our findings suggest that regular consumption of egg yolk should be avoided by persons at risk of cardiovascular disease.",
+          "extractionConfidence": 0.7,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1016/j.atherosclerosis.2012.07.032",
-            "textDepth": "abstract",
             "textSha256": "6abe5d80e45e28e40ed881f49721a60bfbfcedc336885bd737b5bd68ef93d2df",
-            "quoteSha256": "2ac7a801c9e598b6cc51f547fca316924686084b092138d86e9f7acafecb2ab2",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.atherosclerosis.2012.07.032",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "2ac7a801c9e598b6cc51f547fca316924686084b092138d86e9f7acafecb2ab2",
+            "normalizedCharStart": 1383,
             "normalizedCharEnd": 1519,
-            "normalizedCharStart": 1383
-          },
-          "extractionConfidence": 0.7
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1722,21 +1749,21 @@
       "provenance": {
         "position": {
           "quote": "Based on the results of this meta-analysis, consumption of up to one egg daily may contribute to a decreased risk of total stroke, and daily egg intake does not appear to be associated with risk of CHD.Key Teaching Points:• The role of egg consumption in the risk of stroke and coronary heart disease has come under scrutiny over many years.• A comprehensive meta-analysis of prospective cohort studies that reported risk estimates for egg consumption in association with CHD or stroke was performed on the peer-reviewed epidemiologic literature through August 2015.• Overall, summary associations indicate that intake of up to 1 egg daily may be associated with reduced risk of total stroke.• Overall, summary associations show no clear association between egg intake and increased or decreased risk of CHD.• Eggs are a relatively low-cost and nutrient-dense whole food that provides a valuable source of protein, essential fatty acids, antioxidants, choline, vitamins, and minerals.",
+          "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27710205/",
-            "textDepth": "abstract",
             "textSha256": "39c5de0815278ae2d6b250477786981c4005c014d29b7f3b4db5fd83ce1f3a0b",
-            "quoteSha256": "997384f00abafd290fcd1791d83757d6b0af51dcccdc36f98c3fe721494ce846",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27710205/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "997384f00abafd290fcd1791d83757d6b0af51dcccdc36f98c3fe721494ce846",
+            "normalizedCharStart": 1452,
             "normalizedCharEnd": 2436,
-            "normalizedCharStart": 1452
-          },
-          "extractionConfidence": 0.8
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1781,21 +1808,21 @@
       "provenance": {
         "position": {
           "quote": "Four of the six studies that examined CVD and mortality and egg consumption among diabetics found a statistically significant association.",
+          "extractionConfidence": 0.75,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24711708/",
-            "textDepth": "abstract",
             "textSha256": "6e156b060174778e542385951a4a5823db68063167610d68dde6c42532cdabb3",
-            "quoteSha256": "f9980df2cf84c7ad9218f28a5820925361f19c55db241bdf6edd1bfeff7d2604",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24711708/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "f9980df2cf84c7ad9218f28a5820925361f19c55db241bdf6edd1bfeff7d2604",
+            "normalizedCharStart": 366,
             "normalizedCharEnd": 504,
-            "normalizedCharStart": 366
-          },
-          "extractionConfidence": 0.75
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1840,21 +1867,21 @@
       "provenance": {
         "position": {
           "quote": "Conclusion Egg or cholesterol intakes were not associated with increased CAD risk, even in ApoE4 carriers (i.e., in highly susceptible individuals).",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26864369/",
-            "textDepth": "abstract",
             "textSha256": "4e6fb0846738c9b76f4f8379721c052b67e292689c0cbdc177b04f0f75967ae0",
-            "quoteSha256": "7b5b6b5a6ddb52561b080ae84184b68ca13cc6b705e19b1027fa684fd43caae5",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26864369/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "7b5b6b5a6ddb52561b080ae84184b68ca13cc6b705e19b1027fa684fd43caae5",
+            "normalizedCharStart": 1964,
             "normalizedCharEnd": 2112,
-            "normalizedCharStart": 1964
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1900,21 +1927,21 @@
       "provenance": {
         "position": {
           "quote": "Dietary cholesterol was not statistically significantly associated with any coronary artery disease (4 cohorts; no summary RR), ischemic stroke (4 cohorts; summary RR: 1.13; 95% CI: 0.99, 1.28), or hemorrhagic stroke (3 cohorts; summary RR: 1.09; 95% CI: 0.79, 1.50).",
+          "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26109578/",
-            "textDepth": "abstract",
             "textSha256": "6548fc1045cde238a8ab111fefad6eccff98784899c6563d70e77b2fb363b396",
-            "quoteSha256": "66fd42457f5dd7e2f480cdf6f73e53f820bf7ca89f2553341a2bfe854e7448c2",
+            "textDepth": "abstract",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/26109578/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "66fd42457f5dd7e2f480cdf6f73e53f820bf7ca89f2553341a2bfe854e7448c2",
+            "normalizedCharStart": 1010,
             "normalizedCharEnd": 1277,
-            "normalizedCharStart": 1010
-          },
-          "extractionConfidence": 0.8
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -1963,21 +1990,21 @@
       "provenance": {
         "position": {
           "quote": "However, egg consumption may be associated with an increased incidence of type 2 diabetes among the general population and CVD comorbidity among diabetic patients.",
+          "extractionConfidence": 0.85,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3683816/",
-            "textDepth": "partial",
             "textSha256": "69f6109438cae0deaf765448e15d594582abba16f5e9f6389012b71189f5cbe2",
-            "quoteSha256": "75ee2e0a829f1f0f0791c6032767c852609cd9fbb7f3e98d1ca8822892a433ff",
+            "textDepth": "partial",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3683816/",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "75ee2e0a829f1f0f0791c6032767c852609cd9fbb7f3e98d1ca8822892a433ff",
+            "normalizedCharStart": 4036,
             "normalizedCharEnd": 4199,
-            "normalizedCharStart": 4036
-          },
-          "extractionConfidence": 0.85
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -2021,21 +2048,21 @@
       "provenance": {
         "position": {
           "quote": "Consumption of eggs ≥1 time/d, but not less frequent consumption, was associated with an elevated risk of HF in men.",
+          "extractionConfidence": 0.8,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://ajcn.nutrition.org/article/S0002-9165(23)13738-5/fulltext",
-            "textDepth": "partial",
             "textSha256": "d8f5f9d704867074bd51efee80aeae02d7f1642575664d33a33db8f2676871ff",
-            "quoteSha256": "cab8b413b882b04af8e7a249b859e43161d3ad88c3dad3e499231ff7e0bc553d",
+            "textDepth": "partial",
+            "sourceUrl": "https://ajcn.nutrition.org/article/S0002-9165(23)13738-5/fulltext",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "cab8b413b882b04af8e7a249b859e43161d3ad88c3dad3e499231ff7e0bc553d",
+            "normalizedCharStart": 1859,
             "normalizedCharEnd": 1975,
-            "normalizedCharStart": 1859
-          },
-          "extractionConfidence": 0.8
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -2121,21 +2148,21 @@
       "provenance": {
         "position": {
           "quote": "There is no conclusive evidence on the role of egg in CVD risk, despite the fact that higher quality studies are warranted to obtain stronger evidence for a possible protection of CVD associated with moderate weekly egg consumption compared to no intake; equally, future studies may strengthen the evidence for increased heart failure risk associated with high regular egg consumption.",
+          "extractionConfidence": 0.97,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1007/s00394-020-02345-7",
-            "textDepth": "full",
             "textSha256": "dfc98d9fde25f1289c29602e60ebe3d2a27f2628f5389b3aa218ff6c6c158868",
-            "quoteSha256": "438a24ad6019aa26adfe6c986a44a5e50cd3ae822c9413b632313a55ed09075c",
+            "textDepth": "full",
+            "sourceUrl": "https://doi.org/10.1007/s00394-020-02345-7",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "438a24ad6019aa26adfe6c986a44a5e50cd3ae822c9413b632313a55ed09075c",
+            "normalizedCharStart": 1946,
             "normalizedCharEnd": 2331,
-            "normalizedCharStart": 1946
-          },
-          "extractionConfidence": 0.97
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "metadataAudit": {
@@ -2221,21 +2248,21 @@
       "provenance": {
         "position": {
           "quote": "No evidence of association was found among all cardiovascular outcomes and all-cause mortality risk between high vs. low egg consumption.",
+          "extractionConfidence": 0.98,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
             "status": "exact",
-            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
-            "textDepth": "abstract",
             "textSha256": "f03369e14009bdeb3b704ef68c92da12c0b0e9a7a32b0c8b4db003e71e63a40a",
-            "quoteSha256": "8c4148ef113872f9d7ab7ae86f81625868f3855912471f4c90d083e28b29fb5a",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1016/j.numecd.2025.103849",
+            "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
+            "quoteSha256": "8c4148ef113872f9d7ab7ae86f81625868f3855912471f4c90d083e28b29fb5a",
+            "normalizedCharStart": 1546,
             "normalizedCharEnd": 1683,
-            "normalizedCharStart": 1546
-          },
-          "extractionConfidence": 0.98
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "fundingDetails": [
@@ -2269,14 +2296,42 @@
           "ref": "ds_eggant_randomized_trial_colombia",
           "provenance": {
             "quote": "In a parallel clinical trial, one hundred and five ( n = 105) men and women were randomized by age, sex, and body mass index (BMI), and distributed into three groups.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "2b0581178f4866877d6d3e9ec20d6aec8b6901ad06f7d7b7d1ae3c4812a73b4e",
+              "normalizedCharStart": 5500,
+              "normalizedCharEnd": 5666,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           }
         }
       ],
       "provenance": {
         "position": {
           "quote": "In healthy adults, the intake of two eggs a day, or two eggs with Annatto for eight weeks, did not generate adverse changes in cardiovascular risk markers.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "f4fa8cd2adf03aff0e9dda28ec031402febd46c9ba8f96167c73e2799a44f6e7",
+            "normalizedCharStart": 6178,
+            "normalizedCharEnd": 6333,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 29,

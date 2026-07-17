@@ -39,9 +39,11 @@
   .brand{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
     font-family:var(--mono);margin-bottom:8px;}
   .qtitle{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:4px;}
+  /* Same shape language as the "+ Add source" control (.addsrc): 8px radius + a hairline border,
+     not a lozenge. */
   .qbadge{display:none;align-items:center;gap:7px;font-size:11px;font-weight:600;
-    color:var(--flag);background:var(--flag-bg);border-radius:999px;padding:3px 10px;
-    margin:2px 0 10px;width:fit-content;cursor:help;}
+    color:var(--flag);background:var(--flag-bg);border:1px solid var(--flag);border-radius:8px;
+    padding:4px 9px;margin:3px 0 10px;width:fit-content;cursor:help;}
   .qbadge .qb-dot{opacity:.4;font-weight:400;}
   .qbadge .qb-pct{font-weight:500;opacity:.85;}
   .qmeta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:18px;}
@@ -396,7 +398,9 @@ const VIEWS=[
 ];
 const WV={high:3,med:2,low:1,"n/a":0};
 const WLABEL={high:"high",med:"medium",low:"low","n/a":"n/a"};
-const WCELL={3:"#2f6296",2:"#7fa8ce",1:"#dce6f0",0:"transparent"};
+// Importance is a NEUTRAL slate ramp on purpose: the categorical palette is reserved for
+// positions, so a cell's shade can never be confused with a column's position colour.
+const WCELL={3:"#454C59",2:"#9AA3AF",1:"#E8EBEF",0:"transparent"};
 
 const state={
   caseId: DATA && DATA.order[0],
@@ -571,11 +575,19 @@ function caseLabel(c){
   return mid;
 }
 
-// Colorblind-safe categorical palette (Okabe-Ito), led by blue/orange so no position's colour
-// reads as "the right answer" and red/green are not the two opposing camps. Applied at render time
-// over any stored hue, so every case is consistent regardless of the order positions were created.
-const PAL=["#0072B2","#E69F00","#009E73","#CC79A7","#56B4E9","#D55E00","#8a6510"];
+// Paul Tol's "muted" qualitative palette — colourblind-safe, and no position's colour reads as
+// "the right answer" (red/green are never the two opposing camps). Applied at render time over any
+// stored hue, so every case is consistent regardless of the order positions were created.
+const PAL=["#332288","#117733","#44AA99","#88CCEE","#DDCC77","#CC6677","#AA4499","#882255"];
 let posHue={};
+// Tol's palette mixes dark and light swatches, so pick label ink by luminance instead of assuming
+// white reads on every hue (white on #DDCC77 / #88CCEE would be unreadable).
+function inkOn(hue){
+  const h=String(hue||"").replace("#","");
+  if(h.length!==6) return "#fff";
+  const r=parseInt(h.slice(0,2),16), g=parseInt(h.slice(2,4),16), b=parseInt(h.slice(4,6),16);
+  return (0.299*r+0.587*g+0.114*b)>150 ? "var(--ink)" : "#fff";
+}
 function remapHues(node){
   if(Array.isArray(node)){ for(const x of node) remapHues(x); return; }
   if(node && typeof node==="object"){
@@ -672,28 +684,29 @@ function filteredSources(kb){
 
 function headline(c){
   const {kb,assessment:a}=c, {pos}=maps(kb);
-  // Keep the two quantities in separate charts. Source count is a 100% share; independence is an
-  // absolute small-multiples chart on one shared nEff scale. Overlaying them made the source tally
-  // look like a denominator of nEff even though they answer different questions.
-  const bar=(rows,pctKey,sizeKey,tipFn)=>rows.map(d=>{
-    const label=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
-    const p=d[pctKey]||0;
-    const fits=p>=(label.length*0.9+4);
-    const text=fits?(label+" · "+p+"%"):(p+"%");
-    const dim=state.posOn.has(d.id)?"":" dim";
-    return `<button class="seg${dim}" data-pos="${d.id}" style="flex:${d[sizeKey]||0.0001};background:${d.hue}" title="${esc(tipFn(d))}">${esc(text)}</button>`;
+  // Both charts use the SAME horizontal-bar language so a reader can read one against the other at
+  // a glance. They remain SEPARATE charts on their own scales: the source tally is not a denominator
+  // of the adjusted count — they answer different questions, which is what overlaying them implied.
+  const row=(d,fillPct,valueHtml,tip)=>
+    `<div class="indrow${state.posOn.has(d.id)?"":" dim"}" data-pos="${d.id}" style="cursor:pointer">
+      <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
+      <span class="indtrackcol"><span class="indtrack" data-tip="${esc(tip)}"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
+      <span class="indval">${valueHtml}</span>
+    </div>`;
+  const dist=a.distribution||[];
+  const maxCount=Math.max(1,...dist.map(d=>d.count||0));
+  const bar1=dist.map(d=>{
+    const n=d.count||0, fillPct=Math.max(2,Math.round(n/maxCount*100));
+    return row(d,fillPct,`<b>${n}</b> source${n===1?"":"s"} <span class="collapse">· ${d.pct||0}% of listed</span>`,
+               `${d.label} — ${n} sources (${d.pct||0}% of listed sources)`);
   }).join("");
-  const bar1=bar(a.distribution,"pct","count",d=>`${d.label} — ${d.count} sources`);
   const wd=a.weightedDistribution||[];
   const maxEff=Math.max(1,...wd.map(d=>d.weight||0));
   const indepRows=wd.map(d=>{
     const nb=d.weight||0, raw=d.raw||0, fillPct=Math.max(2,Math.round(nb/maxEff*100));
     const proposed=d.provisionalCount?` <span class="collapse">+ ${d.provisionalCount} awaiting review — not counted</span>`:"";
-    return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
-      <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
-      <span class="indtrackcol"><span class="indtrack" title="${nb.toFixed(1)} adjusted evidence bases from ${raw} sources"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
-      <span class="indval"><b>${nb.toFixed(1)}</b> adjusted evidence bases <span class="collapse">from ${raw} sources</span>${proposed}</span>
-    </div>`;
+    return row(d,fillPct,`<b>${nb.toFixed(1)}</b> adjusted evidence bases <span class="collapse">from ${raw} sources</span>${proposed}`,
+               `${nb.toFixed(1)} adjusted evidence bases from ${raw} sources`);
   }).join("");
   let insight="";
   if(wd.length){
@@ -725,8 +738,8 @@ function headline(c){
   }
   return `<div class="panel compact-summary">
       <div class="cmphead"><b>Source count versus underlying evidence</b><span>two different ways to read the same literature</span></div>
-      <div class="splitlabel"><span class="num">1</span> Source count <span class="q">— how listed sources split by position · click a segment to filter</span></div>
-      <div class="distrib">${bar1}</div>
+      <div class="splitlabel"><span class="num">1</span> Source count <span class="q">— how listed sources split by position · click a row to filter</span></div>
+      <div class="indeprows">${bar1}</div>
       ${wd.length?`<div class="splitlabel"><span class="num">2</span> Adjusted evidence-base count <span class="q">— shared evidence is counted once</span></div>
       <div class="indeprows">${indepRows}</div>${insight}
       <details class="cmphelp"><summary>How to read these two charts</summary><div>The first chart counts sources. The second counts each checked evidence base once; evidence available only through reviews or animal/in-vitro work counts as half. It is <b>not a support, quality, or truth score</b>: one decisive study can outweigh several weak evidence bases, and separate studies can share the same weakness.<button class="risk-link" data-view="independence">Inspect the evidence</button></div></details>`:""}
@@ -885,7 +898,7 @@ function renderDivergenceView(){
     return rank(ix)-rank(iy) || iy.spread-ix.spread || iy.engaged-ix.engaged;});
   const posColW=Math.min(20,Math.floor(60/Math.max(1,activePos.length)));
   const colgroup=`<colgroup><col style="width:${100-posColW*activePos.length}%">${activePos.map(()=>`<col style="width:${posColW}%">`).join("")}</colgroup>`;
-  const head=`<th class="nosort">Issue</th>`+activePos.map(p=>`<th class="nosort" style="background:${p.hue};color:#fff;text-align:center;" title="${esc(p.label)}">${esc(p.shortLabel||shortLabel(p.label))}</th>`).join("");
+  const head=`<th class="nosort">Issue</th>`+activePos.map(p=>`<th class="nosort" style="background:${p.hue};color:${inkOn(p.hue)};text-align:center;" data-tip="${esc(p.label)}">${esc(p.shortLabel||shortLabel(p.label))}</th>`).join("");
   const rows=ordered.map(f=>{
     const cx=info(f), one=cx.engaged<2;
     const cells=activePos.map(p=>{
@@ -917,7 +930,7 @@ function renderDivergenceView(){
   el("main").innerHTML=`<h1>Key issues</h1><div class="mmeta">where positions disagree and what several positions say matters</div>
     <div class="panel">
       <div class="subnote">Each cell shows how important that factor is to a position. A <b>key disagreement</b> (black tag) is a factor the positions rate very differently. A <b>shared uncertainty</b> (blue tag) is an unsettled factor that several positions consider decisive. <b>Contested</b> rows are milder disagreements; <b>one side only</b> rows are raised by a single position. <b>Click a row</b> to see the reasoning and source quotes behind it.</div>
-      <div class="wkey">importance: <span class="ws" style="background:#dce6f0">low</span><span class="ws" style="background:#7fa8ce">medium</span><span class="ws" style="background:#2f6296;color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
+      <div class="wkey">importance: <span class="ws" style="background:${WCELL[1]}">low</span><span class="ws" style="background:${WCELL[2]}">medium</span><span class="ws" style="background:${WCELL[3]};color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
       <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
       <p style="font-size:13px;color:var(--muted);margin:14px 0 0">${cruxBits.join(" · ")||"no key disagreements"} — of ${kb.factors.length} factors.</p>
     </div>`;
@@ -1099,8 +1112,19 @@ function switchCase(id){
 }
 if(DATA) switchCase(state.caseId);
 
+// Tooltips: the browser's native `title` only appears after a ~1s delay and is dead on touch, so
+// every explanation here is rendered as our own instant tooltip instead. The first time an element
+// is hovered we move its `title` onto `data-tip` (and mirror it to aria-label for screen readers),
+// which permanently suppresses the native one for that node.
+const TIP_SEL="[title],[data-tip]";
+function tipTextOf(el){
+  const t=el.getAttribute("title");
+  if(t){ el.setAttribute("data-tip",t); el.setAttribute("aria-label",t); el.removeAttribute("title"); }
+  return el.getAttribute("data-tip")||"";
+}
+function hideTip(){ const t=document.getElementById("tip"); if(t) t.style.display="none"; }
 function showTip(el){
-  const txt=el.getAttribute("title")||el.getAttribute("data-tip"); if(!txt) return;
+  const txt=tipTextOf(el); if(!txt) return;
   let tip=document.getElementById("tip");
   if(!tip){tip=document.createElement("div");tip.id="tip";document.body.appendChild(tip);}
   tip.textContent=txt; tip.style.display="block";
@@ -1108,14 +1132,20 @@ function showTip(el){
   tip.style.left=Math.max(8,Math.min(r.left,window.innerWidth-tip.offsetWidth-8))+"px";
   tip.style.top=(r.bottom+6+tip.offsetHeight>window.innerHeight?r.top-tip.offsetHeight-6:r.bottom+6)+"px";
 }
-// The "?" explanations were hover-only (dead on touch); make them tap/click to open. Capture phase
-// so a click on an icon inside a table row opens the note instead of toggling the row.
+document.addEventListener("mouseover",e=>{
+  const el=e.target.closest&&e.target.closest(TIP_SEL); if(el) showTip(el);
+});
+document.addEventListener("mouseout",e=>{
+  if(e.target.closest&&e.target.closest(TIP_SEL)) hideTip();
+});
+// Touch/click: open the note instead of falling through (capture, so a "?" inside a table row does
+// not also toggle the row).
 document.addEventListener("click",e=>{
   const ic=e.target.closest(".infoicon");
-  const tip=document.getElementById("tip");
   if(ic){ e.stopPropagation(); e.preventDefault(); showTip(ic); return; }
-  if(tip) tip.style.display="none";
+  hideTip();
 }, true);
+window.addEventListener("scroll",hideTip,true);
 document.addEventListener("click",e=>{
   const cs=e.target.closest("[data-case]"); if(cs){switchCase(cs.getAttribute("data-case"));renderMain();return;}
   const nv=e.target.closest("[data-view]"); if(nv){state.view=nv.getAttribute("data-view");state.shown=24;renderMain();return;}

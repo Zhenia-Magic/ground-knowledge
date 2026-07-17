@@ -667,10 +667,24 @@ def cmd_verify(args):
     promote a proposed root), and every FACTOR/crux claim quote. Trust comes from the CLI doing the
     fetch — never from agent-supplied text.
     """
+    import http.client
     from ingest.extract import extract_text
     from engine.verify import verify_kb
+
+    def fetch(url):
+        # verify_kb's contract is best-effort: a source that will not fetch just leaves its quotes
+        # unverified. extract_text raises instead (SystemExit on a bot-wall / CAPTCHA), which would
+        # abort the whole run and silently leave every later source unchecked — so contain it here,
+        # per source, and let the tally report it as unfetched.
+        try:
+            return (extract_text(url) or {}).get("text")
+        except (SystemExit, OSError, http.client.HTTPException, ValueError) as e:
+            print("  skipped (could not re-fetch): {} — {}".format(url, e))
+            return None
+
     kb = read_json(args.kb)
-    counts = verify_kb(kb, lambda url: (extract_text(url) or {}).get("text"))
+    counts = verify_kb(kb, fetch)
+    write_json(args.kb, kb)          # persist the grounded records — verification is the whole point
     print("Quote check — exact {exact}, fuzzy {fuzzy}, missing {missing}"
           "  ({unfetched} quote(s) on sources that could not be re-fetched)".format(**counts))
     if counts["missing"]:
