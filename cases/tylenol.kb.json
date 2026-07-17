@@ -2,8 +2,8 @@
   "meta": {
     "id": "tylenol",
     "question": "Does prenatal acetaminophen (Tylenol) exposure increase the risk of autism in children?",
-    "version": 20,
-    "updated": "2026-07-17T00:35:58.550466+00:00",
+    "version": 24,
+    "updated": "2026-07-17T00:43:37.387205+00:00",
     "schemaVersion": 2
   },
   "positions": [
@@ -182,6 +182,20 @@
           "weight": "high",
           "quote": "The potential for a shared underlying genetic susceptibility to neurodevelopmental and psychiatric conditions being passed from parent to child must also be considered.",
           "verifiedQuote": null
+        },
+        {
+          "source": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+          "pos": "pos_increases_risk",
+          "weight": "low",
+          "quote": "Results did not appear to be confounded by maternal inflammation, infection during pregnancy, the mother's mental health problems, or other potential confounders we evaluated.",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_stergiakouli_et_al_association_of_acetaminop_2016",
+          "pos": "pos_increases_risk",
+          "weight": "low",
+          "quote": "This was not the case for maternal postnatal (n = 6916; 89%) or partner’s (n = 3454; 84%) acetaminophen use.",
+          "verifiedQuote": null
         }
       ]
     },
@@ -254,6 +268,13 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "No association for any phenotypes at both ages was observed for girls.",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+          "pos": "pos_increases_risk",
+          "weight": "high",
+          "quote": "CAST scores were increased in ever-exposed males (β = 0.63, 0.09-1.18).",
           "verifiedQuote": null
         }
       ]
@@ -342,6 +363,27 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "Long-term use, increased dose, and frequency were associated with a stronger association.",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+          "pos": "pos_increases_risk",
+          "weight": "high",
+          "quote": "Stronger associations were observed with use in more than 1 trimester during pregnancy, and exposure response trends were found with increasing frequency of acetaminophen use during gestation for all outcomes (ie, HKD diagnosis, ADHD medication use, and ADHD-like behaviors; P trend < .001).",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+          "pos": "pos_increases_risk",
+          "weight": "high",
+          "quote": "These associations seem to be dependent on the frequency of exposure.",
+          "verifiedQuote": null
+        },
+        {
+          "source": "src_masarwa_et_al_prenatal_exposure_to_acetamino_2018",
+          "pos": "pos_increases_risk",
+          "weight": "high",
+          "quote": "In meta-regression analysis, the association between exposure and ADHD increased with the child's age upon follow-up (β = 0.03, 95% CI: 0.00, 0.07) and with the mean duration of exposure (β = 0.00, 95% CI: 0.00, 0.01).",
           "verifiedQuote": null
         }
       ]
@@ -1100,6 +1142,154 @@
       },
       "addedIn": 20,
       "textDepth": "unknown"
+    },
+    {
+      "id": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+      "title": "Liew et al. — Acetaminophen Use During Pregnancy, Behavioral Problems, and Hyperkinetic Disorders (JAMA Pediatrics)",
+      "year": 2014,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24566677/",
+      "authors": [
+        "Liew, Z.",
+        "Ritz, B.",
+        "Rebordosa, C.",
+        "Lee, P.-C.",
+        "Olsen, J."
+      ],
+      "venue": "JAMA Pediatrics",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "Danish children",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_danish_national_birth_cohort_dnbc",
+          "provenance": {
+            "quote": "We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
+            "extractionConfidence": 0.95
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Maternal acetaminophen use during pregnancy is associated with a higher risk for HKDs and ADHD-like behaviors in children.",
+          "extractionConfidence": 0.95
+        }
+      },
+      "addedIn": 21,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+      "title": "Avella-Garcia et al. — Acetaminophen use in pregnancy and neurodevelopment: attention function and autism spectrum symptoms (Int J Epidemiol)",
+      "year": 2016,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27353198/",
+      "authors": [
+        "Avella-Garcia, C.B.",
+        "Julvez, J.",
+        "Fortuny, J.",
+        "Rebordosa, C.",
+        "Sunyer, J."
+      ],
+      "venue": "International Journal of Epidemiology",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "Spanish children",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_inma_infancia_y_medio_ambiente",
+          "provenance": {
+            "quote": "This Spanish birth cohort study included 2644 mother-child pairs recruited during pregnancy.",
+            "extractionConfidence": 0.9
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Prenatal acetaminophen exposure was associated with a greater number of autism spectrum symptoms in males and showed adverse effects on attention-related outcomes for both genders.",
+          "extractionConfidence": 0.95
+        }
+      },
+      "addedIn": 22,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_stergiakouli_et_al_association_of_acetaminop_2016",
+      "title": "Stergiakouli et al. — Association of Acetaminophen Use During Pregnancy With Behavioral Problems in Childhood: Evidence Against Confounding (JAMA Pediatrics)",
+      "year": 2016,
+      "url": "https://research-information.bris.ac.uk/en/publications/association-of-acetaminophen-use-during-pregnancy-with-behavioral",
+      "authors": [
+        "Stergiakouli, E.",
+        "Thapar, A.",
+        "Davey Smith, G."
+      ],
+      "venue": "JAMA Pediatrics",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "UK children",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_alspac_avon_longitudinal_study_of_parents_an",
+          "provenance": {
+            "quote": "We studied 7796 mothers enrolled in ALSPAC between 1991 and 1992 along with their children and partners.",
+            "extractionConfidence": 0.95
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Children exposed to acetaminophen prenatally are at increased risk of multiple behavioral difficulties, and the associations do not appear to be explained by unmeasured behavioral or social factors linked to acetaminophen use insofar as they are not observed for postnatal or partner’s acetaminophen use.",
+          "extractionConfidence": 0.9
+        }
+      },
+      "addedIn": 23,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_masarwa_et_al_prenatal_exposure_to_acetamino_2018",
+      "title": "Masarwa et al. — Prenatal Exposure to Acetaminophen and Risk for ADHD and Autistic Spectrum Disorder: A Systematic Review, Meta-Analysis, and Meta-Regression Analysis of Cohort Studies (Am J Epidemiol)",
+      "year": 2018,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29688261/",
+      "authors": [
+        "Masarwa, R.",
+        "Levine, H.",
+        "Gorelik, E.",
+        "Reif, S.",
+        "Perlman, A.",
+        "Matok, I."
+      ],
+      "venue": "American Journal of Epidemiology",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_increases_risk",
+      "evidence": "Meta-analysis",
+      "funding": "Undisclosed",
+      "population": "—",
+      "confidence": "moderate",
+      "restsOn": [
+        "src:src_thompson_et_al_associations_between_acetamin_2014",
+        "src:src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+        "src:src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+        "src:src_stergiakouli_et_al_association_of_acetaminop_2016"
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Acetaminophen use during pregnancy is associated with an increased risk for ADHD, ASD, and hyperactivity symptoms.",
+          "extractionConfidence": 0.95
+        }
+      },
+      "addedIn": 24,
+      "textDepth": "unknown"
     }
   ],
   "vocab": {
@@ -1172,6 +1362,18 @@
       },
       {
         "label": "Brazilian children",
+        "aliases": []
+      },
+      {
+        "label": "Danish children",
+        "aliases": []
+      },
+      {
+        "label": "Spanish children",
+        "aliases": []
+      },
+      {
+        "label": "UK children",
         "aliases": []
       }
     ],
@@ -1509,6 +1711,56 @@
       "diff": [
         "distribution: Increases risk 11 → 12",
         "distinct roots: Increases risk 14 → 15"
+      ]
+    },
+    {
+      "version": 21,
+      "action": "add-source",
+      "source": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+      "title": "Liew et al. — Acetaminophen Use During Pregnancy, Behavioral Problems, and Hyperkinetic Disorders (JAMA Pediatrics)",
+      "ts": "2026-07-17T00:43:09.208060+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 12 → 13"
+      ]
+    },
+    {
+      "version": 22,
+      "action": "add-source",
+      "source": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+      "title": "Avella-Garcia et al. — Acetaminophen use in pregnancy and neurodevelopment: attention function and autism spectrum symptoms (Int J Epidemiol)",
+      "ts": "2026-07-17T00:43:09.268619+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 13 → 14"
+      ]
+    },
+    {
+      "version": 23,
+      "action": "add-source",
+      "source": "src_stergiakouli_et_al_association_of_acetaminop_2016",
+      "title": "Stergiakouli et al. — Association of Acetaminophen Use During Pregnancy With Behavioral Problems in Childhood: Evidence Against Confounding (JAMA Pediatrics)",
+      "ts": "2026-07-17T00:43:09.327787+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 14 → 15"
+      ]
+    },
+    {
+      "version": 24,
+      "action": "add-source",
+      "source": "src_masarwa_et_al_prenatal_exposure_to_acetamino_2018",
+      "title": "Masarwa et al. — Prenatal Exposure to Acetaminophen and Risk for ADHD and Autistic Spectrum Disorder: A Systematic Review, Meta-Analysis, and Meta-Regression Analysis of Cohort Studies (Am J Epidemiol)",
+      "ts": "2026-07-17T00:43:37.387205+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Increases risk 15 → 16",
+        "blindspot opened: No increased risk (confounding explains it) missing \"Meta-analysis\"",
+        "blindspot opened: Evidence unclear / not established missing \"Meta-analysis\""
       ]
     }
   ]
