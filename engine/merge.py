@@ -22,7 +22,7 @@ from engine.verify import is_verified_exact
 # Paul Tol's "muted" qualitative palette — colourblind-safe, and no position's colour reads as
 # "correct/incorrect". Keep in step with PAL in viewer/template.html, which remaps by position index
 # at render time; this is the stored default. Hue is display-only and affects no metric.
-HUES = ["#332288", "#117733", "#44AA99", "#88CCEE", "#DDCC77", "#CC6677", "#AA4499", "#882255"]
+HUES = ["#332288", "#CC6677", "#44AA99", "#DDCC77", "#88CCEE", "#AA4499", "#882255", "#117733"]
 
 # Evidence-base kinds. "dataset" is the empirical default and stays implicit (absent) in the KB;
 # document/argument/model are theoretical roots (a proposal, a chain of reasoning, a calculation)
