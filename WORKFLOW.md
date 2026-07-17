@@ -235,6 +235,9 @@ fields, reuse existing entity IDs, one source per delta, `lint` before `add`.
 | `lint <delta.json\|kb>` | **validate WITHOUT merging** — numbered errors, nonzero exit; the pre-flight for agent-written JSON (keyless) |
 | `add <kb> <delta.json> [--build]` | merge a delta you already have; prints WHAT CHANGED (rejects a malformed delta cleanly) |
 | `doctor <kb>` | **health check** — structure + completeness + trust hygiene; the handoff gate (keyless) |
+| `confirm-dataset <kb> <id> --by NAME` · `confirm-edge <kb> <src> <ref> --by NAME` | **curator admission**: vouch that a proposed evidence base is real / admit one source→root support edge, so it counts toward coverage |
+| `mark-curated <kb> --by NAME [--off]` | **admin**: flag the question "curated & maintained" — a stewardship label shown next to the computed confirmed-evidence % |
+| `merge <kb> <src> <dst>` · `rename` · `tidy` · `dups` | curation cleanup: fold a duplicate base into another, rename an entity, normalize labels, list likely duplicates |
 | `import-citations <kb> <file> [--apply]` · `export <kb> --format bibtex\|ris\|csl` | Zotero/Mendeley/EndNote in & out |
 | `show <kb>` · `assess <kb>` | metrics summary in the terminal · full metrics as JSON |
 | `build <kb> [<kb2> ...] [--out FILE]` | bake the viewer (multiple KBs ⇒ a case switcher) |

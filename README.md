@@ -58,11 +58,11 @@ root cannot be laundered into another position through an unreviewed edge.
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
 | `engine/curate.py` | Structure | curation ops: merge / rename / tidy; lexical + optional embedding duplicate suggestions; auditable confirmation gate |
 | `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, key disagreements |
-| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · lint · add · doctor · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · ui · pull · push · questions · import-citations · export` |
+| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · lint · add · doctor · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · confirm-edge · mark-curated · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |
-| `cases/*.kb.json` | artifact | five local, sourced knowledge bases (three competition cases plus alcohol and video-games generalization cases) |
+| `cases/*.kb.json` | artifact | six local, sourced knowledge bases (three competition cases — COVID origin, LHC black holes, eggs — plus alcohol, video-games, and prenatal-acetaminophen generalization cases) |
 | `AGENTS.md` · `CLAUDE.md` | playbook | drive the repo with a **coding agent** (Claude Code / Codex) and no API key — the keyless loop, the delta contract, the guardrails |
 | `MECHANISM.md` · `SCHEMA.md` · `SECURITY.md` · `DEPLOYMENT.md` | spec/runbook | the mechanism, schema, trust boundaries, and release/rollback procedure |
 

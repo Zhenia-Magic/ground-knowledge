@@ -771,7 +771,7 @@ def dominant_dataset(kb, res=None):
             "count": mx, "total": n, "share": mx / n if n else 0}
 
 
-def curation_summary(kb):
+def curation_summary(kb, res=None):
     """The 'paired' trust signal behind the curated badge — a stewardship flag PLUS a *computed*
     confirmed-coverage percentage, so a reader never reads "admin-maintained" as "evidence verified".
 
@@ -781,7 +781,7 @@ def curation_summary(kb):
       by a verified exact quote) — i.e. the bases that actually count toward coverage, not proposed.
     - ``quotesPct``: share of provenance quotes verified against fetched text.
     These two percentages are earned by the evidence state; they cannot be set by hand."""
-    res = _roots.resolve(kb)
+    res = _roots.resolve(kb) if res is None else res
     confirmed_by = res.get("confirmed_by", {})
     datasets = kb.get("datasets", [])
     total_bases = len(datasets)
@@ -832,7 +832,7 @@ def assess(kb, res=None):
         "confidenceAudit": ca,
         "dominantDataset": dominant_dataset(kb, res),
         "warnings": warnings(kb, ind, ma, qa, ca),
-        "curation": curation_summary(kb),
+        "curation": curation_summary(kb, res),
     }
 
 

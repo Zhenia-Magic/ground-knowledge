@@ -257,6 +257,8 @@ def cmd_mark_curated(args):
     A trusted, admin-only stewardship label — see engine/curate.set_curated. It is shown to readers
     next to the *computed* confirmed-coverage percentage, never as a substitute for it."""
     from engine import curate
+    if not args.off and not (args.by or "").strip():
+        raise SystemExit("marking a question curated requires --by <curator/admin name> (or use --off to remove).")
     kb = read_json(args.kb)
     res = curate.set_curated(kb, curated=not args.off, by=args.by, note=args.note)
     write_json(args.kb, kb)

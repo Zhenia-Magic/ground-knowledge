@@ -8,6 +8,7 @@ import sys
 import unittest
 from contextlib import redirect_stdout
 from types import SimpleNamespace
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -83,6 +84,14 @@ class CurationSummaryTests(unittest.TestCase):
         cur = curation_summary(empty_kb("t", "q"))
         self.assertEqual(cur["basesPct"], 0)
         self.assertEqual(cur["quotesPct"], 0)
+
+    def test_assess_resolves_the_graph_only_once(self):
+        # curation_summary must thread the shared resolve, not trigger a second one — assess()
+        # promises "one assess() is one resolve()".
+        import engine.assess as A
+        with mock.patch("engine.assess._roots.resolve", wraps=A._roots.resolve) as resolve:
+            A.assess(_kb_with_bases())
+        self.assertEqual(resolve.call_count, 1)
 
 
 class ValidationTests(unittest.TestCase):

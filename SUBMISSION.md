@@ -59,7 +59,7 @@ The pipeline maps onto FLF's three-layer stack and produces a **living** KB (not
 
 3. **Assessment** (`engine/roots.py`, `engine/assess.py`) — pure, deterministic, no LLM. Resolves the derivation graph to its roots and computes every number the tool reports: independence, concentration, funding skew, method-monoculture, key disagreements, blindspots, and a structured **diff** of what each update changed.
 
-4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; full-KB pushes are token-gated and optimistic-version-locked. The portal bounds request bodies, fetch batches, expensive concurrent work, request threads, and per-IP mutation rates. Each KB write and its audit entry commit together, and stale writers receive a conflict instead of overwriting newer work.
+4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; replacing a KB that already has sources is token-gated, while a new/empty question accepts a keyless push that the server sanitizes of trust records (confirmations, verified quotes, the curated flag). All writes are optimistic-version-locked. The portal bounds request bodies, fetch batches, expensive concurrent work, request threads, and per-IP mutation rates. Each KB write and its audit entry commit together, and stale writers receive a conflict instead of overwriting newer work.
 
 ### The independence engine (the heart)
 
