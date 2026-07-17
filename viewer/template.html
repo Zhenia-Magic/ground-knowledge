@@ -404,10 +404,10 @@ const VIEWS=[
 ];
 const WV={high:3,med:2,low:1,"n/a":0};
 const WLABEL={high:"high",med:"medium",low:"low","n/a":"n/a"};
-// Importance is a NEUTRAL slate ramp on purpose: the categorical palette is reserved for
-// positions, so a cell's shade can never be confused with a column's position colour. "high" is a
-// soft mid-slate (not near-black), still the darkest step and still legible with white text.
-const WCELL={3:"#6B7385",2:"#AEB5C0",1:"#ECEEF2",0:"transparent"};
+// Importance is a single-hue SEQUENTIAL ramp (low -> high): a cool blue-grey slate (refined grey
+// with a blue undertone). Near-neutral, so it stays clearly distinct from the categorical position
+// colours; cell ink is chosen by luminance (inkOn) so every step stays legible.
+const WCELL={3:"#56647D",2:"#ABB7CA",1:"#EDF1F5",0:"transparent"};
 
 const state={
   caseId: DATA && DATA.order[0],
@@ -912,7 +912,7 @@ function renderDivergenceView(){
     const cx=info(f), one=cx.engaged<2;
     const cells=activePos.map(p=>{
       const w=f.weights[p.id]||"—"; const v=WV[WLABEL[w]!==undefined?w:""]||WV[w]||0;
-      const bg=WCELL[v], txt=v===3?"#fff":(v?"var(--ink)":"var(--faint)");
+      const bg=WCELL[v], txt=v?inkOn(bg):"var(--faint)";
       return `<td style="text-align:center;background:${bg};color:${txt};font-family:var(--mono);font-weight:600;white-space:nowrap;">${w&&w!=="n/a"?esc(WLABEL[w]||w):"—"}</td>`;
     }).join("");
     const open=state.expanded.has("f"+f.id);
@@ -939,7 +939,7 @@ function renderDivergenceView(){
   el("main").innerHTML=`<h1>Key issues</h1><div class="mmeta">where positions disagree and what several positions say matters</div>
     <div class="panel">
       <div class="subnote">Each cell shows how important that factor is to a position. A <b>key disagreement</b> (black tag) is a factor the positions rate very differently. A <b>shared uncertainty</b> (blue tag) is an unsettled factor that several positions consider decisive. <b>Contested</b> rows are milder disagreements; <b>one side only</b> rows are raised by a single position. <b>Click a row</b> to see the reasoning and source quotes behind it.</div>
-      <div class="wkey">importance: <span class="ws" style="background:${WCELL[1]}">low</span><span class="ws" style="background:${WCELL[2]}">medium</span><span class="ws" style="background:${WCELL[3]};color:#fff">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
+      <div class="wkey">importance: <span class="ws" style="background:${WCELL[1]}">low</span><span class="ws" style="background:${WCELL[2]}">medium</span><span class="ws" style="background:${WCELL[3]};color:${inkOn(WCELL[3])}">high</span><span class="ws" style="border-style:dashed;color:var(--faint)">— not weighed</span></div>
       <div class="tbl-wrap"><table>${colgroup}<thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
       <p style="font-size:13px;color:var(--muted);margin:14px 0 0">${cruxBits.join(" · ")||"no key disagreements"} — of ${kb.factors.length} factors.</p>
     </div>`;
