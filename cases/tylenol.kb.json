@@ -297,7 +297,10 @@
     {
       "id": "f_familial_confounding_vs_a_causal_effect",
       "label": "Familial confounding vs a causal effect",
-      "weights": {},
+      "weights": {
+        "pos_no_increased_risk_confounding_explains_it": "high",
+        "pos_increases_risk": "low"
+      },
       "rationale": "The marginal population-level association vanishes when full siblings are compared, which the authors read as familial (genetic/environmental) confounding rather than a drug effect — the central crux of the whole dispute.",
       "provenance": [
         {
@@ -305,71 +308,171 @@
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "However, analyses of matched full sibling pairs found no evidence of increased risk of autism (hazard ratio, 0.98), ADHD (hazard ratio, 0.98), or intellectual disability (hazard ratio, 1.01) associated with acetaminophen use.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a48c6479c6c89b6b724da6de6728ac0dfa419bac36def2c76bd75ddb2a3f01b4",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11004836/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5537d9224e74bd5f0cfdceeb795764726762acf65efecfc01ba555fa26d04376",
+            "normalizedCharStart": 6795,
+            "normalizedCharEnd": 7020,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_ji_et_al_association_of_cord_plasma_biomarke_2020",
           "pos": "pos_increases_risk",
           "weight": "low",
           "quote": "Fourth, because of our observational study design, we were unable to exclude the potential residual confounders because of unmeasured genetic and environmental factors.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "7e1b33798182f7c4036e8cdf6d40cdaec73e4efba4766eeb72b5e7d0da10513b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6822099/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2c44ff55052fd6a8f26eaac2310b2e670069f90e5e106a838a8ad1241018bc24",
+            "normalizedCharStart": 42712,
+            "normalizedCharEnd": 42880,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_gustavson_et_al_acetaminophen_use_during_pre_2021",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "This indicates that the observed association between long-term acetaminophen use during pregnancy and ADHD in the child may at least partly be confounded by unobserved family factors.",
-          "verifiedQuote": null
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "67a81887dc1e0ef5abb6053c15ee980def69faf86dfa8587bd923024596fb225",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10242945/",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_maternal_use_of_acetaminophen_during_pregnan_2022",
           "pos": "pos_increases_risk",
           "weight": "low",
           "quote": "After adjustment for prenatal stress and other confounders, 2 syndrome scales remained significantly higher in children exposed to acetaminophen: sleep problems (aOR = 1.23, 95% CI = 1.01–1.51) and attention problems (aOR = 1.21, 95% CI = 1.01–1.45).",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d756a5ab7c10fdfee612d80ba573695953de5057c7f36fd59c5165ee33ebc281",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9518858/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "bbc09ea17109e673b6f1fe51a007389f017b226d645c49b3d8e149dab9e6da6d",
+            "normalizedCharStart": 4458,
+            "normalizedCharEnd": 4708,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_alwan_et_al_paracetamol_use_in_pregnancy_cau_2021",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "The potential for a shared underlying genetic susceptibility to neurodevelopmental and psychiatric conditions being passed from parent to child must also be considered.",
-          "verifiedQuote": null
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "d6943a5ba8f31eba8ebdb1292da7628bde7bdbd1da1504abe4d4d9dab08a8961",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.nature.com/articles/s41574-021-00606-x",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
           "pos": "pos_increases_risk",
           "weight": "low",
           "quote": "Results did not appear to be confounded by maternal inflammation, infection during pregnancy, the mother's mental health problems, or other potential confounders we evaluated.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "eacc4fd596b44f3d779cac35f505d825a99e30e31e6ef4e8162c317e15872d11",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24566677/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "87aaa2628824a3cce8888e5e7c72f118c40f7a954a2bd6c0a64610f2895839dd",
+            "normalizedCharStart": 2192,
+            "normalizedCharEnd": 2367,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_stergiakouli_et_al_association_of_acetaminop_2016",
           "pos": "pos_increases_risk",
           "weight": "low",
           "quote": "This was not the case for maternal postnatal (n = 6916; 89%) or partner’s (n = 3454; 84%) acetaminophen use.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "b186cb1ee9df8b0c9f0ca47e62e9ea65dc983eeaec247270128abfe7a7f4e2b5",
+            "textDepth": "unknown",
+            "sourceUrl": "https://research-information.bris.ac.uk/en/publications/association-of-acetaminophen-use-during-pregnancy-with-behavioral",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4595ad26cd87d57c180abaa4c99b3bef44912f26fba3a8f7a4c3831aecfd1104",
+            "normalizedCharStart": 2401,
+            "normalizedCharEnd": 2509,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_direct_fetal_biomarker_vs_self_reported_expo",
       "label": "Direct fetal biomarker vs self-reported exposure",
-      "weights": {},
+      "weights": {
+        "pos_increases_risk": "high"
+      },
       "rationale": "The whole claim rests on measured cord biomarkers rather than recalled maternal use, which the authors argue removes the exposure-misclassification weakness of earlier questionnaire studies.",
       "provenance": [
         {
           "source": "src_ji_et_al_association_of_cord_plasma_biomarke_2020",
           "pos": "pos_increases_risk",
           "weight": "high",
-          "quote": "The cord plasma metabolites provide a direct measurement of fetal acetaminophen exposure before delivery.",
-          "verifiedQuote": null
+          "quote": "13 , 14 , 15 , 16 , 17 , 30 The cord plasma metabolites provide a direct measurement of fetal acetaminophen exposure before delivery.",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "7e1b33798182f7c4036e8cdf6d40cdaec73e4efba4766eeb72b5e7d0da10513b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6822099/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "27e98e29006673ab08821d1ce726d24522952e5026cb53f2755c80078cb86893",
+            "normalizedCharStart": 39628,
+            "normalizedCharEnd": 39761,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_precautionary_action_vs_waiting_for_causal_p",
       "label": "Precautionary action vs waiting for causal proof",
-      "weights": {},
+      "weights": {
+        "pos_increases_risk": "high"
+      },
       "rationale": "The statement argues that suggestive (not conclusive) evidence already justifies clinical caution — putting the burden of proof on the side of precaution, the exact crux its published rebuttals contest.",
       "provenance": [
         {
@@ -377,28 +480,65 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "Here we summarize this evidence and call for precautionary action through a focused research effort and by increasing awareness among health professionals and pregnant women.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "c2773648c2384f7a77d5569748edbfef4f951c04b3ee8b1c820cc9fd7d92458f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.nature.com/articles/s41574-021-00553-7",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "06ce1efd7c154b2ae1275cddaa90c65d1b3321370628cfe231d9e7bb1b5f22bb",
+            "normalizedCharStart": 1268,
+            "normalizedCharEnd": 1442,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_acog_acetaminophen_use_in_pregnancy_and_neur_2025",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "At this time, no change in clinical practice is warranted based on new publications and ACOG's recommendations for the use of acetaminophen for specific indications remain current.",
-          "verifiedQuote": null
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "86f027affbbd53dde8ef0f862afa2a20c00cb9bed05f1716edcf824a9b93abb3",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.acog.org/clinical/clinical-guidance/practice-advisory/articles/2025/09/acetaminophen-use-in-pregnancy-and-neurodevelopmental-outcomes",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         },
         {
           "source": "src_fda_responds_to_evidence_of_possible_associa_2025",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "It is important to note that while an association between acetaminophen and neurological conditions has been described in many studies, a causal relationship has not been established and there are contrary studies in the scientific literature.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f1d8182a46fb4e51a4cc0c61df914d053d73be2c36148eb9bc90407eaa4d833b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.fda.gov/news-events/press-announcements/fda-responds-evidence-possible-association-between-autism-and-acetaminophen-use-during-pregnancy",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0a6d07c2a11b5a728b475b2740285e3fb8a964af96a4453a138daf233711026a",
+            "normalizedCharStart": 1753,
+            "normalizedCharEnd": 1996,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_sex_specific_susceptibility_boys_vs_girls",
       "label": "Sex-specific susceptibility (boys vs girls)",
-      "weights": {},
+      "weights": {
+        "pos_increases_risk": "high"
+      },
       "rationale": "Adds to the recurring dispute over whether prenatal acetaminophen affects boys and girls differently — here both sexes affected, boys somewhat more.",
       "provenance": [
         {
@@ -406,35 +546,90 @@
           "pos": "pos_increases_risk",
           "weight": "med",
           "quote": "Boys and girls showed higher odds for ASC and ADHD symptoms after prenatal exposure, though these associations were slightly stronger among boys.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "75cabffabde6f976dd22e2bda2f4ed076def9d3a7ac1982edec65b07f4606a76",
+            "normalizedCharStart": 12328,
+            "normalizedCharEnd": 12473,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_woodbury_et_al_the_relationship_of_prenatal__2024",
           "pos": "pos_increases_risk",
           "weight": "low",
           "quote": "While male children in this cohort had higher scores on the Attention Problems, ADHD Problems, and Externalizing Behavior scores than female children, especially at ages 3 and 4 years, no sex-specific associations with acetaminophen use were observed.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a425245edd6ff18406382aedc30799e51ebeff4da5e388e31b8db0f8c702f9e4",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11018143/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "133db6053574cf54305655cdb408685c0f312bbed5a83ce81db812bf47aed29d",
+            "normalizedCharStart": 41186,
+            "normalizedCharEnd": 41437,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_tovo_rodrigues_et_al_is_intrauterine_exposur_2018",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "No association for any phenotypes at both ages was observed for girls.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "403d3888f1d3b4aa78b464f47c791236939ab2c8d016744a3a8ec7e8aaf22ff0",
+            "textDepth": "unknown",
+            "sourceUrl": "https://link.springer.com/content/pdf/10.1186/s12888-018-1942-1.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4a44f849df5ae939174c2cb1908c22cdcbed71a3d8acc3579fa97b8804201a08",
+            "normalizedCharStart": 2241,
+            "normalizedCharEnd": 2311,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "CAST scores were increased in ever-exposed males (β = 0.63, 0.09-1.18).",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f0cef1be247c2d61ff61a45826bdadcd711fd7000cfc542ab5ce15ced4d3a89a",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27353198/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "65fd40cd7cf190c81ac43bf5788affe1545eae2d9a1dca5ef80541be007137e2",
+            "normalizedCharStart": 1413,
+            "normalizedCharEnd": 1484,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_confounding_by_indication_fever_pain_vs_drug",
       "label": "Confounding by indication (fever/pain) vs drug-specific effect",
-      "weights": {},
+      "weights": {
+        "pos_no_increased_risk_confounding_explains_it": "high",
+        "pos_increases_risk": "high"
+      },
       "rationale": "Argues the signal is specific to acetaminophen (not aspirin/antibiotics), which proponents read as evidence against confounding by the underlying reason for taking it.",
       "provenance": [
         {
@@ -442,28 +637,66 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "We found significantly higher total difficulty scores (Strengths and Difficulty Questionnaire parent report at age 7 and child report at age 11) if acetaminophen was used during pregnancy, but there were no significant differences associated with any of the other drugs.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "76e1911b6a6a6d9bbe85d5af9b669f2f338a5a345823b013cd52a3519f850b8f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0108210",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8a1fa28dad995a8637322a1b9419a0825f59aeed1e8f3f341ffa595d2e9add34",
+            "normalizedCharStart": 913,
+            "normalizedCharEnd": 1183,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_associations_between_prenatal_acetaminophen__2020",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "Acetaminophen is taken for a wide range of reasons and severity, including pain, inflammation, and fever, making confounding by indication very difficult to understand and control, either through design or analysis.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ff924e0fdc8fdc711673c27a1fc6fcfcae124a398b87e8ca946787451fd0da73",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7259542/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3da374cb1d74a9e575b7da5d0db232c1994ba20978876d38aaeec71459c2a592",
+            "normalizedCharStart": 3324,
+            "normalizedCharEnd": 3539,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_alwan_et_al_paracetamol_use_in_pregnancy_cau_2021",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "high",
           "quote": "Pregnant people use APAP for migraine or fever, both of which have been associated with adverse effects on fetal neurological development.",
-          "verifiedQuote": null
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "d6943a5ba8f31eba8ebdb1292da7628bde7bdbd1da1504abe4d4d9dab08a8961",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.nature.com/articles/s41574-021-00606-x",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       ]
     },
     {
       "id": "f_biological_mechanism_animal_evidence_for_cau",
       "label": "Biological mechanism / animal evidence for causation",
-      "weights": {},
+      "weights": {
+        "pos_no_increased_risk_confounding_explains_it": "low",
+        "pos_increases_risk": "high"
+      },
       "rationale": "Supplies a controlled-experiment mechanism (oxidative stress, altered behavior/memory) that proponents use to argue the human associations are causally plausible; skeptics discount mouse findings for human autism.",
       "provenance": [
         {
@@ -471,28 +704,69 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "An increase of markers for oxidative stress was observed in the hippocampus 6 h after AAP exposure.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a1c41e938204481332d6a2fbeeb2de60471f7f07d2f61d4dd8c4145185fffea1",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8981466/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "121a7eb123e5872733f585c89e741d9db401cb26c6c2b4cebaa8c6bb4b14d85d",
+            "normalizedCharStart": 4807,
+            "normalizedCharEnd": 4906,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_prenatal_acetaminophen_exposure_does_not_dis_2025",
           "pos": "pos_no_increased_risk_confounding_explains_it",
           "weight": "low",
           "quote": "Neuronal and progenitor cell proportions were unchanged.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d8300ac004de139d4dd7827a0213f1ddd1e57c0a0fc687cb3b4fe30485ce6351",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.biorxiv.org/content/10.1101/2025.10.07.681041.full.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3c58fb78ca372e72d0a8e64cbab1f5f532736213a860955f31b8e141a1f0a3fe",
+            "normalizedCharStart": 2102,
+            "normalizedCharEnd": 2158,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_chu_et_al_acetaminophen_s_role_in_autism_and_2025",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "It focuses on a toxic metabolite of acetaminophen, N-acetyl-p-benzoquinone imine (NAPQ1), and its role in neuroinflammation.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "aecc81f346db62d094dfcd99b5347bcc50574dd78a832ba4c613c2aa729c9b39",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.mdpi.com/1422-0067/26/17/8585",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "139e103285ad11ffa6cf53c27bbaf7f3800ff2fca35a9a784e6d19f4e4d3fb37",
+            "normalizedCharStart": 2350,
+            "normalizedCharEnd": 2474,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_which_study_designs_count_as_highest_quality",
       "label": "Which study designs count as highest quality",
-      "weights": {},
+      "weights": {
+        "pos_increases_risk": "high"
+      },
       "rationale": "Directly contests the sibling-control camp: this synthesis rates the adjusted-cohort positive studies as higher quality, whereas the null side treats sibling-controlled designs as the gold standard.",
       "provenance": [
         {
@@ -500,14 +774,29 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "Higher-quality studies were more likely to show positive associations.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ff120b7af861d555d1fcb0378e52377d856f8687023f54a18bbfcd21fdb08610",
+            "textDepth": "unknown",
+            "sourceUrl": "https://ehjournal.biomedcentral.com/articles/10.1186/s12940-025-01208-0",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8a8f62fc9fa82ec02e1589b54754b14c56e5028cfc7c577677a7ab8c82903a21",
+            "normalizedCharStart": 1446,
+            "normalizedCharEnd": 1516,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
     {
       "id": "f_dose_response_duration_as_causal_evidence",
       "label": "Dose-response / duration as causal evidence",
-      "weights": {},
+      "weights": {
+        "pos_increases_risk": "high"
+      },
       "rationale": "Treats the dose/duration gradient as strengthening the causal case — a recurring crux the sibling-control camp rebuts by noting confounding also scales with heavier use.",
       "provenance": [
         {
@@ -515,28 +804,80 @@
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "Long-term use, increased dose, and frequency were associated with a stronger association.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "6382bb1ad41114213164bde6e3faecea525c50d128a028d42d5f108c39698d89",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9385573/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "40b04f72aadc680f4a66b275228543b47afab3b1cfc770c95d9a4b2defd4ae44",
+            "normalizedCharStart": 5033,
+            "normalizedCharEnd": 5122,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "Stronger associations were observed with use in more than 1 trimester during pregnancy, and exposure response trends were found with increasing frequency of acetaminophen use during gestation for all outcomes (ie, HKD diagnosis, ADHD medication use, and ADHD-like behaviors; P trend < .001).",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "eacc4fd596b44f3d779cac35f505d825a99e30e31e6ef4e8162c317e15872d11",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24566677/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "89f8ebb7ff02ea7ce26bf3525072f9a0516e67358101d49213bb987b0e05db90",
+            "normalizedCharStart": 1900,
+            "normalizedCharEnd": 2191,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "These associations seem to be dependent on the frequency of exposure.",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f0cef1be247c2d61ff61a45826bdadcd711fd7000cfc542ab5ce15ced4d3a89a",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27353198/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2ad0b99e8efecf24e0270ddb9a899dc0f398417685c8270d19d38ddaf8d3ff43",
+            "normalizedCharStart": 1975,
+            "normalizedCharEnd": 2044,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         },
         {
           "source": "src_masarwa_et_al_prenatal_exposure_to_acetamino_2018",
           "pos": "pos_increases_risk",
           "weight": "high",
           "quote": "In meta-regression analysis, the association between exposure and ADHD increased with the child's age upon follow-up (β = 0.03, 95% CI: 0.00, 0.07) and with the mean duration of exposure (β = 0.00, 95% CI: 0.00, 0.01).",
-          "verifiedQuote": null
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ecc1f75d7d5c6c0a55ba514f4ab661e79faec12958834e4c8c2680cedd07e3fc",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29688261/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c502a12872563220772d83c80340fac9743d0bb785c16292f1ec6c909dda9956",
+            "normalizedCharStart": 1062,
+            "normalizedCharEnd": 1280,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     }
@@ -570,8 +911,22 @@
         {
           "ref": "ds_swedish_national_health_registers_birth_pres",
           "provenance": {
-            "quote": "This nationwide cohort study with sibling control analysis included a population-based sample of 2 480 797 children born in 1995 to 2019 in Sweden, with follow-up through December 31, 2021.",
-            "extractionConfidence": 0.95
+            "quote": "Design, Setting, and Participants This nationwide cohort study with sibling control analysis included a population-based sample of 2 480 797 children born in 1995 to 2019 in Sweden, with follow-up through December 31, 2021.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "a48c6479c6c89b6b724da6de6728ac0dfa419bac36def2c76bd75ddb2a3f01b4",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11004836/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "bd7ca7843a7d26fd3cf262ec17acc4088b91da6b7fd5e4d334f1934ba5597a3a",
+              "normalizedCharStart": 7725,
+              "normalizedCharEnd": 7948,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -584,8 +939,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Acetaminophen use during pregnancy was not associated with children’s risk of autism, ADHD, or intellectual disability in sibling control analysis.",
-          "extractionConfidence": 0.95
+          "quote": "Conclusions and Relevance Acetaminophen use during pregnancy was not associated with children’s risk of autism, ADHD, or intellectual disability in sibling control analysis.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a48c6479c6c89b6b724da6de6728ac0dfa419bac36def2c76bd75ddb2a3f01b4",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11004836/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2bce0e6593b250258d1c7673ef8e1d9b068b450c908db4b104fcb9b19d3e421e",
+            "normalizedCharStart": 9761,
+            "normalizedCharEnd": 9934,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 1,
@@ -620,8 +989,22 @@
         {
           "ref": "ds_boston_birth_cohort",
           "provenance": {
-            "quote": "This prospective cohort study analyzed 996 mother-infant dyads, a subset of the Boston Birth Cohort, who were enrolled at birth and followed up prospectively at the Boston Medical Center from October 1, 1998, to June 30, 2018.",
-            "extractionConfidence": 0.95
+            "quote": "Design, Setting, and Participants This prospective cohort study analyzed 996 mother-infant dyads, a subset of the Boston Birth Cohort, who were enrolled at birth and followed up prospectively at the Boston Medical Center from October 1, 1998, to June 30, 2018.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "7e1b33798182f7c4036e8cdf6d40cdaec73e4efba4766eeb72b5e7d0da10513b",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6822099/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "b83d5aebf61e41b9d9681eb8ab444e943dc2367d859fbc8a775aef7d01a35347",
+              "normalizedCharStart": 8702,
+              "normalizedCharEnd": 8962,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -634,8 +1017,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Cord biomarkers of fetal exposure to acetaminophen were associated with significantly increased risk of childhood ADHD and ASD in a dose-response fashion.",
-          "extractionConfidence": 0.95
+          "quote": "Conclusions and Relevance Cord biomarkers of fetal exposure to acetaminophen were associated with significantly increased risk of childhood ADHD and ASD in a dose-response fashion.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "7e1b33798182f7c4036e8cdf6d40cdaec73e4efba4766eeb72b5e7d0da10513b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6822099/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d064b88499ff1abb0a294c9e18df212ec17c5f72bfc58ad49459faf642fd7484",
+            "normalizedCharStart": 10385,
+            "normalizedCharEnd": 10565,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 2,
@@ -674,7 +1071,21 @@
           "ref": "ds_precautionary_consensus_statement_91_signato",
           "provenance": {
             "quote": "This Consensus Statement reflects our concerns and is currently supported by 91 scientists, clinicians and public health professionals from across the globe.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "c2773648c2384f7a77d5569748edbfef4f951c04b3ee8b1c820cc9fd7d92458f",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.nature.com/articles/s41574-021-00553-7",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "f740a68794a6c6196b4446970ca5f2dd21278e6504ef3c2d977376c482b94896",
+              "normalizedCharStart": 1965,
+              "normalizedCharEnd": 2122,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -688,7 +1099,21 @@
       "provenance": {
         "position": {
           "quote": "However, increasing experimental and epidemiological research suggests that prenatal exposure to APAP might alter fetal development, which could increase the risks of some neurodevelopmental, reproductive and urogenital disorders.",
-          "extractionConfidence": 0.85
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "c2773648c2384f7a77d5569748edbfef4f951c04b3ee8b1c820cc9fd7d92458f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.nature.com/articles/s41574-021-00553-7",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4c83e83e31f295bf14bf724142a2164ef98e0d0bb43b5b4fe3161c597ecc8fe7",
+            "normalizedCharStart": 1037,
+            "normalizedCharEnd": 1267,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 3,
@@ -733,8 +1158,22 @@
         {
           "ref": "ds_alspac_avon_longitudinal_study_of_parents_an",
           "provenance": {
-            "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
-            "extractionConfidence": 0.7
+            "quote": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+            "extractionConfidence": 0.7,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "16acfeef422373a1e80c1bd4aa415c72b579307136e701eb78973928070b3dd3",
+              "normalizedCharStart": 16191,
+              "normalizedCharEnd": 16512,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -747,8 +1186,22 @@
         {
           "ref": "ds_danish_national_birth_cohort_dnbc",
           "provenance": {
-            "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
-            "extractionConfidence": 0.7
+            "quote": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+            "extractionConfidence": 0.7,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "16acfeef422373a1e80c1bd4aa415c72b579307136e701eb78973928070b3dd3",
+              "normalizedCharStart": 16191,
+              "normalizedCharEnd": 16512,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -761,8 +1214,22 @@
         {
           "ref": "ds_inma_infancia_y_medio_ambiente",
           "provenance": {
-            "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
-            "extractionConfidence": 0.7
+            "quote": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+            "extractionConfidence": 0.7,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "16acfeef422373a1e80c1bd4aa415c72b579307136e701eb78973928070b3dd3",
+              "normalizedCharStart": 16191,
+              "normalizedCharEnd": 16512,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -775,8 +1242,22 @@
         {
           "ref": "ds_generation_r_study",
           "provenance": {
-            "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
-            "extractionConfidence": 0.7
+            "quote": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+            "extractionConfidence": 0.7,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "16acfeef422373a1e80c1bd4aa415c72b579307136e701eb78973928070b3dd3",
+              "normalizedCharStart": 16191,
+              "normalizedCharEnd": 16512,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -790,7 +1271,21 @@
       "provenance": {
         "position": {
           "quote": "Results indicated that children prenatally exposed to acetaminophen were 19% and 21% more likely to subsequently have borderline or clinical ASC (OR = 1.19, 95% CI 1.07–1.33) and ADHD symptoms (OR = 1.21, 95% CI 1.07–1.36) compared to non-exposed children.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "5202016d9dafd0d1e2f07fab185136798538ebac3dd394e06619d4bc1468653e",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8542535/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "85aab8dc6f4d35c33f5c5ca8228d2b37f5f98ff313040aca7efdcebfb5d78fdb",
+            "normalizedCharStart": 12071,
+            "normalizedCharEnd": 12327,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 4,
@@ -827,8 +1322,22 @@
         {
           "ref": "ds_norwegian_mother_father_and_child_cohort_mob",
           "provenance": {
-            "quote": "We used data from 26,613 children from 12,902 families participating in the prospective Norwegian Mother, Father, and Child Cohort Study (MoBa).",
-            "extractionConfidence": 0.95
+            "quote": "Methods We used data from 26,613 children from 12,902 families participating in the prospective Norwegian Mother, Father, and Child Cohort Study (MoBa).",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "67a81887dc1e0ef5abb6053c15ee980def69faf86dfa8587bd923024596fb225",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10242945/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "f05b9e65742cb214149b446cd3626a43215b768988fa186bebf76cc33b8595f3",
+              "normalizedCharStart": 6344,
+              "normalizedCharEnd": 6496,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -841,8 +1350,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Children exposed to acetaminophen up to 28 days during pregnancy did not have increased risk of receiving an ADHD diagnosis compared to unexposed children.",
-          "extractionConfidence": 0.9
+          "quote": "Results Children exposed to acetaminophen up to 28 days during pregnancy did not have increased risk of receiving an ADHD diagnosis compared to unexposed children.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "67a81887dc1e0ef5abb6053c15ee980def69faf86dfa8587bd923024596fb225",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10242945/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c645969fc899aa43f27e23bae9f5d6d968b4fc50e07b3411ac2d15b280838c0c",
+            "normalizedCharStart": 6707,
+            "normalizedCharEnd": 6870,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 5,
@@ -873,7 +1396,21 @@
           "ref": "ds_auckland_birthweight_collaborative_study",
           "provenance": {
             "quote": "Participants were members of the Auckland Birthweight Collaborative Study, a longitudinal study of 871 infants of European descent sampled disproportionately for small for gestational age.",
-            "extractionConfidence": 0.95
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "76e1911b6a6a6d9bbe85d5af9b669f2f338a5a345823b013cd52a3519f850b8f",
+              "textDepth": "unknown",
+              "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0108210",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "55f47b911a585bc58c22a42d25815dc66068a80295595198457eab9adc1f5e85",
+              "normalizedCharStart": 278,
+              "normalizedCharEnd": 466,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -887,7 +1424,21 @@
       "provenance": {
         "position": {
           "quote": "These findings strengthen the contention that acetaminophen exposure in pregnancy increases the risk of ADHD-like behaviours.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "76e1911b6a6a6d9bbe85d5af9b669f2f338a5a345823b013cd52a3519f850b8f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0108210",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "9fb1ce7eda010b5ca86548ae8e821e74acbaf3f3137ea961c5f8f145e0a1dfcc",
+            "normalizedCharStart": 1358,
+            "normalizedCharEnd": 1483,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 6,
@@ -915,7 +1466,21 @@
           "ref": "ds_neonatal_mouse_model_hippocampus",
           "provenance": {
             "quote": "The aim of this study is to evaluate the impact of neonatal exposure to clinically relevant doses of AAP on adult spontaneous behavior, habituation, memory, learning, and cognitive flexibility later in life using a mouse model.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "a1c41e938204481332d6a2fbeeb2de60471f7f07d2f61d4dd8c4145185fffea1",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8981466/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "e14158f31609c76deeac9dc57068c3e5adc2f5c7279c135ae5fef7d803f1b264",
+              "normalizedCharStart": 3978,
+              "normalizedCharEnd": 4205,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -929,7 +1494,21 @@
       "provenance": {
         "position": {
           "quote": "Here we show that AAP can have persistent negative effects on brain development and suggest that AAP, despite the relatively low doses, is capable to induce acute oxidative stress in the hippocampus.",
-          "extractionConfidence": 0.85
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a1c41e938204481332d6a2fbeeb2de60471f7f07d2f61d4dd8c4145185fffea1",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8981466/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5b2fecee49e26697e0a0413a786ea324fc19878598d7ee3714791dae50351d5e",
+            "normalizedCharStart": 5061,
+            "normalizedCharEnd": 5260,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 7,
@@ -954,7 +1533,21 @@
           "ref": "ds_human_ipsc_derived_cortical_organoid_model",
           "provenance": {
             "quote": "APAP exposure did not alter growth dynamics, cytoarchitecture, or viability, with apoptosis rates remaining below 1% in all conditions.",
-            "extractionConfidence": 0.85
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d8300ac004de139d4dd7827a0213f1ddd1e57c0a0fc687cb3b4fe30485ce6351",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.biorxiv.org/content/10.1101/2025.10.07.681041.full.pdf",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "8353de58cb29a691e5e43fa098491e82939eeef26d0b77356e4f3953817b45ac",
+              "normalizedCharStart": 1966,
+              "normalizedCharEnd": 2101,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -968,7 +1561,21 @@
       "provenance": {
         "position": {
           "quote": "Taken together, therapeutic APAP concentrations produced only modest transcriptional effects without structural or functional consequences in developing cortical organoids.",
-          "extractionConfidence": 0.85
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d8300ac004de139d4dd7827a0213f1ddd1e57c0a0fc687cb3b4fe30485ce6351",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.biorxiv.org/content/10.1101/2025.10.07.681041.full.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d4852c165e9ba3e7d22436ab85ce3d772b1f1d6dab7923a91dd6c33870a4902a",
+            "normalizedCharStart": 2539,
+            "normalizedCharEnd": 2711,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 8,
@@ -1028,7 +1635,21 @@
       "provenance": {
         "position": {
           "quote": "Our analyses using the Navigation Guide thus support evidence consistent with an association between acetaminophen exposure during pregnancy and increased incidence of NDDs.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ff120b7af861d555d1fcb0378e52377d856f8687023f54a18bbfcd21fdb08610",
+            "textDepth": "unknown",
+            "sourceUrl": "https://ehjournal.biomedcentral.com/articles/10.1186/s12940-025-01208-0",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3d3b530db5f32d78c907e49c1f5f150e224499f37eb3a27d98dc022200ffb6a7",
+            "normalizedCharStart": 1750,
+            "normalizedCharEnd": 1923,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 9,
@@ -1054,8 +1675,22 @@
         {
           "ref": "ds_acog_clinical_guidance_weight_of_evidence",
           "provenance": {
-            "quote": "ACOG reaffirms that acetaminophen remains the analgesic and antipyretic of choice during pregnancy.",
-            "extractionConfidence": 0.9
+            "quote": "ACOG Recommendation ACOG reaffirms that acetaminophen remains the analgesic and antipyretic of choice during pregnancy.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "86f027affbbd53dde8ef0f862afa2a20c00cb9bed05f1716edcf824a9b93abb3",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.acog.org/clinical/clinical-guidance/practice-advisory/articles/2025/09/acetaminophen-use-in-pregnancy-and-neurodevelopmental-outcomes",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "1970c4d7d4d869b6bdd865af9288585d0407d4afcd58c320e2bb2af8839c9dd5",
+              "normalizedCharStart": 1349,
+              "normalizedCharEnd": 1468,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1069,7 +1704,21 @@
       "provenance": {
         "position": {
           "quote": "The current weight of evidence does not support a causal link between prenatal acetaminophen use and neurodevelopmental disorders.",
-          "extractionConfidence": 0.95
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "86f027affbbd53dde8ef0f862afa2a20c00cb9bed05f1716edcf824a9b93abb3",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.acog.org/clinical/clinical-guidance/practice-advisory/articles/2025/09/acetaminophen-use-in-pregnancy-and-neurodevelopmental-outcomes",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ee896e9708af1ce214c89ed627ce262c57859357be8a8151cf96b309b31484dd",
+            "normalizedCharStart": 1676,
+            "normalizedCharEnd": 1806,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 10,
@@ -1094,7 +1743,21 @@
           "ref": "ds_bias_validity_analysis_commentary",
           "provenance": {
             "quote": "Considered singly, any one of these sources of bias should worry conscientious researchers, but taken together, a picture of multiple competing biases emerges, making the task of identifying a true causal effect very challenging.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "ff924e0fdc8fdc711673c27a1fc6fcfcae124a398b87e8ca946787451fd0da73",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7259542/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "dcfa9d1a7147d67a4cc2631501bfde96182ef35068e72030b88c0d446d165449",
+              "normalizedCharStart": 3874,
+              "normalizedCharEnd": 4103,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1107,8 +1770,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Studies of prenatal acetaminophen exposure and neurodevelopment are subject to multiple biases.",
-          "extractionConfidence": 0.85
+          "quote": "Social media quote Studies of prenatal acetaminophen exposure and neurodevelopment are subject to multiple biases.",
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ff924e0fdc8fdc711673c27a1fc6fcfcae124a398b87e8ca946787451fd0da73",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7259542/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "2c791e2b0561140abd296e14cb9937af7d0efd0b96036c7f3c53d1ae2cfd93d2",
+            "normalizedCharStart": 1685,
+            "normalizedCharEnd": 1799,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 11,
@@ -1135,7 +1812,21 @@
           "ref": "ds_mother_to_baby_patient_fact_sheet_literature",
           "provenance": {
             "quote": "This information is based on available published literature.",
-            "extractionConfidence": 0.85
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "1565042cee8a8d01ba53b0fef2a2b48a67ece516115c7e6f03367adf23263b1f",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK582555/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7411470404f325fe8bac3edcca2c4107d52c1825ae2c8509cb1e3fdd52386df5",
+              "normalizedCharStart": 1530,
+              "normalizedCharEnd": 1590,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1149,7 +1840,21 @@
       "provenance": {
         "position": {
           "quote": "It is not clear if these findings are related to acetaminophen or to other factors.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "1565042cee8a8d01ba53b0fef2a2b48a67ece516115c7e6f03367adf23263b1f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK582555/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5179830e8757de444784d6ad762effc6b3e0571f8f2b80830419c6e5186141d2",
+            "normalizedCharStart": 5590,
+            "normalizedCharEnd": 5673,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 12,
@@ -1174,7 +1879,21 @@
           "ref": "ds_napqi_mitochondrial_damage_theoretical_frame",
           "provenance": {
             "quote": "This paper is a compilation of literature aiming to explore a theoretical framework for acetaminophen-induced mitochondrial damage in utero.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "aecc81f346db62d094dfcd99b5347bcc50574dd78a832ba4c613c2aa729c9b39",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.mdpi.com/1422-0067/26/17/8585",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "fbcc2dc10d5dec8033d92bc013d2de4f68fa693bb519f21deb9d7883c20e9d31",
+              "normalizedCharStart": 2209,
+              "normalizedCharEnd": 2349,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1188,7 +1907,17 @@
       "provenance": {
         "position": {
           "quote": "Second, the scientific community agrees that autism and ADHD have complex etiologies involving both genetic and environmental factors, and we acknowledge these roles and that acetaminophen can pose a risk to these disorders.",
-          "extractionConfidence": 0.8
+          "extractionConfidence": 0.8,
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "aecc81f346db62d094dfcd99b5347bcc50574dd78a832ba4c613c2aa729c9b39",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.mdpi.com/1422-0067/26/17/8585",
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
+          }
         }
       },
       "addedIn": 13,
@@ -1215,8 +1944,22 @@
         {
           "ref": "ds_illinois_kids_development_study_ikids",
           "provenance": {
-            "quote": "By January 2023, 688 pregnant women had been enrolled in the IKIDS cohort.",
-            "extractionConfidence": 0.9
+            "quote": "Participation and Demographics By January 2023, 688 pregnant women had been enrolled in the IKIDS cohort.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "a425245edd6ff18406382aedc30799e51ebeff4da5e388e31b8db0f8c702f9e4",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11018143/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "dc1c319713f90b4bb0972afd679e1844b670b57f901a918d08a3ff9ad5bf3dcd",
+              "normalizedCharStart": 24566,
+              "normalizedCharEnd": 24671,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1229,8 +1972,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "these findings indicate that higher prenatal exposure to acetaminophen during the second trimester as well as cumulative exposure throughout pregnancy was consistently associated with increases in attention-related problems.",
-          "extractionConfidence": 0.9
+          "quote": "Despite potential concerns with self-report measures of acetaminophen use during pregnancy leading to recall bias, and the small sample size of this study compared to previous studies, these findings indicate that higher prenatal exposure to acetaminophen during the second trimester as well as cumulative exposure throughout pregnancy was consistently associated with increases in attention-related problems.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "a425245edd6ff18406382aedc30799e51ebeff4da5e388e31b8db0f8c702f9e4",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11018143/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "e84c72ee1ce4190e232291e64ed8d569e3e829c1c61e49811805bfecdc8c8429",
+            "normalizedCharStart": 43785,
+            "normalizedCharEnd": 44194,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 14,
@@ -1275,7 +2032,21 @@
       "provenance": {
         "position": {
           "quote": "We extracted collective evidence from 16 studies suggesting acetaminophen's role in developing adverse neurodevelopmental outcomes.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "6382bb1ad41114213164bde6e3faecea525c50d128a028d42d5f108c39698d89",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9385573/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5b10dfd49ca3c157068bd3f7337ba344064e0d2dcb2e8d585f0dd96831531408",
+            "normalizedCharStart": 5123,
+            "normalizedCharEnd": 5254,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 15,
@@ -1301,8 +2072,22 @@
         {
           "ref": "ds_smfm_comprehensive_evidence_review",
           "provenance": {
-            "quote": "Acetaminophen remains the recommended first-line medication to treat pain and fever during pregnancy, according to an updated  statement  from the Society for Maternal-Fetal Medicine (SMFM).",
-            "extractionConfidence": 0.85
+            "quote": "Acetaminophen remains the recommended first-line medication to treat pain and fever during pregnancy, according to an updated statement from the Society for Maternal-Fetal Medicine (SMFM).",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "f81485f7fbf820ecf321fe493918e6f409442f58716310c0784f0bf850f269e6",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.smfm.org/news/smfm-reaffirms-acetaminophen-as-first-line-medication-for-treating-pain-and-fever-during-pregnancy",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "ff733c889ffe6b932b70e89c7e87acca93c6c2cee0a50c32235044d11e828113",
+              "normalizedCharStart": 287,
+              "normalizedCharEnd": 475,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1316,7 +2101,21 @@
       "provenance": {
         "position": {
           "quote": "A comprehensive review of the available scientific evidence does not establish a causal relationship between acetaminophen taken during pregnancy and an increased risk of autism spectrum disorders and attention deficit and hyperactivity disorder (ADHD) in children, according to SMFM.",
-          "extractionConfidence": 0.95
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f81485f7fbf820ecf321fe493918e6f409442f58716310c0784f0bf850f269e6",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.smfm.org/news/smfm-reaffirms-acetaminophen-as-first-line-medication-for-treating-pain-and-fever-during-pregnancy",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "ed2bb8577e8aaf4431fac513c0c6c25ac0d04dbe5437afb3142f763ff946bd5f",
+            "normalizedCharStart": 476,
+            "normalizedCharEnd": 760,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 16,
@@ -1340,8 +2139,22 @@
         {
           "ref": "ds_first_baby_study_pennsylvania",
           "provenance": {
-            "quote": "We used data from the First Baby Study, a prospective cohort study conducted in Pennsylvania, USA, with 2,423 mother-child pairs.",
-            "extractionConfidence": 0.95
+            "quote": "Methods We used data from the First Baby Study, a prospective cohort study conducted in Pennsylvania, USA, with 2,423 mother-child pairs.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d756a5ab7c10fdfee612d80ba573695953de5057c7f36fd59c5165ee33ebc281",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9518858/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "3d1dba96851b2568e022f83ff1be14c7f937c91644356a7197a7dd9dcd5ecda3",
+              "normalizedCharStart": 3699,
+              "normalizedCharEnd": 3836,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1354,8 +2167,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "These findings corroborate previous studies reporting associations between prenatal exposure to acetaminophen and attention problems in offspring and also show an association with sleep problems at age 3 years.",
-          "extractionConfidence": 0.9
+          "quote": "Conclusions These findings corroborate previous studies reporting associations between prenatal exposure to acetaminophen and attention problems in offspring and also show an association with sleep problems at age 3 years.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d756a5ab7c10fdfee612d80ba573695953de5057c7f36fd59c5165ee33ebc281",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9518858/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "1c65f5ca8c93923dd58cd2cf744136f1832b7a05cec952b3048b9429a1d08a01",
+            "normalizedCharStart": 4709,
+            "normalizedCharEnd": 4931,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 17,
@@ -1394,7 +2221,21 @@
           "ref": "ds_consensus_counterstatement_methodological_cr",
           "provenance": {
             "quote": "These studies are limited by serious methodological problems, including failure to account for confounding, and elements of bias that make interpretation of the data challenging.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d6943a5ba8f31eba8ebdb1292da7628bde7bdbd1da1504abe4d4d9dab08a8961",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.nature.com/articles/s41574-021-00606-x",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "c02e9378f7ab4ad4422900873578aceb7dc2861de36de83aa1d831383fd2b838",
+              "normalizedCharStart": 1338,
+              "normalizedCharEnd": 1516,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1408,7 +2249,21 @@
       "provenance": {
         "position": {
           "quote": "However, we caution against an inference of causality that is based upon inadequate evidence.",
-          "extractionConfidence": 0.95
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d6943a5ba8f31eba8ebdb1292da7628bde7bdbd1da1504abe4d4d9dab08a8961",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.nature.com/articles/s41574-021-00606-x",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "9a0146740627e987046ebbc3b3d370f208ad06e114a65c2a869be071caf74079",
+            "normalizedCharStart": 1092,
+            "normalizedCharEnd": 1185,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 18,
@@ -1435,7 +2290,21 @@
           "ref": "ds_2004_pelotas_birth_cohort_brazil",
           "provenance": {
             "quote": "We performed a prospective longitudinal population-based study using data from the 2004 Pelotas birth cohort.",
-            "extractionConfidence": 0.95
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "403d3888f1d3b4aa78b464f47c791236939ab2c8d016744a3a8ec7e8aaf22ff0",
+              "textDepth": "unknown",
+              "sourceUrl": "https://link.springer.com/content/pdf/10.1186/s12888-018-1942-1.pdf",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "0c8ad475d905d2f8a39eb22cb4677386acf9d1fb4afd960bdf268251ef5fe681",
+              "normalizedCharStart": 1001,
+              "normalizedCharEnd": 1110,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1449,7 +2318,21 @@
       "provenance": {
         "position": {
           "quote": "Intrauterine exposure to acetaminophen increased the odds of having emotional (odds ratio [OR] = 1.47; 95% CI: 1.07 – 2.02) and hyperactivity/inattention (OR = 1.42; 95% CI: 1.06– 1.92) problems in 6-year-old boys.",
-          "extractionConfidence": 0.85
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "403d3888f1d3b4aa78b464f47c791236939ab2c8d016744a3a8ec7e8aaf22ff0",
+            "textDepth": "unknown",
+            "sourceUrl": "https://link.springer.com/content/pdf/10.1186/s12888-018-1942-1.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "c61fc48fa26fbd3305f5cd8d3abcb5847024693fd0fd3f952bb49a1536d29f5b",
+            "normalizedCharStart": 1799,
+            "normalizedCharEnd": 2013,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 19,
@@ -1476,7 +2359,21 @@
           "ref": "ds_fda_evidence_review_label_change_action",
           "provenance": {
             "quote": "Multiple large-scale cohort studies, including the Nurses’ Health Study II and the Boston Birth Cohort , find this association.",
-            "extractionConfidence": 0.85
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "f1d8182a46fb4e51a4cc0c61df914d053d73be2c36148eb9bc90407eaa4d833b",
+              "textDepth": "unknown",
+              "sourceUrl": "https://www.fda.gov/news-events/press-announcements/fda-responds-evidence-possible-association-between-autism-and-acetaminophen-use-during-pregnancy",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "dc07d0c5e8e8599b9eaf8f1b9eda33dca8afd8b3d5a40b7e1220d9fe5f19e24a",
+              "normalizedCharStart": 1498,
+              "normalizedCharEnd": 1625,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1490,7 +2387,16 @@
       "provenance": {
         "position": {
           "quote": "The U.S. Food and Drug Administration today initiated the process for a label change for acetaminophen (Tylenol and similar products) to reflect evidence suggesting that the use of acetaminophen by pregnant women may be associated with an increased risk of neurological conditions such as autism and ADHD in children.",
-          "extractionConfidence": 0.9
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "fuzzy",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "fuzzy",
+            "textSha256": "f1d8182a46fb4e51a4cc0c61df914d053d73be2c36148eb9bc90407eaa4d833b",
+            "textDepth": "unknown",
+            "sourceUrl": "https://www.fda.gov/news-events/press-announcements/fda-responds-evidence-possible-association-between-autism-and-acetaminophen-use-during-pregnancy",
+            "reason": "crosses-structural-boundary"
+          }
         }
       },
       "addedIn": 20,
@@ -1520,8 +2426,22 @@
         {
           "ref": "ds_danish_national_birth_cohort_dnbc",
           "provenance": {
-            "quote": "We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
-            "extractionConfidence": 0.95
+            "quote": "DESIGN, SETTING, AND PARTICIPANTS: We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "eacc4fd596b44f3d779cac35f505d825a99e30e31e6ef4e8162c317e15872d11",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24566677/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "7d900a6e9b7ea96f3b5c1c3ca38d345a292f75bdda157f1725eb7f254161633d",
+              "normalizedCharStart": 584,
+              "normalizedCharEnd": 730,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1534,8 +2454,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Maternal acetaminophen use during pregnancy is associated with a higher risk for HKDs and ADHD-like behaviors in children.",
-          "extractionConfidence": 0.95
+          "quote": "CONCLUSIONS AND RELEVANCE: Maternal acetaminophen use during pregnancy is associated with a higher risk for HKDs and ADHD-like behaviors in children.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "eacc4fd596b44f3d779cac35f505d825a99e30e31e6ef4e8162c317e15872d11",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/24566677/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "02087fe4ab23426b98a8f831cba514f53217dc00c9e33e9f7699abe1b06600d3",
+            "normalizedCharStart": 2368,
+            "normalizedCharEnd": 2517,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 21,
@@ -1566,7 +2500,21 @@
           "ref": "ds_inma_infancia_y_medio_ambiente",
           "provenance": {
             "quote": "This Spanish birth cohort study included 2644 mother-child pairs recruited during pregnancy.",
-            "extractionConfidence": 0.9
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "f0cef1be247c2d61ff61a45826bdadcd711fd7000cfc542ab5ce15ced4d3a89a",
+              "textDepth": "unknown",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27353198/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "5ad95ee56b297e9f74ded943d46eb13bcbdba4c2c85f9eaff172df013099373e",
+              "normalizedCharStart": 465,
+              "normalizedCharEnd": 557,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1580,7 +2528,21 @@
       "provenance": {
         "position": {
           "quote": "Prenatal acetaminophen exposure was associated with a greater number of autism spectrum symptoms in males and showed adverse effects on attention-related outcomes for both genders.",
-          "extractionConfidence": 0.95
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f0cef1be247c2d61ff61a45826bdadcd711fd7000cfc542ab5ce15ced4d3a89a",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/27353198/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "61bdb8e34a14ada767ed5c1048901fbc6ab132251f4ea05a634069848ed125cc",
+            "normalizedCharStart": 1794,
+            "normalizedCharEnd": 1974,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 22,
@@ -1609,7 +2571,21 @@
           "ref": "ds_alspac_avon_longitudinal_study_of_parents_an",
           "provenance": {
             "quote": "We studied 7796 mothers enrolled in ALSPAC between 1991 and 1992 along with their children and partners.",
-            "extractionConfidence": 0.95
+            "extractionConfidence": 0.95,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "b186cb1ee9df8b0c9f0ca47e62e9ea65dc983eeaec247270128abfe7a7f4e2b5",
+              "textDepth": "unknown",
+              "sourceUrl": "https://research-information.bris.ac.uk/en/publications/association-of-acetaminophen-use-during-pregnancy-with-behavioral",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "3ecb80c70c80d5bfd8652a0daf9faf137b58cea2ac692f70f83fb58904dbdebe",
+              "normalizedCharStart": 1366,
+              "normalizedCharEnd": 1470,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
           },
           "admission": {
             "status": "confirmed",
@@ -1622,8 +2598,22 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Children exposed to acetaminophen prenatally are at increased risk of multiple behavioral difficulties, and the associations do not appear to be explained by unmeasured behavioral or social factors linked to acetaminophen use insofar as they are not observed for postnatal or partner’s acetaminophen use.",
-          "extractionConfidence": 0.9
+          "quote": "Conclusions and Relevance Children exposed to acetaminophen prenatally are at increased risk of multiple behavioral difficulties, and the associations do not appear to be explained by unmeasured behavioral or social factors linked to acetaminophen use insofar as they are not observed for postnatal or partner’s acetaminophen use.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "b186cb1ee9df8b0c9f0ca47e62e9ea65dc983eeaec247270128abfe7a7f4e2b5",
+            "textDepth": "unknown",
+            "sourceUrl": "https://research-information.bris.ac.uk/en/publications/association-of-acetaminophen-use-during-pregnancy-with-behavioral",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "36aef5a2d2c5f357f504fdc834a52481311a9f723a25c8c04c8f5da1321d33f7",
+            "normalizedCharStart": 2690,
+            "normalizedCharEnd": 3020,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 23,
@@ -1695,7 +2685,21 @@
       "provenance": {
         "position": {
           "quote": "Acetaminophen use during pregnancy is associated with an increased risk for ADHD, ASD, and hyperactivity symptoms.",
-          "extractionConfidence": 0.95
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ecc1f75d7d5c6c0a55ba514f4ab661e79faec12958834e4c8c2680cedd07e3fc",
+            "textDepth": "unknown",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/29688261/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "3de615d01da6b4b09b5d421f811faeec12721ca810efcfde0a4224404e3f82ec",
+            "normalizedCharStart": 1393,
+            "normalizedCharEnd": 1507,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       },
       "addedIn": 24,

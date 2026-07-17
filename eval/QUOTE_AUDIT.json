@@ -3490,7 +3490,8 @@
     },
     "eggs.kb.json": {
       "summary": {
-        "exact": 31
+        "exact": 35,
+        "fuzzy": 2
       },
       "sources": [
         {
@@ -3898,6 +3899,862 @@
               "old": "The wide range of outcomes, with substantial variability and high heterogeneity, indicated a lack of robust evidence.",
               "new": "The wide range of outcomes, with substantial variability and high heterogeneity, indicated a lack of robust evidence.",
               "field": "factor:f_population_context_dependence_who_is_eating_"
+            }
+          ]
+        },
+        {
+          "id": "src_galvis_et_al_consumption_of_eggs_alone_or_en_2023",
+          "title": "Galvis et al. — Consumption of eggs alone or enriched with Annatto does not increase cardiovascular risk in healthy adults: the Eggant study (RCT)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "In healthy adults, the intake of two eggs a day, or two eggs with Annatto for eight weeks, did not generate adverse changes in cardiovascular risk markers.",
+              "new": "In healthy adults, the intake of two eggs a day, or two eggs with Annatto for eight weeks, did not generate adverse changes in cardiovascular risk markers.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "In a parallel clinical trial, one hundred and five ( n = 105) men and women were randomized by age, sex, and body mass index (BMI), and distributed into three groups.",
+              "new": "In a parallel clinical trial, one hundred and five ( n = 105) men and women were randomized by age, sex, and body mass index (BMI), and distributed into three groups.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "No significant changes were found over time or between groups in plasma triglycerides, LDL cholesterol, HDL cholesterol, apolipoprotein (apo) A1, apo B, or lipoprotein subfraction concentrations.",
+              "new": "No significant changes were found over time or between groups in plasma triglycerides, LDL cholesterol, HDL cholesterol, apolipoprotein (apo) A1, apo B, or lipoprotein subfraction concentrations.",
+              "field": "factor:f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
+              "new": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
+              "field": "factor:f_industry_funding_as_a_source_quality_concern"
+            }
+          ]
+        },
+        {
+          "id": "src_barnard_et_al_industry_funding_and_cholester_2020",
+          "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "new": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "field": "source:position"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "new": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "field": "factor:f_industry_funding_as_a_source_quality_concern"
+            }
+          ]
+        }
+      ]
+    },
+    "tylenol.kb.json": {
+      "summary": {
+        "exact": 68,
+        "fuzzy": 6
+      },
+      "sources": [
+        {
+          "id": "src_ahlqvist_et_al_acetaminophen_use_during_preg_2024",
+          "title": "Ahlqvist et al. — Acetaminophen Use During Pregnancy and Children's Risk of Autism, ADHD, and Intellectual Disability (JAMA)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Conclusions and Relevance Acetaminophen use during pregnancy was not associated with children’s risk of autism, ADHD, or intellectual disability in sibling control analysis.",
+              "new": "Conclusions and Relevance Acetaminophen use during pregnancy was not associated with children’s risk of autism, ADHD, or intellectual disability in sibling control analysis.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Design, Setting, and Participants This nationwide cohort study with sibling control analysis included a population-based sample of 2 480 797 children born in 1995 to 2019 in Sweden, with follow-up through December 31, 2021.",
+              "new": "Design, Setting, and Participants This nationwide cohort study with sibling control analysis included a population-based sample of 2 480 797 children born in 1995 to 2019 in Sweden, with follow-up through December 31, 2021.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "However, analyses of matched full sibling pairs found no evidence of increased risk of autism (hazard ratio, 0.98), ADHD (hazard ratio, 0.98), or intellectual disability (hazard ratio, 1.01) associated with acetaminophen use.",
+              "new": "However, analyses of matched full sibling pairs found no evidence of increased risk of autism (hazard ratio, 0.98), ADHD (hazard ratio, 0.98), or intellectual disability (hazard ratio, 1.01) associated with acetaminophen use.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            }
+          ]
+        },
+        {
+          "id": "src_ji_et_al_association_of_cord_plasma_biomarke_2020",
+          "title": "Ji et al. — Association of Cord Plasma Biomarkers of In Utero Acetaminophen Exposure With Risk of ADHD and Autism Spectrum Disorder in Childhood (JAMA Psychiatry)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Conclusions and Relevance Cord biomarkers of fetal exposure to acetaminophen were associated with significantly increased risk of childhood ADHD and ASD in a dose-response fashion.",
+              "new": "Conclusions and Relevance Cord biomarkers of fetal exposure to acetaminophen were associated with significantly increased risk of childhood ADHD and ASD in a dose-response fashion.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Design, Setting, and Participants This prospective cohort study analyzed 996 mother-infant dyads, a subset of the Boston Birth Cohort, who were enrolled at birth and followed up prospectively at the Boston Medical Center from October 1, 1998, to June 30, 2018.",
+              "new": "Design, Setting, and Participants This prospective cohort study analyzed 996 mother-infant dyads, a subset of the Boston Birth Cohort, who were enrolled at birth and followed up prospectively at the Boston Medical Center from October 1, 1998, to June 30, 2018.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Fourth, because of our observational study design, we were unable to exclude the potential residual confounders because of unmeasured genetic and environmental factors.",
+              "new": "Fourth, because of our observational study design, we were unable to exclude the potential residual confounders because of unmeasured genetic and environmental factors.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "13 , 14 , 15 , 16 , 17 , 30 The cord plasma metabolites provide a direct measurement of fetal acetaminophen exposure before delivery.",
+              "new": "13 , 14 , 15 , 16 , 17 , 30 The cord plasma metabolites provide a direct measurement of fetal acetaminophen exposure before delivery.",
+              "field": "factor:f_direct_fetal_biomarker_vs_self_reported_expo"
+            }
+          ]
+        },
+        {
+          "id": "src_bauer_et_al_paracetamol_use_during_pregnancy_2021",
+          "title": "Bauer et al. — Paracetamol use during pregnancy: a call for precautionary action (Consensus Statement, Nature Reviews Endocrinology)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "However, increasing experimental and epidemiological research suggests that prenatal exposure to APAP might alter fetal development, which could increase the risks of some neurodevelopmental, reproductive and urogenital disorders.",
+              "new": "However, increasing experimental and epidemiological research suggests that prenatal exposure to APAP might alter fetal development, which could increase the risks of some neurodevelopmental, reproductive and urogenital disorders.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "This Consensus Statement reflects our concerns and is currently supported by 91 scientists, clinicians and public health professionals from across the globe.",
+              "new": "This Consensus Statement reflects our concerns and is currently supported by 91 scientists, clinicians and public health professionals from across the globe.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Here we summarize this evidence and call for precautionary action through a focused research effort and by increasing awareness among health professionals and pregnant women.",
+              "new": "Here we summarize this evidence and call for precautionary action through a focused research effort and by increasing awareness among health professionals and pregnant women.",
+              "field": "factor:f_precautionary_action_vs_waiting_for_causal_p"
+            }
+          ]
+        },
+        {
+          "id": "src_alemany_et_al_prenatal_and_postnatal_exposur_2021",
+          "title": "Alemany et al. — Prenatal and postnatal exposure to acetaminophen and autism spectrum and ADHD symptoms: meta-analysis in six European cohorts (Eur J Epidemiol)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Results indicated that children prenatally exposed to acetaminophen were 19% and 21% more likely to subsequently have borderline or clinical ASC (OR = 1.19, 95% CI 1.07–1.33) and ADHD symptoms (OR = 1.21, 95% CI 1.07–1.36) compared to non-exposed children.",
+              "new": "Results indicated that children prenatally exposed to acetaminophen were 19% and 21% more likely to subsequently have borderline or clinical ASC (OR = 1.19, 95% CI 1.07–1.33) and ADHD symptoms (OR = 1.21, 95% CI 1.07–1.36) compared to non-exposed children.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "new": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "new": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "field": "edge:1"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "new": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "field": "edge:2"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "new": "Methods Sample We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
+              "field": "edge:3"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Boys and girls showed higher odds for ASC and ADHD symptoms after prenatal exposure, though these associations were slightly stronger among boys.",
+              "new": "Boys and girls showed higher odds for ASC and ADHD symptoms after prenatal exposure, though these associations were slightly stronger among boys.",
+              "field": "factor:f_sex_specific_susceptibility_boys_vs_girls"
+            }
+          ]
+        },
+        {
+          "id": "src_gustavson_et_al_acetaminophen_use_during_pre_2021",
+          "title": "Gustavson et al. — Acetaminophen use during pregnancy and offspring ADHD: a longitudinal sibling control study (JCPP Advances)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Results Children exposed to acetaminophen up to 28 days during pregnancy did not have increased risk of receiving an ADHD diagnosis compared to unexposed children.",
+              "new": "Results Children exposed to acetaminophen up to 28 days during pregnancy did not have increased risk of receiving an ADHD diagnosis compared to unexposed children.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods We used data from 26,613 children from 12,902 families participating in the prospective Norwegian Mother, Father, and Child Cohort Study (MoBa).",
+              "new": "Methods We used data from 26,613 children from 12,902 families participating in the prospective Norwegian Mother, Father, and Child Cohort Study (MoBa).",
+              "field": "edge:0"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "This indicates that the observed association between long-term acetaminophen use during pregnancy and ADHD in the child may at least partly be confounded by unobserved family factors.",
+              "new": "This indicates that the observed association between long-term acetaminophen use during pregnancy and ADHD in the child may at least partly be confounded by unobserved family factors.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            }
+          ]
+        },
+        {
+          "id": "src_thompson_et_al_associations_between_acetamin_2014",
+          "title": "Thompson et al. — Associations between Acetaminophen Use during Pregnancy and ADHD Symptoms Measured at Ages 7 and 11 Years (PLOS ONE)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "These findings strengthen the contention that acetaminophen exposure in pregnancy increases the risk of ADHD-like behaviours.",
+              "new": "These findings strengthen the contention that acetaminophen exposure in pregnancy increases the risk of ADHD-like behaviours.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Participants were members of the Auckland Birthweight Collaborative Study, a longitudinal study of 871 infants of European descent sampled disproportionately for small for gestational age.",
+              "new": "Participants were members of the Auckland Birthweight Collaborative Study, a longitudinal study of 871 infants of European descent sampled disproportionately for small for gestational age.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We found significantly higher total difficulty scores (Strengths and Difficulty Questionnaire parent report at age 7 and child report at age 11) if acetaminophen was used during pregnancy, but there were no significant differences associated with any of the other drugs.",
+              "new": "We found significantly higher total difficulty scores (Strengths and Difficulty Questionnaire parent report at age 7 and child report at age 11) if acetaminophen was used during pregnancy, but there were no significant differences associated with any of the other drugs.",
+              "field": "factor:f_confounding_by_indication_fever_pain_vs_drug"
+            }
+          ]
+        },
+        {
+          "id": "src_philippot_et_al_paracetamol_acetaminophen_an_2022",
+          "title": "Philippot et al. — Paracetamol (Acetaminophen) and its Effect on the Developing Mouse Brain (Front. Toxicology)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Here we show that AAP can have persistent negative effects on brain development and suggest that AAP, despite the relatively low doses, is capable to induce acute oxidative stress in the hippocampus.",
+              "new": "Here we show that AAP can have persistent negative effects on brain development and suggest that AAP, despite the relatively low doses, is capable to induce acute oxidative stress in the hippocampus.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "The aim of this study is to evaluate the impact of neonatal exposure to clinically relevant doses of AAP on adult spontaneous behavior, habituation, memory, learning, and cognitive flexibility later in life using a mouse model.",
+              "new": "The aim of this study is to evaluate the impact of neonatal exposure to clinically relevant doses of AAP on adult spontaneous behavior, habituation, memory, learning, and cognitive flexibility later in life using a mouse model.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "An increase of markers for oxidative stress was observed in the hippocampus 6 h after AAP exposure.",
+              "new": "An increase of markers for oxidative stress was observed in the hippocampus 6 h after AAP exposure.",
+              "field": "factor:f_biological_mechanism_animal_evidence_for_cau"
+            }
+          ]
+        },
+        {
+          "id": "src_prenatal_acetaminophen_exposure_does_not_dis_2025",
+          "title": "Prenatal Acetaminophen Exposure Does Not Disrupt Human Fetal Brain Development in Cortical Organoid Models (bioRxiv preprint)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Taken together, therapeutic APAP concentrations produced only modest transcriptional effects without structural or functional consequences in developing cortical organoids.",
+              "new": "Taken together, therapeutic APAP concentrations produced only modest transcriptional effects without structural or functional consequences in developing cortical organoids.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "APAP exposure did not alter growth dynamics, cytoarchitecture, or viability, with apoptosis rates remaining below 1% in all conditions.",
+              "new": "APAP exposure did not alter growth dynamics, cytoarchitecture, or viability, with apoptosis rates remaining below 1% in all conditions.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Neuronal and progenitor cell proportions were unchanged.",
+              "new": "Neuronal and progenitor cell proportions were unchanged.",
+              "field": "factor:f_biological_mechanism_animal_evidence_for_cau"
+            }
+          ]
+        },
+        {
+          "id": "src_prada_et_al_evaluation_of_the_evidence_on_ac_2025",
+          "title": "Prada et al. — Evaluation of the evidence on acetaminophen use and neurodevelopmental disorders using the Navigation Guide methodology (Environmental Health)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Our analyses using the Navigation Guide thus support evidence consistent with an association between acetaminophen exposure during pregnancy and increased incidence of NDDs.",
+              "new": "Our analyses using the Navigation Guide thus support evidence consistent with an association between acetaminophen exposure during pregnancy and increased incidence of NDDs.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Higher-quality studies were more likely to show positive associations.",
+              "new": "Higher-quality studies were more likely to show positive associations.",
+              "field": "factor:f_which_study_designs_count_as_highest_quality"
+            }
+          ]
+        },
+        {
+          "id": "src_acog_acetaminophen_use_in_pregnancy_and_neur_2025",
+          "title": "ACOG — Acetaminophen Use in Pregnancy and Neurodevelopmental Outcomes (Practice Advisory)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "The current weight of evidence does not support a causal link between prenatal acetaminophen use and neurodevelopmental disorders.",
+              "new": "The current weight of evidence does not support a causal link between prenatal acetaminophen use and neurodevelopmental disorders.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "ACOG Recommendation ACOG reaffirms that acetaminophen remains the analgesic and antipyretic of choice during pregnancy.",
+              "new": "ACOG Recommendation ACOG reaffirms that acetaminophen remains the analgesic and antipyretic of choice during pregnancy.",
+              "field": "edge:0"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "At this time, no change in clinical practice is warranted based on new publications and ACOG's recommendations for the use of acetaminophen for specific indications remain current.",
+              "new": "At this time, no change in clinical practice is warranted based on new publications and ACOG's recommendations for the use of acetaminophen for specific indications remain current.",
+              "field": "factor:f_precautionary_action_vs_waiting_for_causal_p"
+            }
+          ]
+        },
+        {
+          "id": "src_associations_between_prenatal_acetaminophen__2020",
+          "title": "Associations between prenatal acetaminophen exposure and child neurodevelopment: Truth, bias, or a bit of both? (commentary, Epidemiology)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Social media quote Studies of prenatal acetaminophen exposure and neurodevelopment are subject to multiple biases.",
+              "new": "Social media quote Studies of prenatal acetaminophen exposure and neurodevelopment are subject to multiple biases.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Considered singly, any one of these sources of bias should worry conscientious researchers, but taken together, a picture of multiple competing biases emerges, making the task of identifying a true causal effect very challenging.",
+              "new": "Considered singly, any one of these sources of bias should worry conscientious researchers, but taken together, a picture of multiple competing biases emerges, making the task of identifying a true causal effect very challenging.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Acetaminophen is taken for a wide range of reasons and severity, including pain, inflammation, and fever, making confounding by indication very difficult to understand and control, either through design or analysis.",
+              "new": "Acetaminophen is taken for a wide range of reasons and severity, including pain, inflammation, and fever, making confounding by indication very difficult to understand and control, either through design or analysis.",
+              "field": "factor:f_confounding_by_indication_fever_pain_vs_drug"
+            }
+          ]
+        },
+        {
+          "id": "src_mothertobaby_otis_acetaminophen_paracetamol__2023",
+          "title": "MotherToBaby (OTIS) — Acetaminophen (Paracetamol) fact sheet",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "It is not clear if these findings are related to acetaminophen or to other factors.",
+              "new": "It is not clear if these findings are related to acetaminophen or to other factors.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "This information is based on available published literature.",
+              "new": "This information is based on available published literature.",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_chu_et_al_acetaminophen_s_role_in_autism_and_2025",
+          "title": "Chu et al. — Acetaminophen's Role in Autism and ADHD: A Mitochondrial Perspective (Int. J. Mol. Sci.)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "Second, the scientific community agrees that autism and ADHD have complex etiologies involving both genetic and environmental factors, and we acknowledge these roles and that acetaminophen can pose a risk to these disorders.",
+              "new": "Second, the scientific community agrees that autism and ADHD have complex etiologies involving both genetic and environmental factors, and we acknowledge these roles and that acetaminophen can pose a risk to these disorders.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "This paper is a compilation of literature aiming to explore a theoretical framework for acetaminophen-induced mitochondrial damage in utero.",
+              "new": "This paper is a compilation of literature aiming to explore a theoretical framework for acetaminophen-induced mitochondrial damage in utero.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "It focuses on a toxic metabolite of acetaminophen, N-acetyl-p-benzoquinone imine (NAPQ1), and its role in neuroinflammation.",
+              "new": "It focuses on a toxic metabolite of acetaminophen, N-acetyl-p-benzoquinone imine (NAPQ1), and its role in neuroinflammation.",
+              "field": "factor:f_biological_mechanism_animal_evidence_for_cau"
+            }
+          ]
+        },
+        {
+          "id": "src_woodbury_et_al_the_relationship_of_prenatal__2024",
+          "title": "Woodbury et al. — The relationship of prenatal acetaminophen exposure and attention-related behavior in early childhood (IKIDS, Neurotoxicol Teratol)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Despite potential concerns with self-report measures of acetaminophen use during pregnancy leading to recall bias, and the small sample size of this study compared to previous studies, these findings indicate that higher prenatal exposure to acetaminophen during the second trimester as well as cumulative exposure throughout pregnancy was consistently associated with increases in attention-related problems.",
+              "new": "Despite potential concerns with self-report measures of acetaminophen use during pregnancy leading to recall bias, and the small sample size of this study compared to previous studies, these findings indicate that higher prenatal exposure to acetaminophen during the second trimester as well as cumulative exposure throughout pregnancy was consistently associated with increases in attention-related problems.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Participation and Demographics By January 2023, 688 pregnant women had been enrolled in the IKIDS cohort.",
+              "new": "Participation and Demographics By January 2023, 688 pregnant women had been enrolled in the IKIDS cohort.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "While male children in this cohort had higher scores on the Attention Problems, ADHD Problems, and Externalizing Behavior scores than female children, especially at ages 3 and 4 years, no sex-specific associations with acetaminophen use were observed.",
+              "new": "While male children in this cohort had higher scores on the Attention Problems, ADHD Problems, and Externalizing Behavior scores than female children, especially at ages 3 and 4 years, no sex-specific associations with acetaminophen use were observed.",
+              "field": "factor:f_sex_specific_susceptibility_boys_vs_girls"
+            }
+          ]
+        },
+        {
+          "id": "src_a_systematic_review_of_the_link_between_auti_2022",
+          "title": "A Systematic Review of the Link Between Autism Spectrum Disorder and Acetaminophen: A Mystery to Resolve (Cureus)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We extracted collective evidence from 16 studies suggesting acetaminophen's role in developing adverse neurodevelopmental outcomes.",
+              "new": "We extracted collective evidence from 16 studies suggesting acetaminophen's role in developing adverse neurodevelopmental outcomes.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Long-term use, increased dose, and frequency were associated with a stronger association.",
+              "new": "Long-term use, increased dose, and frequency were associated with a stronger association.",
+              "field": "factor:f_dose_response_duration_as_causal_evidence"
+            }
+          ]
+        },
+        {
+          "id": "src_smfm_society_for_maternal_fetal_medicine_sta_2026",
+          "title": "SMFM — Society for Maternal-Fetal Medicine Statement: Acetaminophen use during pregnancy (reaffirmation)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "A comprehensive review of the available scientific evidence does not establish a causal relationship between acetaminophen taken during pregnancy and an increased risk of autism spectrum disorders and attention deficit and hyperactivity disorder (ADHD) in children, according to SMFM.",
+              "new": "A comprehensive review of the available scientific evidence does not establish a causal relationship between acetaminophen taken during pregnancy and an increased risk of autism spectrum disorders and attention deficit and hyperactivity disorder (ADHD) in children, according to SMFM.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Acetaminophen remains the recommended first-line medication to treat pain and fever during pregnancy, according to an updated statement from the Society for Maternal-Fetal Medicine (SMFM).",
+              "new": "Acetaminophen remains the recommended first-line medication to treat pain and fever during pregnancy, according to an updated statement from the Society for Maternal-Fetal Medicine (SMFM).",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_maternal_use_of_acetaminophen_during_pregnan_2022",
+          "title": "Maternal use of acetaminophen during pregnancy and neurobehavioral problems in offspring at 3 years: a prospective cohort study (First Baby Study, PLOS ONE)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Conclusions These findings corroborate previous studies reporting associations between prenatal exposure to acetaminophen and attention problems in offspring and also show an association with sleep problems at age 3 years.",
+              "new": "Conclusions These findings corroborate previous studies reporting associations between prenatal exposure to acetaminophen and attention problems in offspring and also show an association with sleep problems at age 3 years.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Methods We used data from the First Baby Study, a prospective cohort study conducted in Pennsylvania, USA, with 2,423 mother-child pairs.",
+              "new": "Methods We used data from the First Baby Study, a prospective cohort study conducted in Pennsylvania, USA, with 2,423 mother-child pairs.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "After adjustment for prenatal stress and other confounders, 2 syndrome scales remained significantly higher in children exposed to acetaminophen: sleep problems (aOR = 1.23, 95% CI = 1.01–1.51) and attention problems (aOR = 1.21, 95% CI = 1.01–1.45).",
+              "new": "After adjustment for prenatal stress and other confounders, 2 syndrome scales remained significantly higher in children exposed to acetaminophen: sleep problems (aOR = 1.23, 95% CI = 1.01–1.51) and attention problems (aOR = 1.21, 95% CI = 1.01–1.45).",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            }
+          ]
+        },
+        {
+          "id": "src_alwan_et_al_paracetamol_use_in_pregnancy_cau_2021",
+          "title": "Alwan et al. — Paracetamol use in pregnancy: caution over causal inference from available data (counterstatement, Nature Reviews Endocrinology)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "However, we caution against an inference of causality that is based upon inadequate evidence.",
+              "new": "However, we caution against an inference of causality that is based upon inadequate evidence.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "These studies are limited by serious methodological problems, including failure to account for confounding, and elements of bias that make interpretation of the data challenging.",
+              "new": "These studies are limited by serious methodological problems, including failure to account for confounding, and elements of bias that make interpretation of the data challenging.",
+              "field": "edge:1"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "The potential for a shared underlying genetic susceptibility to neurodevelopmental and psychiatric conditions being passed from parent to child must also be considered.",
+              "new": "The potential for a shared underlying genetic susceptibility to neurodevelopmental and psychiatric conditions being passed from parent to child must also be considered.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "Pregnant people use APAP for migraine or fever, both of which have been associated with adverse effects on fetal neurological development.",
+              "new": "Pregnant people use APAP for migraine or fever, both of which have been associated with adverse effects on fetal neurological development.",
+              "field": "factor:f_confounding_by_indication_fever_pain_vs_drug"
+            }
+          ]
+        },
+        {
+          "id": "src_tovo_rodrigues_et_al_is_intrauterine_exposur_2018",
+          "title": "Tovo-Rodrigues et al. — Is intrauterine exposure to acetaminophen associated with emotional and hyperactivity problems during childhood? Findings from the 2004 Pelotas birth cohort (BMC Psychiatry)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Intrauterine exposure to acetaminophen increased the odds of having emotional (odds ratio [OR] = 1.47; 95% CI: 1.07 – 2.02) and hyperactivity/inattention (OR = 1.42; 95% CI: 1.06– 1.92) problems in 6-year-old boys.",
+              "new": "Intrauterine exposure to acetaminophen increased the odds of having emotional (odds ratio [OR] = 1.47; 95% CI: 1.07 – 2.02) and hyperactivity/inattention (OR = 1.42; 95% CI: 1.06– 1.92) problems in 6-year-old boys.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We performed a prospective longitudinal population-based study using data from the 2004 Pelotas birth cohort.",
+              "new": "We performed a prospective longitudinal population-based study using data from the 2004 Pelotas birth cohort.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "No association for any phenotypes at both ages was observed for girls.",
+              "new": "No association for any phenotypes at both ages was observed for girls.",
+              "field": "factor:f_sex_specific_susceptibility_boys_vs_girls"
+            }
+          ]
+        },
+        {
+          "id": "src_fda_responds_to_evidence_of_possible_associa_2025",
+          "title": "FDA — Responds to Evidence of Possible Association Between Autism and Acetaminophen Use During Pregnancy (press announcement)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "The U.S. Food and Drug Administration today initiated the process for a label change for acetaminophen (Tylenol and similar products) to reflect evidence suggesting that the use of acetaminophen by pregnant women may be associated with an increased risk of neurological conditions such as autism and ADHD in children.",
+              "new": "The U.S. Food and Drug Administration today initiated the process for a label change for acetaminophen (Tylenol and similar products) to reflect evidence suggesting that the use of acetaminophen by pregnant women may be associated with an increased risk of neurological conditions such as autism and ADHD in children.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Multiple large-scale cohort studies, including the Nurses’ Health Study II and the Boston Birth Cohort , find this association.",
+              "new": "Multiple large-scale cohort studies, including the Nurses’ Health Study II and the Boston Birth Cohort , find this association.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "It is important to note that while an association between acetaminophen and neurological conditions has been described in many studies, a causal relationship has not been established and there are contrary studies in the scientific literature.",
+              "new": "It is important to note that while an association between acetaminophen and neurological conditions has been described in many studies, a causal relationship has not been established and there are contrary studies in the scientific literature.",
+              "field": "factor:f_precautionary_action_vs_waiting_for_causal_p"
+            }
+          ]
+        },
+        {
+          "id": "src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+          "title": "Liew et al. — Acetaminophen Use During Pregnancy, Behavioral Problems, and Hyperkinetic Disorders (JAMA Pediatrics)",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "CONCLUSIONS AND RELEVANCE: Maternal acetaminophen use during pregnancy is associated with a higher risk for HKDs and ADHD-like behaviors in children.",
+              "new": "CONCLUSIONS AND RELEVANCE: Maternal acetaminophen use during pregnancy is associated with a higher risk for HKDs and ADHD-like behaviors in children.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "DESIGN, SETTING, AND PARTICIPANTS: We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
+              "new": "DESIGN, SETTING, AND PARTICIPANTS: We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Results did not appear to be confounded by maternal inflammation, infection during pregnancy, the mother's mental health problems, or other potential confounders we evaluated.",
+              "new": "Results did not appear to be confounded by maternal inflammation, infection during pregnancy, the mother's mental health problems, or other potential confounders we evaluated.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Stronger associations were observed with use in more than 1 trimester during pregnancy, and exposure response trends were found with increasing frequency of acetaminophen use during gestation for all outcomes (ie, HKD diagnosis, ADHD medication use, and ADHD-like behaviors; P trend < .001).",
+              "new": "Stronger associations were observed with use in more than 1 trimester during pregnancy, and exposure response trends were found with increasing frequency of acetaminophen use during gestation for all outcomes (ie, HKD diagnosis, ADHD medication use, and ADHD-like behaviors; P trend < .001).",
+              "field": "factor:f_dose_response_duration_as_causal_evidence"
+            }
+          ]
+        },
+        {
+          "id": "src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+          "title": "Avella-Garcia et al. — Acetaminophen use in pregnancy and neurodevelopment: attention function and autism spectrum symptoms (Int J Epidemiol)",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Prenatal acetaminophen exposure was associated with a greater number of autism spectrum symptoms in males and showed adverse effects on attention-related outcomes for both genders.",
+              "new": "Prenatal acetaminophen exposure was associated with a greater number of autism spectrum symptoms in males and showed adverse effects on attention-related outcomes for both genders.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "This Spanish birth cohort study included 2644 mother-child pairs recruited during pregnancy.",
+              "new": "This Spanish birth cohort study included 2644 mother-child pairs recruited during pregnancy.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "CAST scores were increased in ever-exposed males (β = 0.63, 0.09-1.18).",
+              "new": "CAST scores were increased in ever-exposed males (β = 0.63, 0.09-1.18).",
+              "field": "factor:f_sex_specific_susceptibility_boys_vs_girls"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "These associations seem to be dependent on the frequency of exposure.",
+              "new": "These associations seem to be dependent on the frequency of exposure.",
+              "field": "factor:f_dose_response_duration_as_causal_evidence"
+            }
+          ]
+        },
+        {
+          "id": "src_stergiakouli_et_al_association_of_acetaminop_2016",
+          "title": "Stergiakouli et al. — Association of Acetaminophen Use During Pregnancy With Behavioral Problems in Childhood: Evidence Against Confounding (JAMA Pediatrics)",
+          "fetch": "partial",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Conclusions and Relevance Children exposed to acetaminophen prenatally are at increased risk of multiple behavioral difficulties, and the associations do not appear to be explained by unmeasured behavioral or social factors linked to acetaminophen use insofar as they are not observed for postnatal or partner’s acetaminophen use.",
+              "new": "Conclusions and Relevance Children exposed to acetaminophen prenatally are at increased risk of multiple behavioral difficulties, and the associations do not appear to be explained by unmeasured behavioral or social factors linked to acetaminophen use insofar as they are not observed for postnatal or partner’s acetaminophen use.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We studied 7796 mothers enrolled in ALSPAC between 1991 and 1992 along with their children and partners.",
+              "new": "We studied 7796 mothers enrolled in ALSPAC between 1991 and 1992 along with their children and partners.",
+              "field": "edge:0"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "This was not the case for maternal postnatal (n = 6916; 89%) or partner’s (n = 3454; 84%) acetaminophen use.",
+              "new": "This was not the case for maternal postnatal (n = 6916; 89%) or partner’s (n = 3454; 84%) acetaminophen use.",
+              "field": "factor:f_familial_confounding_vs_a_causal_effect"
+            }
+          ]
+        },
+        {
+          "id": "src_masarwa_et_al_prenatal_exposure_to_acetamino_2018",
+          "title": "Masarwa et al. — Prenatal Exposure to Acetaminophen and Risk for ADHD and Autistic Spectrum Disorder: A Systematic Review, Meta-Analysis, and Meta-Regression Analysis of Cohort Studies (Am J Epidemiol)",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Acetaminophen use during pregnancy is associated with an increased risk for ADHD, ASD, and hyperactivity symptoms.",
+              "new": "Acetaminophen use during pregnancy is associated with an increased risk for ADHD, ASD, and hyperactivity symptoms.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "In meta-regression analysis, the association between exposure and ADHD increased with the child's age upon follow-up (β = 0.03, 95% CI: 0.00, 0.07) and with the mean duration of exposure (β = 0.00, 95% CI: 0.00, 0.01).",
+              "new": "In meta-regression analysis, the association between exposure and ADHD increased with the child's age upon follow-up (β = 0.03, 95% CI: 0.00, 0.07) and with the mean duration of exposure (β = 0.00, 95% CI: 0.00, 0.01).",
+              "field": "factor:f_dose_response_duration_as_causal_evidence"
             }
           ]
         }
