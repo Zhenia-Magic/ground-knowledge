@@ -2,11 +2,11 @@
   "meta": {
     "id": "51fb332b4e96",
     "question": "Does moderate alcohol consumption reduce cardiovascular risk?",
-    "version": 118,
-    "updated": "2026-07-12T13:54:48.851551+00:00",
+    "version": 127,
+    "updated": "2026-07-16T01:45:34.397314+00:00",
     "portal": {
       "id": "d470f8439ecb",
-      "baseVersion": 118,
+      "baseVersion": 119,
       "url": "https://groundknowledge.org"
     },
     "schemaVersion": 2
@@ -20,7 +20,7 @@
     },
     {
       "id": "pos_alcohol_has_complex_bidirectional_immediate_",
-      "label": "Alcohol has complex/bidirectional immediate cardiovascular effects",
+      "label": "Mixed / outcome- and pattern-dependent cardiovascular effects",
       "hue": "#B4502E",
       "shortLabel": "Bidirectional acute"
     },
@@ -503,6 +503,20 @@
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
         "source": "src_urinary_tartaric_acid_as_a_biomarker_of_wine_2024"
       }
+    },
+    {
+      "id": "ds_carr_et_al_2026_review_corpus_56_cohort_meta",
+      "label": "Carr et al. 2026 review corpus (56 cohort meta-analyses; 20 MR studies)",
+      "aliases": [],
+      "kind": "document",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T01:38:47.628986+00:00",
+        "by": "source-audit-2026-07-15",
+        "source": "src_a_review_of_the_relationship_between_dimensi_2026",
+        "note": "The paper methods explicitly identify a 2026 corpus of 56 cohort meta-analyses and 20 Mendelian-randomisation studies; it is typed as a document corpus, not a new primary cohort."
+      }
     }
   ],
   "factors": [
@@ -510,9 +524,9 @@
       "id": "f_hormetic_dose_response_drinking_pattern",
       "label": "Hormetic dose-response / drinking pattern",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "med",
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "high",
         "pos_alcohol_has_complex_bidirectional_immediate_": "high",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "high"
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "med"
       },
       "rationale": "The paper emphasises that cardiovascular risk direction depends critically on dose and pattern, not simply on whether alcohol is consumed.",
       "provenance": [
@@ -695,6 +709,26 @@
             "normalizedCharEnd": 1218,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_a_review_of_the_relationship_between_dimensi_2026",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
+          "weight": "high",
+          "quote": "Relationships are J-shaped for IHD, ischaemic stroke, and type 2 diabetes, with lower risk at low-to-moderate consumption (generally only without heavy episodic drinking).",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e563bcc93675e5434652e3bc240fbc11f0caf2d0db363b69398896b631de426f",
+            "textDepth": "full",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0b3974f653eb46da273d557e698664331a8fecfe8c537e5531722a295cbeb3bb",
+            "normalizedCharStart": 3819,
+            "normalizedCharEnd": 3990,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -702,8 +736,9 @@
       "id": "f_observational_study_bias_overestimation_conc",
       "label": "Observational study bias / overestimation concern",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med"
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med",
+        "pos_alcohol_has_complex_bidirectional_immediate_": "med",
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high"
       },
       "rationale": "Cautions that epidemiological limitations may inflate apparent protective effects, reducing confidence in the positive position.",
       "provenance": [
@@ -789,7 +824,7 @@
         },
         {
           "source": "src_alcohol_use_and_cardiovascular_disease_a_sci_2025",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
           "quote": "The majority of the research on the topic is observational and therefore prone to bias and confounding.",
           "weight": "med",
           "verifiedQuote": "exact",
@@ -833,8 +868,9 @@
       "id": "f_lack_of_rct_evidence_quality_of_evidence_con",
       "label": "Lack of RCT evidence / quality of evidence concern",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "med",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med"
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med",
+        "pos_alcohol_has_complex_bidirectional_immediate_": "med",
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "med"
       },
       "rationale": "Absence of RCT support is flagged as a major qualifier that undermines confidence in the apparent protective association.",
       "provenance": [
@@ -880,7 +916,7 @@
         },
         {
           "source": "src_alcohol_use_and_cardiovascular_disease_a_sci_2025",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
           "quote": "More randomized trials of low to moderate alcohol consumption are needed for more definitive conclusions.",
           "weight": "med",
           "verifiedQuote": "exact",
@@ -964,8 +1000,9 @@
       "id": "f_mendelian_randomisation_genetic_confounding_",
       "label": "Mendelian randomisation / genetic confounding control",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med"
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "med",
+        "pos_alcohol_has_complex_bidirectional_immediate_": "high",
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high"
       },
       "rationale": "Uses genetic instrumental variable approach to reduce confounding inherent in observational studies; full abstract not retrieved but MR methodology is the key methodological factor.",
       "provenance": [
@@ -1068,6 +1105,26 @@
             "normalizedCharEnd": 3375,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_a_review_of_the_relationship_between_dimensi_2026",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
+          "weight": "high",
+          "quote": "MR evidence for IHD largely suggested null or harmful relationships, but only three studies tested non-linear effects.",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e563bcc93675e5434652e3bc240fbc11f0caf2d0db363b69398896b631de426f",
+            "textDepth": "full",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "337a0e91594386c60ccbe35772d2da54d74a30cda1ad2f48096044aeab977974",
+            "normalizedCharStart": 4094,
+            "normalizedCharEnd": 4212,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -1075,9 +1132,9 @@
       "id": "f_cardiovascular_disease_subtype_heterogeneity",
       "label": "Cardiovascular disease subtype heterogeneity",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high",
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "high",
         "pos_alcohol_has_complex_bidirectional_immediate_": "high",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "high"
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high"
       },
       "rationale": "Causal risk varies considerably by CVD subtype—alcohol increases stroke and PAD but is neutral for several other outcomes.",
       "provenance": [
@@ -1131,7 +1188,7 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
-            "textDepth": "partial",
+            "textDepth": "full",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
@@ -1143,7 +1200,7 @@
         },
         {
           "source": "src_alcohol_use_and_cardiovascular_disease_a_sci_2025",
-          "pos": "pos_moderate_alcohol_decreases_cardiovascular_ri",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
           "quote": "The risk associated with consuming 1 to 2 drinks a day on atrial fibrillation remains unknown.",
           "weight": "high",
           "verifiedQuote": "exact",
@@ -1260,6 +1317,26 @@
             "normalizedCharEnd": 1327,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_a_review_of_the_relationship_between_dimensi_2026",
+          "pos": "pos_alcohol_has_complex_bidirectional_immediate_",
+          "weight": "high",
+          "quote": "Meta-analyses support monotonic increasing dose-response relationships between average consumption and most attributable health outcomes within infectious diseases, cardiovascular diseases, cancers, and digestive diseases.",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e563bcc93675e5434652e3bc240fbc11f0caf2d0db363b69398896b631de426f",
+            "textDepth": "full",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "5a19f823f7f89f07d716660f660a53669a830f13d671d323e64faee1475ac848",
+            "normalizedCharStart": 3596,
+            "normalizedCharEnd": 3818,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -1267,8 +1344,8 @@
       "id": "f_blood_pressure_as_mediator",
       "label": "Blood pressure as mediator",
       "weights": {
-        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high",
-        "pos_moderate_alcohol_decreases_cardiovascular_ri": "low"
+        "pos_moderate_alcohol_decreases_cardiovascular_ri": "low",
+        "pos_moderate_alcohol_does_not_reduce_cardiovascu": "high"
       },
       "rationale": "Blood pressure is a plausible harmful pathway, while the protective camp's own review judged its effect at moderate intake likely minor.",
       "provenance": [
@@ -2942,7 +3019,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
-              "textDepth": "partial",
+              "textDepth": "full",
               "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -2963,26 +3040,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Abstract Alcohol consumption is a known, modifiable risk factor for incident atrial fibrillation (AF).",
-          "extractionConfidence": 0.82,
+          "quote": "Our findings suggest a J-shaped relationship between alcohol consumption and incident AF.",
+          "extractionConfidence": 0.98,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "be36e39f222fa84bd47d366249ed72cdb8adfa13189ce233cacdd22be85ae077",
-            "textDepth": "partial",
+            "textDepth": "full",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8871230/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "791ab85b8c129d38a3e6f6e0a7a5c7fb9a77bce36153044e2c0cd616128092ac",
-            "normalizedCharStart": 3556,
-            "normalizedCharEnd": 3658,
+            "quoteSha256": "058d7f99a7bebab8946fe01252f10a3ff64ce96266fbca3becdeda8174c9a9b0",
+            "normalizedCharStart": 4743,
+            "normalizedCharEnd": 4832,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 27,
-      "textDepth": "partial"
+      "textDepth": "full"
     },
     {
       "id": "src_alcohol_consumption_and_risk_of_coronary_art_2015",
@@ -3085,7 +3162,7 @@
       "venue": "Circulation",
       "citations": null,
       "retracted": false,
-      "position": "pos_moderate_alcohol_decreases_cardiovascular_ri",
+      "position": "pos_alcohol_has_complex_bidirectional_immediate_",
       "evidence": "Expert advisory",
       "funding": "Nonprofit/charity",
       "population": "General adults",
@@ -3921,19 +3998,19 @@
     {
       "id": "src_exploring_the_complex_interplay_between_alco_2026",
       "title": "Exploring the complex interplay between alcohol consumption and cardiovascular health: Mechanisms, evidence, and future directions",
-      "year": 2026,
+      "year": 2025,
       "url": "https://www.sciencedirect.com/science/article/abs/pii/S1050173825000052",
       "authors": [
         "Dae-In Lee",
         "Sunwon Kim",
         "Dong Oh Kang"
       ],
-      "venue": "ScienceDirect (Preventive Medicine series)",
+      "venue": "Trends in Cardiovascular Medicine",
       "citations": null,
       "retracted": false,
       "position": "pos_alcohol_has_complex_bidirectional_immediate_",
       "evidence": "Narrative/Commentary",
-      "funding": "Nonprofit/charity",
+      "funding": "Government/public",
       "population": "General adults",
       "confidence": "moderate",
       "restsOn": [],
@@ -4229,7 +4306,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
-              "textDepth": "partial",
+              "textDepth": "full",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -4250,20 +4327,20 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Sirs: Alcohol consumption may result in both deleterious and beneficial cardiovascular effects.",
-          "extractionConfidence": 0.75,
+          "quote": "There was no significant association between PR, QRS, and QTc intervals and increasing BAC.",
+          "extractionConfidence": 0.98,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "5d84898d767974437a2059aff45211fbe4eb2c39750d541e0f20612bdc25b0a9",
-            "textDepth": "partial",
+            "textDepth": "full",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8166672/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "6d7a0f2da6f513ab57afc6f81f7fce490dc6ead0dfcb2f14e8e6154c6fcf38b9",
-            "normalizedCharStart": 3244,
-            "normalizedCharEnd": 3339,
+            "quoteSha256": "8c2f871457375eba6af4582da0f97925165ce2deded92ba03a4c48e9f304b2b6",
+            "normalizedCharStart": 10731,
+            "normalizedCharEnd": 10822,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -4277,7 +4354,7 @@
         "ts": "2026-07-12T13:51:36.082684+00:00",
         "method": "catalogue+manual-full-text"
       },
-      "textDepth": "partial"
+      "textDepth": "full"
     },
     {
       "id": "src_why_do_only_some_cohort_studies_find_health__2024",
@@ -4560,26 +4637,26 @@
       "restsOn": [],
       "provenance": {
         "position": {
-          "quote": "A subset of studies examined associations of moderate alcohol consumption—with the risk of MI, stroke, and CVD death—with particular care to include people who never consumed alcohol as the reference group.",
-          "extractionConfidence": 0.45,
+          "quote": "Conclusion 6-3: The committee concludes that compared with never consuming alcohol, consuming moderate amounts of alcohol is associated with a lower risk of CVD mortality in both females and males (moderate certainty).",
+          "extractionConfidence": 0.98,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "11232d4393db16fb05c71b8101aabccf2b41b6f8cec2b225851337edbdca270f",
-            "textDepth": "partial",
+            "textDepth": "full",
             "sourceUrl": "https://www.ncbi.nlm.nih.gov/books/NBK614695/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "777b38e32a939d752905a12d730491d5f23c4e45144ec244861dd2cd274969db",
-            "normalizedCharStart": 3387,
-            "normalizedCharEnd": 3593,
+            "quoteSha256": "c322d6b1baef4a997e4773e1f99cffca6a3b902f228083b283cc4603d27f79b0",
+            "normalizedCharStart": 19825,
+            "normalizedCharEnd": 20043,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 68,
-      "textDepth": "partial"
+      "textDepth": "full"
     },
     {
       "id": "src_evaluating_the_relationship_between_alcohol__2020",
@@ -4943,7 +5020,7 @@
       "venue": "Addiction",
       "citations": null,
       "retracted": false,
-      "position": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
+      "position": "pos_alcohol_has_complex_bidirectional_immediate_",
       "evidence": "Meta-analysis",
       "funding": "Undisclosed",
       "population": "General adults",
@@ -5334,7 +5411,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
-              "textDepth": "partial",
+              "textDepth": "full",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -5355,26 +5432,26 @@
       ],
       "provenance": {
         "position": {
-          "quote": "Abstract Background: In cross-sectional studies and short-term clinical trials, it has been suggested that there is a positive dose-response relation between alcohol consumption and HDL concentrations.",
-          "extractionConfidence": 0.55,
+          "quote": "Moderate alcohol consumption was associated with slower HDL-cholesterol decreases; however, the type of alcoholic beverage had differential effects on the change in the HDL-cholesterol concentration.",
+          "extractionConfidence": 0.98,
           "verifiedQuote": "exact",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "aa0ac04be7b6bd6364ebf6298a2feebde1e287f0af5f083a3bd209eff70655cd",
-            "textDepth": "partial",
+            "textDepth": "full",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5366050/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
-            "quoteSha256": "3e85658e542646c89f24b049613a8db36e00b898a865aa2ac2f84153a44c2b58",
-            "normalizedCharStart": 3152,
-            "normalizedCharEnd": 3353,
+            "quoteSha256": "98175cd6a1b2596fd40dbbb7e74693c240d5f5da17f265f2df0146fbdb2ee53c",
+            "normalizedCharStart": 5536,
+            "normalizedCharEnd": 5735,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 81,
-      "textDepth": "partial"
+      "textDepth": "full"
     },
     {
       "id": "src_the_alcohol_high_density_lipoprotein_athero__2020",
@@ -6076,6 +6153,82 @@
         "method": "catalogue+manual-full-text"
       },
       "textDepth": "abstract"
+    },
+    {
+      "id": "src_a_review_of_the_relationship_between_dimensi_2026",
+      "title": "A review of the relationship between dimensions of alcohol consumption and the burden of disease: 2026 update including Mendelian randomisation studies",
+      "year": 2026,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+      "authors": [
+        "Sinclair Carr",
+        "Ana Lucia Espinosa Dice",
+        "Gerhard E. Gmel Sr.",
+        "Ahmed S. Hassan",
+        "Kevin D. Shield",
+        "Jürgen Rehm"
+      ],
+      "venue": "Addiction",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_alcohol_has_complex_bidirectional_immediate_",
+      "evidence": "Evidence-synthesis",
+      "funding": "Government/public",
+      "population": "General adults",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_carr_et_al_2026_review_corpus_56_cohort_meta",
+          "provenance": {
+            "quote": "We conducted a scoping review of meta-analyses of cohort studies on average consumption and health outcomes (56 reviews), a systematic review of Mendelian randomisation (MR) studies on alcohol and ischaemic heart disease (IHD; 20 studies), and narrative syntheses on injuries, biological pathways, and reversibility of effects.",
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "e563bcc93675e5434652e3bc240fbc11f0caf2d0db363b69398896b631de426f",
+              "textDepth": "full",
+              "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "9938a41c12cc686b04cccef89e3f06f45a44c8e7b12d1a4812088dff8f87fc8f",
+              "normalizedCharStart": 3139,
+              "normalizedCharEnd": 3466,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "source-audit-2026-07-15",
+            "ts": "2026-07-16T01:39:05.411696+00:00",
+            "note": "The source methods state that the review contains 56 cohort meta-analyses and 20 IHD Mendelian-randomisation studies."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Relationships are J-shaped for IHD, ischaemic stroke, and type 2 diabetes, with lower risk at low-to-moderate consumption (generally only without heavy episodic drinking).",
+          "extractionConfidence": 0.98,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "e563bcc93675e5434652e3bc240fbc11f0caf2d0db363b69398896b631de426f",
+            "textDepth": "full",
+            "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "0b3974f653eb46da273d557e698664331a8fecfe8c537e5531722a295cbeb3bb",
+            "normalizedCharStart": 3819,
+            "normalizedCharEnd": 3990,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 122,
+      "textDepth": "full",
+      "fundingDetails": [
+        "U.S. National Institute on Alcohol Abuse and Alcoholism grant 1R01AA028224"
+      ]
     }
   ],
   "vocab": {
@@ -7901,6 +8054,143 @@
       "method": "verbatim-sentence-v2",
       "ts": "2026-07-13T01:28:12.232406+00:00",
       "sources": 67
+    },
+    {
+      "version": 119,
+      "action": "rename",
+      "summary": "renamed position “Alcohol has complex/bidirectional immediate cardiovascular effects” → “Mixed / outcome- and pattern-dependent cardiovascular effects”",
+      "ts": "2026-07-16T01:37:58.305593+00:00"
+    },
+    {
+      "version": 120,
+      "action": "move-source",
+      "summary": "moved source “The cardioprotective association of average alcohol consumption and ischaemic heart disease: a systematic review and meta-analysis”: “Moderate alcohol does not reduce cardiovascular risk” → “Mixed / outcome- and pattern-dependent cardiovascular effects”",
+      "ts": "2026-07-16T01:38:15.036483+00:00",
+      "source": "src_the_cardioprotective_association_of_average__2012",
+      "title": "The cardioprotective association of average alcohol consumption and ischaemic heart disease: a systematic review and meta-analysis",
+      "from": "pos_moderate_alcohol_does_not_reduce_cardiovascu",
+      "to": "pos_alcohol_has_complex_bidirectional_immediate_",
+      "by": "source-audit-2026-07-15",
+      "reason": "The meta-analysis reports a cardioprotective association but substantial unexplained heterogeneity and wide confidence intervals; that finding supports the mixed-evidence position, not a categorical no-benefit position."
+    },
+    {
+      "version": 121,
+      "action": "move-source",
+      "summary": "moved source “Alcohol Use and Cardiovascular Disease: A Scientific Statement From the American Heart Association”: “Moderate alcohol decreases cardiovascular risk” → “Mixed / outcome- and pattern-dependent cardiovascular effects”",
+      "ts": "2026-07-16T01:38:20.998513+00:00",
+      "source": "src_alcohol_use_and_cardiovascular_disease_a_sci_2025",
+      "title": "Alcohol Use and Cardiovascular Disease: A Scientific Statement From the American Heart Association",
+      "from": "pos_moderate_alcohol_decreases_cardiovascular_ri",
+      "to": "pos_alcohol_has_complex_bidirectional_immediate_",
+      "by": "source-audit-2026-07-15",
+      "reason": "The AHA statement says low intake ranges from no risk to possible risk reduction and stresses outcome- and pattern-specific effects; filing it as unequivocally protective overstates the statement."
+    },
+    {
+      "version": 122,
+      "action": "add-source",
+      "source": "src_a_review_of_the_relationship_between_dimensi_2026",
+      "title": "A review of the relationship between dimensions of alcohol consumption and the burden of disease: 2026 update including Mendelian randomisation studies",
+      "ts": "2026-07-16T01:38:30.630459+00:00",
+      "newDatasets": [
+        "ds_carr_et_al_2026_review_corpus_56_cohort_meta"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Mixed / outcome- and pattern-dependent cardiovascular effects 15 → 16",
+        "distinct roots: Mixed / outcome- and pattern-dependent cardiovascular effects 11 → 12",
+        "blindspot closed: Mixed / outcome- and pattern-dependent cardiovascular effects now covers \"Evidence-synthesis\"",
+        "⚠ new warning: evidence link awaiting review — Mixed / outcome- and pattern-dependent cardiovascular effects",
+        "⚠ new warning: quote text not checked — Mixed / outcome- and pattern-dependent cardiovascular effects"
+      ]
+    },
+    {
+      "version": 123,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "replaced four background/method snippets with exact findings and corrected one 2025 publication record",
+      "changes": [
+        {
+          "source": "src_alcohol_consumption_and_the_risk_of_incident_2022",
+          "field": "position quote"
+        },
+        {
+          "source": "src_effects_of_acute_alcohol_consumption_on_card_2021",
+          "field": "position quote"
+        },
+        {
+          "source": "src_cardiovascular_disease_review_of_evidence_on_2025",
+          "field": "position quote"
+        },
+        {
+          "source": "src_longitudinal_study_of_alcohol_consumption_an_2017",
+          "field": "position quote"
+        },
+        {
+          "source": "src_exploring_the_complex_interplay_between_alco_2026",
+          "field": "year",
+          "from": 2026,
+          "to": 2025
+        },
+        {
+          "source": "src_exploring_the_complex_interplay_between_alco_2026",
+          "field": "venue",
+          "from": "ScienceDirect (Preventive Medicine series)",
+          "to": "Trends in Cardiovascular Medicine"
+        },
+        {
+          "source": "src_exploring_the_complex_interplay_between_alco_2026",
+          "field": "funding",
+          "from": "Nonprofit/charity",
+          "to": "Government/public"
+        }
+      ],
+      "ts": "2026-07-16T01:38:36.311040+00:00"
+    },
+    {
+      "version": 124,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Carr et al. 2026 review corpus (56 cohort meta-analyses; 20 MR studies)” as a real evidence base",
+      "ts": "2026-07-16T01:38:47.629687+00:00"
+    },
+    {
+      "version": 125,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_a_review_of_the_relationship_between_dimensi_2026 → ds_carr_et_al_2026_review_corpus_56_cohort_meta",
+      "ts": "2026-07-16T01:39:05.411783+00:00"
+    },
+    {
+      "version": 126,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "replaced four background/method snippets with exact findings and corrected one 2025 publication record",
+      "changes": [
+        {
+          "source": "src_cardiovascular_disease_review_of_evidence_on_2025",
+          "field": "position quote"
+        }
+      ],
+      "ts": "2026-07-16T01:44:17.759559+00:00"
+    },
+    {
+      "version": 127,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "applied 1 exact-quotation/metadata corrections from the case source re-audit",
+      "changes": [
+        {
+          "source": "src_cardiovascular_disease_review_of_evidence_on_2025",
+          "field": "position quote"
+        }
+      ],
+      "ts": "2026-07-16T01:45:34.397314+00:00"
+    },
+    {
+      "version": 127,
+      "action": "quote-reaudit-selected",
+      "method": "verbatim-sentence-v2",
+      "by": "source-audit-2026-07-15",
+      "sources": 5,
+      "ts": "2026-07-16T01:45:34.474453+00:00"
     }
   ],
   "refused": [

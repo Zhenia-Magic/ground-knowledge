@@ -6,7 +6,8 @@ Curator id recorded in the KB logs: `source-audit-2026-07`
 > **Status:** this document is the historical 2026-07-12 audit pass, not the current inventory.
 > Subsequent quote-enforcement and case curation changed the artifacts. The live count is generated
 > from `cases/*.kb.json` in [`SOURCE_INVENTORY.md`](SOURCE_INVENTORY.md), and CI fails if that file
-> drifts. Counts below describe what happened during this audit pass.
+> drifts. The latest case-by-case review is [`SOURCE_REAUDIT_2026_07_15.md`](SOURCE_REAUDIT_2026_07_15.md).
+> Counts below describe what happened during this audit pass.
 
 ## Scope and rule
 

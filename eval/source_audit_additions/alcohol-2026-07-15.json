@@ -1,0 +1,57 @@
+{
+  "source": {
+    "title": "A review of the relationship between dimensions of alcohol consumption and the burden of disease: 2026 update including Mendelian randomisation studies",
+    "year": 2026,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42129601/",
+    "authors": [
+      "Sinclair Carr",
+      "Ana Lucia Espinosa Dice",
+      "Gerhard E. Gmel Sr.",
+      "Ahmed S. Hassan",
+      "Kevin D. Shield",
+      "Jürgen Rehm"
+    ],
+    "venue": "Addiction",
+    "position": "pos_alcohol_has_complex_bidirectional_immediate_",
+    "evidence": "Evidence-synthesis",
+    "funding": "Government/public",
+    "fundingDetails": [
+      "U.S. National Institute on Alcohol Abuse and Alcoholism grant 1R01AA028224"
+    ],
+    "population": "General adults",
+    "confidence": "moderate",
+    "restsOn": [
+      {
+        "ref": "NEW:Carr et al. 2026 review corpus (56 cohort meta-analyses; 20 MR studies)",
+        "datasetKind": "document",
+        "provenance": {
+          "quote": "We conducted a scoping review of meta-analyses of cohort studies on average consumption and health outcomes (56 reviews), a systematic review of Mendelian randomisation (MR) studies on alcohol and ischaemic heart disease (IHD; 20 studies), and narrative syntheses on injuries, biological pathways, and reversibility of effects."
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "Relationships are J-shaped for IHD, ischaemic stroke, and type 2 diabetes, with lower risk at low-to-moderate consumption (generally only without heavy episodic drinking).",
+        "extractionConfidence": 0.98
+      }
+    },
+    "textDepth": "abstract"
+  },
+  "factorWeights": [
+    {
+      "factor": "Hormetic dose-response / drinking pattern",
+      "weight": "high",
+      "quote": "Relationships are J-shaped for IHD, ischaemic stroke, and type 2 diabetes, with lower risk at low-to-moderate consumption (generally only without heavy episodic drinking)."
+    },
+    {
+      "factor": "Mendelian randomisation / genetic confounding control",
+      "weight": "high",
+      "quote": "MR evidence for IHD largely suggested null or harmful relationships, but only three studies tested non-linear effects."
+    },
+    {
+      "factor": "Cardiovascular disease subtype heterogeneity",
+      "weight": "high",
+      "quote": "Meta-analyses support monotonic increasing dose-response relationships between average consumption and most attributable health outcomes within infectious diseases, cardiovascular diseases, cancers, and digestive diseases."
+    }
+  ]
+}

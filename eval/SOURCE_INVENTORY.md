@@ -4,12 +4,12 @@
 
 | Case | sources | positions | root records | confirmed root identities | position quotes exact | unadmitted support links |
 |---|---:|---:|---:|---:|---:|---:|
-| `177f5ec738c9.kb.json` | 35 | 2 | 17 | 17 | 35 | 0 |
-| `51fb332b4e96.kb.json` | 67 | 3 | 35 | 35 | 67 | 0 |
-| `blackholes.kb.json` | 15 | 2 | 7 | 7 | 15 | 0 |
-| `covid.kb.json` | 26 | 3 | 7 | 7 | 26 | 0 |
+| `177f5ec738c9.kb.json` | 34 | 2 | 16 | 16 | 34 | 0 |
+| `51fb332b4e96.kb.json` | 68 | 3 | 36 | 36 | 68 | 0 |
+| `blackholes.kb.json` | 15 | 2 | 8 | 8 | 15 | 0 |
+| `covid.kb.json` | 29 | 3 | 7 | 7 | 29 | 0 |
 | `eggs.kb.json` | 20 | 3 | 11 | 11 | 20 | 0 |
-| **Total** | **163** | **13** | **77** | **77** | **163** | **0** |
+| **Total** | **166** | **13** | **78** | **78** | **166** | **0** |
 
 `root records` is the number of named evidence-base entities, not per-position coverage.
 Exact position quotes use the current hashed verifier. Unadmitted support links remain visible

@@ -4,7 +4,7 @@ import tempfile
 import unittest
 
 from engine.verify import apply_quote_verification, is_verified_exact
-from scripts.audit_quotes import audit_case
+from scripts.audit_quotes import audit_case, write_markdown_report
 
 
 class AlternateQuoteSourceAuditTests(unittest.TestCase):
@@ -49,6 +49,31 @@ class AlternateQuoteSourceAuditTests(unittest.TestCase):
         self.assertEqual(claim["quoteVerification"]["sourceUrl"], full_url)
         factor_row = next(q for q in rows[0]["quotes"] if q["field"] == "factor:f1")
         self.assertEqual(factor_row["status"], "exact")
+
+    def test_markdown_all_excerpt_total_includes_context_sources(self):
+        position_quote = {"quote": "The outcome source reports the finding exactly."}
+        context_quote = {"quote": "The context source reports a bias finding exactly."}
+        apply_quote_verification(position_quote, position_quote["quote"], text_depth="full")
+        apply_quote_verification(context_quote, context_quote["quote"], text_depth="full")
+        kb = {
+            "meta": {"version": 1},
+            "positions": [{"id": "p1", "label": "P1"}],
+            "datasets": [],
+            "factors": [],
+            "sources": [{"id": "s1", "title": "Outcome", "position": "p1",
+                         "provenance": {"position": position_quote}}],
+            "contextSources": [{"id": "c1", "title": "Context",
+                                "provenance": {"position": context_quote}}],
+            "log": [],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            case_path = pathlib.Path(directory) / "case.json"
+            report_path = pathlib.Path(directory) / "report.md"
+            case_path.write_text(json.dumps(kb), encoding="utf-8")
+            write_markdown_report([case_path], report_path)
+            report = report_path.read_text(encoding="utf-8")
+        self.assertIn("Position excerpts: **1 exact of 1**", report)
+        self.assertIn("All stored excerpts (position, dependency, and factor): **2 exact of 2**", report)
 
 
 if __name__ == "__main__":

@@ -2,11 +2,11 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 35,
-    "updated": "2026-07-12T13:54:20.699949+00:00",
+    "version": 46,
+    "updated": "2026-07-16T01:47:55.565819+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
-      "baseVersion": 35,
+      "baseVersion": 36,
       "url": "https://groundknowledge.org"
     },
     "schemaVersion": 2
@@ -14,7 +14,7 @@
   "positions": [
     {
       "id": "pos_zoonotic_spillover_at_the_huanan_market",
-      "label": "Zoonotic spillover at the Huanan market",
+      "label": "Zoonotic spillover",
       "hue": "#2E8B6F"
     },
     {
@@ -127,8 +127,8 @@
       "id": "f_epidemiological_proximity_of_the_earliest_ca",
       "label": "Epidemiological proximity of the earliest cases to the market",
       "weights": {
-        "pos_zoonotic_spillover_at_the_huanan_market": "high",
-        "pos_undetermined_unresolved": "high"
+        "pos_undetermined_unresolved": "high",
+        "pos_zoonotic_spillover_at_the_huanan_market": "high"
       },
       "rationale": "Spatial clustering of early cases and positive samples at the market is the load-bearing zoonotic argument.",
       "provenance": [
@@ -178,9 +178,9 @@
       "id": "f_ascertainment_reporting_bias_in_early_wuhan_",
       "label": "Ascertainment / reporting bias in early Wuhan case data",
       "weights": {
-        "pos_laboratory_associated_origin": "high",
+        "pos_undetermined_unresolved": "high",
         "pos_zoonotic_spillover_at_the_huanan_market": "low",
-        "pos_undetermined_unresolved": "high"
+        "pos_laboratory_associated_origin": "high"
       },
       "rationale": "Argues the market centering is not merely a surveillance artifact.",
       "provenance": [
@@ -243,6 +243,26 @@
             "normalizedCharEnd": 2491,
             "normalization": "NFKC-typography-whitespace-v1"
           }
+        },
+        {
+          "source": "src_the_data_are_insufficient_to_confidently_roo_2025",
+          "pos": "pos_undetermined_unresolved",
+          "weight": "high",
+          "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data.",
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
+            "normalizedCharStart": 674,
+            "normalizedCharEnd": 858,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
         }
       ]
     },
@@ -280,9 +300,9 @@
       "id": "f_furin_cleavage_site_as_evidence_of_laborator",
       "label": "Furin cleavage site as evidence of laboratory engineering",
       "weights": {
-        "pos_laboratory_associated_origin": "high",
+        "pos_undetermined_unresolved": "low",
         "pos_zoonotic_spillover_at_the_huanan_market": "low",
-        "pos_undetermined_unresolved": "low"
+        "pos_laboratory_associated_origin": "high"
       },
       "rationale": "Reads the genome features as consistent with natural evolution.",
       "provenance": [
@@ -372,8 +392,8 @@
       "id": "f_prior_probability_of_a_research_related_acci",
       "label": "Prior probability of a research-related accident in Wuhan",
       "weights": {
-        "pos_laboratory_associated_origin": "high",
-        "pos_undetermined_unresolved": "med"
+        "pos_undetermined_unresolved": "med",
+        "pos_laboratory_associated_origin": "high"
       },
       "rationale": "Documented intent to engineer a furin site raises the lab prior.",
       "provenance": [
@@ -656,7 +676,7 @@
       "position": "pos_zoonotic_spillover_at_the_huanan_market",
       "evidence": "Observational",
       "funding": "Academic/institutional",
-      "population": "Early SARS-CoV-2 genomes",
+      "population": "Early SARS-CoV-2 sequences",
       "confidence": "high",
       "restsOn": [
         {
@@ -2262,6 +2282,160 @@
       "fundingDetails": [
         "World Health Organization"
       ]
+    },
+    {
+      "id": "src_the_data_are_insufficient_to_confidently_roo_2025",
+      "title": "The Data are Insufficient to Confidently Root the SARS-CoV-2 Phylogenetic Tree",
+      "year": 2025,
+      "url": "https://doi.org/10.1093/molbev/msaf118",
+      "authors": [
+        "Jesse D. Bloom"
+      ],
+      "venue": "Molecular Biology and Evolution",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "Early SARS-CoV-2 sequences",
+      "confidence": "high",
+      "restsOn": [
+        {
+          "ref": "ds_early_sars_cov_2_genomic_sequences_lineages_",
+          "provenance": {
+            "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data.",
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+              "textDepth": "abstract",
+              "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
+              "normalizedCharStart": 674,
+              "normalizedCharEnd": 858,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "source-audit-2026-07-15",
+            "ts": "2026-07-16T01:39:05.408342+00:00",
+            "note": "The paper analyzes bias and rooting uncertainty in the earliest available SARS-CoV-2 sequences, the already identified early-sequence evidence base."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data.",
+          "extractionConfidence": 0.99,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+            "textDepth": "abstract",
+            "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
+            "normalizedCharStart": 674,
+            "normalizedCharEnd": 858,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 37,
+      "textDepth": "abstract"
+    },
+    {
+      "id": "src_odni_the_potential_links_between_the_wuhan_i_2023",
+      "title": "ODNI — The Potential Links Between the Wuhan Institute of Virology and the Origin of the COVID-19 Pandemic",
+      "year": 2023,
+      "url": "https://www.dni.gov/files/ODNI/documents/assessments/Report-on-Potential-Links-Between-the-Wuhan-Institute-of-Virology-and-the-Origins-of-COVID-19-20230623.pdf",
+      "authors": [
+        "Office of the Director of National Intelligence"
+      ],
+      "venue": "U.S. Intelligence Community assessment",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Government/public",
+      "population": "U.S. intelligence assessments on SARS-CoV-2 origins",
+      "confidence": "unstated",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "Variations in IC analytic views on the origins of the COVID-19 pandemic largely stem from differences in how agencies weigh intelligence reporting and scientific publications and intelligence and scientific gaps.",
+          "extractionConfidence": 0.99,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "1849152cf20e61d4bb6aed729ba81470bf6f4b4a00911d79aad5b3bce80f321c",
+            "textDepth": "full",
+            "sourceUrl": "https://www.dni.gov/files/ODNI/documents/assessments/Report-on-Potential-Links-Between-the-Wuhan-Institute-of-Virology-and-the-Origins-of-COVID-19-20230623.pdf",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "4dd91c53f37b0dcd89049900d98528f6d0288310da2f90521e4c7183d7b053e3",
+            "normalizedCharStart": 2670,
+            "normalizedCharEnd": 2882,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 38,
+      "textDepth": "full",
+      "fundingDetails": [
+        "Office of the Director of National Intelligence"
+      ]
+    },
+    {
+      "id": "src_odni_news_release_fauci_funded_wuhan_lab_res_2026",
+      "title": "ODNI News Release — Fauci Funded Wuhan Lab Research That Sparked COVID",
+      "year": 2026,
+      "url": "https://www.dni.gov/index.php/newsroom/press-releases/press-releases-2026/4166-pr-11-26",
+      "authors": [
+        "ODNI Office of Strategic Communications"
+      ],
+      "venue": "Office of the Director of National Intelligence news release",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Institutional statement",
+      "funding": "Government/public",
+      "population": "U.S. intelligence assessments on SARS-CoV-2 origins",
+      "confidence": "unstated",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "Today, Director of National Intelligence Tulsi Gabbard is releasing never-before-seen communications and documents exposing how Fauci worked with politicized career leadership in the Intelligence Community (IC) to suppress the truth about his actions, the virus’ lab-leak origins, and his role in directing U.S. funding for this dangerous research that caused immeasurable harm and countless lost lives.",
+          "extractionConfidence": 0.99,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "6ed70d1204b56afec241c456545d568b4155b5234767710e516e1b7360d88a4b",
+            "textDepth": "full",
+            "sourceUrl": "https://www.dni.gov/index.php/newsroom/press-releases/press-releases-2026/4166-pr-11-26",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "24aa8e350d6214dd17662767cae19714e692d5756d4b055a7954f2db1b5d828a",
+            "normalizedCharStart": 6471,
+            "normalizedCharEnd": 6874,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 39,
+      "textDepth": "full",
+      "fundingDetails": [
+        "Office of the Director of National Intelligence"
+      ]
     }
   ],
   "vocab": {
@@ -2293,15 +2467,15 @@
       {
         "label": "Narrative/Commentary",
         "aliases": []
+      },
+      {
+        "label": "Institutional statement",
+        "aliases": []
       }
     ],
     "population": [
       {
         "label": "Wuhan early COVID-19 cases (Dec 2019)",
-        "aliases": []
-      },
-      {
-        "label": "Early SARS-CoV-2 genomes",
         "aliases": []
       },
       {
@@ -2322,11 +2496,20 @@
       },
       {
         "label": "Early SARS-CoV-2 sequences",
-        "aliases": []
+        "aliases": [
+          "Early SARS-CoV-2 genomes"
+        ]
       },
       {
         "label": "Global SARS-CoV-2 origins evidence through June 2025",
         "aliases": []
+      },
+      {
+        "label": "U.S. intelligence assessments on SARS-CoV-2 origins",
+        "aliases": [
+          "Intelligence and scientific evidence on SARS-CoV-2 origins through 2023",
+          "Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026"
+        ]
       }
     ],
     "funding": [
@@ -2996,6 +3179,128 @@
       "method": "verbatim-sentence-v2",
       "ts": "2026-07-13T02:11:56.197587+00:00",
       "sources": 26
+    },
+    {
+      "version": 36,
+      "action": "rename",
+      "summary": "renamed position “Zoonotic spillover at the Huanan market” → “Zoonotic spillover”",
+      "ts": "2026-07-16T01:37:58.302554+00:00"
+    },
+    {
+      "version": 37,
+      "action": "add-source",
+      "source": "src_the_data_are_insufficient_to_confidently_roo_2025",
+      "title": "The Data are Insufficient to Confidently Root the SARS-CoV-2 Phylogenetic Tree",
+      "ts": "2026-07-16T01:38:30.619404+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 6 → 7",
+        "distinct roots: Undetermined / unresolved 4 → 5",
+        "blindspot opened: Zoonotic spillover missing \"Early SARS-CoV-2 sequences\"",
+        "blindspot opened: Laboratory-associated origin missing \"Early SARS-CoV-2 sequences\"",
+        "⚠ new warning: quote text not checked — Undetermined / unresolved"
+      ]
+    },
+    {
+      "version": 38,
+      "action": "add-source",
+      "source": "src_odni_the_potential_links_between_the_wuhan_i_2023",
+      "title": "ODNI — The Potential Links Between the Wuhan Institute of Virology and the Origin of the COVID-19 Pandemic",
+      "ts": "2026-07-16T01:38:30.631397+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Undetermined / unresolved 7 → 8"
+      ]
+    },
+    {
+      "version": 39,
+      "action": "add-source",
+      "source": "src_odni_news_release_fauci_funded_wuhan_lab_res_2026",
+      "title": "ODNI News Release — Fauci Funded Wuhan Lab Research That Sparked COVID",
+      "ts": "2026-07-16T01:38:30.641575+00:00",
+      "newDatasets": [],
+      "newPositions": [],
+      "diff": [
+        "distribution: Laboratory-associated origin 7 → 8",
+        "distinct roots: Laboratory-associated origin 4 → 5"
+      ]
+    },
+    {
+      "version": 40,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_the_data_are_insufficient_to_confidently_roo_2025 → ds_early_sars_cov_2_genomic_sequences_lineages_",
+      "ts": "2026-07-16T01:39:05.408409+00:00"
+    },
+    {
+      "version": 41,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "canonicalised two ODNI excerpts to complete verbatim source sentences",
+      "changes": [
+        {
+          "source": "src_odni_the_potential_links_between_the_wuhan_i_2023",
+          "field": "position quote"
+        },
+        {
+          "source": "src_odni_news_release_fauci_funded_wuhan_lab_res_2026",
+          "field": "position quote"
+        }
+      ],
+      "ts": "2026-07-16T01:43:05.391846+00:00"
+    },
+    {
+      "version": 42,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "canonicalised two ODNI excerpts to complete verbatim source sentences",
+      "changes": [
+        {
+          "source": "src_odni_the_potential_links_between_the_wuhan_i_2023",
+          "field": "position quote"
+        }
+      ],
+      "ts": "2026-07-16T01:44:17.769960+00:00"
+    },
+    {
+      "version": 43,
+      "action": "case-source-reaudit",
+      "by": "source-audit-2026-07-15",
+      "summary": "canonicalised 1 ODNI excerpt(s) to complete verbatim source sentences",
+      "changes": [
+        {
+          "source": "src_odni_news_release_fauci_funded_wuhan_lab_res_2026",
+          "field": "position quote"
+        }
+      ],
+      "ts": "2026-07-16T01:45:34.407706+00:00"
+    },
+    {
+      "version": 43,
+      "action": "quote-reaudit-selected",
+      "method": "verbatim-sentence-v2",
+      "by": "source-audit-2026-07-15",
+      "sources": 3,
+      "ts": "2026-07-16T01:45:34.702547+00:00"
+    },
+    {
+      "version": 44,
+      "action": "merge-vocab",
+      "summary": "merged population “Early SARS-CoV-2 genomes” → “Early SARS-CoV-2 sequences” (1 sources)",
+      "ts": "2026-07-16T01:47:46.323017+00:00"
+    },
+    {
+      "version": 45,
+      "action": "merge-vocab",
+      "summary": "merged population “Intelligence and scientific evidence on SARS-CoV-2 origins through 2023” → “Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026” (1 sources)",
+      "ts": "2026-07-16T01:47:50.874531+00:00"
+    },
+    {
+      "version": 46,
+      "action": "rename",
+      "summary": "renamed population “Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026” → “U.S. intelligence assessments on SARS-CoV-2 origins”",
+      "ts": "2026-07-16T01:47:55.565819+00:00"
     }
   ],
   "refused": [

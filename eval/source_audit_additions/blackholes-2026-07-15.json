@@ -1,0 +1,36 @@
+{
+  "source": {
+    "title": "A search for microscopic black holes, string balls, and sphalerons in proton-proton collisions at √s = 13 TeV",
+    "year": 2026,
+    "url": "https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-028/",
+    "authors": [
+      "CMS Collaboration"
+    ],
+    "venue": "Journal of High Energy Physics (accepted)",
+    "position": "pos_no_risk_lhc_collisions_are_safe",
+    "evidence": "Collider experiment",
+    "funding": "Government/public",
+    "fundingDetails": [
+      "CERN and the public/institutional funders of the CMS Collaboration"
+    ],
+    "population": "Hypothetical TeV-scale microscopic black holes",
+    "confidence": "high",
+    "restsOn": [
+      {
+        "ref": "NEW:CMS Run 2 black-hole search (13 TeV, 138 fb^-1)",
+        "datasetKind": "dataset",
+        "provenance": {
+          "quote": "A search for microscopic black holes, string balls, and electroweak sphalerons using proton-proton collisions at $ \\sqrt{s} = $ 13 TeV recorded with the CMS detector at the CERN LHC during the 2016--2018 data taking, and corresponding to an integrated luminosity of 138 fb$ ^{-1} $, is presented."
+        }
+      }
+    ],
+    "provenance": {
+      "position": {
+        "quote": "In the context of models with large extra dimensions, semiclassical black holes and string balls with masses below 8.4--11.4 TeV and 9.0--10.7 TeV, respectively, are excluded at 95% confidence level, significantly extending the reach beyond previous searches.",
+        "extractionConfidence": 0.99
+      }
+    },
+    "textDepth": "full"
+  },
+  "factorWeights": []
+}

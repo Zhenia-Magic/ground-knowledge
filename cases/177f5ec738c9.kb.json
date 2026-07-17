@@ -911,17 +911,32 @@
       "action": "confirm-dataset",
       "summary": "confirmed dataset “Czech adolescent violent-game longitudinal panel (4 waves; n=3,010)” as a real evidence base",
       "version": 72
+    },
+    {
+      "version": 74,
+      "action": "remove-source",
+      "summary": "removed source “Violent Video Games and Hostile Expectations: A Test of the General Aggression Model”: This experiment measures hostile expectations and aggressive cognition, not aggressive behaviour; treating it as direct evidence that violent-game exposure increases aggression overstates the measured outcome.",
+      "ts": "2026-07-16T01:38:08.650059+00:00",
+      "source": "src_violent_video_games_and_hostile_expectations_2002",
+      "title": "Violent Video Games and Hostile Expectations: A Test of the General Aggression Model",
+      "by": "source-audit-2026-07-15",
+      "reason": "This experiment measures hostile expectations and aggressive cognition, not aggressive behaviour; treating it as direct evidence that violent-game exposure increases aggression overstates the measured outcome.",
+      "replacement": null,
+      "rewiredEdges": 0,
+      "prunedDatasets": [
+        "ds_hostile_expectation_bias_experiment"
+      ]
     }
   ],
   "meta": {
     "id": "177f5ec738c9",
     "portal": {
       "id": "1782d4d990ce",
-      "baseVersion": 73,
+      "baseVersion": 74,
       "url": "https://groundknowledge.org"
     },
-    "updated": "2026-07-13T17:06:55.087803+00:00",
-    "version": 73,
+    "updated": "2026-07-16T01:38:08.650059+00:00",
+    "version": 74,
     "question": "Does violent video game exposure increase aggression?",
     "schemaVersion": 2
   },
@@ -1006,8 +1021,8 @@
       "id": "f_researcher_expectancy_effects",
       "label": "Researcher-expectancy effects",
       "weights": {
-        "pos_increases_aggression": "low",
-        "pos_no_clear_effect": "high"
+        "pos_no_clear_effect": "high",
+        "pos_increases_aggression": "low"
       },
       "rationale": "The authors argue that methodological bias from expectancy effects inflates reported effects, a point contested by critics.",
       "provenance": [
@@ -1117,8 +1132,8 @@
       "id": "f_effect_size_magnitude",
       "label": "Effect size magnitude",
       "weights": {
-        "pos_increases_aggression": "high",
-        "pos_no_clear_effect": "med"
+        "pos_no_clear_effect": "med",
+        "pos_increases_aggression": "high"
       },
       "rationale": "The practical importance of the observed increase is debated across camps.",
       "provenance": [
@@ -2437,70 +2452,6 @@
         "disagreedFields": [
           "confidence",
           "evidence"
-        ],
-        "positionAgreement": 1.0
-      }
-    },
-    {
-      "id": "src_violent_video_games_and_hostile_expectations_2002",
-      "url": "https://doi.org/10.1177/014616702237649",
-      "year": 2002,
-      "title": "Violent Video Games and Hostile Expectations: A Test of the General Aggression Model",
-      "venue": "Personality and Social Psychology Bulletin",
-      "addedIn": 24,
-      "authors": [
-        "Bushman, B. J.",
-        "Anderson, C. A."
-      ],
-      "funding": "Undisclosed",
-      "restsOn": [
-        {
-          "ref": "ds_hostile_expectation_bias_experiment",
-          "admission": {
-            "status": "confirmed",
-            "method": "legacy-migration",
-            "by": "repository-migration",
-            "ts": "2026-07-14T00:00:00Z",
-            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
-          }
-        }
-      ],
-      "evidence": "Experimental (RCT)",
-      "position": "pos_increases_aggression",
-      "citations": 617,
-      "retracted": false,
-      "textDepth": "abstract",
-      "confidence": "moderate",
-      "population": "Adults",
-      "provenance": {
-        "position": {
-          "quote": "People who played a violent video game described the main character as behaving more aggressively, thinking more aggressive thoughts, and feeling more angry than did people who played a nonviolent video game.",
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "reason": "verbatim-single-sentence",
-            "status": "exact",
-            "sourceUrl": "https://doi.org/10.1177/014616702237649",
-            "textDepth": "abstract",
-            "textSha256": "713a0c426148f9ad505ee95c122a4df42bb29a1b9f59b4f6a3a094f836d7ed33",
-            "quoteSha256": "011a9ef46c0427c936421c498b27c193692f27d7f74aee10f18a134061785de5",
-            "canonicalized": false,
-            "normalization": "NFKC-typography-whitespace-v1",
-            "normalizedCharEnd": 952,
-            "normalizedCharStart": 744
-          },
-          "extractionConfidence": 0.95
-        }
-      },
-      "modelAgreement": {
-        "models": 3,
-        "flagged": false,
-        "positionVote": {
-          "pos_increases_aggression": 3
-        },
-        "disagreedFields": [
-          "confidence",
-          "funding"
         ],
         "positionAgreement": 1.0
       }
@@ -3940,17 +3891,6 @@
       "confirmation": {
         "by": "portal-admin",
         "ts": "2026-07-13T17:06:53.466442+00:00",
-        "method": "curator",
-        "status": "confirmed"
-      }
-    },
-    {
-      "id": "ds_hostile_expectation_bias_experiment",
-      "label": "Hostile expectation bias experiment",
-      "aliases": [],
-      "confirmation": {
-        "by": "portal-admin",
-        "ts": "2026-07-13T17:06:53.729950+00:00",
         "method": "curator",
         "status": "confirmed"
       }

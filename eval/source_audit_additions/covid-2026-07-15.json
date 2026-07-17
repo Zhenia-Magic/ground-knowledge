@@ -1,0 +1,96 @@
+[
+  {
+    "source": {
+      "title": "The Data are Insufficient to Confidently Root the SARS-CoV-2 Phylogenetic Tree",
+      "year": 2025,
+      "url": "https://doi.org/10.1093/molbev/msaf118",
+      "authors": [
+        "Jesse D. Bloom"
+      ],
+      "venue": "Molecular Biology and Evolution",
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "Early SARS-CoV-2 sequences",
+      "confidence": "high",
+      "restsOn": [
+        {
+          "ref": "ds_early_sars_cov_2_genomic_sequences_lineages_",
+          "provenance": {
+            "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data.",
+          "extractionConfidence": 0.99
+        }
+      },
+      "textDepth": "full"
+    },
+    "factorWeights": [
+      {
+        "factor": "Ascertainment / reporting bias in early Wuhan case data",
+        "weight": "high",
+        "quote": "I also demonstrate clear evidence of bias among the earliest available sequences, and explain why the root of the SARS-CoV-2 tree cannot be conclusively resolved with the current data."
+      }
+    ]
+  },
+  {
+    "source": {
+      "title": "ODNI — The Potential Links Between the Wuhan Institute of Virology and the Origin of the COVID-19 Pandemic",
+      "year": 2023,
+      "url": "https://www.dni.gov/files/ODNI/documents/assessments/Report-on-Potential-Links-Between-the-Wuhan-Institute-of-Virology-and-the-Origins-of-COVID-19-20230623.pdf",
+      "authors": [
+        "Office of the Director of National Intelligence"
+      ],
+      "venue": "U.S. Intelligence Community assessment",
+      "position": "pos_undetermined_unresolved",
+      "evidence": "Expert advisory",
+      "funding": "Government/public",
+      "fundingDetails": [
+        "Office of the Director of National Intelligence"
+      ],
+      "population": "Intelligence and scientific evidence on SARS-CoV-2 origins through 2023",
+      "confidence": "unstated",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "Variations in IC analytic views on the origins of the COVID-19 pandemic largely stem from differences in how agencies weigh intelligence reporting and scientific publications and intelligence and scientific gaps.",
+          "extractionConfidence": 0.99
+        }
+      },
+      "textDepth": "full"
+    },
+    "factorWeights": []
+  },
+  {
+    "source": {
+      "title": "ODNI News Release — Fauci Funded Wuhan Lab Research That Sparked COVID",
+      "year": 2026,
+      "url": "https://www.dni.gov/index.php/newsroom/press-releases/press-releases-2026/4166-pr-11-26",
+      "authors": [
+        "ODNI Office of Strategic Communications"
+      ],
+      "venue": "Office of the Director of National Intelligence news release",
+      "position": "pos_laboratory_associated_origin",
+      "evidence": "Institutional statement",
+      "funding": "Government/public",
+      "fundingDetails": [
+        "Office of the Director of National Intelligence"
+      ],
+      "population": "Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026",
+      "confidence": "unstated",
+      "restsOn": [],
+      "provenance": {
+        "position": {
+          "quote": "Today, Director of National Intelligence Tulsi Gabbard is releasing never-before-seen communications and documents exposing how Fauci worked with politicized career leadership in the Intelligence Community (IC) to suppress the truth about his actions, the virus’ lab-leak origins, and his role in directing U.S. funding for this dangerous research that caused immeasurable harm and countless lost lives.",
+          "extractionConfidence": 0.99
+        }
+      },
+      "textDepth": "full"
+    },
+    "factorWeights": []
+  }
+]

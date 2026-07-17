@@ -7,7 +7,7 @@
     "covid": {
       "gkQuestionId": "ac81b4cae8d0",
       "title": "What is the origin of SARS-CoV-2 (COVID-19)?",
-      "strongestPosition": "Zoonotic spillover at the Huanan market",
+      "strongestPosition": "Zoonotic spillover",
       "questions": [
         {
           "id": "countfallacy",

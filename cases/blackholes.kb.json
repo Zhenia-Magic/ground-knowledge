@@ -2,11 +2,11 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 27,
-    "updated": "2026-07-12T13:54:20.702160+00:00",
+    "version": 32,
+    "updated": "2026-07-16T01:39:05.407886+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
-      "baseVersion": 27,
+      "baseVersion": 28,
       "url": "https://groundknowledge.org"
     },
     "schemaVersion": 2
@@ -49,7 +49,15 @@
         "by": "Evgeniia",
         "ts": "2026-07-11T23:28:50-03:00",
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
-        "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008"
+        "source": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+        "sourceHistory": [
+          {
+            "from": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+            "to": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+            "ts": "2026-07-16T01:38:08.647377+00:00",
+            "reason": "Duplicate record for the same 2008 LSAG safety review (same authors, title, text, and finding); retain the journal-version record and repoint its dependencies."
+          }
+        ]
       },
       "kind": "argument",
       "proposition": "Any microscopic black hole produced would radiate away and evaporate essentially instantly via Hawking radiation, so it could never accrete."
@@ -64,7 +72,15 @@
         "by": "Evgeniia",
         "ts": "2026-07-11T23:28:50-03:00",
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
-        "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008"
+        "source": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+        "sourceHistory": [
+          {
+            "from": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+            "to": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+            "ts": "2026-07-16T01:38:08.647447+00:00",
+            "reason": "Duplicate record for the same 2008 LSAG safety review (same authors, title, text, and finding); retain the journal-version record and repoint its dependencies."
+          }
+        ]
       },
       "kind": "experiment"
     },
@@ -126,6 +142,19 @@
         "ts": "2026-07-11T23:28:50-03:00",
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
         "source": "src_giddings_mangano_astrophysical_implications__2008"
+      }
+    },
+    {
+      "id": "ds_cms_run_2_black_hole_search_13_tev_138_fb_1",
+      "label": "CMS Run 2 black-hole search (13 TeV, 138 fb^-1)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-16T01:38:47.621342+00:00",
+        "by": "source-audit-2026-07-15",
+        "source": "src_a_search_for_microscopic_black_holes_string__2026",
+        "note": "The CMS publication page directly identifies the Run 2 proton-proton collision dataset at 13 TeV with 138 fb^-1 of integrated luminosity."
       }
     }
   ],
@@ -191,7 +220,7 @@
       "rationale": "The safety assessment expects microscopic black holes to evaporate before reaching the detector walls; the residual-concern scenario argues that Hawking radiation could instead persist and be dangerous.",
       "provenance": [
         {
-          "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+          "source": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
           "pos": "pos_no_risk_lhc_collisions_are_safe",
           "quote": "Any microscopic black holes produced at the LHC are expected to decay by Hawking radiation before they reach the detector walls.",
           "weight": "high",
@@ -379,76 +408,6 @@
       "metadataAudit": {
         "by": "source-audit-2026-07",
         "ts": "2026-07-12T13:51:36.077500+00:00",
-        "method": "catalogue+manual-full-text"
-      }
-    },
-    {
-      "id": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
-      "title": "LHC Safety Assessment Group (LSAG) — Review of the Safety of LHC Collisions",
-      "year": 2008,
-      "url": "https://arxiv.org/pdf/0806.3414",
-      "authors": [
-        "John Ellis",
-        "Gian Giudice",
-        "Michelangelo Mangano",
-        "Igor Tkachev",
-        "Urs Wiedemann"
-      ],
-      "venue": "Journal of Physics G: Nuclear and Particle Physics",
-      "citations": null,
-      "retracted": false,
-      "position": "pos_no_risk_lhc_collisions_are_safe",
-      "evidence": "Expert advisory",
-      "funding": "Government/public",
-      "population": "—",
-      "confidence": "high",
-      "restsOn": [
-        {
-          "ref": "src:src_giddings_mangano_astrophysical_implications__2008",
-          "admission": {
-            "status": "confirmed",
-            "method": "legacy-migration",
-            "by": "repository-migration",
-            "ts": "2026-07-14T00:00:00Z",
-            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
-          }
-        },
-        {
-          "ref": "ds_hawking_radiation_black_hole_evaporation",
-          "admission": {
-            "status": "confirmed",
-            "method": "legacy-migration",
-            "by": "repository-migration",
-            "ts": "2026-07-14T00:00:00Z",
-            "note": "Existing curated relationship adopted during edge-admission schema migration; not quote verification."
-          }
-        }
-      ],
-      "provenance": {
-        "position": {
-          "quote": "The stability of astronomical bodies constrains strongly the possible rate of accretion by any such microscopic black holes, so that they present no conceivable danger.",
-          "extractionConfidence": 0.9,
-          "verifiedQuote": "exact",
-          "quoteVerification": {
-            "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "5c1edf995f849083f273e01806a0c3e7ff23336fb522ab16408b57a2e0582e50",
-            "textDepth": "abstract",
-            "sourceUrl": "https://arxiv.org/pdf/0806.3414",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "5ae3f6de7aff284d447b13fc1e98a3224e4accbe647f51bb5d672b06a456e30a",
-            "normalizedCharStart": 1351,
-            "normalizedCharEnd": 1519,
-            "normalization": "NFKC-typography-whitespace-v1"
-          }
-        }
-      },
-      "addedIn": 2,
-      "textDepth": "abstract",
-      "metadataAudit": {
-        "by": "source-audit-2026-07",
-        "ts": "2026-07-12T13:51:36.077520+00:00",
         "method": "catalogue+manual-full-text"
       }
     },
@@ -768,7 +727,7 @@
       "confidence": "moderate",
       "restsOn": [
         {
-          "ref": "src:src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+          "ref": "src:src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
           "admission": {
             "status": "confirmed",
             "method": "legacy-migration",
@@ -1202,6 +1161,77 @@
         "ts": "2026-07-12T13:51:36.077772+00:00",
         "method": "catalogue+manual-full-text"
       }
+    },
+    {
+      "id": "src_a_search_for_microscopic_black_holes_string__2026",
+      "title": "A search for microscopic black holes, string balls, and sphalerons in proton-proton collisions at √s = 13 TeV",
+      "year": 2026,
+      "url": "https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-028/",
+      "authors": [
+        "CMS Collaboration"
+      ],
+      "venue": "Journal of High Energy Physics (accepted)",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Collider experiment",
+      "funding": "Government/public",
+      "population": "Hypothetical TeV-scale microscopic black holes",
+      "confidence": "high",
+      "restsOn": [
+        {
+          "ref": "ds_cms_run_2_black_hole_search_13_tev_138_fb_1",
+          "provenance": {
+            "quote": "A search for microscopic black holes, string balls, and electroweak sphalerons using proton-proton collisions at $ \\sqrt{s} = $ 13 TeV recorded with the CMS detector at the CERN LHC during the 2016--2018 data taking, and corresponding to an integrated luminosity of 138 fb$ ^{-1} $, is presented.",
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "f3c18fc814efb12b46267ebcf370702e9c545401330bff5e9c07eb2622fafbbe",
+              "textDepth": "full",
+              "sourceUrl": "https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-028/",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "b1f5527a2f90d44275581d0905f87c8d86ca97c0ea441d2e7df561b315e3f0b2",
+              "normalizedCharStart": 422,
+              "normalizedCharEnd": 718,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "source-audit-2026-07-15",
+            "ts": "2026-07-16T01:39:05.407815+00:00",
+            "note": "The source abstract explicitly reports analysis of the CMS 2016-2018 13 TeV collision data totaling 138 fb^-1."
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "In the context of models with large extra dimensions, semiclassical black holes and string balls with masses below 8.4--11.4 TeV and 9.0--10.7 TeV, respectively, are excluded at 95% confidence level, significantly extending the reach beyond previous searches.",
+          "extractionConfidence": 0.99,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "f3c18fc814efb12b46267ebcf370702e9c545401330bff5e9c07eb2622fafbbe",
+            "textDepth": "full",
+            "sourceUrl": "https://cms-results.web.cern.ch/cms-results/public-results/publications/EXO-24-028/",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "86d0e21e652b73ae7886c4ed9d59e671f6615d1eec031e3708f80a2d04034b40",
+            "normalizedCharStart": 1299,
+            "normalizedCharEnd": 1558,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 29,
+      "textDepth": "full",
+      "fundingDetails": [
+        "CERN and the public/institutional funders of the CMS Collaboration"
+      ]
     }
   ],
   "vocab": {
@@ -1241,6 +1271,11 @@
       {
         "label": "Institutional statement",
         "aliases": []
+      },
+      {
+        "label": "Collider experiment",
+        "aliases": [],
+        "tier": "primary"
       }
     ],
     "population": [
@@ -1734,6 +1769,63 @@
       "method": "verbatim-sentence-v2",
       "ts": "2026-07-13T20:50:35.127002+00:00",
       "sources": 15
+    },
+    {
+      "version": 28,
+      "action": "remove-source",
+      "summary": "removed source “LHC Safety Assessment Group (LSAG) — Review of the Safety of LHC Collisions”: Duplicate record for the same 2008 LSAG safety review (same authors, title, text, and finding); retain the journal-version record and repoint its dependencies.",
+      "ts": "2026-07-16T01:38:08.647863+00:00",
+      "source": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
+      "title": "LHC Safety Assessment Group (LSAG) — Review of the Safety of LHC Collisions",
+      "by": "source-audit-2026-07-15",
+      "reason": "Duplicate record for the same 2008 LSAG safety review (same authors, title, text, and finding); retain the journal-version record and repoint its dependencies.",
+      "replacement": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
+      "rewiredEdges": 1,
+      "prunedDatasets": []
+    },
+    {
+      "version": 29,
+      "action": "add-source",
+      "source": "src_a_search_for_microscopic_black_holes_string__2026",
+      "title": "A search for microscopic black holes, string balls, and sphalerons in proton-proton collisions at √s = 13 TeV",
+      "ts": "2026-07-16T01:38:30.617760+00:00",
+      "newDatasets": [
+        "ds_cms_run_2_black_hole_search_13_tev_138_fb_1"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 10 → 11",
+        "distinct roots: No risk — LHC collisions are safe 4 → 6",
+        "⚠ new warning: evidence link awaiting review — No risk — LHC collisions are safe",
+        "⚠ new warning: quote text not checked — No risk — LHC collisions are safe"
+      ]
+    },
+    {
+      "version": 30,
+      "action": "curate-evidence-tier",
+      "by": "source-audit-2026-07-15",
+      "summary": "classified Collider experiment as a primary evidence-generating design",
+      "ts": "2026-07-16T01:38:36.316687+00:00"
+    },
+    {
+      "version": 31,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “CMS Run 2 black-hole search (13 TeV, 138 fb^-1)” as a real evidence base",
+      "ts": "2026-07-16T01:38:47.621424+00:00"
+    },
+    {
+      "version": 32,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_a_search_for_microscopic_black_holes_string__2026 → ds_cms_run_2_black_hole_search_13_tev_138_fb_1",
+      "ts": "2026-07-16T01:39:05.407886+00:00"
+    },
+    {
+      "version": 32,
+      "action": "quote-reaudit-selected",
+      "method": "verbatim-sentence-v2",
+      "by": "source-audit-2026-07-15",
+      "sources": 1,
+      "ts": "2026-07-16T01:45:34.491312+00:00"
     }
   ],
   "refused": [

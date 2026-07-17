@@ -2,8 +2,8 @@
   "meta": {
     "id": "tylenol",
     "question": "Does prenatal acetaminophen (Tylenol) exposure increase the risk of autism in children?",
-    "version": 24,
-    "updated": "2026-07-17T00:43:37.387205+00:00",
+    "version": 79,
+    "updated": "2026-07-17T00:52:18.916295+00:00",
     "schemaVersion": 2
   },
   "positions": [
@@ -30,115 +30,262 @@
     {
       "id": "ds_swedish_national_health_registers_birth_pres",
       "label": "Swedish national health registers (birth / prescribed-drug / patient)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:05.788916+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_boston_birth_cohort",
       "label": "Boston Birth Cohort",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:05.844176+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_precautionary_consensus_statement_91_signato",
       "label": "Precautionary consensus statement (91 signatories)",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:05.899387+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_alspac_avon_longitudinal_study_of_parents_an",
       "label": "ALSPAC (Avon Longitudinal Study of Parents and Children)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:05.953435+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_danish_national_birth_cohort_dnbc",
       "label": "Danish National Birth Cohort (DNBC)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.008076+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_inma_infancia_y_medio_ambiente",
       "label": "INMA (INfancia y Medio Ambiente)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.061904+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_generation_r_study",
       "label": "Generation R Study",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.115527+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_norwegian_mother_father_and_child_cohort_mob",
       "label": "Norwegian Mother, Father and Child Cohort (MoBa)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.168464+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_auckland_birthweight_collaborative_study",
       "label": "Auckland Birthweight Collaborative Study",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.222244+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_neonatal_mouse_model_hippocampus",
       "label": "Neonatal mouse model (hippocampus)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.275317+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_human_ipsc_derived_cortical_organoid_model",
       "label": "Human iPSC-derived cortical organoid model",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.328502+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_acog_clinical_guidance_weight_of_evidence",
       "label": "ACOG clinical guidance (weight of evidence)",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.381647+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_bias_validity_analysis_commentary",
       "label": "Bias/validity analysis (commentary)",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.435775+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_mother_to_baby_patient_fact_sheet_literature",
       "label": "Mother To Baby patient fact sheet (literature summary)",
       "aliases": [],
-      "kind": "document"
+      "kind": "document",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.492238+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_napqi_mitochondrial_damage_theoretical_frame",
       "label": "NAPQI mitochondrial-damage theoretical framework",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.547392+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_illinois_kids_development_study_ikids",
       "label": "Illinois Kids Development Study (IKIDS)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.601224+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_smfm_comprehensive_evidence_review",
       "label": "SMFM comprehensive evidence review",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.654451+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_first_baby_study_pennsylvania",
       "label": "First Baby Study (Pennsylvania)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.709176+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_consensus_counterstatement_methodological_cr",
       "label": "Consensus counterstatement (methodological critique)",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.762199+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_2004_pelotas_birth_cohort_brazil",
       "label": "2004 Pelotas Birth Cohort (Brazil)",
-      "aliases": []
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.815866+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     },
     {
       "id": "ds_fda_evidence_review_label_change_action",
       "label": "FDA evidence review / label-change action",
       "aliases": [],
-      "kind": "argument"
+      "kind": "argument",
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-17T00:51:06.873906+00:00",
+        "by": "Evgeniia",
+        "note": "harvest verification (demo curation)"
+      }
     }
   ],
   "factors": [
@@ -420,6 +567,13 @@
           "provenance": {
             "quote": "This nationwide cohort study with sibling control analysis included a population-based sample of 2 480 797 children born in 1995 to 2019 in Sweden, with follow-up through December 31, 2021.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.087504+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -463,6 +617,13 @@
           "provenance": {
             "quote": "This prospective cohort study analyzed 996 mother-infant dyads, a subset of the Boston Birth Cohort, who were enrolled at birth and followed up prospectively at the Boston Medical Center from October 1, 1998, to June 30, 2018.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.142921+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -509,6 +670,13 @@
           "provenance": {
             "quote": "This Consensus Statement reflects our concerns and is currently supported by 91 scientists, clinicians and public health professionals from across the globe.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.197056+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -562,6 +730,13 @@
           "provenance": {
             "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
             "extractionConfidence": 0.7
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.250689+00:00",
+            "note": "demo curation"
           }
         },
         {
@@ -569,6 +744,13 @@
           "provenance": {
             "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
             "extractionConfidence": 0.7
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.303860+00:00",
+            "note": "demo curation"
           }
         },
         {
@@ -576,6 +758,13 @@
           "provenance": {
             "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
             "extractionConfidence": 0.7
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.355878+00:00",
+            "note": "demo curation"
           }
         },
         {
@@ -583,6 +772,13 @@
           "provenance": {
             "quote": "We included six European population-based birth cohorts: Avon Longitudinal Study of Parents and Children (ALSPAC), DNBC, Gene and Environment: Prospective Study on Infancy in Italy (GASPII), the Generation R Study, INMA (including four subcohorts), and the Mother–Child Cohort in Crete (RHEA) (Methods S1).",
             "extractionConfidence": 0.7
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.408381+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -628,6 +824,13 @@
           "provenance": {
             "quote": "We used data from 26,613 children from 12,902 families participating in the prospective Norwegian Mother, Father, and Child Cohort Study (MoBa).",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.460925+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -666,6 +869,13 @@
           "provenance": {
             "quote": "Participants were members of the Auckland Birthweight Collaborative Study, a longitudinal study of 871 infants of European descent sampled disproportionately for small for gestational age.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.513871+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -701,6 +911,13 @@
           "provenance": {
             "quote": "The aim of this study is to evaluate the impact of neonatal exposure to clinically relevant doses of AAP on adult spontaneous behavior, habituation, memory, learning, and cognitive flexibility later in life using a mouse model.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.566298+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -733,6 +950,13 @@
           "provenance": {
             "quote": "APAP exposure did not alter growth dynamics, cytoarchitecture, or viability, with apoptosis rates remaining below 1% in all conditions.",
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.618929+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -765,9 +989,36 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
-        "src:src_thompson_et_al_associations_between_acetamin_2014",
-        "src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021"
+        {
+          "ref": "src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.671864+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_thompson_et_al_associations_between_acetamin_2014",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.724792+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.778363+00:00",
+            "note": "demo curation"
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -800,6 +1051,13 @@
           "provenance": {
             "quote": "ACOG reaffirms that acetaminophen remains the analgesic and antipyretic of choice during pregnancy.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.832673+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -832,6 +1090,13 @@
           "provenance": {
             "quote": "Considered singly, any one of these sources of bias should worry conscientious researchers, but taken together, a picture of multiple competing biases emerges, making the task of identifying a true causal effect very challenging.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.885739+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -866,6 +1131,13 @@
           "provenance": {
             "quote": "This information is based on available published literature.",
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.938515+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -898,6 +1170,13 @@
           "provenance": {
             "quote": "This paper is a compilation of literature aiming to explore a theoretical framework for acetaminophen-induced mitochondrial damage in utero.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:17.992140+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -933,6 +1212,13 @@
           "provenance": {
             "quote": "By January 2023, 688 pregnant women had been enrolled in the IKIDS cohort.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.044699+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -960,8 +1246,26 @@
       "population": "—",
       "confidence": "low",
       "restsOn": [
-        "src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
-        "src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021"
+        {
+          "ref": "src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.098754+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.152726+00:00",
+            "note": "demo curation"
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -994,6 +1298,13 @@
           "provenance": {
             "quote": "Acetaminophen remains the recommended first-line medication to treat pain and fever during pregnancy, according to an updated  statement  from the Society for Maternal-Fetal Medicine (SMFM).",
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.211398+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1026,6 +1337,13 @@
           "provenance": {
             "quote": "We used data from the First Baby Study, a prospective cohort study conducted in Pennsylvania, USA, with 2,423 mother-child pairs.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.266183+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1057,12 +1375,28 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_bauer_et_al_paracetamol_use_during_pregnancy_2021",
+        {
+          "ref": "src:src_bauer_et_al_paracetamol_use_during_pregnancy_2021",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.320478+00:00",
+            "note": "demo curation"
+          }
+        },
         {
           "ref": "ds_consensus_counterstatement_methodological_cr",
           "provenance": {
             "quote": "These studies are limited by serious methodological problems, including failure to account for confounding, and elements of bias that make interpretation of the data challenging.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.397025+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1097,6 +1431,13 @@
           "provenance": {
             "quote": "We performed a prospective longitudinal population-based study using data from the 2004 Pelotas birth cohort.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.460621+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1131,6 +1472,13 @@
           "provenance": {
             "quote": "Multiple large-scale cohort studies, including the Nurses’ Health Study II and the Boston Birth Cohort , find this association.",
             "extractionConfidence": 0.85
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.528757+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1169,6 +1517,13 @@
           "provenance": {
             "quote": "We studied 64,322 live-born children and mothers enrolled in the Danish National Birth Cohort during 1996-2002.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.593640+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1207,6 +1562,13 @@
           "provenance": {
             "quote": "This Spanish birth cohort study included 2644 mother-child pairs recruited during pregnancy.",
             "extractionConfidence": 0.9
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.647786+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1243,6 +1605,13 @@
           "provenance": {
             "quote": "We studied 7796 mothers enrolled in ALSPAC between 1991 and 1992 along with their children and partners.",
             "extractionConfidence": 0.95
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.701458+00:00",
+            "note": "demo curation"
           }
         }
       ],
@@ -1277,10 +1646,46 @@
       "population": "—",
       "confidence": "moderate",
       "restsOn": [
-        "src:src_thompson_et_al_associations_between_acetamin_2014",
-        "src:src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
-        "src:src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
-        "src:src_stergiakouli_et_al_association_of_acetaminop_2016"
+        {
+          "ref": "src:src_thompson_et_al_associations_between_acetamin_2014",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.754687+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.808710+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.862815+00:00",
+            "note": "demo curation"
+          }
+        },
+        {
+          "ref": "src:src_stergiakouli_et_al_association_of_acetaminop_2016",
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-17T00:52:18.916166+00:00",
+            "note": "demo curation"
+          }
+        }
       ],
       "provenance": {
         "position": {
@@ -1762,6 +2167,336 @@
         "blindspot opened: No increased risk (confounding explains it) missing \"Meta-analysis\"",
         "blindspot opened: Evidence unclear / not established missing \"Meta-analysis\""
       ]
+    },
+    {
+      "version": 25,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Swedish national health registers (birth / prescribed-drug / patient)” as a real evidence base",
+      "ts": "2026-07-17T00:51:05.789058+00:00"
+    },
+    {
+      "version": 26,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Boston Birth Cohort” as a real evidence base",
+      "ts": "2026-07-17T00:51:05.844350+00:00"
+    },
+    {
+      "version": 27,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Precautionary consensus statement (91 signatories)” as a real evidence base",
+      "ts": "2026-07-17T00:51:05.899551+00:00"
+    },
+    {
+      "version": 28,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “ALSPAC (Avon Longitudinal Study of Parents and Children)” as a real evidence base",
+      "ts": "2026-07-17T00:51:05.953582+00:00"
+    },
+    {
+      "version": 29,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Danish National Birth Cohort (DNBC)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.008227+00:00"
+    },
+    {
+      "version": 30,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “INMA (INfancia y Medio Ambiente)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.062095+00:00"
+    },
+    {
+      "version": 31,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Generation R Study” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.115680+00:00"
+    },
+    {
+      "version": 32,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Norwegian Mother, Father and Child Cohort (MoBa)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.168649+00:00"
+    },
+    {
+      "version": 33,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Auckland Birthweight Collaborative Study” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.222394+00:00"
+    },
+    {
+      "version": 34,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Neonatal mouse model (hippocampus)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.275488+00:00"
+    },
+    {
+      "version": 35,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Human iPSC-derived cortical organoid model” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.328654+00:00"
+    },
+    {
+      "version": 36,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “ACOG clinical guidance (weight of evidence)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.381811+00:00"
+    },
+    {
+      "version": 37,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Bias/validity analysis (commentary)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.435937+00:00"
+    },
+    {
+      "version": 38,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Mother To Baby patient fact sheet (literature summary)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.492411+00:00"
+    },
+    {
+      "version": 39,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “NAPQI mitochondrial-damage theoretical framework” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.547569+00:00"
+    },
+    {
+      "version": 40,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Illinois Kids Development Study (IKIDS)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.601368+00:00"
+    },
+    {
+      "version": 41,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “SMFM comprehensive evidence review” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.654608+00:00"
+    },
+    {
+      "version": 42,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “First Baby Study (Pennsylvania)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.709325+00:00"
+    },
+    {
+      "version": 43,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Consensus counterstatement (methodological critique)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.762351+00:00"
+    },
+    {
+      "version": 44,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “2004 Pelotas Birth Cohort (Brazil)” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.816014+00:00"
+    },
+    {
+      "version": 45,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “FDA evidence review / label-change action” as a real evidence base",
+      "ts": "2026-07-17T00:51:06.874091+00:00"
+    },
+    {
+      "version": 46,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_ahlqvist_et_al_acetaminophen_use_during_preg_2024 → ds_swedish_national_health_registers_birth_pres",
+      "ts": "2026-07-17T00:52:17.087649+00:00"
+    },
+    {
+      "version": 47,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_ji_et_al_association_of_cord_plasma_biomarke_2020 → ds_boston_birth_cohort",
+      "ts": "2026-07-17T00:52:17.143093+00:00"
+    },
+    {
+      "version": 48,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_bauer_et_al_paracetamol_use_during_pregnancy_2021 → ds_precautionary_consensus_statement_91_signato",
+      "ts": "2026-07-17T00:52:17.197238+00:00"
+    },
+    {
+      "version": 49,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alemany_et_al_prenatal_and_postnatal_exposur_2021 → ds_alspac_avon_longitudinal_study_of_parents_an",
+      "ts": "2026-07-17T00:52:17.250832+00:00"
+    },
+    {
+      "version": 50,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alemany_et_al_prenatal_and_postnatal_exposur_2021 → ds_danish_national_birth_cohort_dnbc",
+      "ts": "2026-07-17T00:52:17.304025+00:00"
+    },
+    {
+      "version": 51,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alemany_et_al_prenatal_and_postnatal_exposur_2021 → ds_inma_infancia_y_medio_ambiente",
+      "ts": "2026-07-17T00:52:17.356021+00:00"
+    },
+    {
+      "version": 52,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alemany_et_al_prenatal_and_postnatal_exposur_2021 → ds_generation_r_study",
+      "ts": "2026-07-17T00:52:17.408537+00:00"
+    },
+    {
+      "version": 53,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_gustavson_et_al_acetaminophen_use_during_pre_2021 → ds_norwegian_mother_father_and_child_cohort_mob",
+      "ts": "2026-07-17T00:52:17.461079+00:00"
+    },
+    {
+      "version": 54,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_thompson_et_al_associations_between_acetamin_2014 → ds_auckland_birthweight_collaborative_study",
+      "ts": "2026-07-17T00:52:17.514022+00:00"
+    },
+    {
+      "version": 55,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_philippot_et_al_paracetamol_acetaminophen_an_2022 → ds_neonatal_mouse_model_hippocampus",
+      "ts": "2026-07-17T00:52:17.566449+00:00"
+    },
+    {
+      "version": 56,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_prenatal_acetaminophen_exposure_does_not_dis_2025 → ds_human_ipsc_derived_cortical_organoid_model",
+      "ts": "2026-07-17T00:52:17.619077+00:00"
+    },
+    {
+      "version": 57,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_prada_et_al_evaluation_of_the_evidence_on_ac_2025 → src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
+      "ts": "2026-07-17T00:52:17.672034+00:00"
+    },
+    {
+      "version": 58,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_prada_et_al_evaluation_of_the_evidence_on_ac_2025 → src:src_thompson_et_al_associations_between_acetamin_2014",
+      "ts": "2026-07-17T00:52:17.724951+00:00"
+    },
+    {
+      "version": 59,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_prada_et_al_evaluation_of_the_evidence_on_ac_2025 → src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021",
+      "ts": "2026-07-17T00:52:17.778533+00:00"
+    },
+    {
+      "version": 60,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_acog_acetaminophen_use_in_pregnancy_and_neur_2025 → ds_acog_clinical_guidance_weight_of_evidence",
+      "ts": "2026-07-17T00:52:17.832818+00:00"
+    },
+    {
+      "version": 61,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_associations_between_prenatal_acetaminophen__2020 → ds_bias_validity_analysis_commentary",
+      "ts": "2026-07-17T00:52:17.885868+00:00"
+    },
+    {
+      "version": 62,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_mothertobaby_otis_acetaminophen_paracetamol__2023 → ds_mother_to_baby_patient_fact_sheet_literature",
+      "ts": "2026-07-17T00:52:17.938682+00:00"
+    },
+    {
+      "version": 63,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_chu_et_al_acetaminophen_s_role_in_autism_and_2025 → ds_napqi_mitochondrial_damage_theoretical_frame",
+      "ts": "2026-07-17T00:52:17.992282+00:00"
+    },
+    {
+      "version": 64,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_woodbury_et_al_the_relationship_of_prenatal__2024 → ds_illinois_kids_development_study_ikids",
+      "ts": "2026-07-17T00:52:18.044848+00:00"
+    },
+    {
+      "version": 65,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_a_systematic_review_of_the_link_between_auti_2022 → src:src_ji_et_al_association_of_cord_plasma_biomarke_2020",
+      "ts": "2026-07-17T00:52:18.098918+00:00"
+    },
+    {
+      "version": 66,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_a_systematic_review_of_the_link_between_auti_2022 → src:src_alemany_et_al_prenatal_and_postnatal_exposur_2021",
+      "ts": "2026-07-17T00:52:18.152879+00:00"
+    },
+    {
+      "version": 67,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_smfm_society_for_maternal_fetal_medicine_sta_2026 → ds_smfm_comprehensive_evidence_review",
+      "ts": "2026-07-17T00:52:18.211543+00:00"
+    },
+    {
+      "version": 68,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_maternal_use_of_acetaminophen_during_pregnan_2022 → ds_first_baby_study_pennsylvania",
+      "ts": "2026-07-17T00:52:18.266346+00:00"
+    },
+    {
+      "version": 69,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alwan_et_al_paracetamol_use_in_pregnancy_cau_2021 → src:src_bauer_et_al_paracetamol_use_during_pregnancy_2021",
+      "ts": "2026-07-17T00:52:18.320644+00:00"
+    },
+    {
+      "version": 70,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_alwan_et_al_paracetamol_use_in_pregnancy_cau_2021 → ds_consensus_counterstatement_methodological_cr",
+      "ts": "2026-07-17T00:52:18.397167+00:00"
+    },
+    {
+      "version": 71,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_tovo_rodrigues_et_al_is_intrauterine_exposur_2018 → ds_2004_pelotas_birth_cohort_brazil",
+      "ts": "2026-07-17T00:52:18.460762+00:00"
+    },
+    {
+      "version": 72,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_fda_responds_to_evidence_of_possible_associa_2025 → ds_fda_evidence_review_label_change_action",
+      "ts": "2026-07-17T00:52:18.528888+00:00"
+    },
+    {
+      "version": 73,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_liew_et_al_acetaminophen_use_during_pregnanc_2014 → ds_danish_national_birth_cohort_dnbc",
+      "ts": "2026-07-17T00:52:18.593796+00:00"
+    },
+    {
+      "version": 74,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_avella_garcia_et_al_acetaminophen_use_in_pre_2016 → ds_inma_infancia_y_medio_ambiente",
+      "ts": "2026-07-17T00:52:18.647941+00:00"
+    },
+    {
+      "version": 75,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_stergiakouli_et_al_association_of_acetaminop_2016 → ds_alspac_avon_longitudinal_study_of_parents_an",
+      "ts": "2026-07-17T00:52:18.701611+00:00"
+    },
+    {
+      "version": 76,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_masarwa_et_al_prenatal_exposure_to_acetamino_2018 → src:src_thompson_et_al_associations_between_acetamin_2014",
+      "ts": "2026-07-17T00:52:18.754858+00:00"
+    },
+    {
+      "version": 77,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_masarwa_et_al_prenatal_exposure_to_acetamino_2018 → src:src_liew_et_al_acetaminophen_use_during_pregnanc_2014",
+      "ts": "2026-07-17T00:52:18.808861+00:00"
+    },
+    {
+      "version": 78,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_masarwa_et_al_prenatal_exposure_to_acetamino_2018 → src:src_avella_garcia_et_al_acetaminophen_use_in_pre_2016",
+      "ts": "2026-07-17T00:52:18.862948+00:00"
+    },
+    {
+      "version": 79,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_masarwa_et_al_prenatal_exposure_to_acetamino_2018 → src:src_stergiakouli_et_al_association_of_acetaminop_2016",
+      "ts": "2026-07-17T00:52:18.916295+00:00"
     }
   ]
 }

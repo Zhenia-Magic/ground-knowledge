@@ -21,8 +21,8 @@ Hashes establish capture integrity, not research quality.
 `nEff` is the sum of distinct admitted root credits. It is a **coverage and de-duplication
 diagnostic, not an evidence-quality, effect-size, confidence, or truth score**.
 
-- **COVID:** Zoonotic spillover at the Huanan market 13 → **5.0**; Laboratory-associated origin 7 → **3.5**; Undetermined / unresolved 6 → **3.0**.
-- **Black holes:** No risk — LHC collisions are safe 11 → **4.0**; Residual concern — the safety argument has weak or speculative links 4 → **2.0**.
+- **COVID:** Zoonotic spillover 13 → **5.0**; Laboratory-associated origin 8 → **3.5**; Undetermined / unresolved 8 → **3.0**.
+- **Black holes:** No risk — LHC collisions are safe 11 → **5.0**; Residual concern — the safety argument has weak or speculative links 4 → **2.0**.
 - **Eggs:** Increases risk 4 → **4.0**; No increased risk / possibly lower risk 9 → **5.0**; Context-dependent (depends on the person) 7 → **4.0**.
 
 ## 3. Adversarial contract

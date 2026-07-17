@@ -217,7 +217,9 @@ def restore_unsafe_repairs(path, prior_case_report):
 
 def write_markdown_report(cases, output):
     lines = ["# Quote audit", "",
-             "Generated from the current case files by `scripts/audit_quotes.py`.", "",
+             "Generated from the current case files by `scripts/audit_quotes.py`. The companion "
+             "JSON records the current hashed verification snapshot; its generation timestamp is "
+             "not a claim that every unchanged URL was refetched on that date.", "",
              "A checkmark means one complete verbatim sentence was found in one fetched-text "
              "segment and is bound to both the displayed-sentence hash and checked-text hash. "
              "It verifies the text match, not whether the sentence entails the assigned position. "
@@ -244,6 +246,9 @@ def write_markdown_report(cases, output):
                 counts["missing"] += 1
                 aggregate["missing"] += 1
                 non_exact.append((path.name, "missing", item.get("title"), item.get("url")))
+        # Context-only sources are excluded from position/source-count metrics but their stored
+        # quotations still belong in the all-excerpts audit total.
+        for item in _case_sources(kb):
             all_provenance = [p for p in (item.get("provenance") or {}).values()
                               if isinstance(p, dict) and p.get("quote")]
             all_provenance += [edge["provenance"] for edge in item.get("restsOn") or []
