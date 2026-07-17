@@ -405,8 +405,9 @@ const VIEWS=[
 const WV={high:3,med:2,low:1,"n/a":0};
 const WLABEL={high:"high",med:"medium",low:"low","n/a":"n/a"};
 // Importance is a NEUTRAL slate ramp on purpose: the categorical palette is reserved for
-// positions, so a cell's shade can never be confused with a column's position colour.
-const WCELL={3:"#454C59",2:"#9AA3AF",1:"#E8EBEF",0:"transparent"};
+// positions, so a cell's shade can never be confused with a column's position colour. "high" is a
+// soft mid-slate (not near-black), still the darkest step and still legible with white text.
+const WCELL={3:"#6B7385",2:"#AEB5C0",1:"#ECEEF2",0:"transparent"};
 
 const state={
   caseId: DATA && DATA.order[0],
