@@ -234,11 +234,11 @@ def strip_untrusted_kb(kb):
 
     A keyless contributor may seed a new question's structure and sources, but may not assert any
     trust the portal cannot vouch for: stewardship (``meta.curated``), curator dataset confirmations,
-    support-edge admissions, and quote-verification flags are all removed. So a keyless push lands
-    with its bases **proposed** and its quotes **unverified** — exactly the posture of the public
-    per-source delta path (strip_untrusted_verification), lifted to a whole document. Only an
-    authenticated curator, or the portal's own fetched-text verification, can restore those records.
-    Mutates and returns ``kb``."""
+    support-edge admissions, and quote-verification flags are all removed. Curator trust (bases stay
+    **proposed**) can only be restored by an authenticated curator. Quote verification is different:
+    it is deterministic, so the portal re-earns it itself by calling ``verify_kb`` (fetched-text
+    grounding) right after this strip — a keyless push therefore lands with proposed bases but its
+    quotes GROUNDED by the server, no admin token needed. Mutates and returns ``kb``."""
     meta = kb.get("meta")
     if isinstance(meta, dict):
         meta.pop("curated", None)
@@ -257,6 +257,66 @@ def strip_untrusted_kb(kb):
                     claim.pop("quoteVerification", None)
             factor["weights"] = {}   # cells derive only from verified claims; none survive the strip
     return kb
+
+
+def verify_kb(kb, fetch_text):
+    """Deterministically ground every stored quote in a WHOLE kb against source text.
+
+    ``fetch_text(url) -> str | None`` is injected by the caller (the CLI passes the ingest fetcher,
+    the portal passes its own), so this stays dependency-free and identical everywhere. Grounds each
+    source's position quote, every dependency-edge quote (an exact match may promote a proposed
+    root), and every factor/crux claim, then rebuilds the crux grid from the newly verified claims.
+
+    Trust comes from the FETCH happening here — never from client-supplied verification — so this is
+    safe to run for anyone: it recomputes the record rather than believing it. Returns a
+    ``{exact, fuzzy, missing, unfetched}`` tally. Best-effort: a source that will not fetch simply
+    leaves its quotes unverified.
+    """
+    sources = kb.get("sources", []) or []
+    src_by_id = {s.get("id"): s for s in sources}
+    text_cache = {}
+    counts = {"exact": 0, "fuzzy": 0, "missing": 0, "unfetched": 0}
+
+    def text_for(src):
+        sid = src.get("id")
+        if sid in text_cache:
+            return text_cache[sid]
+        text = None
+        url = src.get("url")
+        if url:
+            try:
+                text = fetch_text(url)
+            except Exception:
+                text = None
+        text_cache[sid] = text
+        return text
+
+    def ground(prov, src):
+        if not (isinstance(prov, dict) and prov.get("quote")):
+            return
+        text = text_for(src)
+        if not text:
+            counts["unfetched"] += 1
+            return
+        result = apply_quote_verification(prov, text, source_title=src.get("title"),
+                                          text_depth=src.get("textDepth", "unknown"),
+                                          source_url=src.get("url"))
+        counts[result["status"]] = counts.get(result["status"], 0) + 1
+
+    for src in sources:
+        ground((src.get("provenance") or {}).get("position"), src)
+        for edge in src.get("restsOn", []) or []:
+            if isinstance(edge, dict):
+                ground(edge.get("provenance"), src)
+    for factor in kb.get("factors", []) or []:
+        for entry in factor.get("provenance", []) or []:
+            src = src_by_id.get(entry.get("source"))
+            if src:
+                ground(entry, src)
+
+    from engine.merge import recompute_factor_weights   # lazy: merge imports verify at load time
+    recompute_factor_weights(kb)
+    return counts
 
 
 def match_quote(quote, text, source_title=None):

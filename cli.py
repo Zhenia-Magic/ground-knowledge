@@ -668,58 +668,9 @@ def cmd_verify(args):
     fetch — never from agent-supplied text.
     """
     from ingest.extract import extract_text
-    from engine.verify import apply_quote_verification
+    from engine.verify import verify_kb
     kb = read_json(args.kb)
-    sources = kb.get("sources", [])
-    src_by_id = {s.get("id"): s for s in sources}
-    text_cache = {}                                   # source id -> fetched text (or None)
-
-    def text_for(src):
-        sid = src.get("id")
-        if sid in text_cache:
-            return text_cache[sid]
-        url = src.get("url")
-        text = None
-        if url:
-            try:
-                doc = extract_text(url)
-                text = (doc or {}).get("text")
-            except Exception:
-                text = None
-        text_cache[sid] = text
-        return text
-
-    counts = {"exact": 0, "fuzzy": 0, "missing": 0, "unfetched": 0}
-
-    def ground(prov, src):
-        if not (isinstance(prov, dict) and prov.get("quote")):
-            return
-        text = text_for(src)
-        if not text:
-            counts["unfetched"] += 1
-            return
-        res = apply_quote_verification(prov, text, source_title=src.get("title"),
-                                       text_depth=src.get("textDepth", "unknown"),
-                                       source_url=src.get("url"))
-        counts[res["status"]] = counts.get(res["status"], 0) + 1
-
-    for s in sources:                                 # position + dependency-edge quotes
-        ground((s.get("provenance") or {}).get("position"), s)
-        for edge in s.get("restsOn", []):
-            if isinstance(edge, dict):
-                ground(edge.get("provenance"), s)
-    for f in kb.get("factors", []):                   # factor / crux claim quotes
-        for entry in f.get("provenance", []):
-            src = src_by_id.get(entry.get("source"))
-            if src:
-                ground(entry, src)
-
-    # Rebuild the crux grid: a factor cell only counts a claim whose quote just verified exact,
-    # so cruxes stay dark until their wording is grounded (engine/merge.recompute_factor_weights).
-    from engine.merge import recompute_factor_weights
-    recompute_factor_weights(kb)
-
-    write_json(args.kb, kb)
+    counts = verify_kb(kb, lambda url: (extract_text(url) or {}).get("text"))
     print("Quote check — exact {exact}, fuzzy {fuzzy}, missing {missing}"
           "  ({unfetched} quote(s) on sources that could not be re-fetched)".format(**counts))
     if counts["missing"]:

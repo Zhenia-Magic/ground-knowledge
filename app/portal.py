@@ -708,16 +708,24 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(404, {"error": "no such question — create it first via POST /api/questions"})
             if not admin:
                 # A keyless push may SEED a new/empty question, but never replace populated work and
-                # never carry trust: sanitize curator confirmations, edge admissions, verified quotes,
-                # and the curated stewardship flag so a non-admin can't inflate coverage or forge the
-                # badge. Replacing a question that already has sources still needs the admin token.
+                # never carry curator trust: sanitize curator confirmations, edge admissions, and the
+                # curated stewardship flag so a non-admin can't inflate coverage or forge the badge.
+                # Replacing a question that already has sources still needs the admin token.
                 if existing.get("kb", {}).get("sources"):
                     return self._send(403, {"error": "this question already has sources — replacing the "
                                             "whole KB needs the admin token; add sources via the review flow instead"})
                 if not self._rate_ok("push-open", 6):
                     return
-                from engine.verify import strip_untrusted_kb
-                strip_untrusted_kb(kb)
+                from engine.verify import strip_untrusted_kb, verify_kb
+                strip_untrusted_kb(kb)               # drop client-asserted trust, verified quotes included
+                # Quote verification is NOT an admin privilege — it is a deterministic re-fetch. Re-earn
+                # it here server-side so a keyless push gets grounded quotes (and cruxes) without a token.
+                # Curator confirmations stay stripped above; only the quote grounding is restored.
+                from ingest.extract import extract_text
+                try:
+                    verify_kb(kb, lambda url: (extract_text(url) or {}).get("text"))
+                except Exception:
+                    pass                              # best-effort; unfetchable sources stay unverified
             try:
                 from engine.migrate import migrate_kb, validation_errors
                 kb, _changes = migrate_kb(kb)
