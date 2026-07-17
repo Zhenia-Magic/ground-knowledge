@@ -109,6 +109,17 @@ guessed label — it is queued in the KB for a human to resolve (pick a position
 AI step and the system's honestly-stated biggest lever (MECHANISM.md §8.1); the ensemble narrows it,
 it does not erase a blind spot shared across models.
 
+**A coding agent closes even the labelling gap — keylessly.** When the contributor is a coding agent
+(Claude Code, Codex) rather than a scripted API call, *it* is the model: given the playbook in
+[`AGENTS.md`](AGENTS.md), the agent does the web search and reading with its own subscription and
+hands each source to the same deterministic CLI, which stays the trust boundary. `cli.py lint`
+validates an agent-written delta *without* merging (numbered, actionable errors; nonzero exit),
+`add` re-verifies each quote against the fetched text and strips any trust claim the model asserts,
+and `doctor` reports whether the case is submission-grade (structure, coverage, quote hygiene). The
+guardrails are why this is safe: the agent proposes, the CLI still disposes, so no API key is needed
+*anywhere* in the loop — the loop is `gaps → search → lint → add → doctor`, then a keyless push
+publishes it (§7).
+
 ---
 
 ## 4. The assessment metrics — what each computes, and what it resists
@@ -263,6 +274,11 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
   Public paste-back sources are queued; reviewed/local updates use the same merge. Human review is
   deliberately concentrated at confirmation, alias resolution, and ensemble disagreements; it is a
   real integrity bottleneck, not hidden.
+- **Contributes with no API key.** A coding agent builds a case locally (§3) and publishes it with a
+  keyless `push` into a **new or empty** question; the server sanitizes trust records on that path
+  (`engine/verify.strip_untrusted_kb`), so a keyless contributor seeds content while confirmations,
+  verified quotes, and the curated flag stay admin-earned. Replacing a question that *already has
+  sources* remains token-gated — a whole-KB overwrite is the maintainer's operation, not an open one.
 - **Bounds resource use:** portal bodies, fetch batches, extracted PDFs, request threads, expensive
   fetches, and per-IP mutation rates all have configurable ceilings. Question cards are read from
   indexed summary columns rather than reparsing every KB. This removes obvious denial-of-service and
@@ -300,6 +316,12 @@ Same `assess()`; same renderer; three lines of `build`. That is the generalizati
 - *Forged curator admission.* A model cannot make its proposed edge trusted by emitting an
   `admission` object, even on the locally fetched path. Delta validation rejects it generally, the
   trusted fetch boundary strips it before merge, and the ninth benchmark attack executes the path.
+- *Forged stewardship label.* The same boundary at the case level: a contributor cannot make a
+  question read "curated & maintained by admins." The flag lives on `meta`, which no ingestion path
+  writes (a client-supplied `meta` is stripped), and a keyless whole-KB push into a new/empty question
+  is sanitized of it (`engine/verify.strip_untrusted_kb`); only an admin-token action sets it. It is
+  shown *paired* with a computed confirmed-coverage percentage it cannot overwrite (`MECHANISM.md §7.1`),
+  so the badge discloses stewardship without laundering an unverified number into an authoritative one.
 - *Alias-splitting.* Exact and learned aliases resolve deterministically. Automatically verified
   lexical lookalikes admit at most one root and expose the collision; curator confirmation blocks
   lexical/acronym duplicates unless an override reason is recorded. Optional embeddings surface
@@ -372,11 +394,12 @@ evidence base are real and runnable.
 | `ingest/ensemble.py` | deterministic field-level majority vote combining several models' labels into one delta + a per-source agreement report |
 | `engine/review.py` | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB for a human to resolve (pick a position / drop the paper), counted in no metric |
 | `ingest/search.py` + `prompts/` | keyless OpenAlex fallback search; the labelling / discovery / research prompts |
-| `cli.py` | `new · init · show · assess · gaps · deepen · add · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · ui · pull · push · questions · import-citations · export` |
+| `cli.py` | `new · init · show · assess · gaps · deepen · lint · add · doctor · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · confirm-edge · mark-curated · ui · pull · push · questions · import-citations · export` |
 | `app/` | the deployed keyless **portal** ([groundknowledge.org](https://groundknowledge.org)) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |
 | `ui/` | the local web console (`python cli.py ui`): find → fetch → label → import, **gap-driven deepen**, Curate, and pull/push |
-| `cases/*.kb.json` | five local, url-cited KBs: eggs, COVID, black holes, alcohol, and video games |
-| `viewer/index.html` | self-contained, render-only viewer (Coverage · Divergence · Independence · Changes) |
+| `cases/*.kb.json` | six local, url-cited KBs: eggs, COVID, black holes, alcohol, video games, and prenatal acetaminophen |
+| `AGENTS.md` + `examples/` | the **keyless coding-agent playbook** (drive the loop with a Claude Code / Codex subscription, no API key) + copy-and-adapt delta templates |
+| `viewer/index.html` | self-contained, render-only viewer (Overview · Key issues · Evidence reuse · Changes) |
 | `MECHANISM.md` / `SCHEMA.md` / `QUICKSTART.md` / `WORKFLOW.md` | the independence mechanism / data model / step-by-step tasks / operator runbook |
 
 Run `python cli.py show cases/eggs.kb.json`, then `python cli.py build cases/eggs.kb.json` and open
