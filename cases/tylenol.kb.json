@@ -4,7 +4,12 @@
     "question": "Does prenatal acetaminophen (Tylenol) exposure increase the risk of autism in children?",
     "version": 79,
     "updated": "2026-07-17T00:52:18.916295+00:00",
-    "schemaVersion": 2
+    "schemaVersion": 2,
+    "portal": {
+      "id": "c9155f3e3573",
+      "baseVersion": 1,
+      "url": "https://groundknowledge.org"
+    }
   },
   "positions": [
     {
