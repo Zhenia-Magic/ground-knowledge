@@ -8,9 +8,9 @@
 | `51fb332b4e96.kb.json` | 68 | 3 | 36 | 36 | 68 | 0 |
 | `blackholes.kb.json` | 15 | 2 | 8 | 8 | 15 | 0 |
 | `covid.kb.json` | 29 | 3 | 7 | 7 | 29 | 0 |
-| `eggs.kb.json` | 21 | 3 | 12 | 12 | 20 | 1 |
+| `eggs.kb.json` | 21 | 3 | 12 | 12 | 21 | 0 |
 | `tylenol.kb.json` | 24 | 3 | 21 | 21 | 22 | 0 |
-| **Total** | **191** | **16** | **100** | **100** | **188** | **1** |
+| **Total** | **191** | **16** | **100** | **100** | **189** | **0** |
 
 `root records` is the number of named evidence-base entities, not per-position coverage.
 Exact position quotes use the current hashed verifier. Unadmitted support links remain visible
