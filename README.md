@@ -62,7 +62,7 @@ root cannot be laundered into another position through an unreviewed edge.
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |
-| `cases/*.kb.json` | artifact | six local, sourced knowledge bases (three competition cases — COVID origin, LHC black holes, eggs — plus alcohol, video-games, and prenatal-acetaminophen generalization cases) |
+| `cases/*.kb.json` | artifact | three local, sourced knowledge bases — the competition cases: COVID origin, LHC black holes, and eggs |
 | `AGENTS.md` · `CLAUDE.md` | playbook | drive the repo with a **coding agent** (Claude Code / Codex) and no API key — the keyless loop, the delta contract, the guardrails |
 | `MECHANISM.md` · `SCHEMA.md` · `SECURITY.md` · `DEPLOYMENT.md` | spec/runbook | the mechanism, schema, trust boundaries, and release/rollback procedure |
 
@@ -199,8 +199,8 @@ or `pull` them locally (`python cli.py pull <id>`):
 - **COVID origin (contested):** current source→coverage values are **13→4.5, 8→3.0, 8→3.0**;
   re-analyses resolve onto shared underlying evidence rather than counting as new roots.
 - **Black holes (settled):** 11 safe-position sources resolve to **5.0** coverage across production
-  impossibility, Hawking evaporation, accretion timescale, and the cosmic-ray/dense-star observation;
-  4 residual-concern sources resolve to **2.0**.
+  impossibility, Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, and
+  the CMS Run 2 collider search; 4 residual-concern sources resolve to **2.0**.
 
 ## Two surfaces, one compounding knowledge base
 

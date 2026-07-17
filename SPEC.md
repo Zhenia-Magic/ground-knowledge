@@ -397,7 +397,7 @@ evidence base are real and runnable.
 | `cli.py` | `new · init · show · assess · gaps · deepen · lint · add · doctor · build · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · confirm-edge · mark-curated · ui · pull · push · questions · import-citations · export` |
 | `app/` | the deployed keyless **portal** ([groundknowledge.org](https://groundknowledge.org)) + a portable store (sqlite local / Postgres prod) the CLI pushes & pulls to |
 | `ui/` | the local web console (`python cli.py ui`): find → fetch → label → import, **gap-driven deepen**, Curate, and pull/push |
-| `cases/*.kb.json` | six local, url-cited KBs: eggs, COVID, black holes, alcohol, video games, and prenatal acetaminophen |
+| `cases/*.kb.json` | three local, url-cited KBs: eggs, COVID, black holes |
 | `AGENTS.md` + `examples/` | the **keyless coding-agent playbook** (drive the loop with a Claude Code / Codex subscription, no API key) + copy-and-adapt delta templates |
 | `viewer/index.html` | self-contained, render-only viewer (Overview · Key issues · Evidence reuse · Changes) |
 | `MECHANISM.md` / `SCHEMA.md` / `QUICKSTART.md` / `WORKFLOW.md` | the independence mechanism / data model / step-by-step tasks / operator runbook |

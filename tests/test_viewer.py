@@ -81,8 +81,7 @@ class QuoteBadgeCopyTests(unittest.TestCase):
 
 class FactorEvidenceContractTests(unittest.TestCase):
     def test_every_shipped_factor_cell_has_an_exact_source_sentence(self):
-        for case in ("177f5ec738c9.kb.json", "51fb332b4e96.kb.json", "blackholes.kb.json",
-                     "covid.kb.json", "eggs.kb.json"):
+        for case in ("blackholes.kb.json", "covid.kb.json", "eggs.kb.json"):
             kb = _kb(case)
             for factor in kb.get("factors", []):
                 for pos_id in factor.get("weights", {}):
