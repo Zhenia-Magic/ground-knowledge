@@ -103,10 +103,11 @@ class CoverageSummaryTests(unittest.TestCase):
             template = handle.read()
         self.assertIn("Source count versus underlying evidence", template)
         self.assertIn("Adjusted evidence-base count", template)
-        # Both quantities now render in the SAME bar language so a reader can read one against the
-        # other, but they must stay TWO separate charts on their own scales — overlaying them makes
-        # the source tally look like a denominator of the adjusted count.
-        self.assertEqual(template.count('class="indeprows"'), 2)
+        # Two separate charts in two different shapes: a 100% share for the source count, absolute
+        # small-multiples for the adjusted count. Same-shape/overlaid invites reading the source
+        # tally as a denominator of the adjusted count, which it is not.
+        self.assertIn('class="distrib"', template)
+        self.assertIn('class="indeprows"', template)
         self.assertIn('class="indtrack"', template)
         self.assertNotIn('class="cmpraw"', template)
         self.assertNotIn('class="cmpbase"', template)

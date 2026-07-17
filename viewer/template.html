@@ -285,8 +285,11 @@
     border-radius:50%;border:1px solid var(--faint);color:var(--faint);font-size:9.5px;
     font-family:var(--sans);cursor:pointer;vertical-align:1px;}
   .infoicon:hover{border-color:var(--muted);color:var(--muted);}
-  #tip{position:fixed;z-index:100;max-width:300px;background:var(--chrome);color:#fff;padding:9px 11px;
-    border-radius:8px;font-size:12px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.22);display:none;}
+  /* Light and quiet on purpose: same surface/'hairline border' language as a panel, so an
+     explanation reads as part of the page rather than a dark overlay dropped on top of it. */
+  #tip{position:fixed;z-index:100;max-width:260px;background:var(--surface);color:var(--ink);
+    border:1px solid var(--line-strong);padding:7px 9px;border-radius:8px;font-size:12px;
+    line-height:1.45;box-shadow:0 3px 10px rgba(0,0,0,.08);display:none;}
   .indkey{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 16px;}
   .indkey span{display:flex;align-items:center;gap:6px;}
   .indkey i{width:8px;height:8px;border-radius:2px;display:inline-block;}
@@ -684,29 +687,31 @@ function filteredSources(kb){
 
 function headline(c){
   const {kb,assessment:a}=c, {pos}=maps(kb);
-  // Both charts use the SAME horizontal-bar language so a reader can read one against the other at
-  // a glance. They remain SEPARATE charts on their own scales: the source tally is not a denominator
-  // of the adjusted count — they answer different questions, which is what overlaying them implied.
-  const row=(d,fillPct,valueHtml,tip)=>
-    `<div class="indrow${state.posOn.has(d.id)?"":" dim"}" data-pos="${d.id}" style="cursor:pointer">
-      <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
-      <span class="indtrackcol"><span class="indtrack" data-tip="${esc(tip)}"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
-      <span class="indval">${valueHtml}</span>
-    </div>`;
-  const dist=a.distribution||[];
-  const maxCount=Math.max(1,...dist.map(d=>d.count||0));
-  const bar1=dist.map(d=>{
-    const n=d.count||0, fillPct=Math.max(2,Math.round(n/maxCount*100));
-    return row(d,fillPct,`<b>${n}</b> source${n===1?"":"s"} <span class="collapse">· ${d.pct||0}% of listed</span>`,
-               `${d.label} — ${n} sources (${d.pct||0}% of listed sources)`);
+  // Keep the two quantities in separate charts, in different shapes. Source count is a 100% share;
+  // the adjusted count is an absolute small-multiples chart on one shared scale. Giving them the
+  // same shape invites reading the source tally as a denominator of the adjusted count, which it
+  // is not — they answer different questions.
+  const bar=(rows,pctKey,sizeKey,tipFn)=>rows.map(d=>{
+    const label=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
+    const p=d[pctKey]||0;
+    const fits=p>=(label.length*0.9+4);
+    const text=fits?(label+" · "+p+"%"):(p+"%");
+    const dim=state.posOn.has(d.id)?"":" dim";
+    // Tol's palette includes light swatches, so pick each segment's ink by luminance — .seg's
+    // default white is unreadable on e.g. #DDCC77.
+    return `<button class="seg${dim}" data-pos="${d.id}" style="flex:${d[sizeKey]||0.0001};background:${d.hue};color:${inkOn(d.hue)}" title="${esc(tipFn(d))}">${esc(text)}</button>`;
   }).join("");
+  const bar1=bar(a.distribution,"pct","count",d=>`${d.label} — ${d.count} sources`);
   const wd=a.weightedDistribution||[];
   const maxEff=Math.max(1,...wd.map(d=>d.weight||0));
   const indepRows=wd.map(d=>{
     const nb=d.weight||0, raw=d.raw||0, fillPct=Math.max(2,Math.round(nb/maxEff*100));
     const proposed=d.provisionalCount?` <span class="collapse">+ ${d.provisionalCount} awaiting review — not counted</span>`:"";
-    return row(d,fillPct,`<b>${nb.toFixed(1)}</b> adjusted evidence bases <span class="collapse">from ${raw} sources</span>${proposed}`,
-               `${nb.toFixed(1)} adjusted evidence bases from ${raw} sources`);
+    return `<div class="indrow${state.posOn.has(d.id)?"":" dim"}">
+      <span class="indlab"><span class="dot" style="background:${d.hue}"></span><span class="indlabtxt">${esc(d.label)}</span></span>
+      <span class="indtrackcol"><span class="indtrack" data-tip="${nb.toFixed(1)} adjusted evidence bases from ${raw} sources"><span class="indfill" style="width:${fillPct}%;background:${d.hue}"></span></span></span>
+      <span class="indval"><b>${nb.toFixed(1)}</b> adjusted evidence bases <span class="collapse">from ${raw} sources</span>${proposed}</span>
+    </div>`;
   }).join("");
   let insight="";
   if(wd.length){
@@ -738,8 +743,8 @@ function headline(c){
   }
   return `<div class="panel compact-summary">
       <div class="cmphead"><b>Source count versus underlying evidence</b><span>two different ways to read the same literature</span></div>
-      <div class="splitlabel"><span class="num">1</span> Source count <span class="q">— how listed sources split by position · click a row to filter</span></div>
-      <div class="indeprows">${bar1}</div>
+      <div class="splitlabel"><span class="num">1</span> Source count <span class="q">— how listed sources split by position · click a segment to filter</span></div>
+      <div class="distrib">${bar1}</div>
       ${wd.length?`<div class="splitlabel"><span class="num">2</span> Adjusted evidence-base count <span class="q">— shared evidence is counted once</span></div>
       <div class="indeprows">${indepRows}</div>${insight}
       <details class="cmphelp"><summary>How to read these two charts</summary><div>The first chart counts sources. The second counts each checked evidence base once; evidence available only through reviews or animal/in-vitro work counts as half. It is <b>not a support, quality, or truth score</b>: one decisive study can outweigh several weak evidence bases, and separate studies can share the same weakness.<button class="risk-link" data-view="independence">Inspect the evidence</button></div></details>`:""}
@@ -1116,7 +1121,10 @@ if(DATA) switchCase(state.caseId);
 // every explanation here is rendered as our own instant tooltip instead. The first time an element
 // is hovered we move its `title` onto `data-tip` (and mirror it to aria-label for screen readers),
 // which permanently suppresses the native one for that node.
-const TIP_SEL="[title],[data-tip]";
+// Scoped to the deliberate explanation affordances ("?" icons, help-cursor badges, and anything we
+// explicitly gave a data-tip). Firing on every [title] made tooltips pop up constantly while just
+// moving across the page; incidental titles keep the browser's own quiet default.
+const TIP_SEL=".infoicon,.qbadge,[data-tip]";
 function tipTextOf(el){
   const t=el.getAttribute("title");
   if(t){ el.setAttribute("data-tip",t); el.setAttribute("aria-label",t); el.removeAttribute("title"); }
