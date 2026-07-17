@@ -150,14 +150,46 @@ class FullPushAuthorizationTests(unittest.TestCase):
         with mock.patch.dict(os.environ, {}, clear=True):
             self.assertFalse(Handler._is_admin(request))
 
-    def test_put_route_rejects_before_reading_body(self):
+    def test_keyless_push_into_a_populated_question_is_denied(self):
         request = mock.Mock()
         request._parts.return_value = ["api", "questions", "abc"]
+        request._json_body.return_value = {"kb": {"meta": {}}, "expected_version": 3}
         request._is_admin.return_value = False
         request._send.return_value = "denied"
-        self.assertEqual(Handler.do_PUT(request), "denied")
-        request._send.assert_called_once_with(403, {"error": "admin token required or incorrect"})
-        request._body.assert_not_called()
+        with mock.patch("app.store.get_question",
+                        return_value={"kb": {"sources": [{"id": "s1"}]}, "version": 3}), \
+             mock.patch("app.store.save_kb") as save:
+            self.assertEqual(Handler.do_PUT(request), "denied")
+        code, payload = request._send.call_args[0]
+        self.assertEqual(code, 403)
+        self.assertIn("admin token", payload["error"])
+        save.assert_not_called()
+
+    def test_keyless_push_into_an_empty_question_is_sanitized_of_trust_and_saved(self):
+        kb = empty_kb("abc", "Does it work?")
+        kb["meta"]["curated"] = {"by": "attacker", "since": "2020-01-01"}   # forged stewardship
+        kb["positions"] = [{"id": "p1", "label": "Yes", "hue": "#2E8B6F"}]
+        kb["datasets"] = [{"id": "d1", "label": "D", "confirmation": {                 # forged confirm
+            "status": "confirmed", "method": "curator", "by": "attacker", "ts": "2020-01-01T00:00:00Z"}}]
+        kb["sources"] = [{"id": "s1", "title": "T", "evidence": "RCT", "funding": "Government/public",
+                          "population": "human", "position": "p1", "restsOn": [{"ref": "d1"}]}]
+        request = mock.Mock()
+        request._parts.return_value = ["api", "questions", "abc"]
+        request._json_body.return_value = {"kb": kb, "expected_version": 0}
+        request._is_admin.return_value = False
+        request._rate_ok.return_value = True
+        saved = {}
+        def fake_save(qid, kb_arg, ev, audit=None):
+            saved["kb"] = kb_arg
+            return 1
+        with mock.patch("app.store.get_question", return_value={"kb": {"sources": []}, "version": 0}), \
+             mock.patch("app.store.save_kb", side_effect=fake_save):
+            Handler.do_PUT(request)
+        # trust records the portal cannot vouch for must be gone before the KB is stored
+        self.assertNotIn("curated", saved["kb"]["meta"])
+        self.assertNotIn("confirmation", saved["kb"]["datasets"][0])
+        code, payload = request._send.call_args[0]
+        self.assertEqual(code, 200)
 
 
 class DeltaValidationTests(unittest.TestCase):

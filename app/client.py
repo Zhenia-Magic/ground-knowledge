@@ -55,19 +55,29 @@ def create_question(base, question, contributor="anonymous"):
     return body
 
 
+def optional_admin_token(explicit=None):
+    """The admin token if one is available, else None — a keyless push into a new/empty question is
+    allowed without it (the server sanitizes trust records on that path)."""
+    return explicit or os.environ.get("EPISTEMIC_ADMIN_TOKEN") or os.environ.get("ADMIN_TOKEN") or None
+
+
 def admin_token(explicit=None):
-    token = explicit or os.environ.get("EPISTEMIC_ADMIN_TOKEN") or os.environ.get("ADMIN_TOKEN")
+    token = optional_admin_token(explicit)
     if not token:
-        raise SystemExit("Full KB pushes require the portal admin token. Pass --token or set "
+        raise SystemExit("This action requires the portal admin token. Pass --token or set "
                          "EPISTEMIC_ADMIN_TOKEN.")
     return token
 
 
 def put_kb(base, qid, kb, expected_version, contributor="anonymous", token=None):
-    token = admin_token(token)
+    headers = {"X-Admin-Token": token} if token else {}
     code, body = _request("PUT", base + "/api/questions/" + qid,
                           {"kb": kb, "expected_version": expected_version, "contributor": contributor},
-                          headers={"X-Admin-Token": token})
+                          headers=headers)
+    if code == 403:
+        raise SystemExit("This question already has content, so replacing its whole KB needs the "
+                         "portal admin token — pass --token or set EPISTEMIC_ADMIN_TOKEN. "
+                         "(A new or empty question pushes with no token.)")
     if code == 409:
         raise SystemExit("Version conflict — someone pushed first. Run `pull` to get the latest, "
                          "re-apply your sources, then push again.")

@@ -25,7 +25,11 @@ dependency does not exist.
 
 ## Hosted portal protections
 
-- Whole-KB replacement, moderation, reader-study results, and deletion require `ADMIN_TOKEN`.
+- Moderation, reader-study results, and deletion require `ADMIN_TOKEN`. Whole-KB replacement of a
+  question that **already has sources** also requires it; a **new/empty** question accepts a keyless
+  push, but that push is sanitized first — curator confirmations, support-edge admissions,
+  verified-quote flags, and the `meta.curated` stewardship flag are stripped (`engine/verify.strip_untrusted_kb`),
+  so a keyless contributor can seed content but cannot assert trust or forge the curated badge.
 - Every stored write advances a server revision. A stale writer receives a conflict instead of
   overwriting newer work. The KB and its audit entry commit in the same database transaction.
 - Remote fetches accept only absolute HTTP(S) URLs whose DNS answers are globally routable. The

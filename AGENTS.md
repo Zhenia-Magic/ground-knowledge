@@ -132,10 +132,35 @@ python cli.py doctor cases/eggs.kb.json
 
 # 9. Build a local viewer to eyeball it (optional):
 python cli.py build cases/eggs.kb.json --out out.html
+
+# 10. PUBLISH to a shared portal (optional). A NEW question pushes with NO admin token:
+python cli.py push cases/eggs.kb.json --portal https://groundknowledge.org --as "your name"
 ```
 
 `add` also accepts a **batch array** of deltas in one file (`[ {delta}, {delta}, ... ]`) — it merges
 them one at a time, each recomputing and diffing against the prior KB. `lint` accepts the same array.
+
+---
+
+## Publish to the portal (optional)
+
+When the case is healthy you can push it to a shared portal so others see it and build on it:
+
+```bash
+python cli.py push cases/<id>.kb.json --portal https://groundknowledge.org --as "your name"
+```
+
+- **A new question pushes with no key.** The first push creates the question and uploads your KB;
+  `push` restamps `meta.portal` lineage in your file so the next push updates the same question.
+- **A keyless push is sanitized.** The server strips every trust record it cannot vouch for — curator
+  confirmations, support-edge admissions, verified-quote flags, and the "curated & maintained" badge —
+  so your bases arrive **proposed** and your quotes **unverified**. That is by design: a keyless
+  contributor seeds content, but only a portal curator (or the portal re-fetching the text) can
+  certify it. Don't try to route around it — a stripped push is the honest state.
+- **Replacing a question that already has sources needs the admin token** (`--token` or
+  `EPISTEMIC_ADMIN_TOKEN`) — a whole-KB replace is reserved for the maintainer. To *add* sources to an
+  existing portal question without a token, use the portal's "add sources" review flow instead of a
+  whole-KB push.
 
 ---
 
@@ -250,6 +275,7 @@ try to route around it.
 | `validate <kb>` | Strict schema + cross-reference check | no |
 | `show <kb>` | Print the metrics (distribution, coverage, warnings) | no |
 | `build <kb...> --out <html>` | Build the standalone viewer | no |
+| `push <kb> --portal <url>` | Publish to a portal; **new question = keyless** (trust records stripped), a full replace of a populated one needs `--token` | no (new) |
 | `confirm-dataset` / `confirm-edge` | **Curator** admission (a human, not you) | no |
 | `harvest` / `deepen` | The *keyed* auto-pipeline — you replace these with your own search | yes (skip it) |
 

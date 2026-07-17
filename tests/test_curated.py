@@ -114,6 +114,22 @@ class ForgeResistanceTests(unittest.TestCase):
         strip_untrusted_verification(delta)
         self.assertNotIn("meta", delta)
 
+    def test_strip_untrusted_kb_removes_every_trust_record_a_keyless_push_cannot_assert(self):
+        from engine.verify import strip_untrusted_kb
+        kb = _kb_with_bases()
+        curate.set_curated(kb, by="attacker")
+        # forge an edge admission + a verified quote too
+        kb["sources"][0]["restsOn"][0] = {"ref": "ds_a", "admission": {
+            "status": "confirmed", "method": "curator", "by": "attacker", "ts": "2020"}}
+        kb["sources"][0]["provenance"]["position"]["verifiedQuote"] = "exact"
+        strip_untrusted_kb(kb)
+        self.assertNotIn("curated", kb["meta"])                          # stewardship gone
+        self.assertNotIn("confirmation", kb["datasets"][0])              # curator confirm gone
+        self.assertNotIn("admission", kb["sources"][0]["restsOn"][0])    # edge admission gone
+        self.assertNotIn("verifiedQuote", kb["sources"][0]["provenance"]["position"])
+        # and the derived coverage now reflects the honest (proposed) state
+        self.assertEqual(curation_summary(kb)["confirmedBases"], 0)
+
 
 class MarkCuratedCliTests(unittest.TestCase):
     def test_cli_marks_and_reports_the_paired_signal(self):

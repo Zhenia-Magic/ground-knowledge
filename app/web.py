@@ -370,14 +370,17 @@ python cli.py push cases/eggs.kb.json --as "Your name"</pre>
 
     <h2 id="sync">Push &amp; pull (sync with this portal)</h2>
     <p>Set <code>EPISTEMIC_PORTAL</code> in <code>.env</code> (or pass <code>--portal</code>).
-    Whole-KB replacement via <code>push</code> also needs the portal admin token in
-    <code>EPISTEMIC_ADMIN_TOKEN</code> or <code>--token</code>:</p>
+    A <b>new or empty</b> question <code>push</code>es with <b>no token</b> (the server strips any
+    trust records — confirmations, verified quotes, the curated badge — so a keyless push lands
+    proposed/unverified). <b>Replacing a question that already has sources</b> needs the portal admin
+    token in <code>EPISTEMIC_ADMIN_TOKEN</code> or <code>--token</code>:</p>
     <pre>python cli.py questions                 <span class="c"># browse what's here</span>
 python cli.py pull &lt;question-id&gt;        <span class="c"># grab it locally</span>
-python cli.py push cases/your.kb.json --token "$EPISTEMIC_ADMIN_TOKEN"</pre>
-    <div class="note">Source-by-source contributions are <b>keyless</b> — anyone can push new
-    sources through the browser contribution flow. Replacing a whole knowledge base from the CLI
-    is gated by the portal's admin token.</div>
+python cli.py push cases/new.kb.json                        <span class="c"># new question: keyless</span>
+python cli.py push cases/your.kb.json --token "$EPISTEMIC_ADMIN_TOKEN"  <span class="c"># replace a populated one</span></pre>
+    <div class="note">Source-by-source contributions are <b>keyless</b> too — anyone can push new
+    sources through the browser contribution flow. Only <b>replacing</b> a knowledge base that
+    already has sources is gated by the portal's admin token.</div>
 
     <p style="margin-top:30px"><a href="%REPO%">Full source &amp; README on GitHub →</a></p>
     </div>"""

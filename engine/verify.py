@@ -229,6 +229,36 @@ def strip_untrusted_verification(delta):
     return delta
 
 
+def strip_untrusted_kb(kb):
+    """Sanitize a WHOLE KB pushed by a non-admin (keyless) client.
+
+    A keyless contributor may seed a new question's structure and sources, but may not assert any
+    trust the portal cannot vouch for: stewardship (``meta.curated``), curator dataset confirmations,
+    support-edge admissions, and quote-verification flags are all removed. So a keyless push lands
+    with its bases **proposed** and its quotes **unverified** — exactly the posture of the public
+    per-source delta path (strip_untrusted_verification), lifted to a whole document. Only an
+    authenticated curator, or the portal's own fetched-text verification, can restore those records.
+    Mutates and returns ``kb``."""
+    meta = kb.get("meta")
+    if isinstance(meta, dict):
+        meta.pop("curated", None)
+    for dataset in kb.get("datasets", []) or []:
+        if isinstance(dataset, dict):
+            dataset.pop("confirmation", None)
+            dataset.pop("confirmed", None)                 # legacy boolean, honored on read
+    for source in kb.get("sources", []) or []:
+        if isinstance(source, dict):
+            strip_untrusted_verification({"source": source})  # textDepth/admission/verifiedQuote/…
+    for factor in kb.get("factors", []) or []:
+        if isinstance(factor, dict):
+            for claim in factor.get("provenance", []) or []:
+                if isinstance(claim, dict):
+                    claim.pop("verifiedQuote", None)
+                    claim.pop("quoteVerification", None)
+            factor["weights"] = {}   # cells derive only from verified claims; none survive the strip
+    return kb
+
+
 def match_quote(quote, text, source_title=None):
     """Compatibility wrapper returning ``exact | fuzzy | missing``."""
     return ground_quote(quote, text, source_title=source_title)["status"]

@@ -722,7 +722,8 @@ def cmd_push(args):
     otherwise updates it (optimistic version check on the baseVersion we pulled)."""
     from app import client
     base = client.portal_url(args.portal)
-    token = client.admin_token(args.token)
+    token = client.optional_admin_token(args.token)   # keyless for a new/empty question; token only
+                                                       # needed to replace a question that has sources
     kb = read_json(args.kb)
     who = args.as_ or "anonymous"
     portal_meta = (kb.get("meta") or {}).get("portal") or {}

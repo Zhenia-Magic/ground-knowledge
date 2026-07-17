@@ -218,7 +218,9 @@ or `pull` them locally (`python cli.py pull <id>`):
   It discloses *who stewards*, without gating *who may contribute* — see [`MECHANISM.md`](MECHANISM.md) §7.1.
 - **The local workstation** (`python cli.py ui`, or the CLI) — for power users with their own key:
   it's **git for knowledge bases**. `pull` a question, `harvest`/`deepen` it with your own
-  compute/key, `push` the result back (admin-token protected, optimistic version-locked). Discovery
+  compute/key, `push` the result back (a **new** question pushes **keylessly** — the server strips
+  trust records so it lands proposed; replacing a populated one is admin-token protected;
+  optimistic version-locked). Discovery
   and fetch are keyless; only labelling uses your key, on your machine. Works with Anthropic, NVIDIA
   (free, build.nvidia.com), OpenAI, DeepSeek, Mistral, Groq, Gemini, or OpenRouter — and search vs.
   labelling pick a provider independently, so an Anthropic + NVIDIA pair does Claude web search with

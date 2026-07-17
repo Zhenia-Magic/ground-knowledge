@@ -635,14 +635,28 @@ class Handler(BaseHTTPRequestHandler):
     def do_PUT(self):
         p = self._parts()
         if len(p) == 3 and p[:2] == ["api", "questions"]:
-            if not self._is_admin():
-                return self._send(403, {"error": "admin token required or incorrect"})
             body = self._json_body()
             if body is None:
                 return
             kb = body.get("kb")
             if not isinstance(kb, dict):
                 return self._send(400, {"error": "kb (object) required"})
+            admin = self._is_admin()
+            existing = store.get_question(p[2], with_kb=True)
+            if not existing:
+                return self._send(404, {"error": "no such question — create it first via POST /api/questions"})
+            if not admin:
+                # A keyless push may SEED a new/empty question, but never replace populated work and
+                # never carry trust: sanitize curator confirmations, edge admissions, verified quotes,
+                # and the curated stewardship flag so a non-admin can't inflate coverage or forge the
+                # badge. Replacing a question that already has sources still needs the admin token.
+                if existing.get("kb", {}).get("sources"):
+                    return self._send(403, {"error": "this question already has sources — replacing the "
+                                            "whole KB needs the admin token; add sources via the review flow instead"})
+                if not self._rate_ok("push-open", 6):
+                    return
+                from engine.verify import strip_untrusted_kb
+                strip_untrusted_kb(kb)
             try:
                 from engine.migrate import migrate_kb, validation_errors
                 kb, _changes = migrate_kb(kb)
@@ -651,7 +665,7 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(400, {"error": "invalid KB", "details": errors[:50]})
                 version = store.save_kb(
                     p[2], kb, int(body.get("expected_version", 0)),
-                    _audit("push-kb", "replaced canonical KB",
+                    _audit("push-kb" if admin else "push-kb-open", "replaced canonical KB",
                            body.get("contributor") or "anonymous"))
             except (ValueError, TypeError) as e:
                 return self._send(400, {"error": "invalid KB", "detail": str(e)})

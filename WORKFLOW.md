@@ -238,7 +238,7 @@ fields, reuse existing entity IDs, one source per delta, `lint` before `add`.
 | `import-citations <kb> <file> [--apply]` · `export <kb> --format bibtex\|ris\|csl` | Zotero/Mendeley/EndNote in & out |
 | `show <kb>` · `assess <kb>` | metrics summary in the terminal · full metrics as JSON |
 | `build <kb> [<kb2> ...] [--out FILE]` | bake the viewer (multiple KBs ⇒ a case switcher) |
-| `pull <id>` · `push <kb>` · `questions` | sync with the portal (set `EPISTEMIC_PORTAL`) |
+| `pull <id>` · `push <kb>` · `questions` | sync with the portal (set `EPISTEMIC_PORTAL`). A **new/empty** question `push`es **keylessly** (the server strips trust records — confirmations, verified quotes, the curated badge); replacing a question that already has sources needs `--token` |
 
 ## Recipes
 
