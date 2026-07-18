@@ -1,141 +1,79 @@
-# Ground Knowledge — submission
+# Ground Knowledge — core submission
 
-*A living, recomputing knowledge base that maps **confirmed evidence-root coverage** instead of source count — and is hardened against volume, echo, circular citation, and support-edge laundering.*
+*A living knowledge base that scores **confirmed independent evidence-root coverage** per position, not source count — and ships an **executable** adversarial contract instead of a robustness claim.*
 
-**Live, no setup, no API key → [groundknowledge.org](https://groundknowledge.org)**
-**Repo → https://github.com/Zhenia-Magic/ground-knowledge**
+**Deployed demo, no setup and no API key:** **[groundknowledge.org](https://groundknowledge.org)** — three worked cases: [COVID origin](https://groundknowledge.org/q/ac81b4cae8d0), [LHC black holes](https://groundknowledge.org/q/c6c6ad01ec11), [eggs & heart disease](https://groundknowledge.org/q/04329878656c).
 
----
-
-## Judge, start here — how to spend the ~10-page budget
-
-Ground Knowledge is a **code / executable** submission. The **core** below is ~8 pages of reading plus a ~5-minute run from a clean machine; everything else is **supporting** or **appendix**, listed at the end to dip into as you choose.
-
-1. **See the thesis in 60 seconds.** Run the reproducible benchmark from a clean clone:
-   ```
-   python eval/run_benchmark.py
-   ```
-   It prints, per case: *structure recall* against a hand-written gold, the *collapse* (raw source
-   count → adjusted evidence-base count), the *key disagreement taxonomy*, and an *executed* adversarial contract.
-   Or run `python cli.py demo` for the same plus a per-case assessment and links to the live viewer.
-
-2. **Read three worked cases** (open on the live site or `python cli.py assess cases/<case>.kb.json`):
-   - **COVID** — `cases/covid.kb.json` — [origin of SARS-CoV-2](https://groundknowledge.org/q/ac81b4cae8d0). The current artifact shows 13 zoonotic sources → **4.5** adjusted evidence-base count, 8 laboratory-origin → **3.0**, and 8 unresolved → **3.0**.
-   - **Eggs** — `cases/eggs.kb.json` — [do eggs raise CVD risk?](https://groundknowledge.org/q/04329878656c). The three positions show 4 → **4.0**, 10 → **6.0**, and 7 → **4.0**; industry funding is surfaced separately from coverage.
-   - **Black holes** — `cases/blackholes.kb.json` — [could the LHC destroy Earth?](https://groundknowledge.org/q/c6c6ad01ec11). The "No risk" position has 11 sources and **5.0** adjusted evidence-base count across production impossibility, Hawking evaporation, accretion timescale, the empirical dense-star bound, and the CMS Run 2 collider search. This is a map of the layered safety case, not a quality-weighted verdict. The *residual* concern is surfaced as a one-sided load-bearing key disagreement.
-
-3. **Read the two core functions** — this is a ≤2-page algorithm, not a black box:
-   - `engine/roots.py` → `resolve()` — separates root-identity trust from source→root support-edge trust, resolves admitted edges, and collapses cohort reuse / echo / circular citation.
-   - `engine/assess.py` → `independence()` and `cruxes()` — computes *adjusted evidence-base count* and surfaces *what matters*. The internal key remains `nEff` for compatibility.
-   - The one-page pseudocode is in **[`ALGORITHM.md`](ALGORITHM.md)**.
-
-4. **Check the honest limitations** — `MECHANISM.md §8`. We publish the open problems rather than hide them.
-
-**Beyond the core** (outside the ~10-page budget, dive in as you choose). *Supporting* — [`MECHANISM.md`](MECHANISM.md) (the mechanism in depth and the open problems), [`AGENTS.md`](AGENTS.md) (drive the whole pipeline with a coding agent, no API key), [`README.md`](README.md) (repo map). *Appendix / reference* (no budget) — [`SCHEMA.md`](SCHEMA.md) (the data model), the full `cases/*.kb.json` knowledge bases, and [`eval/`](eval/) (benchmark, `RESULTS.md`, quote audit).
-
----
-
-## The problem
-
-If one side of a dispute has 20 papers and the other has 4, a naive aggregator declares a winner. But if the 20 all re-analyse the same dataset or echo the same reviews, they may be closer to **one** piece of evidence cited 20 times; if they form a pure ungrounded citation loop, the loop contributes **zero** independent grounding. Worse, that failure is **easy to weaponise**: flood a position with re-hashed reviews and you manufacture apparent consensus. Three correlated-evidence failures hide inside any flat source count:
-
-- **Echo** — ten reviews summarising the same three studies are one look, not ten.
-- **Cohort re-use** — eight papers off one cohort are one independent dataset (Nurses' Health Study; the Huanan-market environmental dataset in COVID).
-- **Circular corroboration** — A cites B, B cites A, nothing primary underneath: two sources, *zero* independent grounding.
-
-Deep-research prose *notices* these correlations qualitatively, in a good report, once. What it does not give you is a **recomputable number** that survives an adversary and updates as the dispute grows.
-
-## What Ground Knowledge does
-
-Instead of counting heads, it resolves each admitted support link to the **evidentiary roots** underneath it and reports, per position, **adjusted evidence-base count** (`nEff`): each distinct admitted root counted once with declared 0.5 discounts for review-only and non-human grounding. With root and edge identity fixed, adding a source to an existing root moves `nEff` nowhere. Source incidence, study design, funding, method monoculture, and quote quality are shown separately.
-
-This number is a **coverage and de-duplication diagnostic, not a support, evidence-quality, effect-size, confidence, or truth score**. Seven weak roots are not necessarily better evidence than one decisive trial; distinct roots can share the same confounder. The viewer labels it accordingly and displays each root's one-time coverage credit separately from source incidence.
-
-The number is produced by one deterministic, stdlib-only function over a portable JSON knowledge base. The viewer renders that function's output; it never recomputes, so there is no drift between pipeline and UI.
-
-## How it works — four layers, one code path
-
-The pipeline maps onto FLF's three-layer stack and produces a **living** KB (not a snapshot). Cold-start and incremental update are the *same code path*, run N times or once.
-
-1. **Ingestion** (`ingest/`) — an AI **discovers** sources (keyless via OpenAlex) and **labels** each source into a structured *delta*: which position it supports, its evidence tier, funding, population, and — crucially — its `restsOn` edges (the datasets and other sources it depends on). Labelling can run as a **multi-model ensemble** with a field-level majority vote; a genuine position or primary/secondary-tier split is escalated to a human, not averaged into a guess. A **coding agent** (Claude Code, Codex) can drive this loop with no API key at all — the agent does the search and reading with its own subscription, and the deterministic CLI stays the trust boundary: `cli.py lint` validates an agent-written delta *without* merging (numbered errors, nonzero exit), `add` re-verifies quotes and strips any trust claim, `doctor` reports whether the case is submission-grade. The playbook is [`AGENTS.md`](AGENTS.md); a keyless push then publishes it (see layer 4).
-
-2. **Structure** (`engine/merge.py`) — the model *proposes* ids; deterministic code *disposes*. Normalized-string + learned-alias resolution folds exact/known variants onto one entity; lexical and optional embedding suggestions flag novel paraphrases for an explicit human merge. A likely duplicate is blocked at the confirmation boundary unless the curator records an override. Duplicate URLs/DOIs are refused at the door.
-
-3. **Assessment** (`engine/roots.py`, `engine/assess.py`) — pure, deterministic, no LLM. Resolves the derivation graph to its roots and computes every number the tool reports: independence, concentration, funding skew, method-monoculture, key disagreements, blindspots, and a structured **diff** of what each update changed.
-
-4. **View** (`viewer/`, `app/`) — a self-contained viewer and a multi-user portal (Postgres-backed). Public paste-back contributions are queued and affect no metric until an administrator reviews them; replacing a KB that already has sources is token-gated, while a new/empty question accepts a keyless push that the server sanitizes of trust records (confirmations, verified quotes, the curated flag). All writes are optimistic-version-locked. The portal bounds request bodies, fetch batches, expensive concurrent work, request threads, and per-IP mutation rates. Each KB write and its audit entry commit together, and stale writers receive a conflict instead of overwriting newer work.
-
-### The independence engine (the heart)
-
-`resolve()` builds the source→source citation graph, collapses each **strongly-connected component** via Tarjan's algorithm, then resolves every source — through evidence-base and citation edges alike — to the roots underneath it. A grounded cycle resolves into its real roots; an ungrounded loop remains visible and flagged but contributes **zero** headline evidence.
-
-- **Naming plus admission earns coverage.** An ungrounded source collapses into a visible position-level assertion marker with **zero** coverage credit. A distinct root needs a specific named base, confirmed root identity, and an admitted support edge.
-- **Secondary echo pools at zero.** Ungrounded reviews/commentary collapse into one visible marker but do not become an evidence base merely by existing.
-- **Roots count once.** `nEff` sums distinct-root strengths; piling sources onto an already-counted root cannot move it. A randomized fixed-graph property test checks that adding a source with only outgoing edges never lowers `nEff`; separately, graph corrections are allowed to remove false independence.
-
-### Separate, auditable root and support-edge admission (recent hardening)
-
-A named dataset is not trusted just because a source claims it. The implementation makes two separate decisions:
-
-- **Root identity:** is this a real, distinct evidence base? A curator record or a verified, specifically identifying dependency quote can confirm it.
-- **Support edge:** does this particular source actually rely on that base/citation? The edge needs its own verified dependency quote or `{status, method, by, ts}` curator admission. `python cli.py confirm-edge ...` is the auditable human fallback.
-
-An already confirmed root therefore cannot be attached to another camp by an unreviewed source. Generic names such as “cohort” cannot bind ordinary methods prose; automatically verified lexical lookalikes admit at most one root while the collision is surfaced. Existing case relationships carry explicit `legacy-migration` edge records that disclose they were adopted from the curated artifact and are **not** quote verification.
-
-### Disclosed stewardship, not gatekeeping (the curated badge)
-
-A question can carry a **"Curated & maintained"** badge — an admin/curator vouching that they steward it — shown *paired* with a **computed** confirmed-coverage percentage it can never overwrite. It is a **label, not a contributor gate**: gating by identity would re-introduce the authority-as-trust this project rejects, and it would not stop any of the gaming vectors above, which are defeated by the mechanism auditing every edge regardless of who submits. Two properties keep the label honest. It is **unforgeable**: stewardship lives on `meta`, which no ingestion path writes — the merge is source-shaped and a client-supplied `meta` is stripped — so a contributor cannot self-certify (the same trust boundary that keeps a model-authored `admission` out of the metric, lifted to the case level). And it **cannot launder a number**: the paired percentage is earned by the evidence state (`engine/assess.curation_summary`) and sits beside the badge, so "an admin maintains this" is visibly separate from "the evidence is verified." Detail in `MECHANISM.md §7.1`.
-
-## Adversarial robustness — a contract we *execute*
-
-The robustness claim is not prose; the benchmark runs nine attacks on every case:
-
-- **+12 ungrounded echo** sources under the strongest position → `nEff` moves by **0.0**; the pooled assertion marker is visible at zero.
-- **+12 fabricated named datasets** on the unverified paste-back path → `nEff` moves by **0.0** (visible as proposed roots, quarantined until confirmed), versus a naive count of +12.
-- **one real dependency quote copied onto a fabricated sibling edge** → only the dataset the quote actually names enters `nEff`; the sibling stays proposed.
-- **a 12-source unreviewed circular citation ring** → its source links are blocked pending admission and contribute **0.0**; an admitted ungrounded ring is collapsed by the SCC detector.
-- **a known alias of an existing root** → it resolves to that root and contributes **0.0** additional independence.
-- **a generic fetched label** (`Cohort`) → ordinary methods prose does not identify a root; **0.0** gain.
-- **two newly proposed lexical aliases** named by one real sentence → at most one enters `nEff`; the collision is flagged for curation.
-- **all confirmed roots from one camp attached to another through an unreviewed source** → the target camp moves by **0.0**; the unsupported links remain visible.
-- **a fetched model delta that forges a curator `admission` object** → the trust field is removed before merge and the target camp moves by **0.0**.
-
-All nine must hold for every case or the benchmark fails. They pass. A genuinely novel semantic paraphrase can still evade the lexical gate; optional embeddings and human review reduce, not eliminate, that risk.
-
-## Surfacing what matters — the key disagreement taxonomy
-
-A single "camps disagree by a lot" test misses most of the factors that actually decide a dispute. `cruxes()` types each factor:
-
-- **crossCampCrux** — camps weigh it very differently (active disagreement).
-- **sharedPivot** — two+ camps both rate it *decisive* (agreement that it matters, unresolved — e.g. "is Hawking radiation guaranteed?").
-- **oneSidedLoadBearing** — one camp's case rests on a factor no other camp has engaged (e.g. "the safety argument itself may be wrong").
-- **missingCounterassessment** — a decisive factor a camp has left unanswered.
-
-The headline key disagreement count stays tight (cross-camp disagreement or shared uncertainty) so it does not balloon to "every factor", while the one-sided and unanswered factors are surfaced separately. All hand-written gold key disagreement concepts appear in the visible matrices (**3/3 per case**); promotion is intentionally stricter (e.g. COVID currently surfaces 3 headline key disagreements of 7 factors, not 7).
-
-## Does it actually help? (honest evaluation)
-
-The benchmark ([`eval/run_benchmark.py`](eval/run_benchmark.py)) runs three checks and **verifies the baselines it compares against** (files + SHA-256 hashes), so a boolean is never taken as evidence. Two independent deep-research baseline sets — **ChatGPT Deep Research** and **Claude Code / Opus 4.8** — are captured with provenance and hash-checked.
-
-- **Structure recall** (positions / key roots / key disagreements surfaced) is scored against a small, deliberately non-exhaustive gold per case.
-- **Collapse/coverage** quantifies the headline: COVID **13 → 4.5**, **8 → 3.0**, **8 → 3.0**; black holes **11 → 5.0**, **4 → 2.0**; eggs **4 → 4.0**, **10 → 6.0**, **7 → 4.0**. [`eval/RESULTS.md`](eval/RESULTS.md) is generated from the benchmark, and CI fails if it is stale.
-- **Adversarial robustness** is executed, not asserted (above).
-
-**Comparative recall (honest).** The benchmark also scores the ChatGPT / Claude reports against the *same* small, developer-authored gold, as a keyword-recall proxy (with declared paraphrase synonyms). The result is **near-parity** — a good deep-research report surfaces the same positions, roots, and key disagreement concepts GK does. Structure recall counts concepts visible anywhere in GK's factor matrix; the separate key disagreement-type counts show which ones the detector actually promotes. This diagnostic is not held-out evaluation or evidence of reader uplift; hashes establish capture integrity, not output quality.
-
-**What we do NOT claim.** The Claude/ChatGPT baselines are strong comparators: they *do* notice reused evidence, funding, key disagreements, and source overlap qualitatively. So the honest advantage is narrower than "deep research misses correlation" — it does not. What Ground Knowledge adds is a **structured, recomputable artifact**: an explicit root graph, a deterministic coverage/de-duplication count, a versioned update **diff**, an executable adversarial contract, and portable citations another team can extend. The arithmetic is deterministic and gaming-resistant but **not self-certifying**: an incorrect curator decision or omitted edge can still move the numbers wrongly. No reader study is claimed for this submission. [`eval/reader_study/`](eval/reader_study/) is future-work scaffolding only, not evidence of uplift.
-
-## What is genuinely novel
-
-Counting underlying data sources rather than papers is not itself new (meta-analysis handles it as a unit-of-analysis problem). The contribution is the **portable updateable artifact and trust boundary**: deterministic root resolution, separate root/edge admission, visible zero-credit assertions, key disagreement/funding/method audits, versioned diffs, and an executable adversarial contract. Labelling and curation remain partly human; this is not claimed to be automatic or calibrated over arbitrary disputes.
-
-## Reproduce in 60 seconds
-
+**Run the whole thing from a clean machine in ~1 minute** (stdlib Python, no build, no key):
 ```
 git clone https://github.com/Zhenia-Magic/ground-knowledge && cd ground-knowledge
-python -m unittest discover -s tests -t .     # full stdlib suite, no dependencies
-python eval/run_benchmark.py                  # recall · collapse · adversarial (all PASS)
-python cli.py assess cases/covid.kb.json      # the full assessment for one case
+python -m unittest discover -s tests -t .     # full suite, no dependencies
+python eval/run_benchmark.py                  # recall · collapse · 9-attack contract (all PASS)
+python cli.py assess cases/covid.kb.json      # every number the tool reports, for one case
 ```
 
-Everything the metric needs is stdlib Python; there is no build step and no API key. License: **Apache-2.0**.
+This page is the core (~2 pp). The full pseudocode is [`ALGORITHM.md`](ALGORITHM.md) (≤2 pp); the mechanism and its open problems are [`MECHANISM.md`](MECHANISM.md); the data model is [`SCHEMA.md`](SCHEMA.md). **Beyond the core** (outside the budget): *supporting* — [`AGENTS.md`](AGENTS.md) (drive the whole pipeline with a coding agent, no API key), [`README.md`](README.md) (repo map); *appendix / reference* — the full `cases/*.kb.json` knowledge bases and [`eval/`](eval/) (benchmark, `RESULTS.md`, quote audit).
+
+## The move
+
+If one camp has 20 papers and another has 4, counting rewards volume, echo, and funding. Ground Knowledge instead resolves every **admitted** support edge down to the **evidentiary root** beneath it — a dataset, a specific argument, a collider run — and reports, per position, the **adjusted evidence-base count** `nEff`: each distinct admitted root counted **once**, with declared 0.5 discounts for review-only and non-human grounding. Twenty papers off one cohort become one root; `A → B → A` with nothing primary underneath contributes zero. The number is a **coverage / de-duplication diagnostic, explicitly not a quality, effect-size, confidence, or truth score** — seven weak roots are not "better" than one decisive trial, and the viewer says so. Source count, study design, funding skew, method monoculture, and quote quality are shown *separately*, never folded into the number.
+
+## The algorithm (deterministic, stdlib, no LLM in the metric)
+
+```
+# engine/roots.py — resolve every source through ADMITTED edges to its roots
+def resolve(kb):
+    # Trust is TWO independent decisions. A source claiming a dataset does not make the
+    # dataset real, nor the reliance true:
+    #   root identity — a curator record, OR a verified quote that names the base
+    #   support edge  — the source's own verified dependency quote, OR a curator admission
+    # Paste-back and model-supplied trust fields are STRIPPED before anything merges.
+    components = tarjan(admitted_citation_graph(kb))      # collapse circular corroboration (SCC)
+    for c in reverse_topological(components):
+        roots  = { ds for s in c for ds in admitted_dataset_edges(s) }
+        roots |= union(roots_of(dep) for dep in components_c_cites)
+        if not roots:                                     # nothing grounded underneath
+            roots = { pool_or_cycle_marker(c) }           # stays VISIBLE, counts zero
+        memo[c] = roots
+
+# engine/assess.py — strength of a root, then per-position coverage
+def strength(r):
+    if r.unconfirmed or r.edge_unadmitted or r.is_pool_or_cycle: return 0.0
+    w = 1.0
+    if r.secondary_only: w *= 0.5     # no primary source instantiates it (review-only)
+    if r.nonhuman_only:  w *= 0.5     # animal / in-vitro, no explicit human primary
+    return w
+
+def nEff(position):
+    return sum(strength(r) for r in distinct_roots_supporting(position))   # each root ONCE
+
+# engine/assess.py — cruxes(): surface what matters, over ordinal factor weights (high/med/low)
+crossCampCrux  = (>=2 camps weigh it) and (max - min >= 2)   # active disagreement
+sharedPivot    = (>=2 camps rate it "high")                  # agreed-decisive, still unresolved
+oneSidedLoadBearing / missingCounterassessment               # surfaced, but never inflate the headline
+```
+
+**Fixed-graph invariant (property-tested):** adding a source with only outgoing edges never lowers `nEff`; correlated/echo sources land on already-counted roots and move it nowhere. A graph *correction* (merging aliases, resolving a pending edge that reveals an ungrounded cycle) is allowed to lower it — that is removing false independence, not evidence.
+
+## Why it is shaped this way (the load-bearing decisions)
+
+- **Root identity and support-edge trust are admitted separately** so a real, globally-confirmed dataset cannot be laundered into another camp by one unreviewed source. This is the primitive most naive aggregators lack.
+- **Roots count once, pools stay visible at zero** so volume and echo are inert by construction, not by a tuned penalty.
+- **The model proposes, the code disposes.** The LLM only labels; every number comes from pure functions over portable JSON, so there is no pipeline↔UI drift and no dependence on model randomness.
+- **Coverage is not quality.** The one thing the number must never become is a verdict; keeping that line is what makes it faithful to uncertainty.
+
+## How it engages the judging dimensions
+
+1. **Epistemic uplift.** The number makes the load-bearing evidence explicit: the "no increased risk" egg camp *lists 10 sources but resolves to 6.0 independent bases*; COVID's six Bayesian re-analyses collapse onto shared underlying evidence, not six new roots. Cruxes show what actually divides camps; funding/method audits flag rhetorical-vs-evidential moves. **Honest bar:** scored against ChatGPT Deep Research and Claude Code / Opus on the same gold, structure recall is **near-parity** — a good deep-research report already notices reuse and funding. The uplift is not "it notices more"; it is that the noticing becomes a **recomputable, inspectable artifact** with an explicit root graph a reader can audit and rerun.
+2. **Generalizability.** Same engine, only the JSON differs, across three deliberately different shapes: a mundane-but-contested curated debate (eggs), a confident answer over a layered safety case (black holes), and a live, expertise-heavy dispute (COVID). Nothing in `roots.py`/`assess.py` is case-specific.
+3. **Compounding & shareability.** The artifact is a portable JSON knowledge base with a versioned **diff** of what each update changed; anyone can `pull`, add sources, and `push`, and a keyless coding agent (Claude Code / Codex) can drive the whole loop on its own subscription. Citations import/export for Zotero. Another team's sources drop straight into the same schema.
+4. **Scalability.** No single hand-designed human step gates throughput: labelling is model-agnostic and improves as base models do (and can run as a multi-model ensemble that escalates genuine disagreement instead of averaging it); the metric is deterministic and unbounded in sources; **more adversarial scrutiny only helps** — every edge is audited, and the nine-attack contract runs on every case.
+5. **Methodological transparency.** The spec is written down (`ALGORITHM` / `MECHANISM` / `SCHEMA`), the key decisions and tradeoffs are called out, and where we are uncertain we say so: the 0.5 discounts are declared heuristics, not calibrated weights, and no reader-uplift study is claimed.
+6. **Adversarial robustness.** Nine attacks — echo flooding, +12 fabricated datasets, a 12-source circular ring, a known-alias reuse, a generic fetched label, cross-camp root laundering, a forged curator `admission` — run on every case and must each move `nEff` by **0.0**. The two-layer admission and the trust-stripping boundary are what make that hold under motivated reading; failure modes are named and bounded (a genuinely novel paraphrase can still evade the lexical gate until human review).
+7. **Insight contribution.** The reframe: the interesting quantity in a research dispute is not sources but **distinct admitted evidence roots**, and the load-bearing primitive is **separating root-identity trust from support-edge trust**. And the honest comparative it forces: deep research already *notices* correlation qualitatively, so the frontier is not detection — it is a **portable, recomputable, adversarially-tested artifact** that another investigator can extend and that survives being read by someone who wants a different answer.
+
+## What it does not claim
+
+The arithmetic is deterministic and gaming-resistant but **not self-certifying**: an incorrect curator decision or an omitted citation edge can still move the numbers wrongly (we do not crawl real citation graphs). Coverage is not quality, effect size, or truth. No blinded reader study is claimed — [`eval/reader_study/`](eval/reader_study/) is future-work scaffolding only. A genuinely novel semantic alias can evade automatic identity matching until review. These are named in `MECHANISM.md §8`, not hidden.
+
+*Reproduce · inspect · attack: everything above runs from the clone with stdlib Python. License: Apache-2.0.*
