@@ -63,13 +63,13 @@ Each dataset is counted once, no matter how many sources rest on it. That single
 - **The AI proposes, the code disposes.** Models label; deterministic code computes. Results are reproducible from the JSON alone and do not depend on model randomness.
 - **Coverage never becomes a verdict.** The one thing the count must not turn into is a truth score; holding that line is what keeps the tool honest about uncertainty.
 
-## The honest comparison
+## What the report puts in front of a reader
 
-We scored the tool against ChatGPT Deep Research and a careful Claude Code investigation on the same hand-written gold standard (positions, key evidence, cruxes). The result is near-parity on recall: a good deep-research report already notices reused cohorts and industry funding. The difference is what you hold afterwards. A prose report's observations evaporate on the next question; here they become a portable, inspectable artifact — an explicit evidence graph, numbers anyone can recompute from the file, and a versioned diff of what each new source changed.
+The point is not a single score but a picture you can interrogate. For any dispute the report makes the load-bearing evidence explicit: which cohorts actually carry a position, where a dozen papers collapse onto one dataset, and where a camp's whole case rests on a single study. Funding sits beside the count, so an industry-funded meta-analysis never blurs into an independent cohort, and method concentration is flagged the same way. The key-issues grid names the specific factors the camps actually clash on, and separates genuine disagreement from points only one side has engaged. Because every claim is one click from the exact sentence it came from and every number recomputes from the file, a reader can check a conclusion rather than take it on trust — and a versioned diff shows exactly what each new source changed.
 
 ## It compounds, and it travels
 
-A case is one JSON file. Anyone can pull it, add sources, and push it back; every write carries a diff, so the base grows across people and time instead of being re-researched from scratch. Citations import from and export to Zotero. Labelling is model-agnostic and can run as a multi-model ensemble that escalates genuine disagreements to a human instead of averaging them away, so the pipeline improves as models do. A coding agent (Claude Code, Codex) can drive the whole loop with no API key, with the deterministic CLI as the trust boundary. Nothing in the path depends on one hand-designed human step.
+A case is one JSON file. Anyone can pull it, add sources, and push it back; every write carries a diff, so the base grows across people and time instead of being re-researched from scratch. Citations import from and export to Zotero. Labelling is model-agnostic and can run as a multi-model ensemble that escalates genuine disagreements to a human instead of averaging them away, so the pipeline improves as models do. A coding agent (Claude Code, Codex) can drive the whole loop with no API key, with the deterministic CLI as the trust boundary. So the base gets richer as base models improve and as more people contribute, and more adversarial scrutiny only hardens it — every new source is audited the same way, whichever side it favours.
 
 ## Hard to game
 
@@ -77,7 +77,7 @@ Manufacturing consensus is the obvious attack, so the benchmark executes it rath
 
 ## What it does not claim
 
-The arithmetic is deterministic and hard to game, but not self-certifying: a wrong curator decision, or a dependency a source simply never mentions, can still move the numbers wrongly (we do not crawl citation databases). Coverage is not quality or truth. No blinded reader study backs an "uplift" claim; [`eval/reader_study/`](eval/reader_study/) is a protocol for future work, nothing more. The full list of open problems is in [`MECHANISM.md`](MECHANISM.md) §8.
+The arithmetic is deterministic and hard to game, but not self-certifying: a wrong curator decision, or a dependency a source simply never mentions, can still move the numbers wrongly (we do not crawl citation databases). Coverage is not quality or truth. The full list of open problems is in [`MECHANISM.md`](MECHANISM.md) §8.
 
 ---
 
