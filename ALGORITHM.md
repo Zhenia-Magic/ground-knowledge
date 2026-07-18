@@ -1,145 +1,102 @@
-# Ground Knowledge — the algorithm (≤2 pages)
+# Ground Knowledge — the algorithm in full
 
-Everything below is pure, deterministic, stdlib-only Python over a portable JSON knowledge base
-(`cases/*.kb.json`). No LLM, no I/O, no randomness. The live implementation is
-`engine/roots.py` + `engine/assess.py`; this is the readable version.
+This is the readable version of `engine/roots.py` + `engine/assess.py`: pure, deterministic, standard-library Python over one JSON file per case (`cases/*.kb.json`). No LLM, no network, no randomness — a model labels sources upstream, but nothing here depends on it. [`SUBMISSION.md`](SUBMISSION.md) gives the four-step summary; this document adds the data model and the edge-case rules.
 
-## Data model (what a source carries)
+## What a source record carries
 
 ```
 position   : which camp the source supports
-evidence   : tier, mapped to primary | secondary (a review/meta-analysis is secondary)
-funding, population, textDepth ("full" | "abstract" | "partial" | "unknown")
-restsOn    : list of edges. Each is EITHER
-               "ds_x"                        a dataset root
-               "src:<id>"                    a citation/derivation edge to another source
-               {ref:"ds_x", provenance:{quote, verifiedQuote:"exact|fuzzy|missing"},
-                            admission?:{status:"confirmed", method:"curator|legacy-migration",
-                                        by, ts, note?}}
-                                             an edge with its own quote and/or curator admission
-dataset.confirmation : {status:"confirmed", method:"curator"|"verified-edge", by, ts,
-                        source?}    # source is optional for curator, required for verified-edge
-dataset.kind         : dataset | experiment | observation | argument | model | document
-                       (absent = dataset). argument/model/document are THEORETICAL roots — first-
-                       class roots, exempt from the empirical non-human discount.
+evidence   : its tier, mapped to primary | secondary   (a review or meta-analysis is secondary)
+funding    : Government | Nonprofit | Academic | Industry | Advocacy | Undisclosed (default)
+population : human | animal | in-vitro | …             textDepth: full | abstract | partial | unknown
+restsOn    : the source's dependency edges. Each one is either
+               "ds_x"       — this source rests on dataset ds_x
+               "src:<id>"   — this source cites/derives from another source
+               or the same, as an object carrying its own proof:
+               {ref: "ds_x",
+                provenance: {quote, verifiedQuote: "exact" | "fuzzy" | "missing"},
+                admission?: {status: "confirmed", method: "curator" | "legacy-migration",
+                             by, ts, note?}}
 ```
 
-## Step 1 — admit root identity and support edges separately
+Datasets are records of their own. `dataset.confirmation` says who established that the dataset is real (`method: "curator"` for a logged human decision, `"verified-edge"` when an exact verified quote named it — in that case the confirming source is recorded too). `dataset.kind` distinguishes empirical roots (dataset, experiment, observation) from theoretical ones (argument, model, document); theoretical roots are first-class but exempt from the non-human discount below, which only makes sense for empirical evidence.
 
-A named dataset can be real while a new source's claim to rely on it is false. The resolver therefore
-requires both (a) confirmed root identity and (b) an admitted source→root/citation support link. A
-verified dataset-edge sentence may establish both; a curator may record either decision explicitly.
-Only current hashed `exact` verification counts—`fuzzy` is visibly unverified.
+## Step 1 — decide what to trust
 
-Public paste-back deltas cannot provide either trust field: the portal strips spoofable verification
-and admission fields and queues the whole contribution for human review.
-The same is true on the fetched-text path: quote verification may be computed there, but a model's
-`admission` key is always deleted. Only `curate.confirm_edge` can write curator admission. Before
-mutation, a total validator bounds arrays/strings and rejects malformed types. In a batch, opaque
-`sourceId` values bind each delta to its fetched document; array order is never treated as identity.
+A named dataset can be real while a new source's claim to rely on it is false. So admission is two independent decisions, and a link only carries weight when both hold:
 
-## Step 2 — resolve every source through admitted edges to evidentiary roots
+- **Root identity.** The dataset is confirmed by a curator record, or by a quote that was verified verbatim against the fetched text of a source *and* actually names the dataset (its label or a known alias). Only a current, hash-bound `exact` verification counts — a `fuzzy` match is displayed but earns nothing.
+- **Support edge.** This particular source's reliance on the dataset (or citation of another source) needs its own verified quote or its own curator admission.
+
+The trust boundary around these fields is strict. A public paste-back contribution cannot supply either: every verification and admission field it carries is deleted, and the contribution waits for review. On the fetched-text path the tool computes quote verification itself, but a model-written `admission` key is deleted too — only `curate.confirm_edge` (a logged, attributed human action) writes curator admissions. Before any merge, a validator bounds every array and string and rejects malformed types; in a batch, each labelled delta is bound to its fetched document by an opaque id, so array order is never treated as identity.
+
+Three rules close the remaining loopholes:
+
+- A quote from ordinary methods prose that matches a *generic* label ("cohort", "survey data") cannot confirm a root — generic names identify nothing.
+- When two proposed dataset names are near-duplicates of each other, an explicit curator record wins; otherwise at most one of them is admitted by verified quote, and the collision is flagged for review instead of silently counting twice.
+- A source-level quote (older data, before per-edge proofs) is accepted only when the source has exactly one direct dataset edge, so one quote can never vouch for several datasets at once.
+
+Everything not admitted stays in the file and in the report — visible, marked, and worth zero. `provisional = every dataset − the confirmed ones`.
+
+## Step 2 — trace every source down to its roots
 
 ```
 def resolve(kb):
-    # collapse circular corroboration: SCCs of the source→source citation graph (Tarjan).
-    # a cycle with no grounding becomes one VISIBLE "cycle" marker, flagged and worth zero.
-    components = tarjan(admitted_citation_graph(kb))   # each SCC = one node in a DAG
+    # 1. Merge citation loops first. A→B→A becomes one unit (Tarjan's strongly-
+    #    connected components), so circular corroboration cannot pose as depth.
+    components = tarjan(admitted_citation_graph(kb))
 
-    for component in reverse_topological(components):  # iterative post-order (no recursion limit)
-        roots = { "ds:"+d for src in component for d in admitted_dataset_edges(src) }
-        roots |= union(roots_of(dep) for dep in components_this_one_cites)
-        if roots is empty:
-            if len(component) > 1:  roots = { "cycle:"+min(component) }      # circular, ungrounded
-            else:
-                s = the one source
-                # NAMING proposes a distinct root; admission is Step 2. Claiming a tier does neither.
-                roots = { "primpool:"+s.position } if tier(s)=="primary"     # visible, zero credit
-                        else { "secpool:"+s.position }                        # visible, zero credit
+    # 2. Walk the units bottom-up (iterative post-order — no recursion limit).
+    for component in bottom_up(components):
+        roots  = every admitted dataset edge of any source in the component
+        roots += the roots of every component this one cites
+
+        if roots is empty:                      # nothing grounded underneath
+            if the component is a loop:  roots = { one "circular" marker }
+            else:                        roots = { one "unsupported" marker,
+                                                   kept per position and tier }
         memo[component] = roots
-    source_roots = { s: memo[component_of(s)] for s in sources }
+
+    return { source: memo[its component] for every source }
 ```
 
-Consequences: ten reviews of the same study all resolve to that study's dataset root (echo → one
-look); eight papers off one cohort → one root; `A→B→A` with admitted citation edges and nothing
-primary → one visible, flagged, **zero-strength** cycle marker. Unadmitted links remain visible but
-are not traversed.
+Consequences, spelled out: ten reviews of the same study all resolve to that study's dataset (echo becomes one look); eight papers on one cohort become one root; a citation ring with nothing primary underneath becomes a single flagged marker worth zero. Links that were never admitted are drawn in the report but not traversed here. And naming a dataset is only ever a *proposal* — an unconfirmed root resolves fine but scores zero until Step 1 is satisfied, so fabricating names moves nothing.
 
-The core admission sketch is:
+## Step 3 — score each position
 
 ```
-confirmed_by = {}                                     # root → {method, source}
-for d in datasets:
-    if curator_confirmed(d):                          # {status:"confirmed", ...}  OR legacy bool
-        confirmed_by["ds:"+d.id] = {method:"curator", ...}
-
-for s in sources:
-    direct = { "ds:"+d for d in dataset_edges(s) }    # DIRECT dataset edges only
-    for edge in s.restsOn:
-        if edge has valid curator/migration admission:
-            admit_support(s, edge)
-        if edge is a dataset edge AND edge.provenance has current hashed exact verification
-           AND edge.quote names edge.ref's label/alias:
-            admit_support(s, edge)
-            confirmed_by.setdefault("ds:"+edge.ref, {method:"verified-edge", source:s.id})
-    # legacy: source-level quote is accepted only when this source has EXACTLY ONE direct dataset
-
-# Literal quote presence does not settle root identity. Generic labels cannot auto-confirm;
-# within each lexical duplicate component, explicit curator records win, otherwise at most one
-# verified root is admitted and the other labels remain visible for review.
-
-provisional = { every dataset root } − keys(confirmed_by)
-```
-
-Why per-edge: one verified quote must not admit ten datasets, a review quote must not confirm data
-by inheritance, and globally confirmed root identity must not let a new source launder that root
-into another camp.
-
-## Step 3 — strength of a root, and adjusted evidence-base count
-
-```
-def strength(root):
-    if root in provisional:        return 0.0         # root identity unconfirmed
-    if support edge unadmitted:    return 0.0         # support assertion unconfirmed
-    if root is pool or cycle:      return 0.0         # visible, no grounding
+def strength(root):                        # the credit one root can earn
+    if root is provisional:        return 0.0    # identity never confirmed
+    if its support edge unadmitted: return 0.0   # reliance never established
+    if root is a marker (pool/loop): return 0.0  # visible, but not evidence
     w = 1.0
-    if root in secondary_only:     w *= 0.5           # no primary source instantiates it
-    if root in nonhuman_only:      w *= 0.5           # animal/in-vitro; no explicit human primary
-    return w
+    if only secondary sources rest on it:  w *= 0.5   # reviews only — no primary study
+    if only non-human evidence backs it:   w *= 0.5   # animal / in-vitro only
+    return w                                          # theoretical roots skip the last check
 
-def nEff(position):
-    # each DISTINCT admitted root counted ONCE, at its strength. Pools/cycles count at zero.
-    return sum( strength(r) for r in distinct_roots_supporting(position) )
+def nEff(position):                        # the adjusted evidence-base count
+    return sum(strength(r) for r in the DISTINCT roots under its sources)
 ```
 
-**Fixed-graph invariant (property-tested):** adding a source with only outgoing edges never lowers
-`nEff`; it rises only by introducing a new admitted root/support edge or upgrading one. Correlated/echo sources land on
-already-counted roots and move it nowhere. A graph correction can lower it intentionally: merging
-aliases or resolving a pending edge that reveals an ungrounded cycle removes false independence.
+Each root is counted once, however many sources rest on it — that single rule makes volume and echo inert. A property-based test over randomized graphs pins the invariant: **adding a source that only points outward can never lower `nEff`**; the count rises only when a new root (or a better-grounded edge) is admitted. Only an explicit graph correction — merging two aliases that turn out to be one cohort, or resolving a pending edge that exposes an ungrounded loop — can lower it, because that removes false independence, not evidence.
 
-## Step 4 — surface what matters (key disagreements)
+## Step 4 — surface what divides the camps
 
-For each factor, over ordinal weights `high=3, med=2, low=1` (n/a and un-weighed excluded):
+Each case lists factors (e.g. "prior on lab accidents"), and each camp's weight on each factor, sourced from quotes. Over ordinal weights `high = 3, med = 2, low = 1` (unweighed camps excluded):
 
 ```
-crossCampCrux            = (≥2 camps weigh it)  and  (max−min ≥ 2)      # active disagreement
-sharedPivot              = (≥2 camps rate it "high")                    # both call it decisive
-oneSidedLoadBearing      = (exactly 1 camp weighs it)  and  (that weight = high)
-missingCounterassessment = (≥2 engaged, some camp silent)  and  (some camp rates it high)
+crossCampCrux            = ≥2 camps weigh it  AND  max − min ≥ 2     # they actively disagree
+sharedPivot              = ≥2 camps rate it high                     # agreed decisive, unresolved
+oneSidedLoadBearing      = exactly 1 camp weighs it, at high         # one camp's case leans here
+missingCounterassessment = ≥2 camps engaged, one silent, some high   # a decisive point unanswered
 
-isCrux       = crossCampCrux or sharedPivot            # tight headline; does NOT balloon
-loadBearing  = isCrux or oneSidedLoadBearing or missingCounterassessment
+headline cruxes = crossCampCrux or sharedPivot        # kept tight on purpose
 ```
 
-## What the arithmetic cannot do (see `MECHANISM.md §8`)
+The one-sided and unanswered factors are surfaced separately so the headline never balloons to "every factor matters".
 
-Deterministic and gaming-resistant by construction, but not self-certifying or a quality score: a **mislabelled tier**
-can mint or deny a root, an **omitted citation edge** hides a dependency (we don't crawl real
-citation graphs), and a **wrong curator root/edge admission** can add bad coverage. The 0.5 discounts
-are declared heuristics rather than calibrated evidence weights. These are semantic
-labelling-integrity problems; the defences are per-edge quote verification, the multi-model
-ensemble, human review, and — honestly — publishing this list rather than hiding it.
+## What the arithmetic cannot do
 
-The deployed store adds a separate server revision for optimistic concurrency. It increments on
-every write independently of `meta.version`, so two updates with the same semantic version cannot
-silently overwrite one another; persistence and its audit entry are one transaction.
+It is deterministic and hard to game, but not self-certifying. A mislabelled evidence tier can mint or deny a root; a dependency a source simply never mentions stays invisible (we do not crawl citation databases); a wrong curator decision moves numbers wrongly, auditable but wrong. The 0.5 discounts are declared conventions, not calibrated weights. The defences are per-edge quote verification, the multi-model labelling ensemble, human review, and stating this list plainly (`MECHANISM.md` §8).
+
+One deployment note: the shared portal adds a server-side revision counter, independent of the file's own version, so two concurrent edits cannot silently overwrite each other — the stale writer gets a conflict, and each write commits atomically with its audit entry.

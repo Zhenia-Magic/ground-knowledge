@@ -13,8 +13,8 @@
 
 **Live, no setup, no API key → [groundknowledge.org](https://groundknowledge.org)**
 
-> **Judge, start here →** [`SUBMISSION.md`](SUBMISSION.md) (~2-page core + one-command demo) · [`ALGORITHM.md`](ALGORITHM.md)
-> (≤2-page pseudocode) · or run **`python cli.py demo`** for per-case collapse + the full benchmark.
+> **Judge, start here →** [`SUBMISSION.md`](SUBMISSION.md) (the core: deployed cases + how the number is computed) ·
+> [`ALGORITHM.md`](ALGORITHM.md) (the full algorithm, readable) · or run **`python cli.py demo`** for per-case collapse + the full benchmark.
 
 A Python pipeline that maps onto FLF's three-layer stack and produces a **living** knowledge
 base (not a snapshot): an AI **discovers** sources → **labels** each link/document into a
