@@ -1,87 +1,104 @@
 # Ground Knowledge — core submission
 
-*A living knowledge base that scores **confirmed independent evidence-root coverage** per position, not source count — and ships an **executable** adversarial contract instead of a robustness claim.*
+*Ground Knowledge maps a research dispute as a graph: the positions, the sources backing each one, and the datasets those sources actually rest on. For every position it then reports how many genuinely independent pieces of evidence stand behind it, instead of counting papers.*
 
-**Deployed demo, no setup and no API key:** **[groundknowledge.org](https://groundknowledge.org)** — three worked cases: [COVID origin](https://groundknowledge.org/q/ac81b4cae8d0), [LHC black holes](https://groundknowledge.org/q/c6c6ad01ec11), [eggs & heart disease](https://groundknowledge.org/q/04329878656c).
+**Start with the deployed portal — [groundknowledge.org](https://groundknowledge.org). Nothing to install, no account.** It hosts the three prepared cases:
 
-**Run the whole thing from a clean machine in ~1 minute** (stdlib Python, no build, no key):
+- [Eggs & heart disease](https://groundknowledge.org/q/04329878656c) — mundane but contested; the clearest illustration of the gap between paper count and evidence count.
+- [COVID origin](https://groundknowledge.org/q/ac81b4cae8d0) — a live, expertise-heavy dispute.
+- [LHC black holes](https://groundknowledge.org/q/c6c6ad01ec11) — an essentially settled question resting on a layered safety argument.
+
+A five-minute look, using the eggs case: the **Overview** tab shows each position twice, first by raw source count and then by the adjusted count after shared evidence is collapsed. The "no increased risk" camp lists 10 sources but resolves to 6.0 independent evidence bases, and that gap is the finding. **Evidence reuse** shows which sources collapsed together and onto which cohorts. **Key issues** is a grid of the specific factors the camps weigh differently. **Changes** logs what every added source did to the numbers.
+
+## Why counting papers fails, and what to count instead
+
+If one camp has 20 papers and the other has 4, a naive aggregator declares a winner. But if the 20 all re-analyse the same cohort, the dispute is closer to 1 piece of evidence against 4. And the failure is easy to weaponise: flood your side with reviews and re-analyses and you manufacture apparent consensus.
+
+So instead of counting papers, Ground Knowledge traces each paper down to the evidence underneath it — the datasets, experiments, and observations it rests on — and counts, per position, the **distinct** pieces of underlying evidence. Twenty papers on one cohort count as one. A review that only summarises other papers adds nothing of its own. Two papers that cite each other, with nothing primary underneath, add nothing at all.
+
+The resulting number (internally `nEff`, the *adjusted evidence-base count*) measures how broad a position's independent evidentiary footing is. It is deliberately **not** a quality, effect-size, or truth score: seven weak datasets are not better evidence than one decisive trial, and the report says so. Study design, funding, method concentration, and quote verification are shown alongside the count, never folded into it.
+
+## How the number is computed
+
+Every number comes from deterministic code over a single JSON file per case. The AI's only job is labelling sources; it computes nothing.
+
+**Step 1 — decide what to trust.** Nothing counts just because a source claims it. Two separate checks, each recorded in the file:
+
+- *Is this dataset real?* A dataset is confirmed either by a curator (a logged, attributed decision) or by an exact quote, verified against the fetched text of a source, that names it.
+- *Does this source actually rest on it?* The link from a source to a dataset needs its own verified quote or its own curator sign-off.
+
+Any trust fields arriving from a model or from a public contribution are deleted before merging. Only the tool's own quote verification, or a logged curator decision, can set them.
+
+**Step 2 — trace every source down to its roots.**
+
 ```
-git clone https://github.com/Zhenia-Magic/ground-knowledge && cd ground-knowledge
-python -m unittest discover -s tests -t .     # full suite, no dependencies
-python eval/run_benchmark.py                  # recall · collapse · 9-attack contract (all PASS)
-python cli.py assess cases/covid.kb.json      # every number the tool reports, for one case
-```
+for each source:
+    follow its trusted links downward
+    (source → cited source → … → dataset)
 
-This page is the core (~2 pp). The full pseudocode is [`ALGORITHM.md`](ALGORITHM.md) (≤2 pp); the mechanism and its open problems are [`MECHANISM.md`](MECHANISM.md); the data model is [`SCHEMA.md`](SCHEMA.md). **Beyond the core** (outside the budget): *supporting* — [`AGENTS.md`](AGENTS.md) (drive the whole pipeline with a coding agent, no API key), [`README.md`](README.md) (repo map); *appendix / reference* — the full `cases/*.kb.json` knowledge bases and [`eval/`](eval/) (benchmark, `RESULTS.md`, quote audit).
-
-## The move
-
-If one camp has 20 papers and another has 4, counting rewards volume, echo, and funding. Ground Knowledge instead resolves every **admitted** support edge down to the **evidentiary root** beneath it — a dataset, a specific argument, a collider run — and reports, per position, the **adjusted evidence-base count** `nEff`: each distinct admitted root counted **once**, with declared 0.5 discounts for review-only and non-human grounding. Twenty papers off one cohort become one root; `A → B → A` with nothing primary underneath contributes zero. The number is a **coverage / de-duplication diagnostic, explicitly not a quality, effect-size, confidence, or truth score** — seven weak roots are not "better" than one decisive trial, and the viewer says so. Source count, study design, funding skew, method monoculture, and quote quality are shown *separately*, never folded into the number.
-
-## The algorithm (deterministic, stdlib, no LLM in the metric)
-
-```
-# engine/roots.py — resolve every source through ADMITTED edges to its roots
-def resolve(kb):
-    # Trust is TWO independent decisions. A source claiming a dataset does not make the
-    # dataset real, nor the reliance true:
-    #   root identity — a curator record, OR a verified quote that names the base
-    #   support edge  — the source's own verified dependency quote, OR a curator admission
-    # Paste-back and model-supplied trust fields are STRIPPED before anything merges.
-    components = tarjan(admitted_citation_graph(kb))      # collapse circular corroboration (SCC)
-    for c in reverse_topological(components):
-        roots  = { ds for s in c for ds in admitted_dataset_edges(s) }
-        roots |= union(roots_of(dep) for dep in components_c_cites)
-        if not roots:                                     # nothing grounded underneath
-            roots = { pool_or_cycle_marker(c) }           # stays VISIBLE, counts zero
-        memo[c] = roots
-
-# engine/assess.py — strength of a root, then per-position coverage
-def strength(r):
-    if r.unconfirmed or r.edge_unadmitted or r.is_pool_or_cycle: return 0.0
-    w = 1.0
-    if r.secondary_only: w *= 0.5     # no primary source instantiates it (review-only)
-    if r.nonhuman_only:  w *= 0.5     # animal / in-vitro, no explicit human primary
-    return w
-
-def nEff(position):
-    return sum(strength(r) for r in distinct_roots_supporting(position))   # each root ONCE
-
-# engine/assess.py — cruxes(): surface what matters, over ordinal factor weights (high/med/low)
-crossCampCrux  = (>=2 camps weigh it) and (max - min >= 2)   # active disagreement
-sharedPivot    = (>=2 camps rate it "high")                  # agreed-decisive, still unresolved
-oneSidedLoadBearing / missingCounterassessment               # surfaced, but never inflate the headline
+roots(source) = every dataset reachable this way
 ```
 
-**Fixed-graph invariant (property-tested):** adding a source with only outgoing edges never lowers `nEff`; correlated/echo sources land on already-counted roots and move it nowhere. A graph *correction* (merging aliases, resolving a pending edge that reveals an ungrounded cycle) is allowed to lower it — that is removing false independence, not evidence.
+Citation loops are handled first: A-cites-B-cites-A is merged into one unit, and if the loop reaches no dataset it is flagged as circular and carries nothing. A source that reaches no dataset at all gets a visible "unsupported" marker instead of quietly disappearing.
 
-## Why it is shaped this way (the load-bearing decisions)
+**Step 3 — score each position.**
 
-- **Root identity and support-edge trust are admitted separately** so a real, globally-confirmed dataset cannot be laundered into another camp by one unreviewed source. This is the primitive most naive aggregators lack.
-- **Roots count once, pools stay visible at zero** so volume and echo are inert by construction, not by a tuned penalty.
-- **The model proposes, the code disposes.** The LLM only labels; every number comes from pure functions over portable JSON, so there is no pipeline↔UI drift and no dependence on model randomness.
-- **Coverage is not quality.** The one thing the number must never become is a verdict; keeping that line is what makes it faithful to uncertainty.
+```
+credit(dataset) = 1.0   confirmed, with at least one primary human study on it
+                = 0.5   only reviews rest on it, or only animal / in-vitro work
+                = 0.0   unconfirmed, unsupported, or circular (still shown, at zero)
 
-## What a source count hides, made visible
+coverage(position) = sum of credit over the DISTINCT datasets
+                     reachable from its sources
+```
 
-The report opens each position three ways: raw source count, the adjusted evidence-base count beside it, and a funding-bias flag over both. The gap between the first two *is* the finding. The egg "no increased risk" camp lists **10 sources but resolves to 6.0** independent bases once shared cohorts and review echo collapse; COVID's six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on substantially the same underlying evidence, so they read as re-analysis, not six new roots. A separate grid names the specific factors camps actually clash on — the cruxes — and, distinctly, the factors one camp leans on that no other has engaged. Funding defaults to *Undisclosed* and is audited next to the count, so an industry meta-analysis and an independent cohort never blur into "two sources."
+Each dataset is counted once, no matter how many sources rest on it. That single rule is what makes echo and volume inert: piling more papers onto an already-counted dataset moves nothing. A property-based test pins this down — adding a new source can never lower the count; only an explicit graph correction (say, merging two names that turn out to be the same cohort) can, because that removes false independence rather than evidence.
 
-The honest comparison: scored against ChatGPT Deep Research and Claude Code / Opus on the same hand-written gold, structure recall is **near-parity** — a good deep-research report already notices reused evidence and funding. So the contribution is not sharper detection. It is turning that noticing into a **recomputable, inspectable artifact**: an explicit root graph, a number a reader can rerun from the JSON, and a versioned **diff** of what each new source changed.
+**Step 4 — find what actually divides the camps.** Each case lists the factors in play (e.g. "prior on lab accidents", "hyper-responder subgroups"), and each camp's weight on each factor, sourced from quotes. A factor becomes a *disagreement crux* when camps weigh it very differently, and a *shared pivot* when two camps both call it decisive but it remains unresolved. Factors only one camp leans on are surfaced separately rather than inflating the headline.
 
-## One engine, three differently-shaped disputes
+## The design choices doing the work
 
-Only the JSON differs across a mundane-but-contested curated debate (eggs), a confident answer over a layered safety case (black holes — eleven "safe" sources resolve to 5.0 coverage across five distinct lines, with the residual concern surfaced as a one-sided load-bearing factor rather than buried), and a live, expertise-heavy dispute (COVID). Nothing in `roots.py`/`assess.py` is case-specific; a fourth dispute is a new file, not new code.
+- **Dataset identity and reliance are two separate trust decisions.** A dataset being real does not let a new source attach itself to it; the reliance claim needs its own evidence. Without this split, anyone could launder an established dataset into their own camp with one unreviewed paper.
+- **Each dataset counts once, and unsupported material stays visible at zero.** Gaming by volume is dead on arrival, by construction rather than by a tuned penalty.
+- **The AI proposes, the code disposes.** Models label; deterministic code computes. Results are reproducible from the JSON alone and do not depend on model randomness.
+- **Coverage never becomes a verdict.** The one thing the count must not turn into is a truth score; holding that line is what keeps the tool honest about uncertainty.
+
+## The honest comparison
+
+We scored the tool against ChatGPT Deep Research and a careful Claude Code investigation on the same hand-written gold standard (positions, key evidence, cruxes). The result is near-parity on recall: a good deep-research report already notices reused cohorts and industry funding. The difference is what you hold afterwards. A prose report's observations evaporate on the next question; here they become a portable, inspectable artifact — an explicit evidence graph, numbers anyone can recompute from the file, and a versioned diff of what each new source changed.
 
 ## It compounds, and it travels
 
-The artifact is a portable JSON knowledge base anyone can `pull`, extend, and `push`, with citations that import and export for Zotero — another team's sources drop straight into the same schema, and every write carries a diff so the base grows across people and time. Nothing in the path is bottlenecked on one hand-designed human step: discovery and labelling are model-agnostic and can run as a multi-model ensemble that escalates genuine disagreement instead of averaging it, so the pipeline improves as base models do; the metric itself is deterministic and unbounded in sources; and more scrutiny only helps, because every edge is audited rather than trusted. A keyless coding agent (Claude Code / Codex) can drive the entire loop on its own subscription, with the deterministic CLI (`lint → add → verify → doctor`) as the trust boundary.
+A case is one JSON file. Anyone can pull it, add sources, and push it back; every write carries a diff, so the base grows across people and time instead of being re-researched from scratch. Citations import from and export to Zotero. Labelling is model-agnostic and can run as a multi-model ensemble that escalates genuine disagreements to a human instead of averaging them away, so the pipeline improves as models do. A coding agent (Claude Code, Codex) can drive the whole loop with no API key, with the deterministic CLI as the trust boundary. Nothing in the path depends on one hand-designed human step.
 
 ## Hard to game
 
-Manufacturing consensus is the obvious attack, so the benchmark tries it. Nine attacks run on every case — echo flooding, +12 fabricated named datasets, a 12-source circular citation ring, a known-alias reuse, a generic fetched label, all of one camp's roots laundered into another through an unreviewed source, and a forged curator `admission` — and each must move `nEff` by **0.0**. Two things make that hold: the two-layer admission (a real dataset cannot be attached to a camp by a source that only claims it), and a trust boundary that strips any model- or paste-back-supplied trust field before it merges. A genuinely novel paraphrase can still slip the lexical gate until a human reviews it; that limit is named, not hidden.
+Manufacturing consensus is the obvious attack, so the benchmark executes it rather than arguing about it. Nine attacks run against every case: flooding a position with twelve rehashed reviews, inventing twelve named datasets, a twelve-source circular citation ring, reusing a known dataset alias, a generic label ("cohort") fished from methods prose, attaching one camp's confirmed datasets to another camp through an unreviewed source, and forging a curator's sign-off inside model output. Each attack must leave the count exactly unchanged, and all nine pass on all three cases. What still gets through: a genuinely novel paraphrase of an existing dataset's name can evade the automatic matcher until a human reviews it. That limit is stated, not hidden.
 
 ## What it does not claim
 
-The arithmetic is deterministic and gaming-resistant but **not self-certifying**: an incorrect curator decision or an omitted citation edge can still move the numbers wrongly (we do not crawl real citation graphs). Coverage is not quality, effect size, or truth. No blinded reader study is claimed — [`eval/reader_study/`](eval/reader_study/) is future-work scaffolding only. These and the other open problems are named in `MECHANISM.md §8`.
+The arithmetic is deterministic and hard to game, but not self-certifying: a wrong curator decision, or a dependency a source simply never mentions, can still move the numbers wrongly (we do not crawl citation databases). Coverage is not quality or truth. No blinded reader study backs an "uplift" claim; [`eval/reader_study/`](eval/reader_study/) is a protocol for future work, nothing more. The full list of open problems is in [`MECHANISM.md`](MECHANISM.md) §8.
 
-*Reproduce · inspect · attack: everything above runs from the clone with stdlib Python. License: Apache-2.0.*
+---
+
+## Run it yourself
+
+Everything is plain-library Python: no build step, no dependencies, no API key.
+
+```
+git clone https://github.com/Zhenia-Magic/ground-knowledge && cd ground-knowledge
+python -m unittest discover -s tests -t .     # full test suite
+python eval/run_benchmark.py                  # recall + collapse + the nine attacks (all PASS)
+python cli.py assess cases/covid.kb.json      # every reported number, for one case
+```
+
+## Additional material
+
+- [`ALGORITHM.md`](ALGORITHM.md) — the full pseudocode of the metric.
+- [`MECHANISM.md`](MECHANISM.md) — the mechanism in depth, edge cases, and open problems.
+- [`SCHEMA.md`](SCHEMA.md) — the data model of a case file.
+- [`AGENTS.md`](AGENTS.md) — driving the whole pipeline with a coding agent, no API key.
+- [`README.md`](README.md) — repo map and setup.
+- [`cases/`](cases/) — the three knowledge bases themselves; [`eval/`](eval/) — benchmark, results, quote audit.
+
+License: Apache-2.0.
