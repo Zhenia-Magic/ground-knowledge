@@ -8,11 +8,11 @@ A checkmark means one complete verbatim sentence was found in one fetched-text s
 |---|---:|---:|---:|---:|---:|
 | blackholes.kb.json | 15 | 15 | 0 | 0 | 0 |
 | covid.kb.json | 29 | 29 | 0 | 0 | 0 |
-| eggs.kb.json | 21 | 21 | 0 | 0 | 0 |
+| eggs.kb.json | 23 | 23 | 0 | 0 | 0 |
 
-Position excerpts: **65 exact of 65**; 0 fuzzy, 0 missing, 0 unchecked.
+Position excerpts: **67 exact of 67**; 0 fuzzy, 0 missing, 0 unchecked.
 
-All stored excerpts (position, dependency, and factor): **108 exact of 108**; 0 fuzzy, 0 missing, 0 unchecked. Every non-exact item is visibly downgraded and excluded from automatic root confirmation.
+All stored excerpts (position, dependency, and factor): **112 exact of 112**; 0 fuzzy, 0 missing, 0 unchecked. Every non-exact item is visibly downgraded and excluded from automatic root confirmation.
 
 ## Remaining non-exact position wording
 

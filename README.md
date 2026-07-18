@@ -113,8 +113,8 @@ An unverified root or unadmitted support edge contributes zero headline nEff. Tw
 - **Funding pattern (real):** interested funding does **not** uniquely favor one answer here. Two
   industry-funded meta-analyses back *"No association"* while two industry-funded trials back the
   context-dependent camp; the audit now reports that tie instead of choosing by position order.
-- **Evidence reuse (real):** the *"No increased risk / possibly lower risk"* camp lists 10 sources but
-  has **6.0 adjusted evidence bases** after shared-cohort collapse. This is not a quality-weighted
+- **Evidence reuse (real):** the *"No increased risk / possibly lower risk"* camp lists 12 sources but
+  has **8.0 adjusted evidence bases** after shared-cohort collapse. This is not a quality-weighted
   verdict; evidence design and method bias are shown alongside it.
 
 ### The update loop — recalculation made visible
@@ -194,7 +194,7 @@ output well-formed.
 Same engine, only the KB JSON differs. Browse these on the [live portal](https://groundknowledge.org)
 or `pull` them locally (`python cli.py pull <id>`):
 
-- **Eggs:** 21 sources across three answers; current coverage is **4.0 / 6.0 / 4.0**, while funding,
+- **Eggs:** 23 sources across three answers; current coverage is **4.0 / 8.0 / 4.0**, while funding,
   subgroup effects, and biomarker-vs-outcome reasoning remain visible key disagreements.
 - **COVID origin (contested):** current source→coverage values are **13→4.5, 8→3.0, 8→3.0**;
   re-analyses resolve onto shared underlying evidence rather than counting as new roots.

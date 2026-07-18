@@ -940,7 +940,7 @@
     },
     "eggs.kb.json": {
       "summary": {
-        "exact": 35,
+        "exact": 39,
         "fuzzy": 2
       },
       "sources": [
@@ -1413,6 +1413,54 @@
               "old": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
               "new": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
               "field": "factor:f_industry_funding_as_a_source_quality_concern"
+            }
+          ]
+        },
+        {
+          "id": "src_key_et_al_consumption_of_meat_fish_dairy_pro_2019",
+          "title": "Key et al. — Consumption of Meat, Fish, Dairy Products, and Eggs and Risk of Ischemic Heart Disease (EPIC)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Body mass index (BMI; <22.5, 22.5–24.9, 25.0–27.4, 27.5–29.9, ≥30.0 kg/m 2, and unknown [0.9%]) was calculated from measured Clinical Perspective What Is New? • We followed up the health of 400 000 men and women in 9 European countries for 12 years to examine the relevance of intake of animal foods to the pathogenesis of ischemic heart disease. • Higher consumption of red and processed meat was positively associated with the risk for ischemic heart disease. • Consumption of the other animal foods examined was not positively associated with risk; intakes of fatty fish, yogurt, cheese, and eggs were modestly inversely associated with risk.",
+              "new": "Body mass index (BMI; <22.5, 22.5–24.9, 25.0–27.4, 27.5–29.9, ≥30.0 kg/m 2, and unknown [0.9%]) was calculated from measured Clinical Perspective What Is New? • We followed up the health of 400 000 men and women in 9 European countries for 12 years to examine the relevance of intake of animal foods to the pathogenesis of ischemic heart disease. • Higher consumption of red and processed meat was positively associated with the risk for ischemic heart disease. • Consumption of the other animal foods examined was not positively associated with risk; intakes of fatty fish, yogurt, cheese, and eggs were modestly inversely associated with risk.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "We examined meat, fish, dairy products, and eggs and risk for IHD in the pan-European EPIC cohort (European Prospective Investigation Into Cancer and Nutrition).",
+              "new": "We examined meat, fish, dairy products, and eggs and risk for IHD in the pan-European EPIC cohort (European Prospective Investigation Into Cancer and Nutrition).",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_nakamura_et_al_egg_consumption_serum_total_c_2006",
+          "title": "Nakamura et al. — Egg consumption, serum total cholesterol, and coronary heart disease incidence (JPHC study)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "In conclusion, eating eggs more frequently, up to almost daily, was not associated with an increase in CHD incidence for middle-aged Japanese men and women.",
+              "new": "In conclusion, eating eggs more frequently, up to almost daily, was not associated with an increase in CHD incidence for middle-aged Japanese men and women.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "A total of 90 735 subjects (19 856 men and 21 408 women, aged 40-59 years in cohort I; 23 463 men and 26 008 women, aged 40-69 years in cohort II) were followed from 1990-4 to the end of 2001 under the Japan Public Health Center-based prospective study.",
+              "new": "A total of 90 735 subjects (19 856 men and 21 408 women, aged 40-59 years in cohort I; 23 463 men and 26 008 women, aged 40-69 years in cohort II) were followed from 1990-4 to the end of 2001 under the Japan Public Health Center-based prospective study.",
+              "field": "edge:0"
             }
           ]
         }

@@ -527,6 +527,66 @@
       "action": "confirm-edge",
       "summary": "admitted support edge src_galvis_et_al_consumption_of_eggs_alone_or_en_2023 → ds_eggant_randomized_trial_colombia",
       "version": 31
+    },
+    {
+      "version": 32,
+      "action": "add-source",
+      "source": "src_key_et_al_consumption_of_meat_fish_dairy_pro_2019",
+      "title": "Key et al. — Consumption of Meat, Fish, Dairy Products, and Eggs and Risk of Ischemic Heart Disease (EPIC)",
+      "ts": "2026-07-18T20:26:07.218987+00:00",
+      "newDatasets": [
+        "ds_epic_cohort_european_prospective_investigati"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No increased risk / possibly lower risk 10 → 11",
+        "distinct roots: No increased risk / possibly lower risk 6 → 8",
+        "⚠ new warning: evidence link awaiting review — No increased risk / possibly lower risk",
+        "⚠ new warning: quote text not checked — No increased risk / possibly lower risk"
+      ]
+    },
+    {
+      "version": 33,
+      "action": "add-source",
+      "source": "src_nakamura_et_al_egg_consumption_serum_total_c_2006",
+      "title": "Nakamura et al. — Egg consumption, serum total cholesterol, and coronary heart disease incidence (JPHC study)",
+      "ts": "2026-07-18T20:26:07.227758+00:00",
+      "newDatasets": [
+        "ds_japan_public_health_center_based_prospective"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No increased risk / possibly lower risk 11 → 12",
+        "distinct roots: No increased risk / possibly lower risk 8 → 9"
+      ]
+    },
+    {
+      "version": 34,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “EPIC cohort (European Prospective Investigation into Cancer and Nutrition)” as a real evidence base",
+      "ts": "2026-07-18T20:31:54.626812+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 35,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Japan Public Health Center-based prospective study (JPHC)” as a real evidence base",
+      "ts": "2026-07-18T20:31:54.678205+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 36,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_key_et_al_consumption_of_meat_fish_dairy_pro_2019 → ds_epic_cohort_european_prospective_investigati",
+      "ts": "2026-07-18T20:32:36.033733+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 37,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_nakamura_et_al_egg_consumption_serum_total_c_2006 → ds_japan_public_health_center_based_prospective",
+      "ts": "2026-07-18T20:32:36.084249+00:00",
+      "by": "Evgeniia"
     }
   ],
   "meta": {
@@ -540,8 +600,8 @@
       "by": "portal-admin",
       "since": "2026-07-16T23:27:24.988909+00:00"
     },
-    "updated": "2026-07-17T01:27:27.009010+00:00",
-    "version": 31,
+    "updated": "2026-07-18T20:32:36.084249+00:00",
+    "version": 37,
     "question": "Do eggs increase cardiovascular disease risk?",
     "schemaVersion": 2
   },
@@ -649,6 +709,14 @@
       },
       {
         "label": "General adults",
+        "aliases": []
+      },
+      {
+        "label": "European adults, 9 countries (EPIC)",
+        "aliases": []
+      },
+      {
+        "label": "Middle-aged Japanese men and women (JPHC)",
         "aliases": []
       }
     ]
@@ -770,8 +838,8 @@
       "id": "f_discount_for_healthy_user_dietary_pattern_co",
       "label": "Discount for healthy-user / dietary-pattern confounding",
       "weights": {
-        "pos_increases_risk": "low",
-        "pos_no_association": "high"
+        "pos_no_association": "high",
+        "pos_increases_risk": "low"
       },
       "rationale": "Claims the association survives confounding adjustment.",
       "provenance": [
@@ -855,14 +923,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
+            "textSha256": "4cda169faf7f5a3d1469a0cf32834330a67d4e097a8a05881b61a17653657583",
             "textDepth": "partial",
             "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "2e9abd90efa381ebd15101ede3b223c9e56e61cf5f9c783b67bfece3a27f4a0a",
-            "normalizedCharStart": 31797,
-            "normalizedCharEnd": 32038,
+            "normalizedCharStart": 31709,
+            "normalizedCharEnd": 31950,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -943,8 +1011,8 @@
       "id": "f_industry_funding_as_a_source_quality_concern",
       "label": "Industry funding as a source-quality concern",
       "weights": {
-        "pos_increases_risk": "high",
-        "pos_no_association": "low"
+        "pos_no_association": "low",
+        "pos_increases_risk": "high"
       },
       "rationale": "A systematic review found that industry-funded egg-intervention papers were substantially more likely to describe cholesterol increases favorably, so the caution camp treats funding as a material interpretation risk.",
       "provenance": [
@@ -1238,7 +1306,7 @@
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/31965140/",
             "reason": "verbatim-single-sentence",
-            "canonicalized": true,
+            "canonicalized": false,
             "quoteSha256": "7966a57fb7c79341b4832cf73e3aa79825d7c700d9aa40719ea9088efaa28926",
             "normalizedCharStart": 2008,
             "normalizedCharEnd": 2278,
@@ -1294,7 +1362,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
+            "textSha256": "4cda169faf7f5a3d1469a0cf32834330a67d4e097a8a05881b61a17653657583",
             "textDepth": "partial",
             "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
             "reason": "verbatim-single-sentence",
@@ -1581,7 +1649,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "96aa7d1e5705b6ab5d557af7243498ac98dfb64d92e32a5f10b31d43609a20f0",
+            "textSha256": "95ef1ebb33ee7ee66c7dbef951d407c97bc31788e4407c7b272d3aec1eabc4a2",
             "textDepth": "abstract",
             "sourceUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000743",
             "reason": "verbatim-single-sentence",
@@ -2348,6 +2416,140 @@
           }
         }
       }
+    },
+    {
+      "id": "src_key_et_al_consumption_of_meat_fish_dairy_pro_2019",
+      "title": "Key et al. — Consumption of Meat, Fish, Dairy Products, and Eggs and Risk of Ischemic Heart Disease (EPIC)",
+      "year": 2019,
+      "url": "https://doi.org/10.1161/circulationaha.118.038813",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "European adults, 9 countries (EPIC)",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_epic_cohort_european_prospective_investigati",
+          "provenance": {
+            "quote": "We examined meat, fish, dairy products, and eggs and risk for IHD in the pan-European EPIC cohort (European Prospective Investigation Into Cancer and Nutrition).",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "ca39865673d4059a2972d071f333fa1c97430ffecae169fe4f4e1772b305115f",
+              "textDepth": "unknown",
+              "sourceUrl": "https://doi.org/10.1161/circulationaha.118.038813",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "3f51d8258d2d4b3d7b7edecd009cb2b8c656c9ce446988d0e63c164fadbfc690",
+              "normalizedCharStart": 209,
+              "normalizedCharEnd": 370,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T20:32:36.033579+00:00",
+            "note": "Key et al. explicitly analyse eggs and IHD in the EPIC cohort"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Body mass index (BMI; <22.5, 22.5–24.9, 25.0–27.4, 27.5–29.9, ≥30.0 kg/m 2, and unknown [0.9%]) was calculated from measured Clinical Perspective What Is New? • We followed up the health of 400 000 men and women in 9 European countries for 12 years to examine the relevance of intake of animal foods to the pathogenesis of ischemic heart disease. • Higher consumption of red and processed meat was positively associated with the risk for ischemic heart disease. • Consumption of the other animal foods examined was not positively associated with risk; intakes of fatty fish, yogurt, cheese, and eggs were modestly inversely associated with risk.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ca39865673d4059a2972d071f333fa1c97430ffecae169fe4f4e1772b305115f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://doi.org/10.1161/circulationaha.118.038813",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": true,
+            "quoteSha256": "468a3fcba61cfbdd675fe84bdb4b99fe5b09dc4041a5b00f55252c7d8e47731b",
+            "normalizedCharStart": 12435,
+            "normalizedCharEnd": 13080,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 32,
+      "textDepth": "unknown"
+    },
+    {
+      "id": "src_nakamura_et_al_egg_consumption_serum_total_c_2006",
+      "title": "Nakamura et al. — Egg consumption, serum total cholesterol, and coronary heart disease incidence (JPHC study)",
+      "year": 2006,
+      "url": "https://doi.org/10.1017/bjn20061937",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_association",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "Middle-aged Japanese men and women (JPHC)",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_japan_public_health_center_based_prospective",
+          "provenance": {
+            "quote": "A total of 90 735 subjects (19 856 men and 21 408 women, aged 40-59 years in cohort I; 23 463 men and 26 008 women, aged 40-69 years in cohort II) were followed from 1990-4 to the end of 2001 under the Japan Public Health Center-based prospective study.",
+            "extractionConfidence": 0.85,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "070fb73a885659ce1adfe584c611d1eb13566c7561f052699e9d306b16ae336f",
+              "textDepth": "unknown",
+              "sourceUrl": "https://doi.org/10.1017/bjn20061937",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "496dee92bb24e05519d52eb5e170375cce547852d1d87d61b855399f0020d546",
+              "normalizedCharStart": 364,
+              "normalizedCharEnd": 617,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T20:32:36.084100+00:00",
+            "note": "Nakamura et al. analyse egg consumption and CHD in the JPHC cohort"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "In conclusion, eating eggs more frequently, up to almost daily, was not associated with an increase in CHD incidence for middle-aged Japanese men and women.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "070fb73a885659ce1adfe584c611d1eb13566c7561f052699e9d306b16ae336f",
+            "textDepth": "unknown",
+            "sourceUrl": "https://doi.org/10.1017/bjn20061937",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "58d23dc4d7b5803235888ba5b7f2bc754a5fbcf4a10483ac61064cf5ea447adb",
+            "normalizedCharStart": 1297,
+            "normalizedCharEnd": 1453,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 33,
+      "textDepth": "unknown"
     }
   ],
   "datasets": [
@@ -2511,6 +2713,30 @@
             "similarity": 0.4
           }
         ]
+      }
+    },
+    {
+      "id": "ds_epic_cohort_european_prospective_investigati",
+      "label": "EPIC cohort (European Prospective Investigation into Cancer and Nutrition)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T20:31:54.626657+00:00",
+        "by": "Evgeniia",
+        "note": "Pan-European EPIC cohort, 409,885 participants (Key et al., Circulation 2019)"
+      }
+    },
+    {
+      "id": "ds_japan_public_health_center_based_prospective",
+      "label": "Japan Public Health Center-based prospective study (JPHC)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T20:31:54.678052+00:00",
+        "by": "Evgeniia",
+        "note": "Japan Public Health Center-based prospective study, 90,735 participants (Nakamura et al., Br J Nutr 2006)"
       }
     }
   ],

@@ -242,11 +242,11 @@ structural and named honestly.
 FLF chose three cases with deliberately different profiles; a general tool must handle all three
 with **only the data changing.** It does:
 
-- **Eggs — contested, mundane, malformed question** (21 sources, 3 camps). The curator-authored
+- **Eggs — contested, mundane, malformed question** (23 sources, 3 camps). The curator-authored
   structure makes two auditable patterns visible: interested funding is **tied** between the
   no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
   industry-funded trials), and the shared-cohort collapse — the *No
-  increased-risk* camp lists 10 sources and has **6.0 adjusted evidence bases** after cohort reuse is
+  increased-risk* camp lists 12 sources and has **8.0 adjusted evidence bases** after cohort reuse is
   collapsed. The subgroup key disagreement (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 

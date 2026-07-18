@@ -8,7 +8,7 @@
 - [COVID origin](https://groundknowledge.org/q/ac81b4cae8d0) — a live, expertise-heavy dispute.
 - [LHC black holes](https://groundknowledge.org/q/c6c6ad01ec11) — an essentially settled question resting on a layered safety argument.
 
-A five-minute look, using the eggs case: the **Overview** tab shows each position twice, first by raw source count and then by the adjusted count after shared evidence is collapsed. The "no increased risk" camp lists 10 sources but resolves to 6.0 independent evidence bases, and that gap is the finding. **Evidence reuse** shows which sources collapsed together and onto which cohorts. **Key issues** is a grid of the specific factors the camps weigh differently. **Changes** logs what every added source did to the numbers.
+A five-minute look, using the eggs case: the **Overview** tab shows each position twice, first by raw source count and then by the adjusted count after shared evidence is collapsed. The "no increased risk" camp lists 12 sources but resolves to 8.0 independent evidence bases, and that gap is the finding. **Evidence reuse** shows which sources collapsed together and onto which cohorts. **Key issues** is a grid of the specific factors the camps weigh differently. **Changes** logs what every added source did to the numbers.
 
 ## Why counting papers fails, and what to count instead
 
