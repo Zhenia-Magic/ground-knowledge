@@ -259,13 +259,25 @@ def strip_untrusted_kb(kb):
     return kb
 
 
-def verify_kb(kb, fetch_text):
+_FETCHED_DEPTHS = {"full", "abstract", "partial"}
+
+
+def verify_kb(kb, fetch_text, set_text_depth=False):
     """Deterministically ground every stored quote in a WHOLE kb against source text.
 
-    ``fetch_text(url) -> str | None`` is injected by the caller (the CLI passes the ingest fetcher,
-    the portal passes its own), so this stays dependency-free and identical everywhere. Grounds each
-    source's position quote, every dependency-edge quote (an exact match may promote a proposed
-    root), and every factor/crux claim, then rebuilds the crux grid from the newly verified claims.
+    ``fetch_text(url)`` is injected by the caller (the CLI passes the ingest fetcher, the portal
+    passes its own), so this stays dependency-free and identical everywhere. It may return the plain
+    text (``str | None``) or the full extractor record (``{"text", "kind", ...}``); the ``kind`` is
+    used only when ``set_text_depth`` is on. Grounds each source's position quote, every
+    dependency-edge quote (an exact match may promote a proposed root), and every factor/crux claim,
+    then rebuilds the crux grid from the newly verified claims.
+
+    ``set_text_depth`` — when true, a source whose text this call actually fetched has its
+    ``textDepth`` set to the fetched ``kind`` (full/abstract/partial). This is what lets a
+    locally-verified exact dependency quote auto-admit its root (the resolver gates that on a real
+    fetched depth). The **portal keyless path leaves it false on purpose**: a keyless contribution's
+    depth stays ``unknown`` after ``strip_untrusted_kb``, so its bases remain *proposed* until a
+    curator confirms them, even though its quotes get grounded here.
 
     Trust comes from the FETCH happening here — never from client-supplied verification — so this is
     safe to run for anyone: it recomputes the record rather than believing it. Returns a
@@ -275,20 +287,26 @@ def verify_kb(kb, fetch_text):
     sources = kb.get("sources", []) or []
     src_by_id = {s.get("id"): s for s in sources}
     text_cache = {}
+    kind_cache = {}
     counts = {"exact": 0, "fuzzy": 0, "missing": 0, "unfetched": 0}
 
     def text_for(src):
         sid = src.get("id")
         if sid in text_cache:
             return text_cache[sid]
-        text = None
+        text, kind = None, None
         url = src.get("url")
         if url:
             try:
-                text = fetch_text(url)
+                res = fetch_text(url)
             except Exception:
-                text = None
+                res = None
+            if isinstance(res, dict):
+                text, kind = res.get("text"), res.get("kind")
+            else:
+                text = res
         text_cache[sid] = text
+        kind_cache[sid] = kind
         return text
 
     def ground(prov, src):
@@ -304,6 +322,9 @@ def verify_kb(kb, fetch_text):
         counts[result["status"]] = counts.get(result["status"], 0) + 1
 
     for src in sources:
+        text = text_for(src)
+        if set_text_depth and text and kind_cache.get(src.get("id")) in _FETCHED_DEPTHS:
+            src["textDepth"] = kind_cache[src.get("id")]   # a fetch this call did — safe to trust
         ground((src.get("provenance") or {}).get("position"), src)
         for edge in src.get("restsOn", []) or []:
             if isinstance(edge, dict):

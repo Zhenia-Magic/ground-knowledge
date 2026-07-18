@@ -159,6 +159,49 @@ def _specific_identity_label(label):
         or len(token) >= 6
 
 
+def _has_distinctive_token(text):
+    """A token distinctive enough that a *fragment* of a label can safely stand in for it: a code with
+    a digit, an ALL-CAPS acronym, or a long non-generic word. Excludes bare generic words like
+    "cohort" or "health" even though they are long, so a stripped fragment can't match methods prose.
+    """
+    for tok in re.findall(r"[A-Za-z0-9]+", str(text or "")):
+        if any(c.isdigit() for c in tok) or (tok.isupper() and len(tok) >= 3):
+            return True
+        if len(tok) >= 6 and tok.lower() not in _GENERIC_IDENTITY:
+            return True
+    return False
+
+
+def _identity_candidates(label):
+    """The specific name-forms of a label to look for in a quote.
+
+    A label often carries a parenthetical acronym — "Japan Public Health Center-based prospective
+    study (JPHC)" — while the sentence that names it in the paper writes only one of the two forms.
+    So we also try the label with any parenthetical removed and each parenthetical's contents on its
+    own. The label as written keeps the existing ``_specific_identity_label`` gate; the DERIVED
+    fragments must additionally carry a distinctive token, so stripping a parenthetical can never turn
+    a weak label ("The Study (NHANES)") into a generic fragment ("the study") that matches prose.
+    Deduplicated on the normalized form.
+    """
+    raw = str(label or "")
+    out, seen = [], set()
+
+    def add(text, strict):
+        n = _norm(text)
+        if not n or n in seen or not _specific_identity_label(text):
+            return
+        if strict and not _has_distinctive_token(text):
+            return
+        seen.add(n)
+        out.append(n)
+
+    add(raw, False)                                   # the label as written — unchanged behavior
+    add(re.sub(r"\([^)]*\)", " ", raw), True)         # parenthetical stripped
+    for inner in re.findall(r"\(([^)]*)\)", raw):     # each parenthetical's contents
+        add(inner, True)
+    return out
+
+
 def _quote_identifies_dataset(kb, dataset_id, quote):
     """Conservative identity check for a verified dependency quote.
 
@@ -168,19 +211,16 @@ def _quote_identifies_dataset(kb, dataset_id, quote):
     synthesise acronyms: "Medical Review" -> "MR" would match ordinary "Mr. Smith" prose. Generic
     wording such as "we used the cohort" stays visible but provisional for a curator.
     """
-    q = _norm(quote)
-    if not q:
+    q = " " + _norm(quote) + " "
+    if not q.strip():
         return False
     d = next((x for x in kb.get("datasets", []) if x.get("id") == dataset_id), None)
     if not d:
         return False
-    labels = [d.get("label")] + list(d.get("aliases") or [])
-    for label in labels:
-        lab = _norm(label)
-        if not lab or not _specific_identity_label(label):
-            continue
-        if (" " + lab + " ") in (" " + q + " "):
-            return True
+    for label in [d.get("label")] + list(d.get("aliases") or []):
+        for cand in _identity_candidates(label):
+            if (" " + cand + " ") in q:
+                return True
     return False
 
 

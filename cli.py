@@ -675,15 +675,18 @@ def cmd_verify(args):
         # verify_kb's contract is best-effort: a source that will not fetch just leaves its quotes
         # unverified. extract_text raises instead (SystemExit on a bot-wall / CAPTCHA), which would
         # abort the whole run and silently leave every later source unchecked — so contain it here,
-        # per source, and let the tally report it as unfetched.
+        # per source, and let the tally report it as unfetched. Return the whole record so verify_kb
+        # can read the fetched depth (this is a trusted LOCAL fetch).
         try:
-            return (extract_text(url) or {}).get("text")
+            return extract_text(url)
         except (SystemExit, OSError, http.client.HTTPException, ValueError) as e:
             print("  skipped (could not re-fetch): {} — {}".format(url, e))
             return None
 
     kb = read_json(args.kb)
-    counts = verify_kb(kb, fetch)
+    # Local verify is a trusted fetch, so record the fetched depth — that is what lets a verified
+    # exact dependency quote auto-admit its root without a separate curator step.
+    counts = verify_kb(kb, fetch, set_text_depth=True)
     write_json(args.kb, kb)          # persist the grounded records — verification is the whole point
     print("Quote check — exact {exact}, fuzzy {fuzzy}, missing {missing}"
           "  ({unfetched} quote(s) on sources that could not be re-fetched)".format(**counts))
