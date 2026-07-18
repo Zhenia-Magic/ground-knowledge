@@ -250,8 +250,8 @@ with **only the data changing.** It does:
   collapsed. The subgroup key disagreement (diabetics/hyper-responders)
   flags that "are eggs healthy?" is mis-posed: the answer is "for whom?"
 
-- **COVID — live, contested, expertise-heavy** (29 sources, 3 camps). The root audit tells
-  the honest story a source count hides: current source→coverage values are **13→4.5, 8→3.0,
+- **COVID — live, contested, expertise-heavy** (31 sources, 3 camps). The root audit tells
+  the honest story a source count hides: current source→coverage values are **15→6.5, 8→3.0,
   8→3.0**. The **six Bayesian re-analyses (Rootclaim, Weissman, Miller, …) rest on substantially shared
   underlying evidence** — so they count as re-analysis, not six new roots, the "23 orders of
   magnitude from one evidence base" made visible. Key disagreements: prior on lab accidents, furin site,

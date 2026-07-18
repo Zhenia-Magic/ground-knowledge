@@ -317,7 +317,7 @@
     },
     "covid.kb.json": {
       "summary": {
-        "exact": 48
+        "exact": 52
       },
       "sources": [
         {
@@ -933,6 +933,54 @@
               "old": "Today, Director of National Intelligence Tulsi Gabbard is releasing never-before-seen communications and documents exposing how Fauci worked with politicized career leadership in the Intelligence Community (IC) to suppress the truth about his actions, the virus’ lab-leak origins, and his role in directing U.S. funding for this dangerous research that caused immeasurable harm and countless lost lives.",
               "new": "Today, Director of National Intelligence Tulsi Gabbard is releasing never-before-seen communications and documents exposing how Fauci worked with politicized career leadership in the Intelligence Community (IC) to suppress the truth about his actions, the virus’ lab-leak origins, and his role in directing U.S. funding for this dangerous research that caused immeasurable harm and countless lost lives.",
               "field": "source:position"
+            }
+          ]
+        },
+        {
+          "id": "src_xiao_et_al_animal_sales_from_wuhan_wet_marke_2021",
+          "title": "Xiao et al. — Animal sales from Wuhan wet markets immediately prior to the COVID-19 pandemic",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Here we document 47,381 individuals from 38 species, including 31 protected species sold between May 2017 and November 2019 in Wuhan's markets.",
+              "new": "Here we document 47,381 individuals from 38 species, including 31 protected species sold between May 2017 and November 2019 in Wuhan's markets.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Here we present a unique and original dataset recording wild animal sales across Wuhan City’s animal markets between May 2017 and November 2019.",
+              "new": "Here we present a unique and original dataset recording wild animal sales across Wuhan City’s animal markets between May 2017 and November 2019.",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_freuling_et_al_susceptibility_of_raccoon_dog_2020",
+          "title": "Freuling et al. — Susceptibility of Raccoon Dogs for Experimental SARS-CoV-2 Infection",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Conclusions Our experimental study demonstrates that raccoon dogs are susceptible to SARS-CoV-2 infection and can transmit the virus to direct in-contact animals.",
+              "new": "Conclusions Our experimental study demonstrates that raccoon dogs are susceptible to SARS-CoV-2 infection and can transmit the virus to direct in-contact animals.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Using our established study design (7), we characterized susceptibility, viral shedding, transmission potential, serologic reactions, and pathologic lesions of raccoon dogs after experimental SARS-CoV-2 infection.",
+              "new": "Using our established study design (7), we characterized susceptibility, viral shedding, transmission potential, serologic reactions, and pathologic lesions of raccoon dogs after experimental SARS-CoV-2 infection.",
+              "field": "edge:0"
             }
           ]
         }

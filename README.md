@@ -196,7 +196,7 @@ or `pull` them locally (`python cli.py pull <id>`):
 
 - **Eggs:** 23 sources across three answers; current coverage is **4.0 / 8.0 / 4.0**, while funding,
   subgroup effects, and biomarker-vs-outcome reasoning remain visible key disagreements.
-- **COVID origin (contested):** current source→coverage values are **13→4.5, 8→3.0, 8→3.0**;
+- **COVID origin (contested):** current source→coverage values are **15→6.5, 8→3.0, 8→3.0**;
   re-analyses resolve onto shared underlying evidence rather than counting as new roots.
 - **Black holes (settled):** 11 safe-position sources resolve to **5.0** coverage across production
   impossibility, Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, and

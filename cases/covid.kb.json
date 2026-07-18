@@ -2,8 +2,8 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 47,
-    "updated": "2026-07-17T02:18:45.458406+00:00",
+    "version": 53,
+    "updated": "2026-07-18T21:04:09.126187+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
       "baseVersion": 38,
@@ -120,6 +120,30 @@
         "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
         "source": "src_latham_wilson_the_mojiang_miners_passage_hyp_2020"
       }
+    },
+    {
+      "id": "ds_wuhan_market_wildlife_sales_survey_xiao_et_a",
+      "label": "Wuhan market wildlife sales survey (Xiao et al.)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T21:04:08.975897+00:00",
+        "by": "Evgeniia",
+        "note": "Xiao et al. 2021 (Sci Rep): 2017-2019 survey of live wildlife sold at Wuhan markets"
+      }
+    },
+    {
+      "id": "ds_experimental_raccoon_dog_sars_cov_2_infectio",
+      "label": "Experimental raccoon-dog SARS-CoV-2 infection study (Freuling et al.)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T21:04:09.026513+00:00",
+        "by": "Evgeniia",
+        "note": "Freuling et al. 2020 (EID): experimental raccoon-dog SARS-CoV-2 infection"
+      }
     }
   ],
   "factors": [
@@ -193,14 +217,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "499a17c17d4227c767d7358c85c85a4c74a0d716c2d29f902de43e4e4f11e991",
+            "textSha256": "21cea85eae57ba1b76cb1d34944660f69d394033309c9dfcda128f1d255d8f02",
             "textDepth": "partial",
             "sourceUrl": "https://thebulletin.org/2021/05/the-origin-of-covid-did-people-or-nature-open-pandoras-box-at-wuhan/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "e97f9f3f985f837a144a3f59d33f2ae73907a9ff55a6bafd23226de51e52c4fd",
-            "normalizedCharStart": 3368,
-            "normalizedCharEnd": 3557,
+            "normalizedCharStart": 3361,
+            "normalizedCharEnd": 3550,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -213,14 +237,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "fad50fe971863e7abb07d075f7b8e7091c25ff3989322b143b1afa2aad411a5d",
+            "textSha256": "89494598b10827e4886c4a8ddfdb9b99753eb2b377e5f95c239cfeaa8251627b",
             "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9348750/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "488d4a2ea0b9519823f3d32056dedac4da748b378771c5dd83a24150a17cf079",
-            "normalizedCharStart": 585,
-            "normalizedCharEnd": 738,
+            "normalizedCharStart": 14067,
+            "normalizedCharEnd": 14220,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -253,14 +277,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+            "textSha256": "108914f4a623465557441e456a9a15ca47466f03080d1802981147e0a6eed7d2",
             "textDepth": "abstract",
             "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
-            "normalizedCharStart": 674,
-            "normalizedCharEnd": 858,
+            "normalizedCharStart": 665,
+            "normalizedCharEnd": 849,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -283,7 +307,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "b7d4f0173512b9e0a7abf5103dec39e7e6a7b4f37278ac9802868153847a6ee3",
+            "textSha256": "8501163b9f2f1de97af4556beded16246e78ac6989f64d98c8a3072830395e1a",
             "textDepth": "full",
             "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8337",
             "reason": "verbatim-single-sentence",
@@ -711,7 +735,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "b7d4f0173512b9e0a7abf5103dec39e7e6a7b4f37278ac9802868153847a6ee3",
+            "textSha256": "8501163b9f2f1de97af4556beded16246e78ac6989f64d98c8a3072830395e1a",
             "textDepth": "full",
             "sourceUrl": "https://www.science.org/doi/10.1126/science.abp8337",
             "reason": "verbatim-single-sentence",
@@ -2327,14 +2351,14 @@
             "quoteVerification": {
               "method": "verbatim-sentence-v2",
               "status": "exact",
-              "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+              "textSha256": "108914f4a623465557441e456a9a15ca47466f03080d1802981147e0a6eed7d2",
               "textDepth": "abstract",
               "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
               "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
-              "normalizedCharStart": 674,
-              "normalizedCharEnd": 858,
+              "normalizedCharStart": 665,
+              "normalizedCharEnd": 849,
               "normalization": "NFKC-typography-whitespace-v1"
             }
           },
@@ -2355,14 +2379,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "cd7c2f43496f4ac34559e6e14ddd435d792d291bf7567719d450296fb0c03adc",
+            "textSha256": "108914f4a623465557441e456a9a15ca47466f03080d1802981147e0a6eed7d2",
             "textDepth": "abstract",
             "sourceUrl": "https://doi.org/10.1093/molbev/msaf118",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "901d6478d3ef6facec9a3368c367c39ef652539376cd0d22d68e3cd197ebdbd3",
-            "normalizedCharStart": 674,
-            "normalizedCharEnd": 858,
+            "normalizedCharStart": 665,
+            "normalizedCharEnd": 849,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
@@ -2395,20 +2419,20 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "1849152cf20e61d4bb6aed729ba81470bf6f4b4a00911d79aad5b3bce80f321c",
-            "textDepth": "full",
+            "textSha256": "975a7cb05fe4928316b288723e74dc33f4b4ce8b74a009e08fe6fa680aa15b4d",
+            "textDepth": "partial",
             "sourceUrl": "https://www.dni.gov/files/ODNI/documents/assessments/Report-on-Potential-Links-Between-the-Wuhan-Institute-of-Virology-and-the-Origins-of-COVID-19-20230623.pdf",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "4dd91c53f37b0dcd89049900d98528f6d0288310da2f90521e4c7183d7b053e3",
-            "normalizedCharStart": 2670,
-            "normalizedCharEnd": 2882,
+            "normalizedCharStart": 3046,
+            "normalizedCharEnd": 3258,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 38,
-      "textDepth": "full",
+      "textDepth": "partial",
       "fundingDetails": [
         "Office of the Director of National Intelligence"
       ]
@@ -2438,23 +2462,157 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "6ed70d1204b56afec241c456545d568b4155b5234767710e516e1b7360d88a4b",
-            "textDepth": "full",
+            "textSha256": "ae6524085e1dfbcb1ab8eeb7948ae3ed3a7fa13f02e831226b5eea5360a9d4ce",
+            "textDepth": "partial",
             "sourceUrl": "https://www.dni.gov/index.php/newsroom/press-releases/press-releases-2026/4166-pr-11-26",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "24aa8e350d6214dd17662767cae19714e692d5756d4b055a7954f2db1b5d828a",
-            "normalizedCharStart": 6471,
-            "normalizedCharEnd": 6874,
+            "normalizedCharStart": 853,
+            "normalizedCharEnd": 1256,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         }
       },
       "addedIn": 39,
-      "textDepth": "full",
+      "textDepth": "partial",
       "fundingDetails": [
         "Office of the Director of National Intelligence"
       ]
+    },
+    {
+      "id": "src_xiao_et_al_animal_sales_from_wuhan_wet_marke_2021",
+      "title": "Xiao et al. — Animal sales from Wuhan wet markets immediately prior to the COVID-19 pandemic",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41598-021-91470-2",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Observational",
+      "funding": "Undisclosed",
+      "population": "Wuhan wet-market wildlife vendors (2017-2019)",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_wuhan_market_wildlife_sales_survey_xiao_et_a",
+          "provenance": {
+            "quote": "Here we present a unique and original dataset recording wild animal sales across Wuhan City’s animal markets between May 2017 and November 2019.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "ad9073363127223db44569705ccc2366a222bc9349839efb22fd195867f6a207",
+              "textDepth": "full",
+              "sourceUrl": "https://doi.org/10.1038/s41598-021-91470-2",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "3b96bfa66e98d697dab97fc23145d2e142c1200d3f321395de5ba99f81348122",
+              "normalizedCharStart": 5165,
+              "normalizedCharEnd": 5309,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T21:04:09.076625+00:00",
+            "note": "Xiao et al. present this survey as their own dataset"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Here we document 47,381 individuals from 38 species, including 31 protected species sold between May 2017 and November 2019 in Wuhan's markets.",
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "ad9073363127223db44569705ccc2366a222bc9349839efb22fd195867f6a207",
+            "textDepth": "full",
+            "sourceUrl": "https://doi.org/10.1038/s41598-021-91470-2",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "d7117da2e9a813cbbfa07c149caa03bee96a99a66ab7adbddfe2df63d924ee0b",
+            "normalizedCharStart": 79,
+            "normalizedCharEnd": 222,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 48,
+      "textDepth": "full"
+    },
+    {
+      "id": "src_freuling_et_al_susceptibility_of_raccoon_dog_2020",
+      "title": "Freuling et al. — Susceptibility of Raccoon Dogs for Experimental SARS-CoV-2 Infection",
+      "year": 2020,
+      "url": "https://doi.org/10.3201/eid2612.203733",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_zoonotic_spillover_at_the_huanan_market",
+      "evidence": "Experimental",
+      "funding": "Government/public",
+      "population": "Experimentally infected raccoon dogs",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_experimental_raccoon_dog_sars_cov_2_infectio",
+          "provenance": {
+            "quote": "Using our established study design (7), we characterized susceptibility, viral shedding, transmission potential, serologic reactions, and pathologic lesions of raccoon dogs after experimental SARS-CoV-2 infection.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "99f63a255e4c2f6245feb4c3289fff68ed4bbca4cf01437f62d3474ece54d143",
+              "textDepth": "full",
+              "sourceUrl": "https://doi.org/10.3201/eid2612.203733",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "299547d6584c0af313778a50f0dfa270e9f6a86da0778248e1c274f396a0c4e7",
+              "normalizedCharStart": 883,
+              "normalizedCharEnd": 1096,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T21:04:09.126046+00:00",
+            "note": "Freuling et al. report their own experimental infection study"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Conclusions Our experimental study demonstrates that raccoon dogs are susceptible to SARS-CoV-2 infection and can transmit the virus to direct in-contact animals.",
+          "extractionConfidence": 0.95,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "99f63a255e4c2f6245feb4c3289fff68ed4bbca4cf01437f62d3474ece54d143",
+            "textDepth": "full",
+            "sourceUrl": "https://doi.org/10.3201/eid2612.203733",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "8a84589edf48020dc7a50b5a9c9f884ae220127fbcfc95033ccfbf56ddea98b1",
+            "normalizedCharStart": 10745,
+            "normalizedCharEnd": 10907,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 49,
+      "textDepth": "full"
     }
   ],
   "vocab": {
@@ -2489,6 +2647,10 @@
       },
       {
         "label": "Institutional statement",
+        "aliases": []
+      },
+      {
+        "label": "Experimental",
         "aliases": []
       }
     ],
@@ -2529,6 +2691,14 @@
           "Intelligence and scientific evidence on SARS-CoV-2 origins through 2023",
           "Declassified U.S. intelligence materials on SARS-CoV-2 origins through June 2026"
         ]
+      },
+      {
+        "label": "Wuhan wet-market wildlife vendors (2017-2019)",
+        "aliases": []
+      },
+      {
+        "label": "Experimentally infected raccoon dogs",
+        "aliases": []
       }
     ],
     "funding": [
@@ -3327,6 +3497,66 @@
       "summary": "reviewer re-audit (2026-07): Worobey: funding→Government/public +details; USRTK DEFUSE analysis: evidence→Narrative/Commentary; Lytras: evidence→Observational (secondary data analysis), funding→Government/public +details",
       "ts": "2026-07-17T02:18:45.458406+00:00",
       "by": "reviewer re-audit"
+    },
+    {
+      "version": 48,
+      "action": "add-source",
+      "source": "src_xiao_et_al_animal_sales_from_wuhan_wet_marke_2021",
+      "title": "Xiao et al. — Animal sales from Wuhan wet markets immediately prior to the COVID-19 pandemic",
+      "ts": "2026-07-18T21:00:32.276301+00:00",
+      "newDatasets": [
+        "ds_wuhan_market_wildlife_sales_survey_xiao_et_a"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover 13 → 14",
+        "distinct roots: Zoonotic spillover 5 → 7",
+        "⚠ new warning: evidence link awaiting review — Zoonotic spillover",
+        "⚠ new warning: quote text not checked — Zoonotic spillover"
+      ]
+    },
+    {
+      "version": 49,
+      "action": "add-source",
+      "source": "src_freuling_et_al_susceptibility_of_raccoon_dog_2020",
+      "title": "Freuling et al. — Susceptibility of Raccoon Dogs for Experimental SARS-CoV-2 Infection",
+      "ts": "2026-07-18T21:00:32.285958+00:00",
+      "newDatasets": [
+        "ds_experimental_raccoon_dog_sars_cov_2_infectio"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Zoonotic spillover 14 → 15",
+        "distinct roots: Zoonotic spillover 7 → 8"
+      ]
+    },
+    {
+      "version": 50,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Wuhan market wildlife sales survey (Xiao et al.)” as a real evidence base",
+      "ts": "2026-07-18T21:04:08.976046+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 51,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Experimental raccoon-dog SARS-CoV-2 infection study (Freuling et al.)” as a real evidence base",
+      "ts": "2026-07-18T21:04:09.026646+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 52,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_xiao_et_al_animal_sales_from_wuhan_wet_marke_2021 → ds_wuhan_market_wildlife_sales_survey_xiao_et_a",
+      "ts": "2026-07-18T21:04:09.076774+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 53,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_freuling_et_al_susceptibility_of_raccoon_dog_2020 → ds_experimental_raccoon_dog_sars_cov_2_infectio",
+      "ts": "2026-07-18T21:04:09.126187+00:00",
+      "by": "Evgeniia"
     }
   ],
   "refused": [
