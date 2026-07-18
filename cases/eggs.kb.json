@@ -611,21 +611,28 @@
       "summary": "confirmed dataset “Korean Genome and Epidemiology Study (KoGES), Ansung-Ansan cohort” as a real evidence base",
       "ts": "2026-07-18T22:07:12.602810+00:00",
       "by": "Evgeniia"
+    },
+    {
+      "version": 40,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_egg_consumption_and_the_risk_of_cardiovascul_2018 → ds_korean_genome_and_epidemiology_study_koges_a",
+      "ts": "2026-07-18T22:15:01.108434+00:00",
+      "by": "Evgeniia"
     }
   ],
   "meta": {
     "id": "eggs",
     "portal": {
       "id": "04329878656c",
-      "baseVersion": 32,
+      "baseVersion": 33,
       "url": "https://groundknowledge.org"
     },
     "curated": {
       "by": "portal-admin",
       "since": "2026-07-16T23:27:24.988909+00:00"
     },
-    "updated": "2026-07-18T22:07:12.602810+00:00",
-    "version": 39,
+    "updated": "2026-07-18T22:15:01.108434+00:00",
+    "version": 40,
     "question": "Do eggs increase cardiovascular disease risk?",
     "schemaVersion": 2
   },
@@ -2609,6 +2616,13 @@
               "normalizedCharEnd": 638,
               "normalization": "NFKC-typography-whitespace-v1"
             }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T22:15:01.108285+00:00",
+            "note": "KoGES reports its own cohort analysis of egg intake and CVD"
           }
         }
       ],
