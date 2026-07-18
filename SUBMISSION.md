@@ -7,7 +7,9 @@
 
 ---
 
-## Judge, start here (10 minutes)
+## Judge, start here — how to spend the ~10-page budget
+
+Ground Knowledge is a **code / executable** submission. The **core** below is ~8 pages of reading plus a ~5-minute run from a clean machine; everything else is **supporting** or **appendix**, listed at the end to dip into as you choose.
 
 1. **See the thesis in 60 seconds.** Run the reproducible benchmark from a clean clone:
    ```
@@ -28,6 +30,8 @@
    - The one-page pseudocode is in **[`ALGORITHM.md`](ALGORITHM.md)**.
 
 4. **Check the honest limitations** — `MECHANISM.md §8`. We publish the open problems rather than hide them.
+
+**Beyond the core** (outside the ~10-page budget, dive in as you choose). *Supporting* — [`MECHANISM.md`](MECHANISM.md) (the mechanism in depth and the open problems), [`AGENTS.md`](AGENTS.md) (drive the whole pipeline with a coding agent, no API key), [`README.md`](README.md) (repo map). *Appendix / reference* (no budget) — [`SCHEMA.md`](SCHEMA.md) (the data model), the full `cases/*.kb.json` knowledge bases, and [`eval/`](eval/) (benchmark, `RESULTS.md`, quote audit).
 
 ---
 
