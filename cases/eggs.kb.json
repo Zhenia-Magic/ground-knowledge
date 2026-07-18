@@ -587,21 +587,45 @@
       "summary": "admitted support edge src_nakamura_et_al_egg_consumption_serum_total_c_2006 → ds_japan_public_health_center_based_prospective",
       "ts": "2026-07-18T20:32:36.084249+00:00",
       "by": "Evgeniia"
+    },
+    {
+      "version": 38,
+      "action": "add-source",
+      "source": "src_egg_consumption_and_the_risk_of_cardiovascul_2018",
+      "title": "Egg consumption and the risk of cardiovascular disease: interaction with type 2 diabetes (KoGES Ansung-Ansan cohort)",
+      "ts": "2026-07-18T21:52:41.882267+00:00",
+      "newDatasets": [
+        "ds_korean_genome_and_epidemiology_study_koges_a"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: Context-dependent (depends on the person) 7 → 8",
+        "distinct roots: Context-dependent (depends on the person) 5 → 7",
+        "⚠ new warning: evidence link awaiting review — Context-dependent (depends on the person)",
+        "⚠ new warning: quote text not checked — Context-dependent (depends on the person)"
+      ]
+    },
+    {
+      "version": 39,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “Korean Genome and Epidemiology Study (KoGES), Ansung-Ansan cohort” as a real evidence base",
+      "ts": "2026-07-18T22:07:12.602810+00:00",
+      "by": "Evgeniia"
     }
   ],
   "meta": {
     "id": "eggs",
     "portal": {
       "id": "04329878656c",
-      "baseVersion": 31,
+      "baseVersion": 32,
       "url": "https://groundknowledge.org"
     },
     "curated": {
       "by": "portal-admin",
       "since": "2026-07-16T23:27:24.988909+00:00"
     },
-    "updated": "2026-07-18T20:32:36.084249+00:00",
-    "version": 37,
+    "updated": "2026-07-18T22:07:12.602810+00:00",
+    "version": 39,
     "question": "Do eggs increase cardiovascular disease risk?",
     "schemaVersion": 2
   },
@@ -718,6 +742,10 @@
       {
         "label": "Middle-aged Japanese men and women (JPHC)",
         "aliases": []
+      },
+      {
+        "label": "Korean adults 40-69 (KoGES Ansung-Ansan)",
+        "aliases": []
       }
     ]
   },
@@ -726,8 +754,8 @@
       "id": "f_judge_eggs_on_biomarkers_ldl_vs_hard_cvd_eve",
       "label": "Judge eggs on biomarkers (LDL) vs hard CVD events",
       "weights": {
-        "pos_context_dependent_depends_on_the_person": "low",
         "pos_no_association": "high",
+        "pos_context_dependent_depends_on_the_person": "low",
         "pos_increases_risk": "med"
       },
       "rationale": "Weights hard clinical endpoints from large pooled cohorts.",
@@ -822,7 +850,7 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
-            "textDepth": "unknown",
+            "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
@@ -889,8 +917,8 @@
       "id": "f_population_context_dependence_who_is_eating_",
       "label": "Population/context dependence (who is eating eggs)",
       "weights": {
-        "pos_context_dependent_depends_on_the_person": "med",
-        "pos_no_association": "high"
+        "pos_no_association": "high",
+        "pos_context_dependent_depends_on_the_person": "med"
       },
       "rationale": "A different population and background diet flips the direction of association.",
       "provenance": [
@@ -923,14 +951,14 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "4cda169faf7f5a3d1469a0cf32834330a67d4e097a8a05881b61a17653657583",
+            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
             "textDepth": "partial",
             "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
             "quoteSha256": "2e9abd90efa381ebd15101ede3b223c9e56e61cf5f9c783b67bfece3a27f4a0a",
-            "normalizedCharStart": 31709,
-            "normalizedCharEnd": 31950,
+            "normalizedCharStart": 31797,
+            "normalizedCharEnd": 32038,
             "normalization": "NFKC-typography-whitespace-v1"
           }
         },
@@ -960,8 +988,8 @@
       "id": "f_subgroups_diabetics_hyper_responders_differ",
       "label": "Subgroups (diabetics / hyper-responders) differ",
       "weights": {
-        "pos_context_dependent_depends_on_the_person": "high",
-        "pos_no_association": "high"
+        "pos_no_association": "high",
+        "pos_context_dependent_depends_on_the_person": "high"
       },
       "rationale": "Overall null hides a diabetic subgroup signal — the crux of 'depends on who'.",
       "provenance": [
@@ -1046,7 +1074,7 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
-            "textDepth": "unknown",
+            "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
@@ -1298,19 +1326,15 @@
         "position": {
           "quote": "Conclusions In 3 large international prospective studies including ∼177,000 individuals, 12,701 deaths, and 13,658 CVD events from 50 countries in 6 continents, we did not find significant associations between egg intake and blood lipids, mortality, or major CVD events.",
           "extractionConfidence": 0.85,
-          "verifiedQuote": "exact",
+          "verifiedQuote": "fuzzy",
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
-            "status": "exact",
-            "textSha256": "787c840b6bb8d94c1ecae6acc582d13926ee2a9a2db4069ecc953a311693c4b2",
+            "status": "fuzzy",
+            "textSha256": "3f990cc5a12999aeba3b0350ce009d5fdf1380a260bd39f81b0446a182a58d00",
             "textDepth": "abstract",
             "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/31965140/",
-            "reason": "verbatim-single-sentence",
-            "canonicalized": false,
-            "quoteSha256": "7966a57fb7c79341b4832cf73e3aa79825d7c700d9aa40719ea9088efaa28926",
-            "normalizedCharStart": 2008,
-            "normalizedCharEnd": 2278,
-            "normalization": "NFKC-typography-whitespace-v1"
+            "reason": "paraphrase-or-altered-text",
+            "similarity": 1.0
           }
         }
       },
@@ -1362,7 +1386,7 @@
           "quoteVerification": {
             "method": "verbatim-sentence-v2",
             "status": "exact",
-            "textSha256": "4cda169faf7f5a3d1469a0cf32834330a67d4e097a8a05881b61a17653657583",
+            "textSha256": "065b9511d842c8af4e5f6c4d9a3e595568169309e14bd59e03371dd224f4fac8",
             "textDepth": "partial",
             "sourceUrl": "https://heart.bmj.com/content/104/21/1756",
             "reason": "verbatim-single-sentence",
@@ -2377,7 +2401,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
-              "textDepth": "unknown",
+              "textDepth": "partial",
               "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -2393,7 +2417,7 @@
       "position": "pos_no_association",
       "citations": null,
       "retracted": false,
-      "textDepth": "unknown",
+      "textDepth": "partial",
       "confidence": "moderate",
       "population": "General adults",
       "provenance": {
@@ -2405,7 +2429,7 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "3a461bf76962fdcfae463a4ba73cf9e5d99eef96deb8e1273b3cadcd579fc37b",
-            "textDepth": "unknown",
+            "textDepth": "partial",
             "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9865189/",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
@@ -2442,7 +2466,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "ca39865673d4059a2972d071f333fa1c97430ffecae169fe4f4e1772b305115f",
-              "textDepth": "unknown",
+              "textDepth": "full",
               "sourceUrl": "https://doi.org/10.1161/circulationaha.118.038813",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -2470,10 +2494,10 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "ca39865673d4059a2972d071f333fa1c97430ffecae169fe4f4e1772b305115f",
-            "textDepth": "unknown",
+            "textDepth": "full",
             "sourceUrl": "https://doi.org/10.1161/circulationaha.118.038813",
             "reason": "verbatim-single-sentence",
-            "canonicalized": true,
+            "canonicalized": false,
             "quoteSha256": "468a3fcba61cfbdd675fe84bdb4b99fe5b09dc4041a5b00f55252c7d8e47731b",
             "normalizedCharStart": 12435,
             "normalizedCharEnd": 13080,
@@ -2482,7 +2506,7 @@
         }
       },
       "addedIn": 32,
-      "textDepth": "unknown"
+      "textDepth": "full"
     },
     {
       "id": "src_nakamura_et_al_egg_consumption_serum_total_c_2006",
@@ -2509,7 +2533,7 @@
               "method": "verbatim-sentence-v2",
               "status": "exact",
               "textSha256": "070fb73a885659ce1adfe584c611d1eb13566c7561f052699e9d306b16ae336f",
-              "textDepth": "unknown",
+              "textDepth": "full",
               "sourceUrl": "https://doi.org/10.1017/bjn20061937",
               "reason": "verbatim-single-sentence",
               "canonicalized": false,
@@ -2537,7 +2561,7 @@
             "method": "verbatim-sentence-v2",
             "status": "exact",
             "textSha256": "070fb73a885659ce1adfe584c611d1eb13566c7561f052699e9d306b16ae336f",
-            "textDepth": "unknown",
+            "textDepth": "full",
             "sourceUrl": "https://doi.org/10.1017/bjn20061937",
             "reason": "verbatim-single-sentence",
             "canonicalized": false,
@@ -2549,7 +2573,67 @@
         }
       },
       "addedIn": 33,
-      "textDepth": "unknown"
+      "textDepth": "full"
+    },
+    {
+      "id": "src_egg_consumption_and_the_risk_of_cardiovascul_2018",
+      "title": "Egg consumption and the risk of cardiovascular disease: interaction with type 2 diabetes (KoGES Ansung-Ansan cohort)",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41387-018-0033-1",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_context_dependent_depends_on_the_person",
+      "evidence": "Observational",
+      "funding": "Government/public",
+      "population": "Korean adults 40-69 (KoGES Ansung-Ansan)",
+      "confidence": "moderate",
+      "restsOn": [
+        {
+          "ref": "ds_korean_genome_and_epidemiology_study_koges_a",
+          "provenance": {
+            "quote": "SUBJECTS/METHODS: We conducted a prospective cohort study of 9248 Korean adults aged 40-69 years without CVD or cancer at the baseline from the Korean Genome and Epidemiology Study, Ansung-Ansan cohort, South Korea.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "7c7ab8475f6a2829f775e5570e2544bb25b83f8d8e7bf923c8b7af65c3050963",
+              "textDepth": "full",
+              "sourceUrl": "https://doi.org/10.1038/s41387-018-0033-1",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": true,
+              "quoteSha256": "1ef9fb4153134c210fedb740e2e6c1078681c2d7305fc713ccd2e35326ecce0c",
+              "normalizedCharStart": 423,
+              "normalizedCharEnd": 638,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Higher egg consumption may increase the risk for CVD in Korean patients with T2DM.",
+          "extractionConfidence": 0.9,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "7c7ab8475f6a2829f775e5570e2544bb25b83f8d8e7bf923c8b7af65c3050963",
+            "textDepth": "full",
+            "sourceUrl": "https://doi.org/10.1038/s41387-018-0033-1",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "615c778429611da81631baeb54b1ec15f6378dd4d717fec001c1761380a4f503",
+            "normalizedCharStart": 1851,
+            "normalizedCharEnd": 1933,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 38,
+      "textDepth": "full"
     }
   ],
   "datasets": [
@@ -2737,6 +2821,18 @@
         "ts": "2026-07-18T20:31:54.678052+00:00",
         "by": "Evgeniia",
         "note": "Japan Public Health Center-based prospective study, 90,735 participants (Nakamura et al., Br J Nutr 2006)"
+      }
+    },
+    {
+      "id": "ds_korean_genome_and_epidemiology_study_koges_a",
+      "label": "Korean Genome and Epidemiology Study (KoGES), Ansung-Ansan cohort",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T22:07:12.602666+00:00",
+        "by": "Evgeniia",
+        "note": "KoGES Ansung-Ansan cohort, 9248 Korean adults (Nutr Diabetes 2018)"
       }
     }
   ],

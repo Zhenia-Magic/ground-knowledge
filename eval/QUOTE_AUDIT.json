@@ -6,7 +6,7 @@
   "cases": {
     "blackholes.kb.json": {
       "summary": {
-        "exact": 23
+        "exact": 25
       },
       "sources": [
         {
@@ -309,6 +309,30 @@
               "repaired": false,
               "old": "A search for microscopic black holes, string balls, and electroweak sphalerons using proton-proton collisions at $ \\sqrt{s} = $ 13 TeV recorded with the CMS detector at the CERN LHC during the 2016--2018 data taking, and corresponding to an integrated luminosity of 138 fb$ ^{-1} $, is presented.",
               "new": "A search for microscopic black holes, string balls, and electroweak sphalerons using proton-proton collisions at $ \\sqrt{s} = $ 13 TeV recorded with the CMS detector at the CERN LHC during the 2016--2018 data taking, and corresponding to an integrated luminosity of 138 fb$ ^{-1} $, is presented.",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_atlas_collaboration_search_for_strong_gravit_2016",
+          "title": "ATLAS Collaboration — Search for strong gravity in multijet final states in pp collisions at 13 TeV (ATLAS)",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Limits are also given in terms of new physics models of strong gravity that hypothesize additional space-time dimensions.",
+              "new": "Limits are also given in terms of new physics models of strong gravity that hypothesize additional space-time dimensions.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "A search is conducted for new physics in multijet final states using 3.6 inverse femtobarns of data from proton-proton collisions at $\\sqrt{s}$ = 13 TeV taken at the CERN Large Hadron Collider with the ATLAS detector.",
+              "new": "A search is conducted for new physics in multijet final states using 3.6 inverse femtobarns of data from proton-proton collisions at $\\sqrt{s}$ = 13 TeV taken at the CERN Large Hadron Collider with the ATLAS detector.",
               "field": "edge:0"
             }
           ]
@@ -988,7 +1012,7 @@
     },
     "eggs.kb.json": {
       "summary": {
-        "exact": 39,
+        "exact": 41,
         "fuzzy": 2
       },
       "sources": [
@@ -1508,6 +1532,30 @@
               "repaired": false,
               "old": "A total of 90 735 subjects (19 856 men and 21 408 women, aged 40-59 years in cohort I; 23 463 men and 26 008 women, aged 40-69 years in cohort II) were followed from 1990-4 to the end of 2001 under the Japan Public Health Center-based prospective study.",
               "new": "A total of 90 735 subjects (19 856 men and 21 408 women, aged 40-59 years in cohort I; 23 463 men and 26 008 women, aged 40-69 years in cohort II) were followed from 1990-4 to the end of 2001 under the Japan Public Health Center-based prospective study.",
+              "field": "edge:0"
+            }
+          ]
+        },
+        {
+          "id": "src_egg_consumption_and_the_risk_of_cardiovascul_2018",
+          "title": "Egg consumption and the risk of cardiovascular disease: interaction with type 2 diabetes (KoGES Ansung-Ansan cohort)",
+          "fetch": "full",
+          "error": null,
+          "quotes": [
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "Higher egg consumption may increase the risk for CVD in Korean patients with T2DM.",
+              "new": "Higher egg consumption may increase the risk for CVD in Korean patients with T2DM.",
+              "field": "source:position"
+            },
+            {
+              "status": "exact",
+              "changed": false,
+              "repaired": false,
+              "old": "SUBJECTS/METHODS: We conducted a prospective cohort study of 9248 Korean adults aged 40-69 years without CVD or cancer at the baseline from the Korean Genome and Epidemiology Study, Ansung-Ansan cohort, South Korea.",
+              "new": "SUBJECTS/METHODS: We conducted a prospective cohort study of 9248 Korean adults aged 40-69 years without CVD or cancer at the baseline from the Korean Genome and Epidemiology Study, Ansung-Ansan cohort, South Korea.",
               "field": "edge:0"
             }
           ]

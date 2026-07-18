@@ -242,7 +242,7 @@ structural and named honestly.
 FLF chose three cases with deliberately different profiles; a general tool must handle all three
 with **only the data changing.** It does:
 
-- **Eggs — contested, mundane, malformed question** (23 sources, 3 camps). The curator-authored
+- **Eggs — contested, mundane, malformed question** (24 sources, 3 camps). The curator-authored
   structure makes two auditable patterns visible: interested funding is **tied** between the
   no-association camp (two industry-funded meta-analyses) and context-dependent camp (two
   industry-funded trials), and the shared-cohort collapse — the *No
@@ -257,10 +257,10 @@ with **only the data changing.** It does:
   magnitude from one evidence base" made visible. Key disagreements: prior on lab accidents, furin site,
   ascertainment bias.
 
-- **Black holes — essentially settled** (15 sources, 2 camps). The 11 "safe" sources have **5.0
+- **Black holes — essentially settled** (16 sources, 2 camps). The 12 "safe" sources have **6.0
   adjusted evidence-base count**: production impossibility, Hawking evaporation, slow accretion, the
-  cosmic-ray/dense-star observation, and the CMS Run 2 collider search. Four residual-concern sources
-  have **2.0**. The count maps layers; it does not independently establish that the conclusion is correct.
+  cosmic-ray/dense-star observation, the CMS Run 2 collider search, and the ATLAS 13 TeV search. Four
+  residual-concern sources have **2.0**. The count maps layers; it does not independently establish that the conclusion is correct.
 
 Same `assess()`; same renderer; three lines of `build`. That is the generalization evidence.
 

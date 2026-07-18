@@ -6,14 +6,16 @@ A checkmark means one complete verbatim sentence was found in one fetched-text s
 
 | Case | Sources | Position exact | Fuzzy | Missing | Unchecked |
 |---|---:|---:|---:|---:|---:|
-| blackholes.kb.json | 15 | 15 | 0 | 0 | 0 |
+| blackholes.kb.json | 16 | 16 | 0 | 0 | 0 |
 | covid.kb.json | 31 | 31 | 0 | 0 | 0 |
-| eggs.kb.json | 23 | 23 | 0 | 0 | 0 |
+| eggs.kb.json | 24 | 23 | 1 | 0 | 0 |
 
-Position excerpts: **69 exact of 69**; 0 fuzzy, 0 missing, 0 unchecked.
+Position excerpts: **70 exact of 71**; 1 fuzzy, 0 missing, 0 unchecked.
 
-All stored excerpts (position, dependency, and factor): **116 exact of 116**; 0 fuzzy, 0 missing, 0 unchecked. Every non-exact item is visibly downgraded and excluded from automatic root confirmation.
+All stored excerpts (position, dependency, and factor): **117 exact of 120**; 1 fuzzy, 2 missing, 0 unchecked. Every non-exact item is visibly downgraded and excluded from automatic root confirmation.
 
 ## Remaining non-exact position wording
 
 These entries remain visible as unquoted summaries with a warning; they are never silently certified.
+
+- `eggs.kb.json` · **fuzzy** · [Dehghan et al. — Egg consumption and CVD/mortality in 50 countries (PURE)](https://pubmed.ncbi.nlm.nih.gov/31965140/)

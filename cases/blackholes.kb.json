@@ -2,8 +2,8 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 32,
-    "updated": "2026-07-16T01:39:05.407886+00:00",
+    "version": 35,
+    "updated": "2026-07-18T22:11:52.402241+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
       "baseVersion": 28,
@@ -155,6 +155,18 @@
         "by": "source-audit-2026-07-15",
         "source": "src_a_search_for_microscopic_black_holes_string__2026",
         "note": "The CMS publication page directly identifies the Run 2 proton-proton collision dataset at 13 TeV with 138 fb^-1 of integrated luminosity."
+      }
+    },
+    {
+      "id": "ds_atlas_strong_gravity_microscopic_black_hole_",
+      "label": "ATLAS strong-gravity / microscopic black-hole search (13 TeV)",
+      "aliases": [],
+      "confirmation": {
+        "status": "confirmed",
+        "method": "curator",
+        "ts": "2026-07-18T22:11:52.355697+00:00",
+        "by": "Evgeniia",
+        "note": "ATLAS 13 TeV strong-gravity/microscopic black-hole search (arXiv:1512.02586)"
       }
     }
   ],
@@ -1232,6 +1244,73 @@
       "fundingDetails": [
         "CERN and the public/institutional funders of the CMS Collaboration"
       ]
+    },
+    {
+      "id": "src_atlas_collaboration_search_for_strong_gravit_2016",
+      "title": "ATLAS Collaboration — Search for strong gravity in multijet final states in pp collisions at 13 TeV (ATLAS)",
+      "year": 2016,
+      "url": "https://arxiv.org/abs/1512.02586",
+      "authors": [],
+      "venue": "",
+      "citations": null,
+      "retracted": false,
+      "position": "pos_no_risk_lhc_collisions_are_safe",
+      "evidence": "Collider experiment",
+      "funding": "Government/public",
+      "population": "LHC pp collisions at 13 TeV (ATLAS)",
+      "confidence": "high",
+      "restsOn": [
+        {
+          "ref": "ds_atlas_strong_gravity_microscopic_black_hole_",
+          "provenance": {
+            "quote": "A search is conducted for new physics in multijet final states using 3.6 inverse femtobarns of data from proton-proton collisions at $\\sqrt{s}$ = 13 TeV taken at the CERN Large Hadron Collider with the ATLAS detector.",
+            "extractionConfidence": 0.9,
+            "verifiedQuote": "exact",
+            "quoteVerification": {
+              "method": "verbatim-sentence-v2",
+              "status": "exact",
+              "textSha256": "d9260951bc0a8efde91d3fddc6accda5fdb42d9a8d59091f5ac927498e4aaef5",
+              "textDepth": "abstract",
+              "sourceUrl": "https://arxiv.org/abs/1512.02586",
+              "reason": "verbatim-single-sentence",
+              "canonicalized": false,
+              "quoteSha256": "2301a587a0263f4b8453a37b381d953afabeb4decb3bd55acb15a33f0aac4272",
+              "normalizedCharStart": 136,
+              "normalizedCharEnd": 353,
+              "normalization": "NFKC-typography-whitespace-v1"
+            }
+          },
+          "admission": {
+            "status": "confirmed",
+            "method": "curator",
+            "by": "Evgeniia",
+            "ts": "2026-07-18T22:11:52.402127+00:00",
+            "note": "ATLAS reports its own 13 TeV search"
+          }
+        }
+      ],
+      "provenance": {
+        "position": {
+          "quote": "Limits are also given in terms of new physics models of strong gravity that hypothesize additional space-time dimensions.",
+          "extractionConfidence": 0.85,
+          "verifiedQuote": "exact",
+          "quoteVerification": {
+            "method": "verbatim-sentence-v2",
+            "status": "exact",
+            "textSha256": "d9260951bc0a8efde91d3fddc6accda5fdb42d9a8d59091f5ac927498e4aaef5",
+            "textDepth": "abstract",
+            "sourceUrl": "https://arxiv.org/abs/1512.02586",
+            "reason": "verbatim-single-sentence",
+            "canonicalized": false,
+            "quoteSha256": "63aab6af49f57ca2c761bf42655b124c256b54142957c2d15bf2af8d2a8e0c63",
+            "normalizedCharStart": 697,
+            "normalizedCharEnd": 818,
+            "normalization": "NFKC-typography-whitespace-v1"
+          }
+        }
+      },
+      "addedIn": 33,
+      "textDepth": "abstract"
     }
   ],
   "vocab": {
@@ -1281,6 +1360,10 @@
     "population": [
       {
         "label": "Hypothetical TeV-scale microscopic black holes",
+        "aliases": []
+      },
+      {
+        "label": "LHC pp collisions at 13 TeV (ATLAS)",
         "aliases": []
       }
     ],
@@ -1826,6 +1909,38 @@
       "by": "source-audit-2026-07-15",
       "sources": 1,
       "ts": "2026-07-16T01:45:34.491312+00:00"
+    },
+    {
+      "version": 33,
+      "action": "add-source",
+      "source": "src_atlas_collaboration_search_for_strong_gravit_2016",
+      "title": "ATLAS Collaboration — Search for strong gravity in multijet final states in pp collisions at 13 TeV (ATLAS)",
+      "ts": "2026-07-18T22:11:25.349011+00:00",
+      "newDatasets": [
+        "ds_atlas_strong_gravity_microscopic_black_hole_"
+      ],
+      "newPositions": [],
+      "diff": [
+        "distribution: No risk — LHC collisions are safe 11 → 12",
+        "distinct roots: No risk — LHC collisions are safe 5 → 7",
+        "blindspot opened: Residual concern — the safety argument has weak or speculative links missing \"Collider experiment\"",
+        "⚠ new warning: evidence link awaiting review — No risk — LHC collisions are safe",
+        "⚠ new warning: quote text not checked — No risk — LHC collisions are safe"
+      ]
+    },
+    {
+      "version": 34,
+      "action": "confirm-dataset",
+      "summary": "confirmed dataset “ATLAS strong-gravity / microscopic black-hole search (13 TeV)” as a real evidence base",
+      "ts": "2026-07-18T22:11:52.355903+00:00",
+      "by": "Evgeniia"
+    },
+    {
+      "version": 35,
+      "action": "confirm-edge",
+      "summary": "admitted support edge src_atlas_collaboration_search_for_strong_gravit_2016 → ds_atlas_strong_gravity_microscopic_black_hole_",
+      "ts": "2026-07-18T22:11:52.402241+00:00",
+      "by": "Evgeniia"
     }
   ],
   "refused": [

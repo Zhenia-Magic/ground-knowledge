@@ -194,13 +194,13 @@ output well-formed.
 Same engine, only the KB JSON differs. Browse these on the [live portal](https://groundknowledge.org)
 or `pull` them locally (`python cli.py pull <id>`):
 
-- **Eggs:** 23 sources across three answers; current coverage is **4.0 / 8.0 / 4.0**, while funding,
+- **Eggs:** 24 sources across three answers; current coverage is **4.0 / 8.0 / 5.0**, while funding,
   subgroup effects, and biomarker-vs-outcome reasoning remain visible key disagreements.
 - **COVID origin (contested):** current source→coverage values are **15→6.5, 8→3.0, 8→3.0**;
   re-analyses resolve onto shared underlying evidence rather than counting as new roots.
-- **Black holes (settled):** 11 safe-position sources resolve to **5.0** coverage across production
-  impossibility, Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, and
-  the CMS Run 2 collider search; 4 residual-concern sources resolve to **2.0**.
+- **Black holes (settled):** 12 safe-position sources resolve to **6.0** coverage across production
+  impossibility, Hawking evaporation, accretion timescale, the cosmic-ray/dense-star observation, the
+  CMS Run 2 collider search, and the ATLAS 13 TeV search; 4 residual-concern sources resolve to **2.0**.
 
 ## Two surfaces, one compounding knowledge base
 
