@@ -56,9 +56,9 @@ root cannot be laundered into another position through an unreviewed edge.
 | `engine/review.py` | Structure | human-in-the-loop queue: a genuine ensemble disagreement is parked in the KB (counted in no metric) for a human to resolve — pick a position, or drop the paper |
 | `engine/roots.py` | Structure | the independence mechanism: tier-aware root resolution + circular-corroboration detection ([`MECHANISM.md`](MECHANISM.md)) |
 | `engine/gaps.py` | Structure | gap analysis — where is a position's evidence thin? — that steers gap-driven deep search |
-| `engine/curate.py` | Structure | curation ops: merge / rename / tidy; lexical + optional embedding duplicate suggestions; auditable confirmation gate |
+| `engine/curate.py` | Structure | audited curation ops: merge / rename / tidy / remove / move / prune / quote repair; lexical + optional embedding duplicate suggestions; confirmation gate |
 | `engine/assess.py` | **Assessment** | the only place numbers are computed: distribution, **weighted (independence) distribution**, independence audit, funding skew, blindspots, key disagreements |
-| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · lint · add · verify · doctor · build · demo · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · confirm-dataset · confirm-edge · mark-curated · ui · pull · push · questions · import-citations · export` |
+| `cli.py` | orchestrator | `new · init · show · assess · gaps · deepen · lint · add · verify · doctor · build · demo · ingest · ingest-batch · discover · research · harvest · merge · rename · tidy · dups · remove-source · move-source · prune-orphans · repair-quote · confirm-dataset · confirm-edge · mark-curated · ui · pull · push · questions · import-citations · export` |
 | `ui/` (`cli.py ui`) | UI | local **workstation** console: find → fetch → label → import, Curate, and **pull/push** to a portal |
 | `app/` (`python -m app.portal`) | **Deployment** | a shared multi-user **portal** with bounded requests, rate limits, atomic audit writes, and optimistic server revisions + a portable store (sqlite local / Postgres prod) |
 | `viewer/template.html` → `viewer/index.html` | UI | render-only; baked by `build`; opens with a double-click |

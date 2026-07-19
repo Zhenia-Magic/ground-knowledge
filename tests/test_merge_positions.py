@@ -274,6 +274,59 @@ class SourceRemovalTests(unittest.TestCase):
         self.assertEqual(kb["log"][-1]["reason"], "measures another outcome")
         self.assertEqual(validation_errors(kb), [])
 
+    def test_prune_legacy_orphan_datasets_is_explicit_and_audited(self):
+        from engine.curate import prune_orphan_datasets
+        from engine.migrate import validation_errors
+        kb, _sid = self._kb()
+        kb["datasets"].append({"id": "legacy", "label": "Legacy orphan", "aliases": [],
+                               "confirmation": {"status": "confirmed", "method": "curator"}})
+        report = prune_orphan_datasets(
+            kb, "left behind by a source removed before orphan pruning existed", "codex")
+        self.assertEqual(report["prunedDatasets"], ["legacy"])
+        self.assertEqual([d["id"] for d in kb["datasets"]], ["ds_only_dataset"])
+        self.assertEqual(kb["log"][-1]["action"], "prune-orphans")
+        self.assertEqual(kb["log"][-1]["by"], "codex")
+        self.assertEqual(validation_errors(kb), [])
+
+    def test_prune_orphans_requires_editorial_audit_fields(self):
+        from engine.curate import prune_orphan_datasets
+        kb, _sid = self._kb()
+        with self.assertRaises(ValueError):
+            prune_orphan_datasets(kb, "", "codex")
+        with self.assertRaises(ValueError):
+            prune_orphan_datasets(kb, "legacy cleanup", "")
+
+    def test_repair_position_quote_clears_trust_and_logs_hashes(self):
+        from engine.curate import repair_quote
+        kb, sid = self._kb()
+        provenance = kb["sources"][0].setdefault("provenance", {}).setdefault("position", {})
+        provenance.update({"quote": "Altered wording.", "verifiedQuote": "exact",
+                           "quoteVerification": {"status": "exact", "textSha256": "stale"}})
+        report = repair_quote(
+            kb, sid, "Complete verbatim source sentence.", "remove an abstract heading", "codex")
+        self.assertEqual(report["source"], sid)
+        self.assertEqual(provenance["quote"], "Complete verbatim source sentence.")
+        self.assertNotIn("verifiedQuote", provenance)
+        self.assertNotIn("quoteVerification", provenance)
+        self.assertEqual(kb["log"][-1]["action"], "repair-position-quote")
+        self.assertEqual(kb["log"][-1]["reason"], "remove an abstract heading")
+        self.assertTrue(kb["log"][-1]["oldQuoteSha256"])
+        self.assertTrue(kb["log"][-1]["newQuoteSha256"])
+
+    def test_repair_factor_quote_targets_the_sources_claim_only(self):
+        from engine.curate import repair_quote
+        kb, sid = self._kb()
+        factor = kb["factors"][0]
+        claim = factor["provenance"][0]
+        claim.update({"verifiedQuote": "fuzzy", "quoteVerification": {"status": "fuzzy"}})
+        repair_quote(kb, sid, "Correct factor sentence.", "remove a list marker", "codex",
+                     factor_ref=factor["id"])
+        self.assertEqual(claim["quote"], "Correct factor sentence.")
+        self.assertNotIn("verifiedQuote", claim)
+        self.assertNotIn("quoteVerification", claim)
+        self.assertEqual(kb["log"][-1]["action"], "repair-factor-quote")
+        self.assertEqual(kb["log"][-1]["factor"], factor["id"])
+
     def test_duplicate_removal_repoints_source_edges(self):
         from engine.curate import remove_source
         kb, sid = self._kb()

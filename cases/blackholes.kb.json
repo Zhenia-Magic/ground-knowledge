@@ -2,8 +2,8 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 35,
-    "updated": "2026-07-18T22:11:52.402241+00:00",
+    "version": 36,
+    "updated": "2026-07-19T01:56:04.315853+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
       "baseVersion": 30,
@@ -61,28 +61,6 @@
       },
       "kind": "argument",
       "proposition": "Any microscopic black hole produced would radiate away and evaporate essentially instantly via Hawking radiation, so it could never accrete."
-    },
-    {
-      "id": "ds_strangelet_stability_calculations_rhic",
-      "label": "Strangelet stability calculations (RHIC)",
-      "aliases": [],
-      "confirmation": {
-        "status": "confirmed",
-        "method": "curator",
-        "by": "Evgeniia",
-        "ts": "2026-07-11T23:28:50-03:00",
-        "note": "Audit metadata backfill: preserves the case's prior curator-confirmed decision; the source is a direct supporting source, not a verified dependency quote.",
-        "source": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
-        "sourceHistory": [
-          {
-            "from": "src_lhc_safety_assessment_group_lsag_review_of_t_2008",
-            "to": "src_ellis_giudice_mangano_tkachev_wiedemann_revi_2008",
-            "ts": "2026-07-16T01:38:08.647447+00:00",
-            "reason": "Duplicate record for the same 2008 LSAG safety review (same authors, title, text, and finding); retain the journal-version record and repoint its dependencies."
-          }
-        ]
-      },
-      "kind": "experiment"
     },
     {
       "id": "ds_argument_reliability_analysis_probability_th",
@@ -1941,6 +1919,20 @@
       "summary": "admitted support edge src_atlas_collaboration_search_for_strong_gravit_2016 → ds_atlas_strong_gravity_microscopic_black_hole_",
       "ts": "2026-07-18T22:11:52.402241+00:00",
       "by": "Evgeniia"
+    },
+    {
+      "version": 36,
+      "action": "prune-orphans",
+      "summary": "pruned 1 unreferenced evidence base(s): Strangelet stability calculations (RHIC)",
+      "ts": "2026-07-19T01:56:04.315853+00:00",
+      "by": "Codex",
+      "reason": "Remove a legacy RHIC strangelet root left behind when its off-topic source was removed",
+      "datasets": [
+        "ds_strangelet_stability_calculations_rhic"
+      ],
+      "labels": [
+        "Strangelet stability calculations (RHIC)"
+      ]
     }
   ],
   "refused": [

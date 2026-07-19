@@ -594,6 +594,28 @@ def cmd_remove_source(args):
     _curate_write(args, report)
 
 
+def cmd_prune_orphans(args):
+    """Remove legacy evidence bases that no current source references."""
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.prune_orphan_datasets(kb, args.reason, args.by)
+    if report.get("prunedDatasets"):
+        write_json(args.kb, kb)
+        _curate_write(args, report)
+    else:
+        print(report["summary"])
+
+
+def cmd_repair_quote(args):
+    """Correct a position or factor excerpt without granting it verification trust."""
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.repair_quote(
+        kb, args.ref, args.quote, args.reason, args.by, factor_ref=args.factor)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
+
+
 def cmd_move_source(args):
     """Re-file a source under the position its actual finding supports."""
     from engine import curate
@@ -1256,6 +1278,19 @@ def main():
     s.add_argument("--by", required=True, help="curator name or stable identifier")
     s.add_argument("--replacement", help="retained source to receive dependency references")
     s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_remove_source)
+    s = sub.add_parser("prune-orphans", help="remove unreferenced evidence bases with an audit record")
+    s.add_argument("kb"); s.add_argument("--reason", required=True,
+                                          help="why the orphan records should be removed")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_prune_orphans)
+    s = sub.add_parser("repair-quote", help="replace a source or factor quote, then run verify")
+    s.add_argument("kb"); s.add_argument("ref",
+                                          help="source id, exact title, or unique title substring")
+    s.add_argument("--factor", help="repair this factor's claim instead of the source position")
+    s.add_argument("--quote", required=True, help="complete verbatim replacement sentence")
+    s.add_argument("--reason", required=True, help="why the stored wording is incorrect")
+    s.add_argument("--by", required=True, help="curator name or stable identifier")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_repair_quote)
     s = sub.add_parser("move-source", help="re-file a source under a different existing position")
     s.add_argument("kb"); s.add_argument("ref", help="source id, exact title, or unique title substring")
     s.add_argument("position", help="position id, exact label, or unique label substring")

@@ -1,4 +1,4 @@
-"""Curation ops (workstream B): merge near-duplicate entities and rename labels.
+"""Curation ops (workstream B): repair, merge, and remove audited case records.
 
 Deterministic, no LLM. These clean up the residue the string-matching resolver can't catch on
 its own — paraphrase duplicates that slip in as a case grows (e.g. three "Women (mixed …)"
@@ -7,6 +7,7 @@ just recompute. Each op bumps the version and appends a log entry, so the Change
 the curation alongside source additions.
 """
 import copy
+import hashlib
 
 from .merge import norm, now_iso, prettify_label
 
@@ -333,6 +334,87 @@ def remove_source(kb, ref, reason, by, replacement=None):
                            "rewiredEdges": rewired, "prunedDatasets": orphaned})
     report.update({"removed": sid, "replacement": target_id, "rewiredEdges": rewired,
                    "prunedDatasets": orphaned})
+    return report
+
+
+def prune_orphan_datasets(kb, reason, by):
+    """Remove evidence-base records that no current source references, with an audit record.
+
+    Source removal normally prunes the bases that it orphans.  This explicit maintenance operation
+    handles legacy cases created before that invariant was enforced; it never guesses a replacement
+    or removes a root that still has a direct source edge.
+    """
+    reason = str(reason or "").strip()
+    by = str(by or "").strip()
+    if not reason:
+        raise ValueError("orphan pruning requires a reason")
+    if not by:
+        raise ValueError("orphan pruning requires a curator identity")
+    used = {
+        _edge_ref(edge) for source in kb.get("sources", []) for edge in source.get("restsOn", [])
+        if _edge_ref(edge) and not _edge_ref(edge).lower().startswith("src:")
+    }
+    orphaned = [d for d in kb.get("datasets", []) if d.get("id") not in used]
+    if not orphaned:
+        return {"version": kb.get("meta", {}).get("version", 0),
+                "summary": "no unreferenced evidence bases", "prunedDatasets": []}
+    orphan_ids = [d.get("id") for d in orphaned]
+    labels = [d.get("label") or d.get("id") for d in orphaned]
+    kb["datasets"] = [d for d in kb.get("datasets", []) if d.get("id") in used]
+    summary = "pruned {} unreferenced evidence base(s): {}".format(
+        len(orphaned), ", ".join(labels))
+    report = _commit(kb, "prune-orphans", summary, by=by)
+    kb["log"][-1].update({"reason": reason, "datasets": orphan_ids, "labels": labels})
+    report["prunedDatasets"] = orphan_ids
+    return report
+
+
+def repair_quote(kb, ref, quote, reason, by, factor_ref=None):
+    """Replace one source or factor excerpt and invalidate any stale verification record.
+
+    This is an editorial correction only.  It deliberately grants no trust; callers must run the
+    deterministic fetched-text verifier before the new wording can display as a quotation.
+    """
+    quote = str(quote or "").strip()
+    reason = str(reason or "").strip()
+    by = str(by or "").strip()
+    if not quote:
+        raise ValueError("quote repair requires non-empty wording")
+    if not reason:
+        raise ValueError("quote repair requires a reason")
+    if not by:
+        raise ValueError("quote repair requires a curator identity")
+    source = _resolve_source(kb, ref)
+    if factor_ref:
+        factor = _resolve(kb.get("factors", []), factor_ref, "factor")
+        matches = [claim for claim in factor.get("provenance", [])
+                   if claim.get("source") == source.get("id")]
+        if len(matches) != 1:
+            raise ValueError("factor quote repair requires exactly one matching source claim")
+        provenance = matches[0]
+        target = "factor quote for “{}” in “{}”".format(source.get("title"), factor.get("label"))
+        action = "repair-factor-quote"
+    else:
+        provenance = source.setdefault("provenance", {}).setdefault("position", {})
+        target = "position quote for “{}”".format(source.get("title"))
+        action = "repair-position-quote"
+    old = str(provenance.get("quote") or "")
+    if old == quote:
+        raise ValueError("replacement quote is unchanged")
+    provenance["quote"] = quote
+    provenance.pop("verifiedQuote", None)
+    provenance.pop("quoteVerification", None)
+    summary = "repaired {}: {}".format(target, reason)
+    report = _commit(kb, action, summary, by=by)
+    audit = {
+        "source": source.get("id"), "reason": reason,
+        "oldQuoteSha256": hashlib.sha256(old.encode("utf-8")).hexdigest() if old else None,
+        "newQuoteSha256": hashlib.sha256(quote.encode("utf-8")).hexdigest(),
+    }
+    if factor_ref:
+        audit["factor"] = factor.get("id")
+    kb["log"][-1].update(audit)
+    report["source"] = source.get("id")
     return report
 
 
