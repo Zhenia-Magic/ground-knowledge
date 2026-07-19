@@ -1012,7 +1012,8 @@
     },
     "eggs.kb.json": {
       "summary": {
-        "exact": 41
+        "exact": 41,
+        "fuzzy": 2
       },
       "sources": [
         {
@@ -1459,6 +1460,30 @@
               "repaired": false,
               "old": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
               "new": "Avinal had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript; or in the decision to publish the results.",
+              "field": "factor:f_industry_funding_as_a_source_quality_concern"
+            }
+          ]
+        },
+        {
+          "id": "src_barnard_et_al_industry_funding_and_cholester_2020",
+          "title": "Barnard et al. — Industry Funding and Cholesterol Research: A Systematic Review",
+          "fetch": "abstract",
+          "error": null,
+          "quotes": [
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "new": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "field": "source:position"
+            },
+            {
+              "status": "fuzzy",
+              "changed": false,
+              "repaired": false,
+              "old": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
+              "new": "However, 49% of industry-funded intervention studies reported conclusions that were discordant with study results (ie, net cholesterol increases were described as favorable in the articles' stated conclusions), compared with 13% of non-industry-funded studies.",
               "field": "factor:f_industry_funding_as_a_source_quality_concern"
             }
           ]

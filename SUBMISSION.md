@@ -82,12 +82,6 @@ Each root is counted once, no matter how many sources rest on it. That single ru
 
 The point is not a single score but a picture you can interrogate. For any dispute the report makes the load-bearing evidence explicit: which cohorts actually carry a position, where a dozen papers collapse onto one dataset, and where a camp's whole case rests on a single study. Funding sits beside the count, so an industry-funded meta-analysis never blurs into an independent cohort, and the report flags method concentration the same way. The key-issues grid names the specific factors the camps actually clash on, and separates genuine disagreement from points only one side has engaged. Position, dependency, and factor claims link to their provenance sentence; exact matches display as quotations, while altered or unchecked wording is visibly downgraded to a summary. Every number recomputes from the file, and a versioned diff shows exactly what each new source changed.
 
-## What this adds over strong deep research
-
-A small, developer-authored diagnostic compares the structured cases with captured ChatGPT deep-research and Claude Code investigations against the same declared position/root/crux gold. The honest result is near parity: good research reports already find the main positions, evidence layers, and cruxes. Ground Knowledge's advantage is not a claim of superior retrieval. It turns those findings into a portable object whose root collapse, trust decisions, adversarial properties, and update diff can be rerun. In the black-hole case it also preserves the residual-concern position and the reliability of the safety argument itself, which one baseline missed.
-
-That is evidence of a structural contribution, not yet evidence that readers become better calibrated. The repository includes a blinded reader-study protocol, but no reader-uplift result is claimed.
-
 ## What is new, and what is not
 
 Systematic reviews already distinguish studies from reports, so counting underlying studies rather than papers is not new. The contribution here is to make that discipline one deterministic, cross-case mechanism: a typed derivation graph, separate trust decisions for root identity and source reliance, strongly-connected-component collapse for circular corroboration, and a strength-weighted distinct-root count with an executable flooding-immunity contract.
@@ -106,7 +100,7 @@ The same CLI was also run end-to-end on a fourth, non-provided question, saturat
 
 Manufacturing consensus is the obvious attack, so the benchmark carries it out rather than arguing about it. It runs nine contracts against each case: twelve rehashed reviews; twelve fabricated roots; one real dependency quote copied to a sibling root; a twelve-source citation ring; a known root alias; a generic label ("cohort") fished from methods prose; two unknown lexical aliases; confirmed roots attached to another camp through unreviewed edges; and a forged curator sign-off inside model output. Purely unearned additions must contribute zero. In the two mixed contracts, at most the one legitimate root may enter while the copied or colliding sibling stays proposed. All nine contracts pass on all three cases.
 
-Three limits are worth stating plainly. A genuinely novel paraphrase of an existing dataset's name can slip past the automatic matcher until a human reviews it. A labeller can omit a real dependency because the system does not yet crawl citation databases; exact quote matching catches false wording, not a missing edge. And the arithmetic, deterministic and hard to game as it is, does not certify a curator's semantic judgment. The 0.5 review-only and non-human credits are declared heuristics, not calibrated likelihood ratios. Coverage is not quality or truth. The full list of open problems is in [`MECHANISM.md`](MECHANISM.md) §8.
+Three limits are worth stating plainly. A genuinely novel paraphrase of an existing dataset's name can slip past the automatic matcher until a human reviews it. A labeller can omit a real dependency because the system does not yet crawl citation databases; exact quote matching catches false wording, not a missing edge. And the arithmetic, deterministic and hard to game as it is, does not certify a curator's semantic judgment. The 0.5 review-only and non-human credits are declared heuristics, not calibrated likelihood ratios. Coverage is not quality or truth. A blinded reader-uplift study is designed and written up under [`eval/reader_study/`](eval/reader_study/) (the protocol, the scored questions, and a self-serve portal version), but we did not have time to run it, so no reader-uplift result is claimed. The full list of open problems is in [`MECHANISM.md`](MECHANISM.md) §8.
 
 ---
 
@@ -129,8 +123,8 @@ python cli.py assess cases/covid.kb.json      # every reported number, for one c
 - [`SCHEMA.md`](SCHEMA.md): the data model of a case file.
 - [`AGENTS.md`](AGENTS.md): driving the whole pipeline with a coding agent, no API key.
 - [`README.md`](README.md): repo map and setup.
-- [`eval/RESULTS.md`](eval/RESULTS.md): the honest baseline comparison and what remains unproven.
-- [`eval/reader_study/PROTOCOL.md`](eval/reader_study/PROTOCOL.md): the preregistration-ready reader-uplift study (protocol only; no result claimed).
+- [`eval/RESULTS.md`](eval/RESULTS.md): the benchmark output (structure recall, root collapse, and the nine adversarial contracts).
+- [`eval/reader_study/PROTOCOL.md`](eval/reader_study/PROTOCOL.md): the reader-uplift study, designed and built but not run for lack of time (no result claimed).
 - [`runs/saturated-fat-2026-07-16.md`](runs/saturated-fat-2026-07-16.md): a fourth end-to-end run, including failures and limitations.
 - [`cases/`](cases/) holds the three knowledge bases themselves; [`eval/`](eval/) holds the benchmark, results, and quote audit.
 
