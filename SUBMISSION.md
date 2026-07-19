@@ -8,7 +8,12 @@
 - [COVID origin](https://groundknowledge.org/q/ac81b4cae8d0): a live, expertise-heavy dispute.
 - [LHC black holes](https://groundknowledge.org/q/c6c6ad01ec11): an essentially settled question resting on a layered safety argument.
 
-A five-minute look, using the eggs case: the **Overview** tab shows each position twice, first by raw source count and then by the adjusted count after shared evidence is collapsed. The "no increased risk" camp lists 12 sources but resolves to 8.0 independent evidence bases, and that gap is the finding. **Evidence reuse** shows which sources collapsed together and onto which cohorts. **Key issues** is a grid of the specific factors the camps weigh differently. **Changes** logs what every added source did to the numbers.
+A five-minute look, using the eggs case, one tab at a time:
+
+- **Overview** shows each position twice: first by raw source count, then by the adjusted count after shared evidence is collapsed. The "no increased risk" camp lists 12 sources but resolves to 8.0 independent evidence bases, and that gap is the finding.
+- **Evidence reuse** shows which sources collapsed together, and onto which cohorts.
+- **Key issues** is a grid of the specific factors the camps weigh differently.
+- **Changes** logs what every added source did to the numbers.
 
 ## Why counting papers fails, and what to count instead
 
@@ -20,12 +25,14 @@ The resulting number (internally `nEff`, the *adjusted evidence-base count*) mea
 
 ## How the number is computed
 
-Every number comes from deterministic code over a single JSON file per case. The AI's only job is labelling sources; it computes nothing.
+Every number comes from deterministic code over a single JSON file per case. In most cases the AI does the legwork, searching for the sources and labelling them, but it computes nothing: every number is the code's, not the model's.
 
 **Step 1: decide what to trust.** Nothing counts just because a source claims it. Two separate checks, each recorded in the file:
 
-- *Is this dataset real?* A dataset is confirmed either by a curator (a logged, attributed decision) or by an exact quote, verified against the fetched text of a source, that names it.
-- *Does this source actually rest on it?* The link from a source to a dataset needs its own verified quote or its own curator sign-off.
+- *Is this dataset a real, distinct dataset?* Confirmed once, either by a curator (a logged, attributed decision) or by an exact quote, verified against a source's fetched text, that names it.
+- *Does this particular source actually rest on it?* Every source that wants credit for that dataset needs its own verified quote, or its own curator sign-off, showing it used the data and not merely that the name appears somewhere in a reference list.
+
+Often one sentence settles both at once: a primary study whose methods say it analysed egg intake in the Framingham Heart Study cohort names a real dataset and shows its own reliance in the same breath. The checks come apart for everyone downstream. A later review that only lists Framingham among its references clears the first check (the dataset is real) but not the second (it never says it used the data), so it earns nothing until it does. That gap is deliberate: it is what stops one confirmed dataset from being claimed by every paper that merely name-drops it.
 
 The pipeline deletes any trust fields that arrive from a model or a public contribution before merging. Only the tool's own quote verification, or a logged curator decision, can set them.
 
@@ -52,7 +59,7 @@ coverage(position) = sum of credit over the DISTINCT datasets
                      reachable from its sources
 ```
 
-Each dataset is counted once, no matter how many sources rest on it. That single rule is what makes echo and volume inert: piling more papers onto an already-counted dataset moves nothing. A test enforces exactly this: no source you add can ever push the count down. The only thing that lowers it is an explicit graph correction, like merging two names that turn out to be the same cohort, because that removes a double-count rather than real evidence.
+Each dataset is counted once, no matter how many sources rest on it. That single rule is what makes echo and volume inert: piling more papers onto an already-counted dataset moves nothing. A randomized property test (`test_adding_a_source_never_lowers_any_positions_neff`) enforces exactly this: it grows a case one source at a time and checks that no position's count ever drops. The only thing that lowers it is an explicit graph correction, like merging two names that turn out to be the same cohort, because that removes a double-count rather than real evidence.
 
 **Step 4: find what actually divides the camps.** Each case lists the factors in play (e.g. "prior on lab accidents", "hyper-responder subgroups"), and each camp's weight on each factor, sourced from quotes. A factor becomes a *key disagreement* when camps weigh it very differently, and a *shared uncertainty* when two camps both call it decisive but it stays unresolved. Factors only one camp leans on are shown separately, so they don't inflate the headline.
 
@@ -69,7 +76,7 @@ The point is not a single score but a picture you can interrogate. For any dispu
 
 ## It compounds, and it travels
 
-A case is one JSON file, and it moves the way a git repository does. You pull a case, merge new sources into it locally (each addition folds in and records its own diff), and push the result back. If someone else changed it in the meantime, the push is rejected until you reconcile, the same way git refuses a stale push, so the history reads like a commit log and the base grows across people and time instead of being re-researched from scratch. Sources go in and out through the standard citation formats (BibTeX, RIS, and CSL-JSON), so a case round-trips with Zotero, Mendeley, or EndNote. Labelling is model-agnostic and can run as a multi-model ensemble that escalates genuine disagreements to a human instead of averaging them away, so the pipeline improves as the models do. A coding agent (Claude Code, Codex) can drive the whole loop with no API key: the agent proposes changes, but it can't grant itself trust, because the deterministic CLI re-checks every quote itself and discards any "verified" flag the model tries to set. The base gets richer as base models improve and as more people contribute, and adversarial scrutiny only hardens it, because every new source is audited the same way, whichever side it favours.
+A case is one JSON file, and it moves the way a git repository does. You pull a case, merge new sources into it locally (each addition folds in and records its own diff), and push the result back. If someone else changed it in the meantime, the push is rejected until you reconcile, the same way git refuses a stale push, so the history reads like a commit log and the base grows across people and time instead of being re-researched from scratch. Sources go in and out through the standard citation formats (BibTeX, RIS, and CSL-JSON), so a case round-trips with Zotero, Mendeley, or EndNote. The case format is open in its own right: documented in [`SCHEMA.md`](SCHEMA.md), validated against a published JSON Schema (draft 2020-12), and released under Apache-2.0, so anyone can read, check, or build on a case without asking permission. Labelling is model-agnostic and can run as a multi-model ensemble that escalates genuine disagreements to a human instead of averaging them away, so the pipeline improves as the models do. A coding agent (Claude Code, Codex) can drive the whole loop with no API key: the agent proposes changes, but it can't grant itself trust, because the deterministic CLI re-checks every quote itself and discards any "verified" flag the model tries to set. The base gets richer as base models improve and as more people contribute, and adversarial scrutiny only hardens it, because every new source is audited the same way, whichever side it favours.
 
 ## Hard to game, and what it doesn't claim
 
