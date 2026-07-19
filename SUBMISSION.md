@@ -15,7 +15,7 @@ A five-minute look, using the eggs case, one tab at a time:
 - **Key issues** is a grid of the specific factors the camps weigh differently.
 - **Changes** logs what every added source did to the numbers.
 
-In that camp, 6 of the 12 sources reuse the Nurses' Health Study / Health Professionals Follow-up Study evidence base. Each stays individually inspectable, but together they contribute one unit to the count. Seven other admitted bases make up the rest, hence 12 sources → 8.0 evidence bases.
+Take that "no increased risk" camp: 6 of its 12 sources reuse the Nurses' Health Study / Health Professionals Follow-up Study evidence base. Each stays individually inspectable, but together they contribute one unit to the count. Seven other admitted bases make up the rest, hence 12 sources → 8.0 evidence bases.
 
 ## Why counting papers fails, and what to count instead
 
