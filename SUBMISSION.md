@@ -17,9 +17,15 @@ A five-minute look, using the eggs case, one tab at a time:
 
 ## Why counting papers fails, and what to count instead
 
-If one camp has 20 papers and the other has 4, a naive aggregator declares a winner. But if the 20 all re-analyse the same cohort, the dispute is closer to 1 piece of evidence against 4. And the failure is easy to weaponise: flood your side with reviews and re-analyses and you manufacture apparent consensus.
+If one camp has 20 papers and the other has 4, a naive count declares a winner. But a paper count breaks in three ways, and on a bar chart all three look identical to real agreement:
 
-So instead of counting papers, Ground Knowledge traces each paper down to the evidence underneath it (the datasets, experiments, and observations it rests on) and counts, per position, the *distinct* pieces of underlying evidence. Twenty papers on one cohort count as one. A review that only summarises other papers adds nothing of its own, and two papers that cite each other with nothing primary underneath add nothing at all.
+- **Echo.** Ten reviews summarising the same three studies are one look, not ten, yet each is counted as a separate source.
+- **Cohort re-use.** One research group publishes eight papers off a single cohort. Eight sources, one dataset underneath.
+- **Circular corroboration.** Source A's evidence is Source B, and B's evidence is A. Two sources, zero independent grounding. This is the adversarial case: it is built to look like mutual confirmation.
+
+All three are the same problem: sources that add no new evidence underneath. And it is easy to do on purpose, since flooding your side with reviews and re-analyses manufactures an apparent consensus out of one real study.
+
+The fix is to stop treating every document as its own unit. A **source** (a paper, review, report, or guideline) and a **root** (the dataset, cohort, experiment, or field observation it actually rests on) are different kinds of thing, and many sources can share one root. Ground Knowledge traces each source down to its roots and counts, per position, the *distinct* roots underneath. Twenty papers on one cohort count as one. A review that only summarises other papers adds nothing of its own, and two papers that cite each other with nothing primary underneath add nothing at all.
 
 The resulting number (internally `nEff`, the *adjusted evidence-base count*) measures how broad a position's independent evidentiary footing is. It is deliberately not a quality, effect-size, or truth score: seven weak datasets are not better evidence than one decisive trial, and the report says so. Study design, funding, method concentration, and quote verification are shown alongside the count, never folded into it.
 
@@ -48,11 +54,11 @@ roots(source) = every dataset reachable this way
 
 The metric handles citation loops first: it merges A-cites-B-cites-A into one unit, and if that unit reaches no dataset it flags it as circular, carrying nothing. A source that reaches no dataset at all gets a visible "unsupported" marker instead of quietly disappearing.
 
-**Step 3: score each position.**
+**Step 3: score each position.** Each source carries a tier: *primary* if it makes evidence (a cohort, an experiment, a field observation), *secondary* if it only talks about evidence (a review, a commentary, a guideline). A root's credit depends on the best tier resting on it.
 
 ```
 credit(dataset) = 1.0   confirmed, with at least one primary human study on it
-                = 0.5   only reviews rest on it, or only animal / in-vitro work
+                = 0.5   only reviews (secondary) rest on it, or only animal / in-vitro work
                 = 0.0   unconfirmed, unsupported, or circular (still shown, at zero)
 
 coverage(position) = sum of credit over the DISTINCT datasets
