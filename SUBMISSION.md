@@ -65,7 +65,7 @@ coverage(position) = sum of credit over the DISTINCT datasets
                      reachable from its sources
 ```
 
-Each dataset is counted once, no matter how many sources rest on it. That single rule is what makes echo and volume inert: piling more papers onto an already-counted dataset moves nothing. A randomized property test (`test_adding_a_source_never_lowers_any_positions_neff`) enforces exactly this: it grows a case one source at a time and checks that no position's count ever drops. The only thing that lowers it is an explicit graph correction, like merging two names that turn out to be the same cohort, because that removes a double-count rather than real evidence.
+Each dataset is counted once, no matter how many sources rest on it. That single rule is what makes echo and volume inert: piling more papers onto an already-counted dataset moves nothing. Bad sources can never lower a position's count; at worst they add nothing. The only thing that lowers it is an explicit graph correction, like merging two names that turn out to be the same cohort, because that removes a double-count rather than real evidence.
 
 **Step 4: find what actually divides the camps.** Each case lists the factors in play (e.g. "prior on lab accidents", "hyper-responder subgroups"), and each camp's weight on each factor, sourced from quotes. A factor becomes a *key disagreement* when camps weigh it very differently, and a *shared uncertainty* when two camps both call it decisive but it stays unresolved. Factors only one camp leans on are shown separately, so they don't inflate the headline.
 
