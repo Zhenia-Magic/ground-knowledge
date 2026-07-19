@@ -6,10 +6,14 @@
     "updated": "2026-07-19T01:56:04.315853+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
-      "baseVersion": 30,
+      "baseVersion": 33,
       "url": "https://groundknowledge.org"
     },
-    "schemaVersion": 2
+    "schemaVersion": 2,
+    "curated": {
+      "by": "portal-admin",
+      "since": "2026-07-19T15:35:27.496705+00:00"
+    }
   },
   "positions": [
     {
