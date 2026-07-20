@@ -474,7 +474,7 @@ function factorDetailHtml(kb, f, activePos){
       return `<div class="fpq"><div class="fpq-src">${esc(title)} ${pr.quote?quoteBadge(pr):""}</div>`+
         (pr.quote?excerptHtml(pr.quote,pr,"q"):"")+`</div>`;
     }).join("");
-    return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(p.shortLabel||shortLabel(p.label))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
+    return `<div class="fpgroup"><div class="fpg-h"><span style="width:8px;height:8px;border-radius:2px;background:${p.hue};display:inline-block;"></span> ${esc(posShort(p))} — ${rows.length} source${rows.length===1?"":"s"}</div>${items}</div>`;
   }).join("");
   const rat=f.rationale?`<div style="margin-bottom:8px;">${esc(f.rationale)}</div>`:"";
   return rat+(groups||'<span style="color:var(--faint)">No exact source sentence supports a weight for this factor yet; unchecked claims are excluded from the table.</span>');
@@ -497,6 +497,18 @@ function shortLabel(s, max=20){
   if(s.length <= max) return s;
   const cut = s.lastIndexOf(' ', max);
   return (cut > max * 0.4 ? s.slice(0, cut) : s.slice(0, max)) + '…';
+}
+
+// Position labels are normally "Name — elaboration", "Name / alternative" or "Name (aside)".
+// Chips, chart segments and matrix headers want just the name: a blind character cut strands them
+// mid-phrase ("No risk — LHC…", "Residual concern —…"). Take the natural head first, then trim.
+// Deliberately NOT folded into shortLabel(), which also shortens source titles like
+// "Dehghan et al. — Egg consumption…" where the text after the dash is the part that matters.
+function posShort(p, fallbackLabel){
+  if(p && p.shortLabel) return p.shortLabel;
+  const raw=String((p&&p.label)||fallbackLabel||"").trim();
+  const head=raw.split(/\s+[—–]\s+|\s*:\s+|\s+\/\s+/)[0].replace(/\s*\([^)]*\)\s*$/,"").trim();
+  return shortLabel(head||raw, 24);
 }
 
 // Evidence-strength tier from study design -- a quality signal, not a gameable "trust score".
@@ -649,7 +661,7 @@ function renderChrome(){
       const d=(a.distribution||[]).find(x=>x.id===p.id);
       const risk=(warningBadges[p.id]||[]).length?`<span class="risk" title="${esc((warningBadges[p.id]||[]).map(w=>w.badge).join(", "))}">⚠</span>`:"";
       return `<div class="poschip${state.posOn.has(p.id)?"":" off"}" data-pos="${p.id}">
-         <span class="dot" style="background:${p.hue}"></span><span class="lab">${esc(p.shortLabel||shortLabel(p.label))}</span>${risk}<span class="n">${d?d.count:0}</span>
+         <span class="dot" style="background:${p.hue}"></span><span class="lab">${esc(posShort(p))}</span>${risk}<span class="n">${d?d.count:0}</span>
        </div>`;
     }).join("");
   }
@@ -696,7 +708,7 @@ function headline(c){
   // same shape invites reading the source tally as a denominator of the adjusted count, which it
   // is not — they answer different questions.
   const bar=(rows,pctKey,sizeKey,tipFn)=>rows.map(d=>{
-    const label=(pos[d.id]&&pos[d.id].shortLabel)||shortLabel(d.label);
+    const label=posShort(pos[d.id], d.label);
     const p=d[pctKey]||0;
     const fits=p>=(label.length*0.9+4);
     const text=fits?(label+" · "+p+"%"):(p+"%");
@@ -821,7 +833,7 @@ function renderCoverageView(){
       }
       return `<tr class="rowmain" data-id="${esc(s.id)}">
           <td>${esc(s.title)}</td><td style="font-family:var(--mono);color:var(--muted);">${esc(s.year||"—")}</td>
-          <td><span class="postag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.shortLabel||shortLabel(p.label))}</span></td>
+          <td><span class="postag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(posShort(p))}</span></td>
           <td style="color:var(--muted);">${esc(s.evidence)}</td><td style="color:var(--muted);">${dsLabel}</td><td>${icon}</td>
         </tr>${detail}`;
     }).join("")||`<tr><td colspan="6" class="empty">No sources match these filters.</td></tr>`;
@@ -841,13 +853,13 @@ function renderCoverageView(){
       const fundingLine=(s.fundingDetails||[]).length?`<div class="venue">Funding detail: ${s.fundingDetails.map(esc).join(" · ")}</div>`:"";
       const pq=((s.provenance||{}).position)||{};
       const quote=cleanQuote(pq.quote,s.title);
-      const quoteBox=quote?`<div class="why"><span class="wl">Filed under “${esc(p.shortLabel||shortLabel(p.label))}” because</span>${verifiedExact(pq)?`<q>${esc(quote)}</q>`:`<div class="q"><span class="wl">Stored summary — not verified verbatim</span><br>${esc(quote)}</div>`}${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}</div>`:"";
+      const quoteBox=quote?`<div class="why"><span class="wl">Filed under “${esc(posShort(p))}” because</span>${verifiedExact(pq)?`<q>${esc(quote)}</q>`:`<div class="q"><span class="wl">Stored summary — not verified verbatim</span><br>${esc(quote)}</div>`}${confBadge(pq.extractionConfidence,p.label)}${quoteWarnHtml(pq,s.textDepth)}</div>`:"";
       return `<div class="card${s.retracted?" retracted":""}" style="border-left-color:${p.hue}">
           <div class="ct"><div class="titlewrap"><span class="title">${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a>`:esc(s.title)}</span></div><span class="yr">${esc(s.year||"")}</span></div>
           ${venueLine}
           ${fundingLine}
           <div class="tags">
-            <span class="tag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(p.shortLabel||shortLabel(p.label))}</span>
+            <span class="tag" style="background:${rgba(p.hue,.13)};color:${p.hue}">${esc(posShort(p))}</span>
             ${s.retracted?'<span class="tag retr">⚠ RETRACTED</span>':""}
             <span class="tag">${esc(s.evidence)}${pip}</span>
             <span class="tag ${/industry|advocacy/i.test(s.funding||"")?"industry":(/undisclosed/i.test(s.funding||"undisclosed")?"rests":"")}">${esc(s.funding||"Undisclosed")}</span>
@@ -907,7 +919,7 @@ function renderDivergenceView(){
     return rank(ix)-rank(iy) || iy.spread-ix.spread || iy.engaged-ix.engaged;});
   const posColW=Math.min(20,Math.floor(60/Math.max(1,activePos.length)));
   const colgroup=`<colgroup><col style="width:${100-posColW*activePos.length}%">${activePos.map(()=>`<col style="width:${posColW}%">`).join("")}</colgroup>`;
-  const head=`<th class="nosort">Issue</th>`+activePos.map(p=>`<th class="nosort" style="background:${p.hue};color:${inkOn(p.hue)};text-align:center;" data-tip="${esc(p.label)}">${esc(p.shortLabel||shortLabel(p.label))}</th>`).join("");
+  const head=`<th class="nosort">Issue</th>`+activePos.map(p=>`<th class="nosort" style="background:${p.hue};color:${inkOn(p.hue)};text-align:center;" data-tip="${esc(p.label)}">${esc(posShort(p))}</th>`).join("");
   const rows=ordered.map(f=>{
     const cx=info(f), one=cx.engaged<2;
     const cells=activePos.map(p=>{
@@ -1032,7 +1044,7 @@ function parseDiffLine(kb,line){
   if(!m) return null;
   const [,metric,label,before,after]=m;
   const pos=kb.positions.find(p=>p.label===label||p.shortLabel===label);
-  return {metric,before,after,hue:pos?pos.hue:"var(--faint)",label:pos?(pos.shortLabel||shortLabel(pos.label)):label,warn:line.indexOf("⚠")===0};
+  return {metric,before,after,hue:pos?pos.hue:"var(--faint)",label:pos?posShort(pos):label,warn:line.indexOf("⚠")===0};
 }
 function deltaBadges(kb,diff){
   const parsed=(diff||[]).map(l=>parseDiffLine(kb,l)).filter(Boolean);

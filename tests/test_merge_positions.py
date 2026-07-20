@@ -274,6 +274,30 @@ class SourceRemovalTests(unittest.TestCase):
         self.assertEqual(kb["log"][-1]["reason"], "measures another outcome")
         self.assertEqual(validation_errors(kb), [])
 
+    def test_short_label_is_stored_audited_and_length_capped(self):
+        from engine.curate import set_short_label, SHORT_LABEL_MAX
+        from engine.migrate import validation_errors
+        kb, _sid = self._kb()
+        pos = kb["positions"][0]
+        report = set_short_label(kb, pos["id"], "  Yes   please  ")
+        self.assertEqual(pos["shortLabel"], "Yes please")       # whitespace normalised
+        self.assertEqual(kb["log"][-1]["action"], "short-label")
+        self.assertEqual(report["version"], kb["meta"]["version"])
+        self.assertEqual(validation_errors(kb), [])
+        with self.assertRaises(ValueError):                     # too long to fit a chart segment
+            set_short_label(kb, pos["id"], "x" * (SHORT_LABEL_MAX + 1))
+        self.assertEqual(pos["shortLabel"], "Yes please")       # rejected write left it alone
+
+    def test_short_label_can_be_cleared_but_not_twice(self):
+        from engine.curate import set_short_label
+        kb, _sid = self._kb()
+        pos = kb["positions"][0]
+        set_short_label(kb, pos["id"], "Yes")
+        set_short_label(kb, pos["id"], "")
+        self.assertNotIn("shortLabel", pos)
+        with self.assertRaises(ValueError):
+            set_short_label(kb, pos["id"], "")
+
     def test_prune_legacy_orphan_datasets_is_explicit_and_audited(self):
         from engine.curate import prune_orphan_datasets
         from engine.migrate import validation_errors

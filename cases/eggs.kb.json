@@ -641,6 +641,18 @@
       "factor": "f_population_context_dependence_who_is_eating_",
       "oldQuoteSha256": "2e9abd90efa381ebd15101ede3b223c9e56e61cf5f9c783b67bfece3a27f4a0a",
       "newQuoteSha256": "60cc0cf7a6d85eb84fede5cae96d2c285652a04478a1be1d6fe2f0a920cf9746"
+    },
+    {
+      "version": 43,
+      "action": "short-label",
+      "summary": "short label for position “Increases risk”: “Increases risk”",
+      "ts": "2026-07-20T01:31:59.152775+00:00"
+    },
+    {
+      "version": 44,
+      "action": "short-label",
+      "summary": "short label for position “Context-dependent (depends on the person)”: “Context-dependent”",
+      "ts": "2026-07-20T01:31:59.212456+00:00"
     }
   ],
   "meta": {
@@ -654,8 +666,8 @@
       "by": "portal-admin",
       "since": "2026-07-16T23:27:24.988909+00:00"
     },
-    "updated": "2026-07-19T02:00:12.807364+00:00",
-    "version": 42,
+    "updated": "2026-07-20T01:31:59.212456+00:00",
+    "version": 44,
     "question": "Do eggs increase cardiovascular disease risk?",
     "schemaVersion": 2
   },
@@ -2881,7 +2893,8 @@
     {
       "id": "pos_increases_risk",
       "hue": "#2E8B6F",
-      "label": "Increases risk"
+      "label": "Increases risk",
+      "shortLabel": "Increases risk"
     },
     {
       "id": "pos_no_association",
@@ -2892,7 +2905,8 @@
     {
       "id": "pos_context_dependent_depends_on_the_person",
       "hue": "#586A7A",
-      "label": "Context-dependent (depends on the person)"
+      "label": "Context-dependent (depends on the person)",
+      "shortLabel": "Context-dependent"
     }
   ],
   "contextSources": [

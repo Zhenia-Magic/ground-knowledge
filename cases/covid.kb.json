@@ -2,8 +2,8 @@
   "meta": {
     "id": "covid",
     "question": "What is the origin of SARS-CoV-2 (COVID-19)?",
-    "version": 53,
-    "updated": "2026-07-18T21:04:09.126187+00:00",
+    "version": 56,
+    "updated": "2026-07-20T01:31:59.089334+00:00",
     "portal": {
       "id": "ac81b4cae8d0",
       "baseVersion": 40,
@@ -15,17 +15,20 @@
     {
       "id": "pos_zoonotic_spillover_at_the_huanan_market",
       "label": "Zoonotic spillover",
-      "hue": "#2E8B6F"
+      "hue": "#2E8B6F",
+      "shortLabel": "Zoonotic spillover"
     },
     {
       "id": "pos_laboratory_associated_origin",
       "label": "Laboratory-associated origin",
-      "hue": "#B4502E"
+      "hue": "#B4502E",
+      "shortLabel": "Lab-associated origin"
     },
     {
       "id": "pos_undetermined_unresolved",
       "label": "Undetermined / unresolved",
-      "hue": "#586A7A"
+      "hue": "#586A7A",
+      "shortLabel": "Undetermined"
     }
   ],
   "datasets": [
@@ -3557,6 +3560,24 @@
       "summary": "admitted support edge src_freuling_et_al_susceptibility_of_raccoon_dog_2020 → ds_experimental_raccoon_dog_sars_cov_2_infectio",
       "ts": "2026-07-18T21:04:09.126187+00:00",
       "by": "Evgeniia"
+    },
+    {
+      "version": 54,
+      "action": "short-label",
+      "summary": "short label for position “Zoonotic spillover”: “Zoonotic spillover”",
+      "ts": "2026-07-20T01:31:58.961581+00:00"
+    },
+    {
+      "version": 55,
+      "action": "short-label",
+      "summary": "short label for position “Laboratory-associated origin”: “Lab-associated origin”",
+      "ts": "2026-07-20T01:31:59.025877+00:00"
+    },
+    {
+      "version": 56,
+      "action": "short-label",
+      "summary": "short label for position “Undetermined / unresolved”: “Undetermined”",
+      "ts": "2026-07-20T01:31:59.089334+00:00"
     }
   ],
   "refused": [

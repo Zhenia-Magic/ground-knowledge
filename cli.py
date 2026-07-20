@@ -571,6 +571,15 @@ def cmd_rename(args):
     _curate_write(args, report)
 
 
+def cmd_short_label(args):
+    """Set a position's compact display name for chart segments, chips and key-issue headers."""
+    from engine import curate
+    kb = read_json(args.kb)
+    report = curate.set_short_label(kb, args.ref, args.label)
+    write_json(args.kb, kb)
+    _curate_write(args, report)
+
+
 def cmd_dedupe(args):
     """Remove duplicate SOURCES (same paper ingested under two links / title variants)."""
     from engine import curate
@@ -1270,6 +1279,11 @@ def main():
     s = sub.add_parser("rename"); s.add_argument("kb"); s.add_argument("type", choices=TYPES)
     s.add_argument("ref"); s.add_argument("label"); s.add_argument("--build", action="store_true")
     s.set_defaults(fn=cmd_rename)
+    s = sub.add_parser("short-label",
+                       help="set a position's compact name for charts, chips and issue headers")
+    s.add_argument("kb"); s.add_argument("ref", help="position id, exact label, or unique substring")
+    s.add_argument("label", help="short name (empty string clears it)")
+    s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_short_label)
     s = sub.add_parser("dedupe", help="remove duplicate SOURCES (same paper ingested twice)")
     s.add_argument("kb"); s.add_argument("--build", action="store_true"); s.set_defaults(fn=cmd_dedupe)
     s = sub.add_parser("remove-source", help="remove an irrelevant source with a versioned audit record")

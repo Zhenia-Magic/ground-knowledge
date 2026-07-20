@@ -2,8 +2,8 @@
   "meta": {
     "id": "blackholes",
     "question": "Could the LHC create a black hole that destroys Earth?",
-    "version": 36,
-    "updated": "2026-07-19T01:56:04.315853+00:00",
+    "version": 38,
+    "updated": "2026-07-20T01:31:58.897311+00:00",
     "portal": {
       "id": "c6c6ad01ec11",
       "baseVersion": 33,
@@ -19,12 +19,14 @@
     {
       "id": "pos_no_risk_lhc_collisions_are_safe",
       "label": "No risk — LHC collisions are safe",
-      "hue": "#2E8B6F"
+      "hue": "#2E8B6F",
+      "shortLabel": "No risk"
     },
     {
       "id": "pos_residual_concern_the_safety_argument_has_wea",
       "label": "Residual concern — the safety argument has weak or speculative links",
-      "hue": "#B4502E"
+      "hue": "#B4502E",
+      "shortLabel": "Residual concern"
     }
   ],
   "datasets": [
@@ -1937,6 +1939,18 @@
       "labels": [
         "Strangelet stability calculations (RHIC)"
       ]
+    },
+    {
+      "version": 37,
+      "action": "short-label",
+      "summary": "short label for position “No risk — LHC collisions are safe”: “No risk”",
+      "ts": "2026-07-20T01:31:58.830565+00:00"
+    },
+    {
+      "version": 38,
+      "action": "short-label",
+      "summary": "short label for position “Residual concern — the safety argument has weak or speculative links”: “Residual concern”",
+      "ts": "2026-07-20T01:31:58.897311+00:00"
     }
   ],
   "refused": [

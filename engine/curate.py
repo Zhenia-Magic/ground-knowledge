@@ -595,6 +595,31 @@ def rename(kb, kind, ref, new_label):
     return _commit(kb, "rename", "renamed {} “{}” → “{}”".format(kind, old, new_label))
 
 
+SHORT_LABEL_MAX = 24
+
+
+def set_short_label(kb, ref, short_label):
+    """Set (or, with an empty value, clear) a position's compact display name.
+
+    Chart segments, position chips and key-issue headers have no room for a full label like
+    "Residual concern — the safety argument has weak or speculative links"; without a short name
+    they fall back to a character cut that strands the text mid-phrase. This is presentational
+    only: it names nothing new and changes no metric."""
+    e = _resolve(kb["positions"], ref, "position")
+    short = " ".join(str(short_label or "").split())
+    if not short:
+        if e.pop("shortLabel", None) is None:
+            raise ValueError("position “{}” has no short label to clear".format(e["label"]))
+        return _commit(kb, "short-label",
+                       "cleared the short label for position “{}”".format(e["label"]))
+    if len(short) > SHORT_LABEL_MAX:
+        raise ValueError("short label must be {} characters or fewer (got {})".format(
+            SHORT_LABEL_MAX, len(short)))
+    e["shortLabel"] = short
+    return _commit(kb, "short-label",
+                   "short label for position “{}”: “{}”".format(e["label"], short))
+
+
 _ROOT_KINDS = {"dataset", "document", "argument", "model"}
 
 
